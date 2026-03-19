@@ -375,6 +375,14 @@ COMMAND="..." ./checker.sh
 
 ## v3 -> v4 变更日志
 
+### v4.8
+- 新增: triage.sh --batch 批量模式 (stdin 每行一条命令)
+- 新增: triage.sh --batch-jsonl 批量 JSONL 模式 (处理样本文件)
+  批量输出包含摘要: {"batch_total":N, "block":N, "review":N, "pass":N}
+- 增强: checker.sh 读取 scoring.conf (DANGEROUS/SUSPICIOUS/LOW_RISK 阈值)
+  所有硬编码阈值已参数化: 判定阈值/合法降权系数/熵阈值/隐藏进程容差
+- 测试: 116/116 (100%)
+
 ### v4.7
 - 新增: triage.sh --explain 人类可读解释模式 (显示匹配原因和建议)
 - 新增: scoring.conf 评分配置文件 (可调阈值/权重/C2端口指纹)

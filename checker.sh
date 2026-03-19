@@ -205,6 +205,28 @@ IMAGE = os.environ.get("SANDBOX_IMAGE", "opensandbox/code-interpreter:v1.0.2")
 REPORT_DIR = os.environ.get("REPORT_DIR", "/tmp")
 W = 76
 
+# ── 加载评分配置 ──
+SCORING_CONF = {}
+_conf_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "scoring.conf")
+if not os.path.exists(_conf_path):
+    _conf_path = os.path.join(os.getcwd(), "scoring.conf")
+if os.path.exists(_conf_path):
+    with open(_conf_path) as _f:
+        for _line in _f:
+            _line = _line.strip()
+            if _line and not _line.startswith("#") and "=" in _line:
+                _key, _val = _line.split("=", 1)
+                _val = _val.split("#")[0].strip()
+                SCORING_CONF[_key.strip()] = _val
+
+DANGEROUS_THRESHOLD = int(SCORING_CONF.get("DANGEROUS_THRESHOLD", "60"))
+DANGEROUS_CRITICALS = int(SCORING_CONF.get("DANGEROUS_CRITICALS", "2"))
+SUSPICIOUS_THRESHOLD = int(SCORING_CONF.get("SUSPICIOUS_THRESHOLD", "25"))
+LOW_RISK_THRESHOLD = int(SCORING_CONF.get("LOW_RISK_THRESHOLD", "10"))
+LEGITIMATE_DIVISOR = int(SCORING_CONF.get("LEGITIMATE_DIVISOR", "2"))
+ENTROPY_THRESHOLD = float(SCORING_CONF.get("ENTROPY_THRESHOLD", "6.5"))
+HIDDEN_PROC_TOLERANCE = int(SCORING_CONF.get("HIDDEN_PROC_TOLERANCE", "3"))
+
 # ═══════════════════════════════════════════════════════════════════════════
 #  基础设施过滤 — execd + 监控自身产物
 # ═══════════════════════════════════════════════════════════════════════════
@@ -1080,7 +1102,7 @@ class ScoringEngine:
     def add(self, severity, dimension, desc, score, mitre_ids=None, evidence=None):
         # 合法命令降低部分维度的分数
         if self.is_legitimate and severity != "CRITICAL":
-            score = max(0, score // 2)
+            score = max(0, score // LEGITIMATE_DIVISOR)
         self.findings.append(Finding(severity, dimension, desc, score, mitre_ids, evidence))
 
     def total_score(self):
@@ -1091,11 +1113,11 @@ class ScoringEngine:
         criticals = [f for f in self.findings if f.severity == "CRITICAL"]
         # 攻击链发现会加重判定
         chain_findings = [f for f in self.findings if f.dimension == "攻击链"]
-        if score >= 60 or len(criticals) >= 2 or (chain_findings and criticals):
+        if score >= DANGEROUS_THRESHOLD or len(criticals) >= DANGEROUS_CRITICALS or (chain_findings and criticals):
             return "DANGEROUS"
-        elif score >= 25 or criticals:
+        elif score >= SUSPICIOUS_THRESHOLD or criticals:
             return "SUSPICIOUS"
-        elif score >= 10:
+        elif score >= LOW_RISK_THRESHOLD:
             return "LOW_RISK"
         else:
             return "LIKELY_SAFE"
@@ -1869,7 +1891,7 @@ async def main():
                         import base64
                         raw = base64.b64decode(fc.strip())
                         ent = calculate_entropy(raw)
-                        if ent > 6.5:  # 高熵阈值
+                        if ent > ENTROPY_THRESHOLD:  # 高熵阈值 (可在 scoring.conf 配置)
                             high_entropy_files.append((path, ent))
                     except Exception:
                         pass
@@ -1930,7 +1952,7 @@ async def main():
         hidden_pids = proc_set - ps_set
         # Filter out kernel threads and self
         hidden_pids = {p for p in hidden_pids if p.strip() and p.strip().isdigit()}
-        if len(hidden_pids) > 3:  # Allow small discrepancy for race conditions
+        if len(hidden_pids) > HIDDEN_PROC_TOLERANCE:  # 容差可在 scoring.conf 配置
             engine.add("WARN", "隐藏进程",
                       f"检测到 {len(hidden_pids)} 个 /proc 中存在但 ps 不可见的进程",
                       20, ["T1564.001"], str(sorted(hidden_pids)[:20]))

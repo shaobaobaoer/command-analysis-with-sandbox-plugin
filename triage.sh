@@ -9,17 +9,20 @@
 #    COMMAND="some command" ./triage.sh
 #    COMMAND="some command" ./triage.sh --explain     # 人类可读解释
 #    echo '{"command":"..."}' | ./triage.sh --json-input
+#    cat commands.txt | ./triage.sh --batch           # 批量模式 (每行一条命令)
+#    cat samples.jsonl | ./triage.sh --batch-jsonl    # 批量 JSONL 模式
 #
 #  输出: JSON (默认) 或 人类可读 (--explain)
 #    {"level":"BLOCK|REVIEW|PASS", "score":0-100, "matches":[...]}
 #
 #  退出码:
-#    0 = PASS, 1 = REVIEW, 2 = BLOCK
+#    0 = PASS (或批量模式全 PASS), 1 = REVIEW, 2 = BLOCK
 # ============================================================================
 set -euo pipefail
 
 COMMAND="${COMMAND:-}"
 EXPLAIN_MODE=false
+BATCH_MODE=""
 
 # 参数解析
 for arg in "$@"; do
@@ -30,8 +33,42 @@ for arg in "$@"; do
         --explain)
             EXPLAIN_MODE=true
             ;;
+        --batch)
+            BATCH_MODE="text"
+            ;;
+        --batch-jsonl)
+            BATCH_MODE="jsonl"
+            ;;
     esac
 done
+
+# ─── 批量模式 ────────────────────────────────────────────
+if [ -n "$BATCH_MODE" ]; then
+    SELF="$0"
+    MAX_EXIT=0
+    COUNT=0; BLOCK_N=0; REVIEW_N=0; PASS_N=0
+    while IFS= read -r line; do
+        [ -z "$line" ] && continue
+        if [ "$BATCH_MODE" = "jsonl" ]; then
+            cmd=$(echo "$line" | python3 -c "import sys,json; print(json.loads(sys.stdin.read()).get('command',''))" 2>/dev/null)
+            [ -z "$cmd" ] && continue
+        else
+            cmd="$line"
+        fi
+        rc=0
+        COMMAND="$cmd" "$SELF" 2>/dev/null || rc=$?
+        [ "$rc" -gt "$MAX_EXIT" ] && MAX_EXIT="$rc"
+        COUNT=$((COUNT + 1))
+        case "$rc" in
+            0) PASS_N=$((PASS_N + 1)) ;;
+            1) REVIEW_N=$((REVIEW_N + 1)) ;;
+            2) BLOCK_N=$((BLOCK_N + 1)) ;;
+        esac
+    done
+    # 输出批量摘要到 stderr
+    echo "{\"batch_total\":${COUNT},\"block\":${BLOCK_N},\"review\":${REVIEW_N},\"pass\":${PASS_N}}" >&2
+    exit "$MAX_EXIT"
+fi
 
 if [ -z "$COMMAND" ]; then
     echo '{"error":"COMMAND environment variable or --json-input required"}' >&2
