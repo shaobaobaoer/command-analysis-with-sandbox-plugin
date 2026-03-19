@@ -1,0 +1,15 @@
+{"id": "w01", "label": "safe", "desc": "echo hello", "command": "echo 'hello world'"}
+{"id": "w02", "label": "safe", "desc": "python print", "command": "python3 -c \"print('hello from python')\""}
+{"id": "w03", "label": "safe", "desc": "git version", "command": "git --version"}
+{"id": "w04", "label": "safe", "desc": "list files", "command": "ls -la /"}
+{"id": "w05", "label": "safe", "desc": "uv installer", "command": "curl -LsSf https://astral.sh/uv/install.sh | sh"}
+{"id": "w06", "label": "safe", "desc": "pip install requests", "command": "pip install requests"}
+{"id": "w07", "label": "safe", "desc": "npm install lodash", "command": "npm install -g lodash"}
+{"id": "w08", "label": "safe", "desc": "apt install jq", "command": "apt-get update -qq && apt-get install -y -qq jq"}
+{"id": "w09", "label": "safe", "desc": "nvm installer", "command": "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash"}
+{"id": "w10", "label": "safe", "desc": "poetry installer", "command": "curl -sSL https://install.python-poetry.org | python3 -"}
+{"id": "w11", "label": "safe", "desc": "create temp file", "command": "mktemp && echo done"}
+{"id": "w12", "label": "safe", "desc": "disk usage", "command": "df -h && du -sh /tmp"}
+{"id": "w13", "label": "safe", "desc": "system info", "command": "uname -a && cat /etc/os-release"}
+{"id": "w14", "label": "safe", "desc": "write and read file", "command": "echo 'test content' > /tmp/test.txt && cat /tmp/test.txt && rm /tmp/test.txt"}
+{"id": "w15", "label": "safe", "desc": "python http server dry", "command": "python3 -c \"import http.server; print('http module ok')\""}

