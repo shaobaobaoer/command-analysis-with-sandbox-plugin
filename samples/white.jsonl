@@ -33,3 +33,8 @@
 {"id": "w33", "label": "safe", "desc": "chmod safe script", "command": "echo '#!/bin/bash' > /tmp/test.sh && chmod +x /tmp/test.sh && /tmp/test.sh && rm /tmp/test.sh"}
 {"id": "w34", "label": "safe", "desc": "nohup safe bg", "command": "nohup echo 'background task done' > /tmp/nohup_test.log 2>&1 && cat /tmp/nohup_test.log && rm /tmp/nohup_test.log"}
 {"id": "w35", "label": "safe", "desc": "nc port check", "command": "nc -z -w1 127.0.0.1 22 2>/dev/null && echo 'port open' || echo 'port closed'"}
+{"id": "w36", "label": "safe", "desc": "kubectl get pods", "command": "kubectl get pods 2>/dev/null || echo 'no k8s'"}
+{"id": "w37", "label": "safe", "desc": "docker ps", "command": "docker ps 2>/dev/null || echo 'no docker'"}
+{"id": "w38", "label": "safe", "desc": "pip install from pypi", "command": "pip install --upgrade pip 2>/dev/null || echo 'skip'"}
+{"id": "w39", "label": "safe", "desc": "systemctl list units", "command": "systemctl list-units --type=service 2>/dev/null | head -10 || echo 'no systemd'"}
+{"id": "w40", "label": "safe", "desc": "safe iptables list", "command": "iptables -L -n 2>/dev/null | head -20 || echo 'no iptables'"}

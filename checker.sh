@@ -303,6 +303,11 @@ MITRE = {
     "T1070.006": "Indicator Removal: Timestomp",
     "T1055":     "Process Injection",
     "T1548.003": "Abuse Elevation: Sudo and Sudo Caching",
+    "T1195":     "Supply Chain Compromise",
+    "T1195.001": "Supply Chain Compromise: Compromise Software Dependencies",
+    "T1552.005": "Unsecured Credentials: Cloud Instance Metadata API",
+    "T1609":     "Container Administration Command",
+    "T1610":     "Deploy Container",
 }
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -430,6 +435,25 @@ MALICIOUS_CONTENT_PATTERNS = [
     (r"ufw\s+disable", "disabling UFW firewall", "T1562.004", 30),
     (r"systemctl\s+stop\s+firewalld", "stopping firewalld", "T1562.004", 30),
     (r"iptables\s+-P\s+.*ACCEPT", "setting default ACCEPT policy", "T1562.004", 25),
+    # 云元数据访问 (SSRF/凭据窃取)
+    (r"169\.254\.169\.254", "cloud metadata endpoint access (credential theft)", "T1552.001", 35),
+    (r"metadata\.google\.internal", "GCP metadata access", "T1552.001", 35),
+    (r"100\.100\.100\.200", "Alibaba Cloud metadata access", "T1552.001", 35),
+    # 供应链攻击指标
+    (r"pip\s+install.*--index-url\s+http://", "pip install from HTTP (supply chain risk)", "T1195", 30),
+    (r"npm\s+install.*--registry\s+http://", "npm install from HTTP registry", "T1195", 30),
+    (r"pip\s+install\s+.*-e\s+git\+http://", "pip install editable from HTTP", "T1195", 25),
+    # 容器逃逸新手法
+    (r"/var/run/docker\.sock", "Docker socket access (container escape)", "T1611", 40),
+    (r"mount.*cgroup", "cgroup mount (container escape vector)", "T1611", 35),
+    (r"capsh\s+--print", "capability enumeration (privilege check)", "T1548.001", 10),
+    # Kubernetes 相关
+    (r"/var/run/secrets/kubernetes", "K8s service account token access", "T1552.001", 30),
+    (r"kubectl\s+.*--token", "kubectl with explicit token", "T1552.001", 20),
+    # 内存驻留
+    (r"memfd_create", "memfd_create (fileless execution)", "T1059.004", 35),
+    (r"/dev/shm/.*\|.*sh", "shared memory execution", "T1059.004", 30),
+    (r"/proc/self/exe", "self-re-execution (fileless technique)", "T1059.004", 25),
 ]
 
 # 合法安装器的白名单特征 — 降低这些场景的分数

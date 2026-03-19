@@ -188,6 +188,21 @@ check_pattern "\$'\\\\x[0-9a-f]" "dollar-quote hex evasion" "T1027.010" 25
 # pipe to bash/sh (generic)
 check_pattern "printf.*\|\s*(ba)?sh" "printf pipe to shell" "T1059.004" 30
 
+# 云元数据
+check_pattern '169\.254\.169\.254' "cloud metadata access" "T1552.001" 35
+check_pattern 'metadata\.google\.internal' "GCP metadata access" "T1552.001" 35
+
+# 容器逃逸
+check_pattern '/var/run/docker\.sock' "Docker socket access" "T1611" 40
+check_pattern 'mount.*cgroup' "cgroup mount escape" "T1611" 35
+
+# 供应链
+check_pattern 'pip\s+install.*--index-url\s+http://' "pip HTTP registry" "T1195" 30
+check_pattern 'npm\s+install.*--registry\s+http://' "npm HTTP registry" "T1195" 30
+
+# K8s 凭据
+check_pattern '/var/run/secrets/kubernetes' "K8s token access" "T1552.001" 30
+
 # ─── 白名单检查 ────────────────────────────────────────────
 
 is_legit=false

