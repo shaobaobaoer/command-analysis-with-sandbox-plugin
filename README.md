@@ -36,6 +36,7 @@ REGISTRY_MIRROR="sandbox-registry.cn-zhangjiakou.cr.aliyuncs.com/opensandbox" ./
 ├── checker.sh          # 单命令深度检测器 (OpenSandbox 沙箱 + 24 维度分析)
 ├── triage.sh           # 独立快速预判 (零依赖, 毫秒级, 98.6% 准确率)
 ├── test_patterns.sh    # 模式匹配验证测试套件 (116 测试, 100% 通过)
+├── benchmark.sh        # 性能基准测试 (吞吐量 / 延迟 / 性能等级)
 ├── run_all.sh          # 批量运行 + Git 自动提交 + 性能分析 + 重试 + 预判对比
 ├── CLAUDE.md           # 项目上下文 (Claude Code 开发辅助)
 ├── samples/
@@ -279,6 +280,46 @@ echo '{"id": "b31", "label": "malicious", "desc": "my test", "command": "..."}' 
 ./run_all.sh white:w31
 ```
 
+## 集成模式
+
+### API 网关集成
+
+```bash
+# 在 API 网关中做前置检查
+user_command="$1"
+result=$(COMMAND="$user_command" ./triage.sh 2>/dev/null)
+level=$(echo "$result" | python3 -c "import sys,json; print(json.load(sys.stdin)['level'])")
+
+case "$level" in
+    PASS)   execute_command "$user_command" ;;
+    REVIEW) queue_for_review "$user_command" ;;
+    BLOCK)  reject_command "$user_command" ;;
+esac
+```
+
+### Webhook 集成
+
+```bash
+# 接收 webhook, 分析命令, 返回结果
+echo "$WEBHOOK_BODY" | ./triage.sh --json-input
+# 退出码: 0=PASS, 1=REVIEW, 2=BLOCK
+```
+
+### 性能基准
+
+```bash
+./benchmark.sh              # 默认 100 次迭代
+./benchmark.sh 500          # 高精度测试
+./benchmark.sh 100 --json   # JSON 格式输出
+```
+
+| 性能等级 | 延迟 | 适用场景 |
+|----------|------|----------|
+| S 级 | < 50ms | 实时网关 |
+| A 级 | < 100ms | API 集成 |
+| B 级 | < 500ms | CI/CD |
+| C 级 | > 500ms | 需优化 |
+
 ## CI/CD 集成
 
 ### SARIF 输出 (GitHub Code Scanning / GitLab SAST)
@@ -309,6 +350,11 @@ COMMAND="..." ./checker.sh
 - SARIF 结果自动上传到 Code Scanning
 
 ## v3 -> v4 变更日志
+
+### v4.6
+- 新增: benchmark.sh 性能基准测试工具 (吞吐量/延迟/S-A-B-C 等级评定)
+- 新增: 集成模式文档 (API 网关/Webhook/CI/CD 完整示例)
+- 完善: 全脚本语法验证通过, 全样本 JSONL 验证通过
 
 ### v4.5
 - 新增: SARIF v2.1.0 输出 (GitHub Code Scanning / GitLab SAST 集成)
