@@ -456,13 +456,31 @@ BLACKLIST_OVERRIDES = [
     r">>\s*/etc/",            # Appending to /etc
     r">\s*~/\.bashrc",        # Overwriting .bashrc
     r">>\s*~/\.bashrc",       # Appending to .bashrc
+    r">\s*~/\.bash_profile",  # Overwriting .bash_profile
+    r">>\s*~/\.bash_profile", # Appending to .bash_profile
+    r">\s*~/\.profile",       # Overwriting .profile
+    r">>\s*~/\.profile",      # Appending to .profile
     r"crontab\s+-",           # Setting crontab
     r"useradd|adduser",       # Creating users
+    r"usermod\s+",            # Modifying users
     r"/etc/sudoers",          # Modifying sudoers
     r"chmod\s+u\+s",          # Setting SUID
+    r"chmod\s+[0-7]*4[0-7]{3}", # Setting SUID via octal
     r"/etc/passwd",           # Modifying passwd
     r"/etc/shadow",           # Accessing shadow
     r"authorized_keys",       # Modifying SSH keys
+    r"/etc/ld\.so\.preload",  # LD_PRELOAD hijack
+    r"/etc/pam\.d/",          # PAM modification
+    r"/etc/systemd/system/",  # Systemd service injection
+    r"/etc/init\.d/",         # Init.d injection
+    r"/etc/rc\.local",        # RC local injection
+    r"/etc/cron\.",           # Cron directory manipulation
+    r"iptables\s+-F",         # Flushing firewall
+    r"iptables\s+-P\s+.*ACCEPT", # Opening firewall
+    r"/dev/tcp/",             # Bash reverse shell
+    r"mkfifo.*\|.*sh",        # Named pipe shell
+    r"nc\s+-[elp]",           # Netcat listener/shell
+    r"socat\s+.*exec:",       # Socat exec shell
 ]
 
 def is_likely_legitimate_command(cmd):
@@ -475,6 +493,114 @@ def is_likely_legitimate_command(cmd):
         if re.search(pattern, cmd, re.IGNORECASE):
             return True
     return False
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  命令去混淆引擎 — 在静态分析前尝试还原真实命令
+# ═══════════════════════════════════════════════════════════════════════════
+
+def deobfuscate_command(cmd):
+    """多层去混淆: base64 -> hex -> variable expansion -> eval unwrap
+    返回 (deobfuscated_cmd, layers_decoded) 元组"""
+    import base64 as b64mod
+    layers = []
+    current = cmd
+
+    # Layer 1: 提取并解码 base64 编码的载荷
+    b64_patterns = [
+        # echo 'BASE64' | base64 -d
+        r"echo\s+['\"]?([A-Za-z0-9+/=]{20,})['\"]?\s*\|\s*base64\s+-d",
+        # $(echo BASE64 | base64 -d)
+        r"\$\(echo\s+['\"]?([A-Za-z0-9+/=]{20,})['\"]?\s*\|\s*base64\s+-d\)",
+    ]
+    for pattern in b64_patterns:
+        match = re.search(pattern, current)
+        if match:
+            try:
+                decoded = b64mod.b64decode(match.group(1)).decode("utf-8", errors="replace")
+                layers.append(("base64", match.group(1)[:40], decoded[:200]))
+                current = current[:match.start()] + decoded + current[match.end():]
+            except Exception:
+                pass
+
+    # Layer 2: 提取 hex 编码 (\x41\x42 -> AB)
+    hex_pattern = r'((?:\\x[0-9a-fA-F]{2}){4,})'
+    match = re.search(hex_pattern, current)
+    if match:
+        try:
+            hex_str = match.group(1)
+            decoded = bytes(int(h, 16) for h in re.findall(r'\\x([0-9a-fA-F]{2})', hex_str)).decode("utf-8", errors="replace")
+            layers.append(("hex", hex_str[:40], decoded[:200]))
+            current = current[:match.start()] + decoded + current[match.end():]
+        except Exception:
+            pass
+
+    # Layer 3: 解开 eval/exec 包装
+    eval_patterns = [
+        r'eval\s+["\'](.+?)["\']',
+        r'eval\s+\$\((.+?)\)',
+        r'python[23]?\s+-c\s+["\'].*exec\(["\'](.+?)["\']\)',
+    ]
+    for pattern in eval_patterns:
+        match = re.search(pattern, current, re.DOTALL)
+        if match:
+            inner = match.group(1)
+            layers.append(("eval_unwrap", "", inner[:200]))
+            current = current + " ; " + inner
+
+    # Layer 4: 简单变量替换 (常见混淆手法)
+    # $'\x62\x61\x73\x68' -> bash
+    dollar_quote = r"\$'((?:\\x[0-9a-fA-F]{2})+)'"
+    match = re.search(dollar_quote, current)
+    if match:
+        try:
+            hex_str = match.group(1)
+            decoded = bytes(int(h, 16) for h in re.findall(r'\\x([0-9a-fA-F]{2})', hex_str)).decode("utf-8", errors="replace")
+            layers.append(("dollar_quote", hex_str[:40], decoded[:200]))
+            current = current[:match.start()] + decoded + current[match.end():]
+        except Exception:
+            pass
+
+    return current, layers
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  风险建议引擎 — 根据判定给出可操作的建议
+# ═══════════════════════════════════════════════════════════════════════════
+
+def generate_recommendations(verdict, findings, confidence):
+    """根据分析结果生成可操作的安全建议"""
+    recs = []
+    finding_dims = set(f.dimension for f in findings)
+    finding_descs = " ".join(f.description for f in findings).lower()
+
+    if verdict == "DANGEROUS":
+        recs.append("BLOCK: 强烈建议阻止此命令执行")
+        if "持久化" in finding_dims or "计划任务差异" in finding_dims:
+            recs.append("检查 crontab -l、/etc/cron.d/、systemd services 是否被篡改")
+        if "用户/权限" in finding_dims:
+            recs.append("检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更")
+        if "authorized_keys" in finding_descs:
+            recs.append("审查 ~/.ssh/authorized_keys 中是否有未知公钥")
+        if "reverse shell" in finding_descs or "/dev/tcp" in finding_descs:
+            recs.append("检查网络连接: ss -tunap | grep ESTABLISHED")
+        if "ld_preload" in finding_descs or "ld.so.preload" in finding_descs:
+            recs.append("检查 /etc/ld.so.preload 和 LD_PRELOAD 环境变量")
+        if "攻击链" in finding_dims:
+            recs.append("多维度攻击已确认, 建议全面安全审计")
+
+    elif verdict == "SUSPICIOUS":
+        recs.append("REVIEW: 建议人工审核此命令后再决定是否放行")
+        if confidence == "LOW":
+            recs.append("置信度较低, 可能为误报, 请结合上下文判断")
+
+    elif verdict == "LOW_RISK":
+        recs.append("ALLOW: 风险较低, 可考虑放行但建议记录审计日志")
+
+    else:  # LIKELY_SAFE
+        recs.append("ALLOW: 命令安全, 可放行")
+
+    return recs
+
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  辅助函数
@@ -880,16 +1006,44 @@ async def main():
             "sleep 1; done > /tmp/.proc_tree_log 2>/dev/null' &", 5)
         print("  [探针5] process: 进程树轮询 (1s)")
 
+        # ── 命令去混淆 ──
+        sub("命令去混淆分析")
+        deobfuscated, deob_layers = deobfuscate_command(COMMAND)
+        if deob_layers:
+            for layer_type, encoded, decoded in deob_layers:
+                print(f"    !! [{layer_type}] 发现编码层: {encoded}...")
+                print(f"       解码结果: {decoded[:100]}")
+                engine.add("WARN", "去混淆", f"命令包含 {layer_type} 编码层",
+                          15, ["T1140"], f"{layer_type}: {decoded[:200]}")
+            print(f"    去混淆后命令: {deobfuscated[:120]}")
+            evidence["deobfuscation_layers"] = [
+                {"type": t, "encoded": e[:100], "decoded": d[:200]}
+                for t, e, d in deob_layers
+            ]
+        else:
+            print("    PASS  未发现编码/混淆层")
+
         # ── 命令静态分析 (执行前) ──
         sub("命令静态分析")
+        # 同时扫描原始命令和去混淆后的命令
+        scan_targets = [("原始命令", COMMAND)]
+        if deobfuscated != COMMAND:
+            scan_targets.append(("去混淆命令", deobfuscated))
+
         cmd_findings = []
-        for pattern, desc, mitre_id, score in MALICIOUS_CONTENT_PATTERNS:
-            if re.search(pattern, COMMAND, re.IGNORECASE):
-                cmd_findings.append((desc, mitre_id, score))
-                sev = "CRITICAL" if score >= 35 else "WARN"
-                engine.add(sev, "静态分析", f"命令匹配恶意模式: {desc}",
-                          score, [mitre_id], COMMAND[:200])
-                print(f"    !! [{mitre_id}] {desc} (score: {score})")
+        seen_descs = set()
+        for target_name, target_cmd in scan_targets:
+            for pattern, desc, mitre_id, score in MALICIOUS_CONTENT_PATTERNS:
+                if desc in seen_descs:
+                    continue
+                if re.search(pattern, target_cmd, re.IGNORECASE):
+                    seen_descs.add(desc)
+                    cmd_findings.append((desc, mitre_id, score))
+                    sev = "CRITICAL" if score >= 35 else "WARN"
+                    engine.add(sev, "静态分析", f"命令匹配恶意模式: {desc}",
+                              score, [mitre_id], target_cmd[:200])
+                    suffix = f" (via {target_name})" if target_name != "原始命令" else ""
+                    print(f"    !! [{mitre_id}] {desc} (score: {score}){suffix}")
         if not cmd_findings:
             print("    PASS  未匹配已知恶意模式")
         if engine.is_legitimate:
@@ -1617,14 +1771,29 @@ async def main():
             for c in checks:
                 print(f"    [PASS] {c}")
 
+        # ── 安全建议 ──
+        recommendations = generate_recommendations(verdict, engine.findings, confidence)
+        print("\n  安全建议:")
+        for rec in recommendations:
+            print(f"    -> {rec}")
+
+        # ── 执行时间线 ──
+        timeline = [
+            {"phase": "baseline", "time": f"{t0:.0f}", "desc": "基线采集完成"},
+            {"phase": "probes_start", "time": f"{t1:.0f}", "desc": "探针启动 + 命令执行开始"},
+            {"phase": "exec_end", "time": f"{t1+dur:.0f}", "desc": f"命令执行结束 (耗时 {dur:.1f}s, 退出码 {exit_code})"},
+            {"phase": "post_snapshot", "time": f"{time.time():.0f}", "desc": "后置快照 + 分析完成"},
+        ]
+
         # ── 生成报告 ──
         report = {
-            "version": "4.0",
+            "version": "4.1",
             "command": COMMAND,
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "verdict": verdict,
             "risk_score": score,
             "confidence": confidence,
+            "recommendations": recommendations,
             "is_legitimate_pattern": engine.is_legitimate,
             "findings_summary": {
                 "total": len(engine.findings),
@@ -1658,6 +1827,12 @@ async def main():
                 tactic: sorted(set(tids))
                 for tactic, tids in tactic_map.items()
             },
+            "deobfuscation": {
+                "original": COMMAND,
+                "deobfuscated": deobfuscated if deobfuscated != COMMAND else None,
+                "layers": [{"type": t, "decoded": d[:200]} for t, _, d in deob_layers] if deob_layers else [],
+            },
+            "timeline": timeline,
             "stdout": stdout_lines[:100],
             "stderr": stderr_lines[:50],
         }

