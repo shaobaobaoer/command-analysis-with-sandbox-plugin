@@ -1,0 +1,86 @@
+# Command Safety Analyzer — GitHub Actions Workflow
+#
+# 用法: 在 PR 中检查命令安全性, 结果上传到 GitHub Code Scanning
+#
+# 支持两种模式:
+#   1. 快速预判 (triage.sh) — 毫秒级, 无需 Docker
+#   2. 深度分析 (checker.sh) — 24 维度沙箱分析
+
+name: Command Safety Scan
+
+on:
+  pull_request:
+    paths:
+      - 'samples/**'
+      - 'checker.sh'
+      - 'triage.sh'
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'Command to analyze'
+        required: false
+        default: ''
+      mode:
+        description: 'Analysis mode: triage or deep'
+        required: false
+        default: 'triage'
+
+jobs:
+  # 快速预判 — 适合 PR 自动检查
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run pattern validation tests
+        run: bash test_patterns.sh
+
+      - name: Triage all samples
+        run: |
+          PASS=0; FAIL=0; TOTAL=0
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            cmd=$(echo "$line" | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['command'])")
+            label=$(echo "$line" | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['label'])")
+            id=$(echo "$line" | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['id'])")
+            COMMAND="$cmd" ./triage.sh > /tmp/.tr 2>/dev/null || true
+            level=$(python3 -c "import json; print(json.load(open('/tmp/.tr'))['level'])" 2>/dev/null || echo "ERROR")
+            TOTAL=$((TOTAL+1))
+            if [ "$label" = "safe" ] && { [ "$level" = "PASS" ] || [ "$level" = "REVIEW" ]; }; then
+              PASS=$((PASS+1))
+            elif [ "$label" = "malicious" ] && { [ "$level" = "BLOCK" ] || [ "$level" = "REVIEW" ]; }; then
+              PASS=$((PASS+1))
+            else
+              FAIL=$((FAIL+1))
+              echo "::warning::Triage miss: $id (label=$label, triage=$level)"
+            fi
+          done < <(cat samples/white.jsonl samples/black.jsonl)
+          echo "Triage accuracy: $PASS/$TOTAL"
+          if [ "$FAIL" -gt 3 ]; then
+            echo "::error::Too many triage misses ($FAIL)"
+            exit 1
+          fi
+
+  # 深度分析 — 手动触发或定时运行
+  deep-analysis:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: Run deep analysis
+        env:
+          COMMAND: ${{ github.event.inputs.command || 'echo hello' }}
+        run: |
+          chmod +x checker.sh
+          REPORT_DIR=./reports ./checker.sh
+
+      - name: Upload SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: reports/
+          category: command-safety

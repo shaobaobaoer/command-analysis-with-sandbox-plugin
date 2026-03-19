@@ -279,7 +279,44 @@ echo '{"id": "b31", "label": "malicious", "desc": "my test", "command": "..."}' 
 ./run_all.sh white:w31
 ```
 
+## CI/CD 集成
+
+### SARIF 输出 (GitHub Code Scanning / GitLab SAST)
+
+每次分析自动生成 SARIF v2.1.0 报告:
+
+```bash
+# 分析后会自动生成三种格式
+COMMAND="..." ./checker.sh
+# reports/safety_report_*.json       — 完整 JSON 报告
+# reports/safety_report_*.txt        — 人类可读摘要
+# reports/safety_report_*.sarif.json — SARIF 格式 (CI/CD)
+```
+
+上传到 GitHub Code Scanning:
+```yaml
+- uses: github/codeql-action/upload-sarif@v3
+  with:
+    sarif_file: reports/
+    category: command-safety
+```
+
+### GitHub Actions
+
+项目自带 `.github/workflows/command-scan.yml`:
+- PR 触发: 自动运行模式验证测试 + 样本预判
+- 手动触发: 支持输入命令进行深度沙箱分析
+- SARIF 结果自动上传到 Code Scanning
+
 ## v3 -> v4 变更日志
+
+### v4.5
+- 新增: SARIF v2.1.0 输出 (GitHub Code Scanning / GitLab SAST 集成)
+  每次分析自动生成 .sarif.json 报告
+- 新增: GitHub Actions 工作流 (.github/workflows/command-scan.yml)
+  PR 自动测试 + 手动深度分析 + SARIF 上传
+- 增强: 网络行为检测 — C2 常见端口检测/多目标扫描检测/高位端口检测
+- 维度 24 -> 24 (网络维度增强, 新增 C2 端口指纹库)
 
 ### v4.4
 - 新增: test_patterns.sh 模式匹配验证测试套件 (116 测试, 100% 通过率)

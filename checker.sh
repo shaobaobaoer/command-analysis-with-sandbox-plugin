@@ -716,6 +716,102 @@ def generate_text_summary(report):
 
 
 # ═══════════════════════════════════════════════════════════════════════════
+#  SARIF 输出生成器 — 行业标准安全分析结果格式
+# ═══════════════════════════════════════════════════════════════════════════
+
+def generate_sarif(report):
+    """将分析报告转换为 SARIF v2.1.0 格式 (GitHub Code Scanning / GitLab SAST)"""
+    severity_map = {
+        "CRITICAL": "error",
+        "WARN": "warning",
+        "INFO": "note",
+    }
+    level_map = {
+        "DANGEROUS": "error",
+        "SUSPICIOUS": "warning",
+        "LOW_RISK": "note",
+        "LIKELY_SAFE": "none",
+    }
+
+    rules = []
+    results = []
+    rule_ids = set()
+
+    for i, finding in enumerate(report.get("findings", [])):
+        # 构建 rule ID
+        mitre_ids = [m["id"] for m in finding.get("mitre_attack", [])]
+        rule_id = mitre_ids[0] if mitre_ids else f"CMD-{i+1:03d}"
+        if rule_id in rule_ids:
+            rule_id = f"{rule_id}-{i}"
+        rule_ids.add(rule_id)
+
+        # SARIF rule
+        rule = {
+            "id": rule_id,
+            "name": finding.get("dimension", "Unknown"),
+            "shortDescription": {"text": finding.get("description", "")[:256]},
+            "helpUri": f"https://attack.mitre.org/techniques/{mitre_ids[0].replace('.', '/')}" if mitre_ids else "",
+            "properties": {
+                "tags": [f"security", f"command-safety"] + [f"mitre/{m}" for m in mitre_ids],
+            },
+        }
+        if mitre_ids:
+            mitre_desc = ", ".join(m + " (" + MITRE.get(m, "") + ")" for m in mitre_ids)
+            rule["help"] = {
+                "text": "MITRE ATT&CK: " + mitre_desc
+            }
+        rules.append(rule)
+
+        # SARIF result
+        result = {
+            "ruleId": rule_id,
+            "level": severity_map.get(finding.get("severity", "INFO"), "note"),
+            "message": {
+                "text": finding.get("description", ""),
+            },
+            "properties": {
+                "risk_score": finding.get("risk_score", 0),
+                "dimension": finding.get("dimension", ""),
+            },
+        }
+        if finding.get("evidence"):
+            result["properties"]["evidence"] = finding["evidence"][:500]
+        results.append(result)
+
+    sarif = {
+        "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+        "version": "2.1.0",
+        "runs": [{
+            "tool": {
+                "driver": {
+                    "name": "Command Safety Analyzer",
+                    "version": report.get("version", "4.4"),
+                    "informationUri": "https://github.com/command-safety-analyzer",
+                    "rules": rules,
+                    "properties": {
+                        "verdict": report.get("verdict", "UNKNOWN"),
+                        "risk_score": report.get("risk_score", -1),
+                        "confidence": report.get("confidence", "N/A"),
+                    },
+                },
+            },
+            "results": results,
+            "invocations": [{
+                "executionSuccessful": True,
+                "properties": {
+                    "command": report.get("command", ""),
+                    "verdict": report.get("verdict", ""),
+                    "risk_score": report.get("risk_score", -1),
+                    "confidence": report.get("confidence", ""),
+                    "timestamp": report.get("timestamp", ""),
+                },
+            }],
+        }],
+    }
+    return sarif
+
+
+# ═══════════════════════════════════════════════════════════════════════════
 #  命令链分解器 — 拆分多阶段命令并逐段分析
 # ═══════════════════════════════════════════════════════════════════════════
 
@@ -1357,6 +1453,30 @@ async def main():
                 engine.add("WARN", "网络", f"外部非标准端口连接: {suspicious_ports}",
                           20, ["T1071.001"],
                           str(suspicious_ports))
+
+            # C2 常见端口检测
+            c2_ports = {4444, 5555, 6666, 7777, 8888, 9999, 1234, 31337, 12345,
+                       4443, 8443, 1337, 6667, 6697}  # 常见 C2/IRC/RAT 端口
+            c2_conns = [(ip, p) for ip, p in external if p in c2_ports]
+            if c2_conns:
+                engine.add("CRITICAL", "网络", f"检测到 C2 常见端口连接: {c2_conns}",
+                          35, ["T1071.001"],
+                          str(c2_conns))
+                for ip, p in c2_conns:
+                    print(f"    !! C2 端口: {ip}:{p}")
+
+            # 多目标连接检测 (信息收集/扫描)
+            unique_ips = set(ip for ip, _ in external)
+            if len(unique_ips) >= 5:
+                engine.add("WARN", "网络", f"连接到 {len(unique_ips)} 个不同 IP (可能在扫描)",
+                          15, ["T1018"],
+                          str(sorted(unique_ips)[:20]))
+
+            # 高端口连接检测 (>= 49152 临时端口范围内的监听)
+            high_port_conns = [(ip, p) for ip, p in external if p >= 49152]
+            if high_port_conns:
+                engine.add("INFO", "网络", f"高位端口连接: {high_port_conns[:5]}",
+                          5, ["T1071.001"], str(high_port_conns[:5]))
         else:
             print("    (无外部连接)")
 
@@ -1364,6 +1484,7 @@ async def main():
             print(f"\n    [{len(internal)} 个内部连接已忽略]")
 
         evidence["external_connections"] = [f"{ip}:{p}" for ip, p in sorted(external)]
+        evidence["c2_port_hits"] = [f"{ip}:{p}" for ip, p in sorted(external) if p in {4444,5555,6666,7777,8888,9999,1234,31337,12345,4443,8443,1337,6667,6697}] if external else []
 
         # ── DNS 分析 ──
         sub("DNS 配置")
@@ -2100,8 +2221,15 @@ async def main():
         with open(txt_file, "w") as f:
             f.write(text_summary)
 
-        print(f"\n  报告 (JSON): {report_file}")
-        print(f"  报告 (文本): {txt_file}")
+        # 保存 SARIF 格式报告 (CI/CD 集成)
+        sarif_file = report_file.replace(".json", ".sarif.json")
+        sarif_report = generate_sarif(report)
+        with open(sarif_file, "w") as f:
+            json.dump(sarif_report, f, indent=2, ensure_ascii=False, default=str)
+
+        print(f"\n  报告 (JSON) : {report_file}")
+        print(f"  报告 (文本) : {txt_file}")
+        print(f"  报告 (SARIF): {sarif_file}")
         print(f"\n  快速预判: {triage['level']} (静态分: {triage['static_score']}, "
               f"模式匹配: {triage['patterns_matched']})")
         if triage['level'] != "PASS" and verdict in ("LIKELY_SAFE", "LOW_RISK"):
