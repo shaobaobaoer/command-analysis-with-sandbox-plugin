@@ -716,6 +716,60 @@ def generate_text_summary(report):
 
 
 # ═══════════════════════════════════════════════════════════════════════════
+#  命令链分解器 — 拆分多阶段命令并逐段分析
+# ═══════════════════════════════════════════════════════════════════════════
+
+def decompose_command_chain(cmd):
+    """将复合命令拆分为独立阶段, 返回 [(stage_cmd, connector)] 列表
+    支持: ; && || | 以及子 shell $()"""
+    import shlex
+    stages = []
+    # 简单分割 (不处理嵌套引号内的分隔符 — 对分析够用)
+    # 按优先级处理: ; 最低, && || 中等, | 最高
+    current = ""
+    i = 0
+    in_quote = None
+    while i < len(cmd):
+        c = cmd[i]
+        # 跟踪引号
+        if c in ("'", '"') and in_quote is None:
+            in_quote = c
+            current += c
+        elif c == in_quote:
+            in_quote = None
+            current += c
+        elif in_quote:
+            current += c
+        # 分隔符检测 (不在引号内)
+        elif c == ';':
+            if current.strip():
+                stages.append((current.strip(), ";"))
+            current = ""
+        elif c == '&' and i + 1 < len(cmd) and cmd[i + 1] == '&':
+            if current.strip():
+                stages.append((current.strip(), "&&"))
+            current = ""
+            i += 1
+        elif c == '|' and i + 1 < len(cmd) and cmd[i + 1] == '|':
+            if current.strip():
+                stages.append((current.strip(), "||"))
+            current = ""
+            i += 1
+        elif c == '|':
+            if current.strip():
+                stages.append((current.strip(), "|"))
+            current = ""
+        else:
+            current += c
+        i += 1
+
+    if current.strip():
+        stages.append((current.strip(), "END"))
+
+    return stages
+
+
+# ═══════════════════════════════════════════════════════════════════════════
 #  辅助函数
 # ═══════════════════════════════════════════════════════════════════════════
 def section(t):
@@ -1118,6 +1172,47 @@ async def main():
             "echo \"=== $(date +%s) ===\"; "
             "sleep 1; done > /tmp/.proc_tree_log 2>/dev/null' &", 5)
         print("  [探针5] process: 进程树轮询 (1s)")
+
+        # ── 命令链分解 ──
+        sub("命令链分解分析")
+        chain_stages = decompose_command_chain(COMMAND)
+        if len(chain_stages) > 1:
+            print(f"    命令包含 {len(chain_stages)} 个执行阶段:")
+            stage_risk_map = {}
+            for idx, (stage_cmd, connector) in enumerate(chain_stages):
+                # 对每个阶段进行快速风险评估
+                stage_matches = []
+                for pattern, desc, mitre_id, score in MALICIOUS_CONTENT_PATTERNS:
+                    if re.search(pattern, stage_cmd, re.IGNORECASE):
+                        stage_matches.append(desc)
+                risk_indicator = "!!" if stage_matches else "OK"
+                print(f"    [{idx+1}] [{risk_indicator}] {stage_cmd[:80]} {connector}")
+                if stage_matches:
+                    print(f"        匹配: {', '.join(stage_matches[:3])}")
+                stage_risk_map[idx] = stage_matches
+
+            # 检测隐蔽的多阶段攻击: 前面是合法操作, 后面是恶意
+            safe_then_evil = False
+            for idx in range(len(chain_stages) - 1):
+                is_early_legit = any(
+                    re.search(p, chain_stages[idx][0], re.IGNORECASE)
+                    for p, _ in LEGITIMATE_PATTERNS
+                )
+                is_later_evil = bool(stage_risk_map.get(idx + 1, []))
+                if is_early_legit and is_later_evil:
+                    safe_then_evil = True
+                    engine.add("WARN", "命令链", f"检测到合法命令掩护恶意阶段 (阶段 {idx+1} -> {idx+2})",
+                              15, ["T1059.004"],
+                              f"合法: {chain_stages[idx][0][:80]}\n恶意: {chain_stages[idx+1][0][:80]}")
+                    print(f"    !! 阶段 {idx+1} (合法) 掩护阶段 {idx+2} (恶意)")
+
+            evidence["command_chain"] = {
+                "stages": len(chain_stages),
+                "connectors": [c for _, c in chain_stages],
+                "safe_then_evil": safe_then_evil,
+            }
+        else:
+            print("    单阶段命令")
 
         # ── 命令去混淆 ──
         sub("命令去混淆分析")

