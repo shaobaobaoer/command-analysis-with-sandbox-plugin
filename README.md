@@ -35,7 +35,9 @@ REGISTRY_MIRROR="sandbox-registry.cn-zhangjiakou.cr.aliyuncs.com/opensandbox" ./
 ```
 ├── checker.sh          # 单命令深度检测器 (OpenSandbox 沙箱 + 24 维度分析)
 ├── triage.sh           # 独立快速预判 (零依赖, 毫秒级, 98.6% 准确率)
+├── test_patterns.sh    # 模式匹配验证测试套件 (116 测试, 100% 通过)
 ├── run_all.sh          # 批量运行 + Git 自动提交 + 性能分析 + 重试 + 预判对比
+├── CLAUDE.md           # 项目上下文 (Claude Code 开发辅助)
 ├── samples/
 │   ├── white.jsonl     # 白样本 35 条 (安全命令, 含边界案例)
 │   └── black.jsonl     # 黑样本 35 条 (恶意命令, 含伪装/混淆)
@@ -278,6 +280,11 @@ echo '{"id": "b31", "label": "malicious", "desc": "my test", "command": "..."}' 
 ```
 
 ## v3 -> v4 变更日志
+
+### v4.4
+- 新增: test_patterns.sh 模式匹配验证测试套件 (116 测试, 100% 通过率)
+  覆盖 11 个测试类别: 反弹Shell/编码混淆/下载执行/持久化/权限提升/凭据外泄/反取证/防御规避/安全命令/合法安装器/样本集
+- 新增: CLAUDE.md 项目上下文文件
 
 ### v4.3
 - 新增: triage.sh 独立快速预判脚本 (零依赖, 毫秒级, 98.6% 准确率)
