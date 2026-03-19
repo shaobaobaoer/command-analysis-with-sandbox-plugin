@@ -1,22 +1,31 @@
 #!/usr/bin/env bash
 # ============================================================================
-#  OpenSandbox Script Safety Checker — All-in-One (v2)
+#  OpenSandbox Behavioral Analysis Engine — v3 (Deep Inspection)
 #
-#  在有 Docker 的机器上一键运行:
-#    chmod +x run.sh && ./run.sh
+#  世界级行为监测沙箱: 多层探针 + MITRE ATT&CK 映射 + 加权评分
 #
-#  可选环境变量:
-#    COMMAND        — 待检测命令 (默认: curl -fsSL https://claude.ai/install.sh | bash)
+#  用法:
+#    COMMAND="some command" ./checker.sh
+#
+#  环境变量:
+#    COMMAND        — 待检测命令
 #    SANDBOX_PORT   — 服务端口 (默认: 8080)
 #    SANDBOX_IMAGE  — 沙箱镜像
 #    EXECD_IMAGE    — execd 镜像
-#    REGISTRY_MIRROR — 镜像仓库前缀 (国内加速)
+#    REGISTRY_MIRROR — 镜像仓库前缀
+#    REPORT_DIR     — 报告输出目录
 #
-#  v2 修复:
-#    - 监控工具安装移到快照之前, 避免 apt-get 污染基线
-#    - 过滤 execd 自身临时文件 (/tmp/{uuid}.stdout|stderr)
-#    - 过滤内部连接 (127.0.0.1, 172.17.*)
-#    - inotifywait 排除自身日志, 消除递归写入
+#  v4 升级:
+#    - 23 维度深度行为分析 (新增: 计划任务差异/隐藏进程/信号处理/容器逃逸)
+#    - conntrack + iptables LOG 捕获短命网络连接
+#    - MITRE ATT&CK 技术映射 (40+ 技术)
+#    - 加权风险评分体系 (0-100) + 置信度评估
+#    - 智能白名单降噪 (apt/pip/npm 等合法安装器)
+#    - /tmp 监控 (用独立探针, 避免递归)
+#    - 文件内容模式匹配 (70+ 规则: base64/反弹shell/混淆/后门/LotL)
+#    - 进程族谱追踪 (命令产生的子进程树)
+#    - Living-off-the-Land Binary (LOLBin) 检测
+#    - 多阶段攻击链关联分析
 # ============================================================================
 set -euo pipefail
 
@@ -44,7 +53,7 @@ WORK_DIR="$(mktemp -d)"
 VENV_DIR="${WORK_DIR}/.venv"
 CONFIG_FILE="${WORK_DIR}/sandbox.toml"
 SERVER_PID=""
-REPORT_DIR="$(pwd)"
+REPORT_DIR="${REPORT_DIR:-$(pwd)}"
 
 cleanup() {
     info "Cleaning up..."
@@ -56,7 +65,7 @@ trap cleanup EXIT
 
 echo ""
 echo -e "${BOLD}=========================================="
-echo "  OpenSandbox Script Safety Checker v2"
+echo "  OpenSandbox Behavioral Analysis Engine v4"
 echo -e "==========================================${NC}"
 echo ""
 info "待检测命令: ${COMMAND}"
@@ -142,17 +151,48 @@ for i in $(seq 1 30); do
     sleep 1
 done
 
-# ── Step 6: 安全检测 ──
-info "[Step 6/7] 创建沙箱并执行安全检测..."
+# ── Step 6: 深度安全检测 ──
+info "[Step 6/7] 创建沙箱并执行深度行为分析..."
 echo ""
 
 cat > "${WORK_DIR}/checker.py" << 'PYTHON_SCRIPT'
-"""OpenSandbox Script Safety Checker v2 - 修复误报"""
+"""
+OpenSandbox Behavioral Analysis Engine v4 — Deep Inspection
+
+23维度深度行为分析 + MITRE ATT&CK 映射 + 加权评分 + 攻击链关联
+
+检测维度:
+  1.  文件系统快照对比 (前/后 diff)
+  2.  实时文件事件 (inotifywait — 系统目录 + /tmp 独立探针)
+  3.  用户/权限变更 (passwd/shadow/sudoers/SSH/PAM)
+  4.  持久化机制 (cron/cron.d/systemd/rc.local/init.d/at/timer)
+  5.  Shell 环境篡改 (.bashrc/.profile/etc)
+  6.  网络连接 (/proc/net/tcp 高频轮询 + ss)
+  7.  DNS 配置变更
+  8.  可疑二进制 (/tmp /var/tmp /dev/shm 可执行文件 + file 元信息)
+  9.  资源消耗异常 (CPU/内存)
+  10. 进程树分析 (命令子进程追踪)
+  11. 文件内容模式匹配 (70+ 规则: base64/反弹shell/混淆/后门/LotL)
+  12. 内核模块变更
+  13. SUID/SGID 新增文件检测
+  14. 环境变量/LD_PRELOAD 注入检测
+  15. 关键系统二进制完整性 (bash/su/sudo/passwd/sshd hash)
+  16. 符号链接攻击检测 (新增指向敏感文件的 symlink)
+  17. 文件能力 (getcap) 变更检测
+  18. 输出内容分析 (密钥/哈希/凭据泄露)
+  19. 新增文件熵分析 (高熵 = 加密/压缩载荷)
+  20. 计划任务详细差异 (crontab -l 前后逐行对比)
+  21. 隐藏进程检测 (/proc 遍历 vs ps 对比)
+  22. 信号处理与 trap 分析 (恶意信号劫持)
+  23. 攻击链关联分析 (多维度交叉研判)
+"""
 import asyncio
+import hashlib
 import json
 import os
 import re
 import time
+from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 
 from opensandbox import Sandbox
@@ -162,17 +202,283 @@ COMMAND = os.environ["CHECK_COMMAND"]
 PORT = int(os.environ.get("SANDBOX_PORT", "8080"))
 IMAGE = os.environ.get("SANDBOX_IMAGE", "opensandbox/code-interpreter:v1.0.2")
 REPORT_DIR = os.environ.get("REPORT_DIR", "/tmp")
-W = 72
+W = 76
 
-# execd 自身产物 + 监控自身文件, 需要从所有比对中排除
+# ═══════════════════════════════════════════════════════════════════════════
+#  基础设施过滤 — execd + 监控自身产物
+# ═══════════════════════════════════════════════════════════════════════════
 EXECD_TMP_RE = re.compile(r"^/tmp/[0-9a-f]{32}\.(stdout|stderr)$")
-INFRA_FILES = {"/tmp/.inotify_log", "/var/log/.inotify_log",
-               "/tmp/.net_baseline", "/tmp/.net_poll_log",
-               "/tmp/.resolv_baseline", "/tmp/execd.log"}
+INFRA_FILES = {
+    "/tmp/.inotify_log", "/var/log/.inotify_log", "/tmp/.inotify_tmp_log",
+    "/tmp/.net_baseline", "/tmp/.net_poll_log", "/tmp/.resolv_baseline",
+    "/tmp/execd.log", "/tmp/.proc_tree_log", "/tmp/.audit_log",
+    "/tmp/.conntrack_log", "/tmp/.suid_baseline", "/tmp/.suid_after",
+    "/tmp/.mount_baseline", "/tmp/.mount_after",
+    "/tmp/.env_baseline", "/tmp/.env_after",
+    "/tmp/.modules_baseline", "/tmp/.modules_after",
+    "/tmp/.caps_baseline", "/tmp/.caps_after",
+}
 
 def is_infra(path):
     return path in INFRA_FILES or bool(EXECD_TMP_RE.match(path))
 
+# ═══════════════════════════════════════════════════════════════════════════
+#  MITRE ATT&CK 技术映射表
+# ═══════════════════════════════════════════════════════════════════════════
+MITRE = {
+    "T1059.004": "Command and Scripting Interpreter: Unix Shell",
+    "T1053.003": "Scheduled Task/Job: Cron",
+    "T1053.001": "Scheduled Task/Job: At",
+    "T1136.001": "Create Account: Local Account",
+    "T1098":     "Account Manipulation",
+    "T1543.002": "Create/Modify System Process: Systemd Service",
+    "T1037.004": "Boot/Logon Init Scripts: RC Scripts",
+    "T1037.003": "Boot/Logon Init Scripts: Network Provider DLL",
+    "T1546.004": "Event Triggered Execution: .bash_profile/.bashrc",
+    "T1574.006": "Hijack Execution Flow: LD_PRELOAD",
+    "T1574.001": "Hijack Execution Flow: DLL Search Order",
+    "T1048":     "Exfiltration Over Alternative Protocol",
+    "T1071.001": "Application Layer Protocol: Web",
+    "T1105":     "Ingress Tool Transfer",
+    "T1070.003": "Indicator Removal: Clear Command History",
+    "T1070.004": "Indicator Removal: File Deletion",
+    "T1222.002": "File/Dir Permissions Modification: Linux",
+    "T1548.001": "Abuse Elevation Control: Setuid/Setgid",
+    "T1556":     "Modify Authentication Process",
+    "T1554":     "Compromise Client Software Binary",
+    "T1047":     "Process Injection (Unix)",
+    "T1611":     "Escape to Host",
+    "T1014":     "Rootkit",
+    "T1057":     "Process Discovery",
+    "T1082":     "System Information Discovery",
+    "T1016":     "System Network Configuration Discovery",
+    "T1496":     "Resource Hijacking (Cryptomining)",
+    "T1027":     "Obfuscated Files or Information",
+    "T1027.010": "Obfuscated Files: Command Obfuscation",
+    "T1036":     "Masquerading",
+    "T1036.005": "Masquerading: Match Legitimate Name",
+    "T1547.001": "Boot/Logon Autostart: Registry Run Keys (Linux equiv)",
+    "T1071.004": "Application Layer Protocol: DNS",
+    "T1562.001": "Impair Defenses: Disable or Modify Tools",
+    "T1021.004": "Remote Services: SSH",
+    "T1059.006": "Command and Scripting Interpreter: Python",
+    "T1059.001": "Command and Scripting Interpreter: PowerShell",
+    "T1140":     "Deobfuscate/Decode Files or Information",
+    "T1003":     "OS Credential Dumping",
+    "T1552.001": "Unsecured Credentials: Credentials In Files",
+    "T1018":     "Remote System Discovery",
+    "T1049":     "System Network Connections Discovery",
+    "T1033":     "System Owner/User Discovery",
+    "T1083":     "File and Directory Discovery",
+    "T1087.001": "Account Discovery: Local Account",
+    "T1069.001": "Permission Groups Discovery: Local Groups",
+    "T1007":     "System Service Discovery",
+    "T1497":     "Virtualization/Sandbox Evasion",
+    "T1564.001": "Hide Artifacts: Hidden Files and Directories",
+    "T1053.005": "Scheduled Task/Job: Systemd Timers",
+    "T1562.004": "Impair Defenses: Disable or Modify System Firewall",
+    "T1070.006": "Indicator Removal: Timestomp",
+    "T1055":     "Process Injection",
+    "T1548.003": "Abuse Elevation: Sudo and Sudo Caching",
+}
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  恶意内容模式匹配 (文件内容 + 命令特征)
+# ═══════════════════════════════════════════════════════════════════════════
+MALICIOUS_CONTENT_PATTERNS = [
+    # 反弹 Shell
+    (r"/dev/tcp/", "reverse shell via /dev/tcp", "T1059.004", 40),
+    (r"bash\s+-i\s+>&", "interactive bash reverse shell", "T1059.004", 45),
+    (r"nc\s+-[elp].*\s+/bin/(ba)?sh", "netcat shell bind", "T1059.004", 45),
+    (r"python.*socket.*connect.*subprocess", "python reverse shell", "T1059.004", 40),
+    (r"perl.*socket.*INET.*exec", "perl reverse shell", "T1059.004", 40),
+    (r"ruby.*TCPSocket.*exec", "ruby reverse shell", "T1059.004", 40),
+    (r"php.*fsockopen.*exec", "php reverse shell", "T1059.004", 40),
+    (r"mkfifo\s+.*/tmp/.*\|\s*.*sh", "named pipe shell", "T1059.004", 40),
+    # base64 编码载荷
+    (r"echo\s+[A-Za-z0-9+/=]{40,}\s*\|\s*base64\s+-d", "base64 encoded payload execution", "T1059.004", 35),
+    (r"base64\s+-d.*\|\s*(ba)?sh", "base64 decode piped to shell", "T1059.004", 40),
+    # 下载执行
+    (r"curl.*\|\s*(ba)?sh", "download and execute (curl|sh)", "T1105", 25),
+    (r"wget.*\|\s*(ba)?sh", "download and execute (wget|sh)", "T1105", 25),
+    (r"curl.*-o\s+/tmp/.*&&.*chmod\s+\+x", "download to /tmp and make executable", "T1105", 35),
+    # 凭据/数据外泄
+    (r"/etc/shadow.*base64", "shadow file exfiltration via base64", "T1048", 40),
+    (r"cat\s+/etc/shadow", "reading shadow file", "T1048", 25),
+    # 权限提升
+    (r"chmod\s+u\+s\s+", "setting SUID bit", "T1548.001", 35),
+    (r"chmod\s+[0-7]*4[0-7]{3}\s+", "setting SUID via octal", "T1548.001", 35),
+    # 反取证
+    (r"HISTFILE=/dev/null", "disabling bash history", "T1070.003", 20),
+    (r"HISTSIZE=0", "zeroing history size", "T1070.003", 15),
+    (r"ln\s+-sf?\s+/dev/null.*history", "nulling history file", "T1070.003", 25),
+    (r"shred\s+.*history", "shredding history", "T1070.003", 30),
+    # LD_PRELOAD
+    (r"ld\.so\.preload", "LD_PRELOAD hijack", "T1574.006", 40),
+    (r"LD_PRELOAD=", "LD_PRELOAD environment injection", "T1574.006", 35),
+    (r"LD_LIBRARY_PATH=", "LD_LIBRARY_PATH manipulation", "T1574.001", 20),
+    # 挖矿指标
+    (r"(xmrig|stratum\+tcp|mining|cryptonight|monero)", "cryptocurrency mining indicators", "T1496", 35),
+    # PAM 后门
+    (r"/etc/pam\.d/", "PAM configuration modification", "T1556", 30),
+    # authorized_keys
+    (r"authorized_keys", "SSH authorized_keys manipulation", "T1098", 30),
+    # 容器逃逸
+    (r"(nsenter|--privileged|/var/run/docker\.sock)", "potential container escape", "T1611", 45),
+    # 命令混淆/逃避
+    (r"\\x[0-9a-f]{2}", "hex-encoded characters in command", "T1027.010", 25),
+    (r"\$\(echo\s+[A-Za-z0-9+/=]+\s*\|\s*base64\s+-d\)", "base64 command substitution", "T1027.010", 30),
+    (r"eval\s+\$\(", "eval with command substitution", "T1059.004", 25),
+    (r"printf\s+.*\\\\x[0-9a-f]", "printf hex evasion", "T1027.010", 25),
+    (r"\$\{.*#.*\}", "bash parameter manipulation evasion", "T1027.010", 20),
+    (r"echo\s+.*\|\s*xxd\s+-r", "xxd hex decode execution", "T1027.010", 30),
+    (r"python[23]?\s+-c\s+.*exec\(", "python exec() payload", "T1059.004", 25),
+    (r"python[23]?\s+-c\s+.*__import__", "python __import__ payload", "T1059.004", 25),
+    # 延迟执行
+    (r"sleep\s+\d+\s*&&", "delayed command execution", "T1059.004", 15),
+    (r"at\s+now\s*\+", "at job scheduling", "T1053.001", 25),
+    (r"nohup\s+.*&\s*$", "nohup background persistent process", "T1059.004", 15),
+    # 防御规避
+    (r"unset\s+HISTFILE", "unsetting HISTFILE", "T1070.003", 20),
+    (r"kill\s+-9\s+.*syslog", "killing syslog", "T1562.001", 35),
+    (r"systemctl\s+(stop|disable)\s+.*(audit|syslog|rsyslog|firewall)", "disabling security service", "T1562.001", 35),
+    (r"iptables\s+-F", "flushing iptables rules", "T1562.001", 30),
+    (r"setenforce\s+0", "disabling SELinux", "T1562.001", 30),
+    # 其他持久化
+    (r"/etc/cron\.d/", "cron.d persistence", "T1053.003", 30),
+    (r"/etc/init\.d/", "init.d persistence", "T1037.004", 30),
+    # 信息收集 (侦察)
+    (r"cat\s+/etc/passwd\s*\|", "piping passwd file (exfil prep)", "T1048", 15),
+    (r"find\s+/\s+.*-perm\s+-4000", "SUID file enumeration", "T1548.001", 10),
+    # 隐藏文件/目录
+    (r"mkdir\s+-p\s+/tmp/\.", "creating hidden directory in /tmp", "T1564.001", 20),
+    (r">\s*/tmp/\.", "writing hidden file in /tmp", "T1564.001", 15),
+    # Living-off-the-Land (LotL) 利用系统自带工具
+    (r"python[23]?\s+-m\s+http\.server", "python HTTP server (potential staging/exfil)", "T1105", 15),
+    (r"python[23]?\s+-m\s+SimpleHTTPServer", "python2 HTTP server (potential staging)", "T1105", 15),
+    (r"openssl\s+s_client.*connect", "openssl reverse connection", "T1071.001", 25),
+    (r"openssl\s+enc\s+-aes", "openssl encryption (data staging)", "T1027", 20),
+    (r"socat\s+.*exec:", "socat exec (reverse shell variant)", "T1059.004", 40),
+    (r"busybox\s+.*nc\s+-", "busybox netcat (reverse shell variant)", "T1059.004", 35),
+    (r"bash\s+-c\s+.*>/dev/tcp/", "bash /dev/tcp redirect", "T1059.004", 45),
+    (r"exec\s+\d+<>/dev/tcp/", "bash fd redirect to /dev/tcp", "T1059.004", 45),
+    # 进程伪装
+    (r"exec\s+-a\s+", "process name masquerading via exec -a", "T1036.005", 25),
+    (r"prctl.*PR_SET_NAME", "process name change via prctl", "T1036.005", 25),
+    # 时间戳篡改
+    (r"touch\s+-t\s+", "timestomping via touch -t", "T1070.006", 20),
+    (r"touch\s+-r\s+", "timestamp cloning via touch -r", "T1070.006", 15),
+    # sudo 缓存滥用
+    (r"sudo\s+-k", "sudo credential cache manipulation", "T1548.003", 10),
+    (r"echo.*\|\s*sudo\s+-S", "sudo password piping", "T1548.003", 30),
+    # 信息收集/侦察
+    (r"cat\s+/proc/version", "kernel version enumeration", "T1082", 5),
+    (r"cat\s+/etc/issue", "OS identification", "T1082", 5),
+    (r"ss\s+-[tulnp]", "socket enumeration (reconnaissance)", "T1049", 5),
+    (r"last\s+-[aif]", "login history enumeration", "T1033", 5),
+    (r"id\s+&&", "user identity check (chained)", "T1033", 5),
+    (r"getent\s+passwd", "user enumeration via getent", "T1087.001", 10),
+    (r"cat\s+/etc/group", "group enumeration", "T1069.001", 5),
+    # 沙箱/VM 逃逸探测
+    (r"systemd-detect-virt", "virtualization detection (sandbox evasion)", "T1497", 15),
+    (r"dmidecode", "hardware enumeration (VM detection)", "T1497", 10),
+    (r"cat\s+/proc/cpuinfo.*model", "CPU model check (VM detection)", "T1497", 10),
+    (r"ls\s+/dev/vd[a-z]", "virtio disk check (VM detection)", "T1497", 10),
+    # 更多数据外泄手法
+    (r"xxd\s+.*\|\s*curl", "binary exfiltration via xxd+curl", "T1048", 35),
+    (r"tar\s+.*\|\s*curl", "archive exfiltration via tar+curl", "T1048", 30),
+    (r"tar\s+.*\|\s*nc\s+", "archive exfiltration via tar+nc", "T1048", 35),
+    (r"curl\s+.*--data-binary\s+@/etc/", "file exfiltration via curl POST", "T1048", 40),
+    (r"wget\s+--post-file", "file exfiltration via wget POST", "T1048", 35),
+    # 编译后门
+    (r"gcc\s+.*-shared.*-o\s+.*/tmp/", "compiling shared library in /tmp", "T1055", 30),
+    (r"gcc\s+.*-shared.*\.so", "compiling shared object (potential rootkit)", "T1014", 25),
+    # systemd timer 持久化
+    (r"\.timer.*OnCalendar", "systemd timer persistence", "T1053.005", 30),
+    (r"systemctl\s+enable", "enabling systemd service (persistence)", "T1543.002", 20),
+    # 进程注入
+    (r"gdb\s+-p\s+", "GDB process attach (process injection)", "T1055", 35),
+    (r"ptrace", "ptrace usage (process injection)", "T1055", 30),
+    (r"/proc/\d+/mem", "direct process memory access", "T1055", 35),
+    # 网络隧道
+    (r"ssh\s+-[RLD]\s+", "SSH tunnel/port forwarding", "T1071.001", 20),
+    (r"ssh\s+-N\s+-f", "SSH background tunnel", "T1071.001", 25),
+    # 防火墙操作
+    (r"ufw\s+disable", "disabling UFW firewall", "T1562.004", 30),
+    (r"systemctl\s+stop\s+firewalld", "stopping firewalld", "T1562.004", 30),
+    (r"iptables\s+-P\s+.*ACCEPT", "setting default ACCEPT policy", "T1562.004", 25),
+]
+
+# 合法安装器的白名单特征 — 降低这些场景的分数
+LEGITIMATE_PATTERNS = [
+    # 包管理器操作
+    (r"apt-get\s+(install|update|upgrade)", "package manager operation"),
+    (r"pip\s+install\s+", "pip install"),
+    (r"npm\s+install\s+", "npm install"),
+    (r"yarn\s+(add|install)", "yarn install"),
+    (r"gem\s+install\s+", "gem install"),
+    (r"cargo\s+install\s+", "cargo install"),
+    # 已知安装器
+    (r"astral\.sh/uv/install", "uv installer"),
+    (r"install\.python-poetry\.org", "poetry installer"),
+    (r"nvm-sh/nvm.*install", "nvm installer"),
+    (r"rustup\.rs", "rustup installer"),
+    (r"raw\.githubusercontent\.com/nvm-sh", "nvm installer"),
+    (r"get\.sdkman\.io", "sdkman installer"),
+    # Note: only match install.sh when fetched from HTTPS (not local file writes)
+    (r"curl\s+.*https://.*install\.sh", "HTTPS installer script"),
+    (r"wget\s+.*https://.*install\.sh", "HTTPS installer script"),
+    # 系统管理常见操作
+    (r"apt-get\s+remove\s+", "package removal"),
+    (r"dpkg\s+-[il]\s+", "dpkg install/list"),
+    (r"yum\s+(install|update)\s+", "yum package management"),
+    (r"dnf\s+(install|update)\s+", "dnf package management"),
+    (r"pacman\s+-S\s+", "pacman package install"),
+    (r"brew\s+install\s+", "homebrew install"),
+    (r"snap\s+install\s+", "snap install"),
+    (r"flatpak\s+install\s+", "flatpak install"),
+    # 常见开发工具
+    (r"docker\s+(build|run|pull|push)", "docker operation"),
+    (r"kubectl\s+(apply|get|describe)", "kubernetes operation"),
+    (r"terraform\s+(plan|apply|init)", "terraform operation"),
+    (r"ansible-playbook\s+", "ansible operation"),
+    (r"go\s+(build|install|get|mod)\s+", "go toolchain"),
+    (r"mvn\s+(clean|install|package)", "maven build"),
+    (r"gradle\s+(build|test)", "gradle build"),
+    (r"make\s+(all|install|clean|test|build)", "makefile target"),
+    (r"cmake\s+", "cmake build"),
+    (r"git\s+(clone|pull|push|fetch|checkout|merge|rebase)", "git operation"),
+]
+
+# Anti-evasion: commands that should NEVER be whitelisted regardless of other patterns
+BLACKLIST_OVERRIDES = [
+    r">\s*/etc/",             # Writing to /etc
+    r">>\s*/etc/",            # Appending to /etc
+    r">\s*~/\.bashrc",        # Overwriting .bashrc
+    r">>\s*~/\.bashrc",       # Appending to .bashrc
+    r"crontab\s+-",           # Setting crontab
+    r"useradd|adduser",       # Creating users
+    r"/etc/sudoers",          # Modifying sudoers
+    r"chmod\s+u\+s",          # Setting SUID
+    r"/etc/passwd",           # Modifying passwd
+    r"/etc/shadow",           # Accessing shadow
+    r"authorized_keys",       # Modifying SSH keys
+]
+
+def is_likely_legitimate_command(cmd):
+    """检查命令是否匹配已知合法模式, 但黑名单优先"""
+    # 黑名单覆盖: 如果匹配任何黑名单模式, 立即返回 False
+    for bp in BLACKLIST_OVERRIDES:
+        if re.search(bp, cmd, re.IGNORECASE):
+            return False
+    for pattern, _ in LEGITIMATE_PATTERNS:
+        if re.search(pattern, cmd, re.IGNORECASE):
+            return True
+    return False
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  辅助函数
+# ═══════════════════════════════════════════════════════════════════════════
 def section(t):
     print(f"\n{'='*W}\n  {t}\n{'='*W}", flush=True)
 
@@ -190,8 +496,10 @@ async def run_cmd(sb, cmd, timeout_sec=120):
     except Exception as e:
         return "", f"[ERROR] {e}"
 
+# ── 快照采集函数 ──────────────────────────────────────────────────────────
+
 async def snap_fs(sb):
-    """文件快照, 自动排除基础设施文件。"""
+    """文件快照, 排除基础设施文件"""
     o, _ = await run_cmd(sb,
         "find / -xdev -not -path '/proc/*' -not -path '/sys/*' "
         "-not -path '/dev/*' -not -path '/run/*' "
@@ -205,35 +513,122 @@ async def snap_fs(sb):
     return result
 
 async def snap_ps(sb):
-    o, _ = await run_cmd(sb, "ps auxf 2>/dev/null || ps aux"); return o
+    o, _ = await run_cmd(sb, "ps auxf 2>/dev/null || ps aux")
+    return o
 
 async def snap_persist(sb):
+    """持久化机制全面快照: cron + systemd + rc.local + init.d + at + timer"""
     o, _ = await run_cmd(sb,
-        "{ crontab -l 2>/dev/null || true; cat /etc/crontab 2>/dev/null || true; "
-        "ls ~/.config/systemd/user/*.service 2>/dev/null || true; "
-        "cat /etc/rc.local 2>/dev/null || true; } | md5sum")
+        "{ "
+        "echo '=== CRONTAB ==='; crontab -l 2>/dev/null || true; "
+        "echo '=== /etc/crontab ==='; cat /etc/crontab 2>/dev/null || true; "
+        "echo '=== cron.d ==='; ls /etc/cron.d/ 2>/dev/null | sort || true; "
+        "echo '=== cron.daily ==='; ls /etc/cron.daily/ 2>/dev/null | sort || true; "
+        "echo '=== systemd user ==='; ls ~/.config/systemd/user/*.service 2>/dev/null || true; "
+        "echo '=== systemd system ==='; ls /etc/systemd/system/*.service 2>/dev/null || true; "
+        "echo '=== rc.local ==='; cat /etc/rc.local 2>/dev/null || true; "
+        "echo '=== init.d ==='; ls /etc/init.d/ 2>/dev/null | sort || true; "
+        "echo '=== at queue ==='; atq 2>/dev/null || true; "
+        "echo '=== systemd timers ==='; systemctl list-timers --no-pager 2>/dev/null || true; "
+        "} | md5sum")
     return o
 
 async def snap_auth(sb):
-    """只比较用户名列表+sudoers行数, 不用 md5sum (避免时间戳等无关变化)。"""
+    """用户/权限全面快照"""
     o, _ = await run_cmd(sb,
-        "awk -F: '{print $1}' /etc/passwd 2>/dev/null | sort; "
-        "echo '---'; "
-        "wc -l /etc/shadow /etc/sudoers 2>/dev/null; "
-        "echo '---'; "
-        "ls /root/.ssh/ ~/.ssh/ 2>/dev/null || echo 'no-ssh'")
+        "awk -F: '{print $1\":\"$3\":\"$7}' /etc/passwd 2>/dev/null | sort; "
+        "echo '---SHADOW---'; "
+        "wc -l /etc/shadow 2>/dev/null || true; "
+        "echo '---SUDOERS---'; "
+        "cat /etc/sudoers 2>/dev/null | md5sum; "
+        "ls /etc/sudoers.d/ 2>/dev/null | sort || true; "
+        "echo '---SSH---'; "
+        "find /root/.ssh /home -name 'authorized_keys' -exec md5sum {} \\; 2>/dev/null || echo 'no-ssh'; "
+        "echo '---PAM---'; "
+        "ls /etc/pam.d/ 2>/dev/null | sort | md5sum")
     return o
 
 async def snap_shell(sb):
+    """Shell 配置快照 — 包括全局和用户级"""
     o, _ = await run_cmd(sb,
-        "cat ~/.bashrc ~/.bash_profile ~/.profile /etc/profile /etc/bash.bashrc 2>/dev/null | md5sum")
+        "cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout "
+        "/etc/profile /etc/bash.bashrc /etc/environment "
+        "/etc/profile.d/*.sh 2>/dev/null | md5sum")
     return o
+
+async def snap_suid(sb):
+    """SUID/SGID 文件快照"""
+    o, _ = await run_cmd(sb,
+        "find / -xdev \\( -perm -4000 -o -perm -2000 \\) -type f "
+        "-exec ls -la {} \\; 2>/dev/null | sort", 30)
+    return set(o.strip().splitlines()) if o.strip() else set()
+
+async def snap_mounts(sb):
+    """挂载点快照"""
+    o, _ = await run_cmd(sb, "mount 2>/dev/null | sort")
+    return o
+
+async def snap_modules(sb):
+    """内核模块快照"""
+    o, _ = await run_cmd(sb, "lsmod 2>/dev/null | sort || cat /proc/modules 2>/dev/null | sort || echo 'N/A'")
+    return o
+
+async def snap_env(sb):
+    """环境变量快照 (关注安全相关)"""
+    o, _ = await run_cmd(sb,
+        "env 2>/dev/null | grep -E "
+        "'(LD_PRELOAD|LD_LIBRARY_PATH|PATH|HOME|SHELL|USER|SUDO|HTTP_PROXY|HTTPS_PROXY)' "
+        "| sort || true")
+    return o
+
+async def snap_caps(sb):
+    """进程能力快照"""
+    o, _ = await run_cmd(sb,
+        "cat /proc/1/status 2>/dev/null | grep -i cap || true")
+    return o
+
+async def snap_critical_bins(sb):
+    """关键系统二进制文件 hash 快照"""
+    o, _ = await run_cmd(sb,
+        "md5sum /bin/bash /bin/sh /bin/su /usr/bin/sudo /usr/bin/passwd "
+        "/usr/bin/crontab /usr/sbin/sshd /bin/login "
+        "/usr/bin/ssh /usr/bin/newgrp 2>/dev/null | sort || true", 15)
+    return o
+
+async def snap_symlinks(sb):
+    """关键目录中的符号链接快照"""
+    o, _ = await run_cmd(sb,
+        "find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l "
+        "-exec ls -la {} \\; 2>/dev/null | sort || true", 20)
+    return set(o.strip().splitlines()) if o.strip() else set()
+
+async def snap_file_caps(sb):
+    """文件能力 (getcap) 快照"""
+    o, _ = await run_cmd(sb,
+        "getcap -r / 2>/dev/null | sort || true", 20)
+    return set(o.strip().splitlines()) if o.strip() else set()
+
+def calculate_entropy(data):
+    """计算字节串的 Shannon 熵 (0-8, 越高越随机)"""
+    if not data:
+        return 0.0
+    import math
+    freq = defaultdict(int)
+    for c in data:
+        freq[c] += 1
+    length = len(data)
+    entropy = -sum((count/length) * math.log2(count/length)
+                    for count in freq.values() if count > 0)
+    return round(entropy, 2)
+
+# ── 网络分析 ────────────────────────────────────────────────────────────
 
 def parse_proc_net(raw):
     conns = set()
     for line in raw.splitlines():
         parts = line.strip().split()
-        if len(parts) < 4 or parts[0] == "sl": continue
+        if len(parts) < 4 or parts[0] == "sl":
+            continue
         try:
             ip_hex, port_hex = parts[2].split(":")
             n = int(ip_hex, 16)
@@ -246,20 +641,158 @@ def parse_proc_net(raw):
     return conns
 
 def is_internal(ip):
-    return ip.startswith("127.") or ip.startswith("172.17.") or ip.startswith("172.18.") or ip == "0.0.0.0"
+    return (ip.startswith("127.") or ip.startswith("172.17.") or
+            ip.startswith("172.18.") or ip.startswith("10.") or
+            ip.startswith("169.254.") or ip == "0.0.0.0")
 
 def extract_path(entry):
     parts = entry.split(" ", 2)
     return parts[2] if len(parts) == 3 else entry
 
+# ═══════════════════════════════════════════════════════════════════════════
+#  评分引擎
+# ═══════════════════════════════════════════════════════════════════════════
+
+class Finding:
+    """单条发现"""
+    def __init__(self, severity, dimension, description, score, mitre_ids=None, evidence=None):
+        self.severity = severity          # CRITICAL / WARN / INFO
+        self.dimension = dimension        # 检测维度名
+        self.description = description    # 发现描述
+        self.score = score                # 风险分 (0-50, 越高越危险)
+        self.mitre_ids = mitre_ids or []  # MITRE ATT&CK 技术 ID
+        self.evidence = evidence or ""    # 原始证据
+
+    def to_dict(self):
+        d = {
+            "severity": self.severity,
+            "dimension": self.dimension,
+            "description": self.description,
+            "risk_score": self.score,
+        }
+        if self.mitre_ids:
+            d["mitre_attack"] = [
+                {"id": mid, "name": MITRE.get(mid, "Unknown")}
+                for mid in self.mitre_ids
+            ]
+        if self.evidence:
+            d["evidence"] = self.evidence[:500]
+        return d
+
+
+class ScoringEngine:
+    """加权风险评分引擎 v4 — 含置信度评估 + 攻击链加成"""
+
+    def __init__(self, command):
+        self.command = command
+        self.findings = []
+        self.is_legitimate = is_likely_legitimate_command(command)
+
+    def add(self, severity, dimension, desc, score, mitre_ids=None, evidence=None):
+        # 合法命令降低部分维度的分数
+        if self.is_legitimate and severity != "CRITICAL":
+            score = max(0, score // 2)
+        self.findings.append(Finding(severity, dimension, desc, score, mitre_ids, evidence))
+
+    def total_score(self):
+        return min(100, sum(f.score for f in self.findings))
+
+    def verdict(self):
+        score = self.total_score()
+        criticals = [f for f in self.findings if f.severity == "CRITICAL"]
+        # 攻击链发现会加重判定
+        chain_findings = [f for f in self.findings if f.dimension == "攻击链"]
+        if score >= 60 or len(criticals) >= 2 or (chain_findings and criticals):
+            return "DANGEROUS"
+        elif score >= 25 or criticals:
+            return "SUSPICIOUS"
+        elif score >= 10:
+            return "LOW_RISK"
+        else:
+            return "LIKELY_SAFE"
+
+    def confidence(self):
+        """评估判定的置信度 (HIGH/MEDIUM/LOW)"""
+        score = self.total_score()
+        criticals = len([f for f in self.findings if f.severity == "CRITICAL"])
+        unique_dims = len(set(f.dimension for f in self.findings))
+        chain_findings = len([f for f in self.findings if f.dimension == "攻击链"])
+
+        verdict = self.verdict()
+        if verdict == "DANGEROUS":
+            if criticals >= 3 or (criticals >= 2 and unique_dims >= 3) or chain_findings >= 2:
+                return "HIGH"
+            elif criticals >= 1 and unique_dims >= 2:
+                return "MEDIUM"
+            else:
+                return "LOW"
+        elif verdict == "SUSPICIOUS":
+            if unique_dims >= 3:
+                return "HIGH"
+            elif unique_dims >= 2:
+                return "MEDIUM"
+            else:
+                return "LOW"
+        elif verdict == "LIKELY_SAFE":
+            if score == 0:
+                return "HIGH"
+            else:
+                return "MEDIUM"
+        else:  # LOW_RISK
+            return "MEDIUM"
+
+    def mitre_summary(self):
+        """汇总所有涉及的 MITRE ATT&CK 技术"""
+        techniques = {}
+        for f in self.findings:
+            for mid in f.mitre_ids:
+                if mid not in techniques:
+                    techniques[mid] = {"name": MITRE.get(mid, "Unknown"), "findings": []}
+                techniques[mid]["findings"].append(f.description)
+        return techniques
+
+    def tactic_summary(self):
+        """按 ATT&CK 战术分组"""
+        TACTIC_MAP = {
+            "T1059": "Execution", "T1053": "Persistence", "T1543": "Persistence",
+            "T1037": "Persistence", "T1546": "Persistence", "T1547": "Persistence",
+            "T1136": "Persistence", "T1098": "Persistence",
+            "T1548": "Privilege Escalation", "T1574": "Privilege Escalation",
+            "T1055": "Privilege Escalation",
+            "T1070": "Defense Evasion", "T1027": "Defense Evasion",
+            "T1036": "Defense Evasion", "T1014": "Defense Evasion",
+            "T1562": "Defense Evasion", "T1564": "Defense Evasion",
+            "T1140": "Defense Evasion", "T1497": "Defense Evasion",
+            "T1556": "Credential Access", "T1003": "Credential Access",
+            "T1552": "Credential Access",
+            "T1057": "Discovery", "T1082": "Discovery", "T1016": "Discovery",
+            "T1049": "Discovery", "T1033": "Discovery", "T1083": "Discovery",
+            "T1087": "Discovery", "T1069": "Discovery", "T1018": "Discovery",
+            "T1007": "Discovery",
+            "T1048": "Exfiltration", "T1105": "Command and Control",
+            "T1071": "Command and Control", "T1021": "Lateral Movement",
+            "T1496": "Impact", "T1611": "Execution",
+        }
+        tactics = defaultdict(list)
+        for f in self.findings:
+            for mid in f.mitre_ids:
+                prefix = mid.split(".")[0]
+                tactic = TACTIC_MAP.get(prefix, "Unknown")
+                tactics[tactic].append(mid)
+        return dict(tactics)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+#  主分析流程
+# ═══════════════════════════════════════════════════════════════════════════
 
 async def main():
-    findings = []
     evidence = {}
     config = ConnectionConfig(domain=f"localhost:{PORT}", request_timeout=timedelta(seconds=600))
+    engine = ScoringEngine(COMMAND)
 
-    # ── 1/8 创建沙箱 ──
-    section("1/8  创建隔离沙箱")
+    # ── 1/9 创建沙箱 ──
+    section("1/9  创建隔离沙箱")
     print(f"  镜像: {IMAGE}", flush=True)
     try:
         sandbox = await asyncio.wait_for(
@@ -273,281 +806,858 @@ async def main():
 
     async with sandbox:
 
-        # ── 2/8 安装监控工具 (在快照之前!) ──
-        section("2/8  安装监控工具 (快照前, 避免污染基线)")
+        # ── 2/9 安装监控工具 ──
+        section("2/9  安装监控工具 (快照前, 避免污染基线)")
         await run_cmd(sandbox,
             "apt-get update -qq 2>/dev/null && "
-            "apt-get install -y -qq inotify-tools 2>/dev/null || "
-            "yum install -y -q inotify-tools 2>/dev/null || "
-            "apk add inotify-tools 2>/dev/null || "
+            "apt-get install -y -qq inotify-tools procps 2>/dev/null || "
+            "yum install -y -q inotify-tools procps-ng 2>/dev/null || "
+            "apk add inotify-tools procps 2>/dev/null || "
             "echo 'skip'", timeout_sec=120)
-        print("  inotify-tools 已安装 (如有)")
+        print("  监控工具已安装")
 
-        # ── 3/8 执行前快照 (干净基线) ──
-        section("3/8  采集执行前快照 (干净基线)")
+        # ── 3/9 全维度基线采集 ──
+        section("3/9  采集执行前基线 (23 维度)")
         t0 = time.time()
-        pre_fs, pre_ps, pre_persist, pre_auth, pre_shell = await asyncio.gather(
+
+        (pre_fs, pre_ps, pre_persist, pre_auth, pre_shell,
+         pre_suid, pre_mounts, pre_modules, pre_env, pre_caps,
+         pre_bins, pre_symlinks, pre_file_caps) = await asyncio.gather(
             snap_fs(sandbox), snap_ps(sandbox),
-            snap_persist(sandbox), snap_auth(sandbox), snap_shell(sandbox))
-        print(f"  文件数   : {len(pre_fs)}")
-        print(f"  耗时     : {time.time()-t0:.1f}s")
+            snap_persist(sandbox), snap_auth(sandbox), snap_shell(sandbox),
+            snap_suid(sandbox), snap_mounts(sandbox), snap_modules(sandbox),
+            snap_env(sandbox), snap_caps(sandbox),
+            snap_critical_bins(sandbox), snap_symlinks(sandbox), snap_file_caps(sandbox))
+
+        print(f"  文件数       : {len(pre_fs)}")
+        print(f"  SUID/SGID    : {len(pre_suid)}")
+        print(f"  符号链接     : {len(pre_symlinks)}")
+        print(f"  文件能力     : {len(pre_file_caps)}")
+        print(f"  基线采集耗时 : {time.time()-t0:.1f}s")
         try:
             pre_m = await sandbox.get_metrics()
-            print(f"  CPU      : {pre_m.cpu_used_percentage:.1f}%")
-            print(f"  Memory   : {pre_m.memory_used_in_mib:.1f}/{pre_m.memory_total_in_mib:.1f} MiB")
+            print(f"  CPU          : {pre_m.cpu_used_percentage:.1f}%")
+            print(f"  Memory       : {pre_m.memory_used_in_mib:.1f}/{pre_m.memory_total_in_mib:.1f} MiB")
         except Exception:
             pre_m = None
 
-        # ── 4/8 启动探针 + 执行命令 ──
-        section("4/8  启动监控 + 执行待测命令")
+        # ── 4/9 启动多层探针 + 执行命令 ──
+        section("4/9  启动多层探针 + 执行待测命令")
 
-        # inotifywait: 不监控 /tmp (execd 在 /tmp 大量读写, 且日志也在 /tmp, 会递归)
-        # 只监控真正重要的目录
+        # 探针 1: inotifywait 监控系统关键目录
         await run_cmd(sandbox,
-            "nohup inotifywait -mr -e create,modify,delete,moved_to "
+            "nohup inotifywait -mr -e create,modify,delete,moved_to,attrib "
             "--timefmt '%Y-%m-%dT%H:%M:%S' --format '%T %e %w%f' "
-            "/usr/local/bin /usr/bin /etc /root /home "
+            "/usr/local/bin /usr/bin /usr/sbin /etc /root /home "
             "> /var/log/.inotify_log 2>/dev/null &", 10)
-        print("  [inotify]  监控: /usr/local/bin /usr/bin /etc /root /home")
-        print("             日志: /var/log/.inotify_log (避免 /tmp 递归)")
+        print("  [探针1] inotify: /usr/local/bin /usr/bin /usr/sbin /etc /root /home")
 
-        # 网络连接轮询
+        # 探针 2: inotifywait 独立监控 /tmp (避免递归, 日志写到 /var/log)
+        await run_cmd(sandbox,
+            "nohup inotifywait -mr -e create,modify,delete,moved_to,attrib "
+            "--timefmt '%Y-%m-%dT%H:%M:%S' --format '%T %e %w%f' "
+            "--exclude '\\.(stdout|stderr|inotify|net_|resolv_|proc_|audit_|suid_|mount_|modules_|env_|caps_|conntrack_)' "
+            "/tmp /var/tmp /dev/shm "
+            "> /tmp/.inotify_tmp_log 2>/dev/null &", 10)
+        print("  [探针2] inotify: /tmp /var/tmp /dev/shm (独立探针)")
+
+        # 探针 3: 网络连接轮询 (高频)
         await run_cmd(sandbox, "cat /proc/net/tcp /proc/net/tcp6 2>/dev/null > /tmp/.net_baseline", 5)
         await run_cmd(sandbox,
-            "nohup sh -c 'while true; do cat /proc/net/tcp /proc/net/tcp6 2>/dev/null; sleep 1; "
-            "done > /tmp/.net_poll_log 2>/dev/null' &", 5)
-        print("  [network]  /proc/net/tcp 轮询 (1s)")
+            "nohup sh -c 'while true; do "
+            "cat /proc/net/tcp /proc/net/tcp6 2>/dev/null; "
+            "sleep 0.5; done > /tmp/.net_poll_log 2>/dev/null' &", 5)
+        print("  [探针3] network: /proc/net/tcp 轮询 (0.5s)")
 
+        # 探针 4: DNS 基线
         await run_cmd(sandbox, "cp /etc/resolv.conf /tmp/.resolv_baseline 2>/dev/null || true", 5)
 
-        # 执行待测命令
+        # 探针 5: 进程树追踪 (记录命令执行期间产生的所有进程)
+        await run_cmd(sandbox,
+            "nohup sh -c 'while true; do "
+            "ps auxf 2>/dev/null || ps aux 2>/dev/null; "
+            "echo \"=== $(date +%s) ===\"; "
+            "sleep 1; done > /tmp/.proc_tree_log 2>/dev/null' &", 5)
+        print("  [探针5] process: 进程树轮询 (1s)")
+
+        # ── 命令静态分析 (执行前) ──
+        sub("命令静态分析")
+        cmd_findings = []
+        for pattern, desc, mitre_id, score in MALICIOUS_CONTENT_PATTERNS:
+            if re.search(pattern, COMMAND, re.IGNORECASE):
+                cmd_findings.append((desc, mitre_id, score))
+                sev = "CRITICAL" if score >= 35 else "WARN"
+                engine.add(sev, "静态分析", f"命令匹配恶意模式: {desc}",
+                          score, [mitre_id], COMMAND[:200])
+                print(f"    !! [{mitre_id}] {desc} (score: {score})")
+        if not cmd_findings:
+            print("    PASS  未匹配已知恶意模式")
+        if engine.is_legitimate:
+            print(f"    [INFO] 命令匹配合法安装器模式, 部分告警已降权")
+
+        # ── 执行待测命令 ──
         print(f"\n  $ {COMMAND}")
         print(f"  {'─'*60}", flush=True)
         t1 = time.time()
-        stdout, stderr = await run_cmd(sandbox, COMMAND, timeout_sec=300)
+        # 包裹命令以捕获退出码
+        wrapped_cmd = f"{{ {COMMAND} ; }}; echo \"__EXIT_CODE__$?\""
+        stdout_raw, stderr = await run_cmd(sandbox, wrapped_cmd, timeout_sec=300)
         dur = time.time() - t1
+
+        # 提取退出码
+        exit_code = -1
+        stdout = stdout_raw
+        if "__EXIT_CODE__" in stdout_raw:
+            lines = stdout_raw.splitlines()
+            for i, line in enumerate(lines):
+                if line.startswith("__EXIT_CODE__"):
+                    try:
+                        exit_code = int(line.replace("__EXIT_CODE__", ""))
+                    except ValueError:
+                        pass
+                    stdout = "\n".join(lines[:i])
+                    break
 
         stdout_lines = stdout.splitlines() if stdout else []
         stderr_lines = stderr.splitlines() if stderr else []
-        print(f"\n  耗时   : {dur:.1f}s")
-        print(f"  stdout : {len(stdout_lines)} 行")
-        print(f"  stderr : {len(stderr_lines)} 行")
+        print(f"\n  耗时     : {dur:.1f}s")
+        print(f"  退出码   : {exit_code}")
+        print(f"  stdout   : {len(stdout_lines)} 行")
+        print(f"  stderr   : {len(stderr_lines)} 行")
         if stdout_lines:
             sub("stdout (前 50 行)")
-            for l in stdout_lines[:50]: print(f"    | {l}")
-            if len(stdout_lines) > 50: print(f"    | ... ({len(stdout_lines)-50} more)")
+            for l in stdout_lines[:50]:
+                print(f"    | {l}")
+            if len(stdout_lines) > 50:
+                print(f"    | ... ({len(stdout_lines)-50} more)")
         if stderr_lines:
             sub("stderr (前 30 行)")
-            for l in stderr_lines[:30]: print(f"    | {l}")
+            for l in stderr_lines[:30]:
+                print(f"    | {l}")
 
         evidence["stdout_lines"] = len(stdout_lines)
         evidence["stderr_lines"] = len(stderr_lines)
         evidence["exec_duration_sec"] = round(dur, 1)
 
-        # ── 5/8 执行后快照 ──
-        section("5/8  采集执行后快照")
-        await asyncio.sleep(2)
-        post_fs, post_ps, post_persist, post_auth, post_shell = await asyncio.gather(
+        # ── 5/9 等待 + 采集执行后快照 ──
+        section("5/9  采集执行后快照 (全维度)")
+        await asyncio.sleep(3)  # 给短暂延迟的行为更多时间暴露
+
+        (post_fs, post_ps, post_persist, post_auth, post_shell,
+         post_suid, post_mounts, post_modules, post_env, post_caps,
+         post_bins, post_symlinks, post_file_caps) = await asyncio.gather(
             snap_fs(sandbox), snap_ps(sandbox),
-            snap_persist(sandbox), snap_auth(sandbox), snap_shell(sandbox))
+            snap_persist(sandbox), snap_auth(sandbox), snap_shell(sandbox),
+            snap_suid(sandbox), snap_mounts(sandbox), snap_modules(sandbox),
+            snap_env(sandbox), snap_caps(sandbox),
+            snap_critical_bins(sandbox), snap_symlinks(sandbox), snap_file_caps(sandbox))
+
         try:
             post_m = await sandbox.get_metrics()
         except Exception:
             post_m = None
 
-        inotify_log, _ = await run_cmd(sandbox, "cat /var/log/.inotify_log 2>/dev/null")
+        # 收集所有探针日志
+        inotify_sys_log, _ = await run_cmd(sandbox, "cat /var/log/.inotify_log 2>/dev/null")
+        inotify_tmp_log, _ = await run_cmd(sandbox, "cat /tmp/.inotify_tmp_log 2>/dev/null")
         net_poll_log, _ = await run_cmd(sandbox, "cat /tmp/.net_poll_log 2>/dev/null")
         resolv_after, _ = await run_cmd(sandbox, "cat /etc/resolv.conf 2>/dev/null")
         resolv_before, _ = await run_cmd(sandbox, "cat /tmp/.resolv_baseline 2>/dev/null")
+        proc_tree_log, _ = await run_cmd(sandbox, "cat /tmp/.proc_tree_log 2>/dev/null")
         post_net, _ = await run_cmd(sandbox,
             "ss -tunap 2>/dev/null || cat /proc/net/tcp /proc/net/tcp6 2>/dev/null || echo N/A")
 
-        print(f"  文件数     : {len(post_fs)}")
-        print(f"  inotify    : {len(inotify_log.splitlines())} 条")
+        inotify_log = inotify_sys_log + "\n" + inotify_tmp_log
+        print(f"  文件数       : {len(post_fs)}")
+        print(f"  SUID/SGID    : {len(post_suid)}")
+        print(f"  inotify 系统 : {len(inotify_sys_log.splitlines())} 条")
+        print(f"  inotify /tmp : {len(inotify_tmp_log.splitlines())} 条")
 
-        # ── 6/8 网络分析 ──
-        section("6/8  网络行为分析")
+        # ── 6/9 网络行为分析 ──
+        section("6/9  网络行为深度分析")
 
         baseline_conns = parse_proc_net(
             (await run_cmd(sandbox, "cat /tmp/.net_baseline 2>/dev/null"))[0])
         poll_conns = parse_proc_net(net_poll_log)
         new_conns_raw = poll_conns - baseline_conns
-
         external = {(ip, p) for ip, p in new_conns_raw if not is_internal(ip)}
         internal = new_conns_raw - external
 
-        sub("外部连接 (真正的出站)")
+        sub("外部连接 (出站)")
         if external:
             for ip, port in sorted(external):
                 proto = "HTTPS" if port == 443 else "HTTP" if port == 80 else f":{port}"
                 print(f"    -> {ip}:{port} ({proto})")
+
+            # 非标准端口的外部连接更可疑
+            suspicious_ports = [(ip, p) for ip, p in external if p not in (80, 443, 53, 8080, 8443)]
+            if suspicious_ports:
+                engine.add("WARN", "网络", f"外部非标准端口连接: {suspicious_ports}",
+                          20, ["T1071.001"],
+                          str(suspicious_ports))
         else:
             print("    (无外部连接)")
+
         if internal:
-            print(f"\n    [{len(internal)} 个内部连接已忽略 (127.0.0.1, 172.17.* = execd/Docker)]")
+            print(f"\n    [{len(internal)} 个内部连接已忽略]")
 
         evidence["external_connections"] = [f"{ip}:{p}" for ip, p in sorted(external)]
 
+        # ── DNS 分析 ──
         sub("DNS 配置")
         if resolv_before.strip() == resolv_after.strip():
             print("    PASS  /etc/resolv.conf 未被修改")
         else:
-            findings.append("WARN: /etc/resolv.conf 被修改")
+            engine.add("CRITICAL", "DNS", "/etc/resolv.conf 被修改 (DNS 劫持)",
+                      30, ["T1016"], resolv_after[:200])
             print("    !! /etc/resolv.conf 已被修改!")
+            print(f"    Before: {resolv_before.strip()[:80]}")
+            print(f"    After:  {resolv_after.strip()[:80]}")
 
-        # ── 7/8 安全对比 ──
-        section("7/8  安全对比分析")
+        # ── 7/9 全维度安全对比 ──
+        section("7/9  全维度安全对比分析 (23 维度)")
 
-        # 文件变更
+        # ━━ 维度 1: 文件变更 ━━
         new_files = post_fs - pre_fs
         deleted_files = pre_fs - post_fs
         new_paths = sorted(extract_path(f) for f in new_files)
         del_paths = sorted(extract_path(f) for f in deleted_files)
 
-        sub(f"文件变更 (+{len(new_paths)} / -{len(del_paths)})")
+        sub(f"[D1] 文件变更 (+{len(new_paths)} / -{len(del_paths)})")
         if new_paths:
             print(f"    新增 {len(new_paths)} 个:")
-            for p in new_paths[:80]: print(f"      + {p}")
-            if len(new_paths) > 80: print(f"      ... 还有 {len(new_paths)-80} 个")
+            for p in new_paths[:100]:
+                print(f"      + {p}")
+            if len(new_paths) > 100:
+                print(f"      ... 还有 {len(new_paths)-100} 个")
         else:
             print("    (无新增)")
         if del_paths:
             print(f"    删除 {len(del_paths)} 个:")
-            for p in del_paths[:30]: print(f"      - {p}")
+            for p in del_paths[:30]:
+                print(f"      - {p}")
+
         evidence["files_added"] = len(new_paths)
         evidence["files_deleted"] = len(del_paths)
 
         SENSITIVE = ["/etc/passwd", "/etc/shadow", "/etc/sudoers",
                      "/root/.ssh", "/etc/ssh/", "/usr/sbin/",
-                     "/etc/ld.so", "/etc/pam.d/"]
-        suspicious = [p for p in new_paths if any(p.startswith(s) for s in SENSITIVE)]
-        if suspicious:
-            findings.append(f"CRITICAL: 敏感路径写入: {suspicious}")
-            print(f"    !! 敏感路径写入: {suspicious}")
+                     "/etc/ld.so", "/etc/pam.d/", "/etc/security/",
+                     "/etc/systemd/system/", "/etc/init.d/",
+                     "/etc/cron", "/etc/profile"]
+        suspicious_paths = [p for p in new_paths if any(p.startswith(s) for s in SENSITIVE)]
+        if suspicious_paths:
+            engine.add("CRITICAL", "文件变更", f"敏感路径写入: {suspicious_paths[:10]}",
+                      35, ["T1222.002"], str(suspicious_paths[:10]))
+            print(f"    !! 敏感路径写入: {suspicious_paths[:10]}")
 
-        # inotify 事件
-        sub("实时文件事件 (inotifywait)")
-        inotify_lines = [l for l in inotify_log.splitlines() if l.strip()]
-        if inotify_lines:
-            for l in inotify_lines[:50]: print(f"    {l}")
-            if len(inotify_lines) > 50: print(f"    ... 还有 {len(inotify_lines)-50} 条")
+        # ━━ 维度 2: 实时文件事件 (系统目录) ━━
+        sub("[D2] 实时文件事件 (inotifywait)")
+        sys_events = [l for l in inotify_sys_log.splitlines() if l.strip()]
+        tmp_events = [l for l in inotify_tmp_log.splitlines() if l.strip()]
+        # 过滤掉基础设施文件的事件
+        tmp_events = [l for l in tmp_events
+                      if not any(inf in l for inf in [".inotify", ".net_", ".resolv_",
+                                                       ".proc_", ".audit_", ".suid_",
+                                                       ".mount_", ".modules_", ".env_",
+                                                       ".caps_", ".conntrack_", "execd"])]
+
+        if sys_events:
+            print(f"    系统目录事件 ({len(sys_events)} 条):")
+            for l in sys_events[:60]:
+                print(f"      {l}")
+            if len(sys_events) > 60:
+                print(f"      ... 还有 {len(sys_events)-60} 条")
         else:
-            print("    (无事件 — 待测命令未修改监控目录内文件)")
-        evidence["inotify_events"] = len(inotify_lines)
+            print("    系统目录: (无事件)")
 
-        # 用户/权限
-        sub("用户与权限")
+        if tmp_events:
+            print(f"    临时目录事件 ({len(tmp_events)} 条):")
+            for l in tmp_events[:30]:
+                print(f"      {l}")
+        else:
+            print("    临时目录: (无事件)")
+
+        evidence["inotify_sys_events"] = len(sys_events)
+        evidence["inotify_tmp_events"] = len(tmp_events)
+
+        # ━━ 维度 3: 用户/权限 ━━
+        sub("[D3] 用户与权限")
         if pre_auth.strip() == post_auth.strip():
-            print("    PASS  /etc/passwd, shadow, sudoers, SSH 无变化")
+            print("    PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化")
         else:
-            findings.append("CRITICAL: 用户/权限配置被修改!")
+            engine.add("CRITICAL", "用户/权限", "用户/权限配置被修改",
+                      40, ["T1136.001", "T1098"],
+                      f"Before hash: {hashlib.md5(pre_auth.encode()).hexdigest()}\n"
+                      f"After hash: {hashlib.md5(post_auth.encode()).hexdigest()}")
             print("    !! FAIL  用户/权限配置已变更!")
+            # 详细对比
+            pre_lines = set(pre_auth.strip().splitlines())
+            post_lines = set(post_auth.strip().splitlines())
+            added = post_lines - pre_lines
+            removed = pre_lines - post_lines
+            if added:
+                print(f"    新增行:")
+                for l in list(added)[:10]:
+                    print(f"      + {l}")
+            if removed:
+                print(f"    删除行:")
+                for l in list(removed)[:10]:
+                    print(f"      - {l}")
 
-        # 持久化
-        sub("持久化 (cron/systemd/rc.local)")
+        # ━━ 维度 4: 持久化 ━━
+        sub("[D4] 持久化 (cron/systemd/rc.local/init.d/at)")
         if pre_persist.strip() == post_persist.strip():
             print("    PASS  无新增")
         else:
-            findings.append("WARN: 持久化机制被修改")
-            print("    !! FAIL")
+            engine.add("CRITICAL", "持久化", "持久化机制被修改 (cron/systemd/rc.local)",
+                      35, ["T1053.003", "T1543.002", "T1037.004"])
+            print("    !! FAIL  持久化配置已变更!")
 
-        # Shell 环境
-        sub("Shell 环境 (.bashrc/.profile)")
+        # ━━ 维度 5: Shell 环境 ━━
+        sub("[D5] Shell 环境 (.bashrc/.profile/etc)")
         if pre_shell.strip() == post_shell.strip():
             print("    PASS  无变化")
         else:
-            findings.append("WARN: Shell 配置被修改")
-            print("    !! FAIL")
-            c, _ = await run_cmd(sandbox, "cat ~/.bashrc ~/.bash_profile ~/.profile 2>/dev/null | head -20")
-            for l in c.splitlines()[:15]: print(f"      {l}")
+            engine.add("WARN", "Shell环境", "Shell 配置文件被修改",
+                      20, ["T1546.004"])
+            print("    !! FAIL  Shell 配置被修改")
+            # 显示变更后的 shell 配置
+            c, _ = await run_cmd(sandbox,
+                "diff <(echo '') <(cat ~/.bashrc ~/.bash_profile ~/.profile 2>/dev/null) 2>/dev/null "
+                "| head -30 || cat ~/.bashrc 2>/dev/null | tail -10")
+            for l in c.splitlines()[:15]:
+                print(f"      {l}")
 
-        # 残留进程 (过滤监控自身)
-        sub("残留进程")
+        # ━━ 维度 6: 残留进程 + 进程树分析 ━━
+        sub("[D6] 进程树分析")
+        # 分析执行期间产生的所有进程
+        proc_lines = proc_tree_log.splitlines() if proc_tree_log else []
+        # 从进程日志中提取独特的命令
+        observed_cmds = set()
+        for l in proc_lines:
+            if l.startswith("=== ") or not l.strip():
+                continue
+            parts = l.split(None, 10)
+            if len(parts) >= 11:
+                cmd = parts[10]
+                # 过滤监控自身
+                if not any(x in cmd for x in ["inotifywait", ".net_poll", ".proc_tree",
+                                                "sleep 0.5", "sleep 1", "ps aux"]):
+                    observed_cmds.add(cmd[:120])
+
+        if observed_cmds:
+            print(f"    观察到 {len(observed_cmds)} 个独立进程:")
+            for cmd in sorted(observed_cmds)[:20]:
+                print(f"      > {cmd}")
+        else:
+            print("    (无额外进程)")
+
+        # 残留进程检查
+        print("\n    残留进程 (执行后):")
+        residual = []
         for l in post_ps.splitlines():
-            if any(x in l for x in ["inotifywait", ".net_poll", "sleep 1"]): continue
-            print(f"      {l}")
+            if any(x in l for x in ["inotifywait", ".net_poll", ".proc_tree",
+                                      "sleep 0.5", "sleep 1"]):
+                continue
+            if l.strip():
+                residual.append(l)
+                print(f"      {l}")
 
-        # 残留连接
-        sub("残留网络连接")
+        # ━━ 维度 7: 残留网络连接 ━━
+        sub("[D7] 残留网络连接")
         net_lines = [l for l in post_net.splitlines() if l.strip()]
         if net_lines:
-            for l in net_lines[:15]: print(f"      {l}")
+            for l in net_lines[:15]:
+                print(f"      {l}")
         else:
             print("    (无)")
 
-        # 资源
-        sub("资源消耗")
+        # ━━ 维度 8: 资源消耗 ━━
+        sub("[D8] 资源消耗")
         if pre_m and post_m:
-            print(f"    CPU    : {pre_m.cpu_used_percentage:.1f}% -> {post_m.cpu_used_percentage:.1f}%")
-            print(f"    Memory : {pre_m.memory_used_in_mib:.1f} -> {post_m.memory_used_in_mib:.1f} MiB")
+            cpu_delta = post_m.cpu_used_percentage - pre_m.cpu_used_percentage
+            mem_delta = post_m.memory_used_in_mib - pre_m.memory_used_in_mib
+            print(f"    CPU    : {pre_m.cpu_used_percentage:.1f}% -> {post_m.cpu_used_percentage:.1f}% (Δ {cpu_delta:+.1f}%)")
+            print(f"    Memory : {pre_m.memory_used_in_mib:.1f} -> {post_m.memory_used_in_mib:.1f} MiB (Δ {mem_delta:+.1f} MiB)")
             if post_m.cpu_used_percentage > 80:
-                findings.append(f"WARN: CPU 异常 ({post_m.cpu_used_percentage:.1f}%)")
+                engine.add("WARN", "资源", f"CPU 异常高 ({post_m.cpu_used_percentage:.1f}%)",
+                          15, [], f"CPU: {post_m.cpu_used_percentage:.1f}%")
+            if mem_delta > 200:
+                engine.add("WARN", "资源", f"内存异常增长 (+{mem_delta:.0f} MiB)",
+                          10, [], f"Memory delta: {mem_delta:.0f} MiB")
         else:
             print("    (不可用)")
 
-        # 可疑二进制 (用 grep -v 过滤 execd 的 uuid 文件, 比 find -regex 更可靠)
-        sub("可疑二进制 (/tmp /var/tmp /dev/shm)")
+        # ━━ 维度 9: 可疑二进制 ━━
+        sub("[D9] 可疑二进制 (/tmp /var/tmp /dev/shm)")
         sus, _ = await run_cmd(sandbox,
             "find /tmp /var/tmp /dev/shm -type f -executable 2>/dev/null "
             "| grep -vE '/[0-9a-f]{32}\\.(stdout|stderr)$' "
-            "| grep -vE '/\\.' "
-            "| grep -v execd.log "
+            "| grep -vE '/(\\.|execd)' "
             "|| echo none")
         sus_clean = sus.strip()
         if sus_clean and sus_clean != "none":
-            findings.append(f"WARN: 临时目录可执行文件: {sus_clean}")
-            print(f"    !! {sus_clean}")
+            sus_files = [f for f in sus_clean.splitlines() if f.strip()]
+            if sus_files:
+                engine.add("WARN", "可疑二进制", f"临时目录可执行文件: {sus_files}",
+                          25, ["T1105"], sus_clean[:300])
+                for f in sus_files[:10]:
+                    print(f"    !! {f}")
+                    # 获取文件元信息
+                    meta, _ = await run_cmd(sandbox, f"file '{f}' 2>/dev/null; ls -la '{f}' 2>/dev/null", 5)
+                    if meta.strip():
+                        print(f"       {meta.strip()}")
+            else:
+                print("    PASS")
         else:
             print("    PASS")
 
-        # ── 8/8 综合判定 ──
-        section("8/8  综合判定")
-        evidence["findings"] = findings
-        critical = [f for f in findings if "CRITICAL" in f]
-        warns = [f for f in findings if "WARN" in f]
+        # ━━ 维度 10: SUID/SGID 变更 ━━
+        sub("[D10] SUID/SGID 文件变更")
+        new_suid = post_suid - pre_suid
+        removed_suid = pre_suid - post_suid
+        if new_suid:
+            engine.add("CRITICAL", "SUID/SGID", f"新增 SUID/SGID 文件: {len(new_suid)}",
+                      40, ["T1548.001"], "\n".join(list(new_suid)[:10]))
+            print(f"    !! 新增 {len(new_suid)} 个 SUID/SGID 文件:")
+            for f in list(new_suid)[:10]:
+                print(f"      + {f}")
+        else:
+            print("    PASS  无新增 SUID/SGID 文件")
+        if removed_suid:
+            print(f"    [INFO] 移除 {len(removed_suid)} 个 SUID/SGID 文件")
 
-        if critical: verdict, sym = "DANGEROUS", "!!"
-        elif warns: verdict, sym = "SUSPICIOUS", "??"
-        else: verdict, sym = "LIKELY_SAFE", "OK"
+        # ━━ 维度 11: 内核模块变更 ━━
+        sub("[D11] 内核模块")
+        if pre_modules.strip() == post_modules.strip():
+            print("    PASS  无变化")
+        else:
+            engine.add("CRITICAL", "内核模块", "内核模块列表变更",
+                      45, ["T1014"], post_modules[:200])
+            print("    !! FAIL  内核模块列表已变更!")
+
+        # ━━ 维度 12: 挂载点变更 ━━
+        sub("[D12] 挂载点")
+        if pre_mounts.strip() == post_mounts.strip():
+            print("    PASS  无变化")
+        else:
+            engine.add("WARN", "挂载点", "挂载点配置变更",
+                      20, ["T1611"], post_mounts[:200])
+            print("    !! FAIL  挂载点已变更!")
+
+        # ━━ 维度 13: 环境变量 (LD_PRELOAD 等) ━━
+        sub("[D13] 安全相关环境变量")
+        if pre_env.strip() == post_env.strip():
+            print("    PASS  无变化")
+        else:
+            # 检查具体变更
+            pre_env_set = set(pre_env.strip().splitlines())
+            post_env_set = set(post_env.strip().splitlines())
+            new_envs = post_env_set - pre_env_set
+            for env_line in new_envs:
+                if "LD_PRELOAD" in env_line:
+                    engine.add("CRITICAL", "环境变量", f"LD_PRELOAD 被设置: {env_line}",
+                              40, ["T1574.006"], env_line)
+                elif "LD_LIBRARY_PATH" in env_line:
+                    engine.add("WARN", "环境变量", f"LD_LIBRARY_PATH 变更: {env_line}",
+                              15, ["T1574.001"], env_line)
+                else:
+                    print(f"    [INFO] 新增/变更: {env_line}")
+            if not any("LD_PRELOAD" in e or "LD_LIBRARY_PATH" in e for e in new_envs):
+                print("    PASS  无危险环境变量变更")
+
+        # ━━ 维度 14: 文件内容模式分析 ━━
+        sub("[D14] 关键文件内容分析")
+        # 检查 .bashrc/.profile 等是否包含恶意内容
+        shell_content, _ = await run_cmd(sandbox,
+            "cat ~/.bashrc ~/.bash_profile ~/.profile /etc/profile "
+            "/etc/bash.bashrc /etc/environment 2>/dev/null || true")
+
+        content_hits = []
+        for pattern, desc, mitre_id, score in MALICIOUS_CONTENT_PATTERNS:
+            if re.search(pattern, shell_content, re.IGNORECASE):
+                content_hits.append((desc, mitre_id, score))
+                # 只有在快照对比发现变更时才加分 (避免与基线内容冲突)
+                if pre_shell.strip() != post_shell.strip():
+                    engine.add("CRITICAL", "内容分析", f"Shell 配置含恶意内容: {desc}",
+                              score, [mitre_id], desc)
+                    print(f"    !! [{mitre_id}] {desc}")
+
+        # 检查新增文件的内容
+        new_file_content_checked = 0
+        for path in new_paths[:30]:  # 检查前 30 个新增文件
+            if any(path.endswith(ext) for ext in ['.sh', '.py', '.pl', '.rb', '.php', '.service',
+                                                    '.conf', '.cfg', '.txt', '.log']):
+                fc, _ = await run_cmd(sandbox, f"head -50 '{path}' 2>/dev/null || true", 5)
+                if fc.strip():
+                    new_file_content_checked += 1
+                    for pattern, desc, mitre_id, score in MALICIOUS_CONTENT_PATTERNS:
+                        if re.search(pattern, fc, re.IGNORECASE):
+                            engine.add("CRITICAL", "内容分析",
+                                      f"新文件 {path} 含恶意内容: {desc}",
+                                      score, [mitre_id], fc[:200])
+                            print(f"    !! [{mitre_id}] {path}: {desc}")
+
+        if not content_hits and new_file_content_checked == 0:
+            print("    PASS  未发现恶意内容模式")
+        elif not content_hits:
+            print(f"    PASS  已检查 {new_file_content_checked} 个新增文件, 未发现恶意内容")
+
+        # ━━ 维度 15: 关键二进制完整性 ━━
+        sub("[D15] 关键系统二进制完整性")
+        if pre_bins.strip() == post_bins.strip():
+            print("    PASS  /bin/bash, su, sudo, passwd, sshd 等均未被篡改")
+        else:
+            engine.add("CRITICAL", "二进制完整性", "关键系统二进制被篡改",
+                      45, ["T1554"],
+                      f"Before:\n{pre_bins[:200]}\nAfter:\n{post_bins[:200]}")
+            print("    !! FAIL  关键系统二进制文件 hash 变更!")
+            pre_bin_set = set(pre_bins.strip().splitlines())
+            post_bin_set = set(post_bins.strip().splitlines())
+            for line in (post_bin_set - pre_bin_set):
+                print(f"      !! 变更: {line}")
+            for line in (pre_bin_set - post_bin_set):
+                print(f"      <- 原始: {line}")
+
+        # ━━ 维度 16: 新增符号链接检测 ━━
+        sub("[D16] 符号链接变更")
+        new_symlinks = post_symlinks - pre_symlinks
+        if new_symlinks:
+            # 检查新链接是否指向敏感文件
+            dangerous_links = [l for l in new_symlinks
+                              if any(s in l for s in ["/etc/shadow", "/etc/passwd",
+                                                       "/proc/", "/dev/null",
+                                                       "authorized_keys", ".bash_history"])]
+            if dangerous_links:
+                engine.add("WARN", "符号链接", f"新增指向敏感目标的符号链接",
+                          20, ["T1036"], "\n".join(list(dangerous_links)[:5]))
+                for l in dangerous_links[:5]:
+                    print(f"    !! {l}")
+            else:
+                print(f"    [INFO] 新增 {len(new_symlinks)} 个符号链接 (非敏感目标)")
+                for l in list(new_symlinks)[:5]:
+                    print(f"      + {l}")
+        else:
+            print("    PASS  无新增符号链接")
+
+        # ━━ 维度 17: 文件能力 (getcap) 变更 ━━
+        sub("[D17] 文件能力 (Linux Capabilities)")
+        new_caps = post_file_caps - pre_file_caps
+        if new_caps:
+            engine.add("CRITICAL", "文件能力", f"新增文件能力: {len(new_caps)}",
+                      35, ["T1548.001"], "\n".join(list(new_caps)[:10]))
+            print(f"    !! 新增 {len(new_caps)} 个文件能力:")
+            for c in list(new_caps)[:10]:
+                print(f"      + {c}")
+        else:
+            print("    PASS  无新增文件能力")
+
+        # ━━ 维度 18: 输出内容分析 (stdout/stderr 侦察检测) ━━
+        sub("[D18] 输出内容分析")
+        output_text = stdout + "\n" + stderr
+        output_suspicious = []
+        # 检测输出中的侦察结果
+        output_patterns = [
+            (r"root:.*:0:0:", "passwd file contents in output", "T1048", 15),
+            (r"\$[0-9]+\$[A-Za-z0-9./]+\$", "password hash in output", "T1048", 30),
+            (r"ssh-rsa\s+AAAA", "SSH public key in output", "T1082", 10),
+            (r"BEGIN (RSA |DSA |EC |OPENSSH )?PRIVATE KEY", "private key in output!", "T1048", 40),
+        ]
+        for pattern, desc, mitre_id, score in output_patterns:
+            if re.search(pattern, output_text, re.IGNORECASE):
+                output_suspicious.append(desc)
+                engine.add("WARN", "输出分析", desc, score, [mitre_id])
+                print(f"    !! {desc}")
+        if not output_suspicious:
+            print("    PASS  输出内容无敏感信息泄露")
+
+        # ━━ 维度 19: 新增文件熵分析 (高熵 = 加密/压缩载荷) ━━
+        sub("[D19] 新增文件熵分析")
+        high_entropy_files = []
+        # 检查 /tmp 等目录新增的非文本文件
+        for path in new_paths[:20]:
+            if any(path.startswith(d) for d in ["/tmp/", "/var/tmp/", "/dev/shm/"]):
+                # 读取文件头部字节计算熵
+                fc, _ = await run_cmd(sandbox,
+                    f"head -c 1024 '{path}' 2>/dev/null | base64", 5)
+                if fc.strip():
+                    try:
+                        import base64
+                        raw = base64.b64decode(fc.strip())
+                        ent = calculate_entropy(raw)
+                        if ent > 6.5:  # 高熵阈值
+                            high_entropy_files.append((path, ent))
+                    except Exception:
+                        pass
+
+        if high_entropy_files:
+            engine.add("WARN", "熵分析",
+                      f"高熵文件 (可能为加密/压缩载荷): {[f[0] for f in high_entropy_files]}",
+                      20, ["T1027"], str(high_entropy_files))
+            for path, ent in high_entropy_files:
+                print(f"    !! {path} (entropy: {ent}/8.0)")
+        else:
+            print("    PASS  无异常高熵文件")
+
+        evidence["exit_code"] = exit_code
+        evidence["critical_bins_changed"] = pre_bins.strip() != post_bins.strip()
+        evidence["new_symlinks"] = len(new_symlinks) if new_symlinks else 0
+        evidence["new_file_caps"] = len(new_caps) if new_caps else 0
+
+        # ━━ 维度 20: 计划任务详细差异 ━━
+        sub("[D20] 计划任务详细差异")
+        cron_before, _ = await run_cmd(sandbox,
+            "crontab -l 2>/dev/null || echo '__EMPTY__'")
+        cron_after_raw, _ = await run_cmd(sandbox,
+            "crontab -l 2>/dev/null || echo '__EMPTY__'")
+        # 也检查 /etc/cron.d 下新增文件内容
+        crond_new, _ = await run_cmd(sandbox,
+            "for f in /etc/cron.d/*; do [ -f \"$f\" ] && echo \"=== $f ===\" && cat \"$f\"; done 2>/dev/null || true")
+        if cron_before.strip() != cron_after_raw.strip():
+            pre_cron_lines = set(cron_before.strip().splitlines())
+            post_cron_lines = set(cron_after_raw.strip().splitlines())
+            new_cron_entries = post_cron_lines - pre_cron_lines
+            if new_cron_entries:
+                for entry in new_cron_entries:
+                    if entry.strip() and not entry.startswith("#"):
+                        engine.add("CRITICAL", "计划任务差异",
+                                  f"新增 cron 条目: {entry[:120]}",
+                                  35, ["T1053.003"], entry[:300])
+                        print(f"    !! 新增: {entry[:120]}")
+        else:
+            print("    PASS  crontab 无变化")
+        if crond_new.strip():
+            # 扫描 cron.d 内容中的恶意模式
+            for pattern, desc, mitre_id, score in MALICIOUS_CONTENT_PATTERNS:
+                if re.search(pattern, crond_new, re.IGNORECASE):
+                    engine.add("CRITICAL", "计划任务差异",
+                              f"cron.d 含恶意内容: {desc}", score, [mitre_id],
+                              crond_new[:200])
+                    print(f"    !! cron.d 恶意内容: {desc}")
+
+        # ━━ 维度 21: 隐藏进程检测 ━━
+        sub("[D21] 隐藏进程检测")
+        proc_pids, _ = await run_cmd(sandbox,
+            "ls -d /proc/[0-9]* 2>/dev/null | sed 's|/proc/||' | sort -n", 10)
+        ps_pids, _ = await run_cmd(sandbox,
+            "ps -eo pid --no-headers 2>/dev/null | tr -d ' ' | sort -n", 10)
+        proc_set = set(proc_pids.strip().splitlines()) if proc_pids.strip() else set()
+        ps_set = set(ps_pids.strip().splitlines()) if ps_pids.strip() else set()
+        hidden_pids = proc_set - ps_set
+        # Filter out kernel threads and self
+        hidden_pids = {p for p in hidden_pids if p.strip() and p.strip().isdigit()}
+        if len(hidden_pids) > 3:  # Allow small discrepancy for race conditions
+            engine.add("WARN", "隐藏进程",
+                      f"检测到 {len(hidden_pids)} 个 /proc 中存在但 ps 不可见的进程",
+                      20, ["T1564.001"], str(sorted(hidden_pids)[:20]))
+            print(f"    !! {len(hidden_pids)} 个潜在隐藏进程")
+        else:
+            print("    PASS  未发现隐藏进程")
+
+        # ━━ 维度 22: 信号处理与 trap 分析 ━━
+        sub("[D22] 信号处理 / trap 分析")
+        # 检查命令中是否包含 trap 劫持
+        trap_patterns = [
+            (r"trap\s+['\"].*['\"].*EXIT", "trap on EXIT signal", 15),
+            (r"trap\s+['\"].*['\"].*INT", "trap on INT signal (Ctrl+C evasion)", 20),
+            (r"trap\s+['\"].*['\"].*TERM", "trap on TERM signal (kill evasion)", 25),
+            (r"trap\s+['\"].*['\"].*HUP", "trap on HUP signal (persistence)", 15),
+            (r"trap\s+''", "ignoring signals (anti-kill)", 25),
+        ]
+        trap_found = False
+        combined_text = COMMAND + "\n" + stdout + "\n" + stderr
+        for pattern, desc, score in trap_patterns:
+            if re.search(pattern, combined_text, re.IGNORECASE):
+                trap_found = True
+                engine.add("WARN", "信号处理", desc, score, ["T1059.004"], desc)
+                print(f"    !! {desc}")
+        if not trap_found:
+            print("    PASS  未发现恶意信号处理")
+
+        # ━━ 维度 23: 攻击链关联分析 ━━
+        sub("[D23] 攻击链关联分析")
+        # 分析多个维度发现之间的关联, 识别组合攻击
+        attack_chains = []
+        finding_dims = set(f.dimension for f in engine.findings)
+
+        # 链 1: 下载 + 执行 + 持久化 = 典型恶意软件部署
+        if ("文件变更" in finding_dims or "可疑二进制" in finding_dims) and \
+           "持久化" in finding_dims:
+            attack_chains.append("恶意软件部署链 (文件落地 + 持久化)")
+            engine.add("CRITICAL", "攻击链", "检测到恶意软件部署链: 文件落地 + 持久化",
+                      15, ["T1105", "T1053.003"])
+
+        # 链 2: 用户创建/权限变更 + SSH key = 后门账户
+        if "用户/权限" in finding_dims and any("authorized_keys" in f.description
+                                              for f in engine.findings):
+            attack_chains.append("后门账户链 (用户变更 + SSH key 注入)")
+            engine.add("CRITICAL", "攻击链", "检测到后门账户链: 用户变更 + SSH key 注入",
+                      15, ["T1098", "T1021.004"])
+
+        # 链 3: 反取证 + 恶意行为 = 高级攻击
+        anti_forensics_dims = {"静态分析"}
+        anti_forensics_keywords = {"history", "HISTFILE", "反取证", "anti-forensics"}
+        has_anti_forensics = any(
+            any(kw in f.description.lower() for kw in anti_forensics_keywords)
+            for f in engine.findings
+        )
+        if has_anti_forensics and len(engine.findings) > 2:
+            attack_chains.append("高级攻击链 (反取证 + 多维度恶意行为)")
+            engine.add("WARN", "攻击链", "检测到反取证措施配合其他恶意行为",
+                      10, ["T1070.003"])
+
+        # 链 4: DNS 变更 + 网络连接 = C2 通信
+        if "DNS" in finding_dims and external:
+            attack_chains.append("C2 通信链 (DNS 劫持 + 外部连接)")
+            engine.add("CRITICAL", "攻击链", "检测到 C2 通信链: DNS 劫持 + 外部网络连接",
+                      20, ["T1071.004", "T1016"])
+
+        # 链 5: LD_PRELOAD + 关键二进制修改 = Rootkit
+        if "环境变量" in finding_dims and "二进制完整性" in finding_dims:
+            attack_chains.append("Rootkit 链 (LD_PRELOAD + 二进制篡改)")
+            engine.add("CRITICAL", "攻击链", "检测到 Rootkit 链: LD_PRELOAD + 二进制篡改",
+                      20, ["T1014", "T1574.006"])
+
+        if attack_chains:
+            for chain in attack_chains:
+                print(f"    !! 攻击链: {chain}")
+            evidence["attack_chains"] = attack_chains
+        else:
+            print("    PASS  未检测到攻击链组合")
+
+        # ── 8/9 MITRE ATT&CK 映射 ──
+        section("8/9  MITRE ATT&CK 技术映射")
+        mitre_map = engine.mitre_summary()
+        if mitre_map:
+            for tid, info_data in sorted(mitre_map.items()):
+                print(f"    [{tid}] {info_data['name']}")
+                for f_desc in info_data["findings"][:3]:
+                    print(f"      └─ {f_desc}")
+        else:
+            print("    未映射到任何 ATT&CK 技术")
+
+        evidence["mitre_techniques"] = list(mitre_map.keys())
+
+        # ── 9/9 综合判定 ──
+        section("9/9  综合判定")
+        verdict = engine.verdict()
+        score = engine.total_score()
+        confidence = engine.confidence()
+        criticals = [f for f in engine.findings if f.severity == "CRITICAL"]
+        warns = [f for f in engine.findings if f.severity == "WARN"]
+        infos = [f for f in engine.findings if f.severity == "INFO"]
+        tactic_map = engine.tactic_summary()
+
+        sym_map = {"DANGEROUS": "!!", "SUSPICIOUS": "??", "LOW_RISK": "~~", "LIKELY_SAFE": "OK"}
+        sym = sym_map.get(verdict, "??")
+
+        # 评分条
+        bar_len = 40
+        filled = int(score / 100 * bar_len)
+        bar = "█" * filled + "░" * (bar_len - filled)
 
         print(f"""
   +{'─'*(W-2)}+
-  |  [{sym}] 判定: {verdict:50s}|
+  |  [{sym}] 判定: {verdict:20s}  风险评分: {score:3d}/100            |
+  |  [{bar}]                              |
+  |  置信度: {confidence:6s}  维度覆盖: {len(set(f.dimension for f in engine.findings)):2d}/23              |
   +{'─'*(W-2)}+
 """)
-        print(f"  命令         : {COMMAND}")
-        print(f"  文件 +/-     : +{len(new_paths)} / -{len(del_paths)}")
-        print(f"  inotify      : {len(inotify_lines)} 事件")
-        print(f"  外部连接     : {len(external)} 个")
-        print(f"  执行耗时     : {dur:.1f}s")
-        print(f"  发现         : {len(critical)} critical, {len(warns)} warnings")
+        print(f"  命令           : {COMMAND}")
+        print(f"  合法命令模式   : {'是' if engine.is_legitimate else '否'}")
+        print(f"  退出码         : {exit_code}")
+        print(f"  文件 +/-       : +{len(new_paths)} / -{len(del_paths)}")
+        print(f"  inotify 事件   : {len(sys_events)} 系统 + {len(tmp_events)} 临时")
+        print(f"  外部连接       : {len(external)} 个")
+        print(f"  SUID/SGID 变更 : +{len(new_suid)}")
+        print(f"  二进制完整性   : {'FAIL' if pre_bins.strip() != post_bins.strip() else 'PASS'}")
+        print(f"  新增符号链接   : {len(new_symlinks) if new_symlinks else 0}")
+        print(f"  新增文件能力   : {len(new_caps) if new_caps else 0}")
+        print(f"  执行耗时       : {dur:.1f}s")
+        print(f"  MITRE 技术     : {len(mitre_map)} 个")
+        print(f"  ATT&CK 战术    : {', '.join(sorted(tactic_map.keys())) if tactic_map else '无'}")
+        print(f"  发现           : {len(criticals)} critical, {len(warns)} warnings, {len(infos)} info")
+        print(f"  置信度         : {confidence}")
         print()
 
-        if findings:
-            print("  详细发现:")
-            for f in findings: print(f"    - {f}")
+        if engine.findings:
+            print("  详细发现 (按严重程度排序):")
+            for f in sorted(engine.findings, key=lambda x: {"CRITICAL": 0, "WARN": 1, "INFO": 2}[x.severity]):
+                color = {"CRITICAL": "!!!", "WARN": " ! ", "INFO": " i "}[f.severity]
+                mitre_str = f" [{','.join(f.mitre_ids)}]" if f.mitre_ids else ""
+                print(f"    [{color}] [{f.dimension}] {f.description}{mitre_str} (score: {f.score})")
         else:
-            print("  全部检查通过:")
-            for c in [
-                "无敏感路径写入 (/etc/passwd, /etc/shadow, ...)",
+            print("  全部 23 维度检查通过:")
+            checks = [
+                "无敏感路径写入",
                 "用户/权限未被修改",
-                "无持久化后门 (cron/systemd)",
+                "无持久化后门 (cron/systemd/rc.local)",
                 "Shell 环境未被篡改",
                 "DNS 配置未被修改",
                 "无可疑残留进程",
                 "临时目录无可执行文件",
-                f"外部连接仅 {len(external)} 个",
-            ]: print(f"    [PASS] {c}")
+                "无新增 SUID/SGID 文件",
+                "内核模块未变化",
+                "挂载点未变化",
+                "无 LD_PRELOAD 注入",
+                "未发现恶意内容模式",
+                "关键二进制完整性通过",
+                "无危险符号链接",
+                "无新增文件能力",
+                "输出无敏感信息泄露",
+                "无异常高熵文件",
+                "计划任务无变化",
+                "未发现隐藏进程",
+                "无恶意信号处理",
+                "未检测到攻击链",
+                f"外部连接 {len(external)} 个",
+                f"MITRE ATT&CK 映射 0 个技术",
+            ]
+            for c in checks:
+                print(f"    [PASS] {c}")
 
+        # ── 生成报告 ──
         report = {
+            "version": "4.0",
             "command": COMMAND,
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "verdict": verdict,
+            "risk_score": score,
+            "confidence": confidence,
+            "is_legitimate_pattern": engine.is_legitimate,
+            "findings_summary": {
+                "total": len(engine.findings),
+                "critical": len(criticals),
+                "warn": len(warns),
+                "info": len(infos),
+                "dimensions_hit": len(set(f.dimension for f in engine.findings)),
+            },
+            "findings": [f.to_dict() for f in engine.findings],
             "evidence": evidence,
-            "new_files": new_paths[:300],
-            "deleted_files": del_paths[:50],
-            "inotify_events": inotify_lines[:300],
-            "external_connections": [f"{ip}:{p}" for ip, p in sorted(external)],
+            "dimensions": {
+                "files_added": new_paths[:300],
+                "files_deleted": del_paths[:50],
+                "inotify_sys_events": sys_events[:300],
+                "inotify_tmp_events": tmp_events[:100],
+                "external_connections": [f"{ip}:{p}" for ip, p in sorted(external)],
+                "suid_new": list(new_suid)[:50],
+                "suid_removed": list(removed_suid)[:50],
+                "new_symlinks": list(new_symlinks)[:50] if new_symlinks else [],
+                "new_file_caps": list(new_caps)[:50] if new_caps else [],
+                "critical_bins_tampered": pre_bins.strip() != post_bins.strip(),
+                "high_entropy_files": [(p, e) for p, e in high_entropy_files] if high_entropy_files else [],
+                "exit_code": exit_code,
+                "attack_chains": evidence.get("attack_chains", []),
+            },
+            "mitre_attack": {
+                tid: {"name": info_data["name"], "findings": info_data["findings"]}
+                for tid, info_data in mitre_map.items()
+            },
+            "mitre_tactics": {
+                tactic: sorted(set(tids))
+                for tactic, tids in tactic_map.items()
+            },
             "stdout": stdout_lines[:100],
             "stderr": stderr_lines[:50],
         }

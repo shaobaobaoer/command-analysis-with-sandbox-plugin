@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-#  批量安全检测 + 自动 Git 提交
+#  批量安全检测 + 自动 Git 提交 (v4 — 配合 Behavioral Analysis Engine v4)
 #
 #  用法:
 #    chmod +x run_all.sh && ./run_all.sh
@@ -10,6 +10,7 @@
 #    ./run_all.sh black          # 只跑黑样本
 #    ./run_all.sh white:w01      # 只跑指定 ID
 #    ./run_all.sh --no-commit    # 不自动提交
+#    ./run_all.sh --retry N      # 失败重试次数 (默认 1)
 #
 #  环境变量:
 #    SANDBOX_PORT    — 服务端口 (默认 8080)
@@ -31,13 +32,18 @@ fail()  { echo -e "${RED}[FAIL]${NC} $*"; }
 # ─── 解析参数 ────────────────────────────────────────────
 FILTER="${1:-all}"
 AUTO_COMMIT=true
-for arg in "$@"; do
-    [ "$arg" = "--no-commit" ] && AUTO_COMMIT=false
+MAX_RETRY=1
+args=("$@")
+for i in "${!args[@]}"; do
+    [ "${args[$i]}" = "--no-commit" ] && AUTO_COMMIT=false
+    if [ "${args[$i]}" = "--retry" ] && [ -n "${args[$((i+1))]:-}" ]; then
+        MAX_RETRY="${args[$((i+1))]}"
+    fi
 done
 
 echo ""
 echo -e "${BOLD}============================================"
-echo "  Command Safety Batch Analyzer"
+echo "  Command Safety Batch Analyzer v4"
 echo -e "============================================${NC}"
 echo ""
 
@@ -49,7 +55,6 @@ command -v python3 &>/dev/null || { fail "Python3 未安装"; exit 1; }
 chmod +x "$CHECKER"
 
 # ─── 环境准备 (只做一次) ──────────────────────────────────
-# 启动 server 的工作交给 checker.sh, 但镜像预拉取可以提前做
 info "预检查 Docker 镜像..."
 REGISTRY_MIRROR="${REGISTRY_MIRROR:-}"
 if [ -n "$REGISTRY_MIRROR" ]; then
@@ -101,7 +106,6 @@ case "$FILTER" in
         category="${FILTER%%:*}"
         target_id="${FILTER##*:}"
         add_samples "${SAMPLES_DIR}/${category}.jsonl" "$category"
-        # 过滤到指定 ID
         FILTERED=()
         for job in "${JOBS[@]}"; do
             job_id=$(echo "$job" | cut -d'|' -f2)
@@ -123,7 +127,7 @@ echo ""
 PASS=0; FAIL_COUNT=0; ERROR=0
 SUMMARY_FILE="${REPORTS_DIR}/summary.jsonl"
 
-# 清空旧 summary (当前批次)
+# 清空旧 summary
 > "$SUMMARY_FILE"
 
 for i in "${!JOBS[@]}"; do
@@ -140,38 +144,51 @@ for i in "${!JOBS[@]}"; do
     info "命令: ${command}"
     echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-    # 调用 checker.sh, 传入命令和报告目录
     export COMMAND="$command"
     export REPORT_DIR="$report_dir"
     export SANDBOX_IMAGE EXECD_IMAGE REGISTRY_MIRROR
 
-    if bash "$CHECKER" > "$log_file" 2>&1; then
-        checker_exit=0
-    else
-        checker_exit=$?
-    fi
+    # 带重试的执行
+    checker_exit=1
+    for attempt in $(seq 1 "$MAX_RETRY"); do
+        if [ "$attempt" -gt 1 ]; then
+            warn "[${id}] 重试 (${attempt}/${MAX_RETRY})..."
+        fi
+        if bash "$CHECKER" > "$log_file" 2>&1; then
+            checker_exit=0
+            break
+        else
+            checker_exit=$?
+            if [ "$attempt" -lt "$MAX_RETRY" ]; then
+                sleep 2
+            fi
+        fi
+    done
 
-    # 找到最新生成的报告, 重命名为 {id}.json
+    # 找到最新报告并重命名
     latest_report=$(ls -t "${report_dir}"/safety_report_*.json 2>/dev/null | head -1)
     if [ -n "$latest_report" ] && [ -f "$latest_report" ]; then
         mv "$latest_report" "$report_file"
         verdict=$(python3 -c "import json; print(json.load(open('${report_file}'))['verdict'])" 2>/dev/null || echo "UNKNOWN")
+        risk_score=$(python3 -c "import json; print(json.load(open('${report_file}')).get('risk_score', -1))" 2>/dev/null || echo "-1")
+        mitre_count=$(python3 -c "import json; r=json.load(open('${report_file}')); print(len(r.get('mitre_attack', {})))" 2>/dev/null || echo "0")
+        confidence=$(python3 -c "import json; print(json.load(open('${report_file}')).get('confidence', 'N/A'))" 2>/dev/null || echo "N/A")
     else
         verdict="ERROR"
-        echo "{\"command\":\"${command}\",\"verdict\":\"ERROR\",\"error\":\"checker failed with exit ${checker_exit}\"}" > "$report_file"
+        risk_score="-1"
+        mitre_count="0"
+        confidence="N/A"
+        echo "{\"command\":\"${command}\",\"verdict\":\"ERROR\",\"risk_score\":-1,\"error\":\"checker failed with exit ${checker_exit} after ${MAX_RETRY} attempts\"}" > "$report_file"
     fi
 
     # 判断检测结果是否符合预期
-    expected="LIKELY_SAFE"
-    [ "$label" = "malicious" ] && expected="DANGEROUS"
-
-    if [ "$label" = "safe" ] && [ "$verdict" = "LIKELY_SAFE" ]; then
+    if [ "$label" = "safe" ] && { [ "$verdict" = "LIKELY_SAFE" ] || [ "$verdict" = "LOW_RISK" ]; }; then
         match="CORRECT"
-        ok "[${id}] 预期=safe, 实际=${verdict} -> 正确"
+        ok "[${id}] 预期=safe, 实际=${verdict} (score:${risk_score}) -> 正确"
         PASS=$((PASS + 1))
     elif [ "$label" = "malicious" ] && { [ "$verdict" = "DANGEROUS" ] || [ "$verdict" = "SUSPICIOUS" ]; }; then
         match="CORRECT"
-        ok "[${id}] 预期=malicious, 实际=${verdict} -> 正确"
+        ok "[${id}] 预期=malicious, 实际=${verdict} (score:${risk_score}) -> 正确"
         PASS=$((PASS + 1))
     elif [ "$verdict" = "ERROR" ]; then
         match="ERROR"
@@ -179,18 +196,17 @@ for i in "${!JOBS[@]}"; do
         ERROR=$((ERROR + 1))
     else
         match="WRONG"
-        warn "[${id}] 预期=${label}, 实际=${verdict} -> 误判!"
+        warn "[${id}] 预期=${label}, 实际=${verdict} (score:${risk_score}) -> 误判!"
         FAIL_COUNT=$((FAIL_COUNT + 1))
     fi
 
-    # 写入 summary
-    echo "{\"id\":\"${id}\",\"category\":\"${category}\",\"label\":\"${label}\",\"desc\":\"${desc}\",\"verdict\":\"${verdict}\",\"match\":\"${match}\"}" >> "$SUMMARY_FILE"
+    echo "{\"id\":\"${id}\",\"category\":\"${category}\",\"label\":\"${label}\",\"desc\":\"${desc}\",\"verdict\":\"${verdict}\",\"risk_score\":${risk_score},\"mitre_count\":${mitre_count},\"confidence\":\"${confidence}\",\"match\":\"${match}\"}" >> "$SUMMARY_FILE"
 done
 
 # ─── 汇总报告 ────────────────────────────────────────────
 echo ""
 echo -e "${BOLD}======================================================================${NC}"
-echo -e "${BOLD}  批量检测完成${NC}"
+echo -e "${BOLD}  批量检测完成 — Behavioral Analysis Engine v4${NC}"
 echo -e "${BOLD}======================================================================${NC}"
 echo ""
 echo "  总样本   : ${TOTAL}"
@@ -203,13 +219,50 @@ echo "  详细结果 : ${SUMMARY_FILE}"
 echo ""
 
 # 打印 summary 表格
-echo "  ID     Category  Label      Verdict       Match"
-echo "  ─────  ────────  ─────────  ────────────  ──────"
+echo "  ID     Category  Label      Verdict       Score  MITRE  Conf    Match"
+echo "  ─────  ────────  ─────────  ────────────  ─────  ─────  ──────  ──────"
 while IFS= read -r line; do
-    sid=$(echo "$line" | python3 -c "import sys,json; d=json.loads(sys.stdin.read()); print(f\"  {d['id']:<6s} {d['category']:<9s} {d['label']:<10s} {d['verdict']:<13s} {d['match']}\")")
+    sid=$(echo "$line" | python3 -c "
+import sys,json
+d=json.loads(sys.stdin.read())
+print(f\"  {d['id']:<6s} {d['category']:<9s} {d['label']:<10s} {d['verdict']:<13s} {d.get('risk_score','?'):>5s}  {d.get('mitre_count','?'):>5s}  {d.get('confidence','N/A'):<6s}  {d['match']}\")
+" 2>/dev/null || echo "  [parse error]")
     echo "$sid"
 done < "$SUMMARY_FILE"
 echo ""
+
+# ─── 分析白/黑样本性能 ────────────────────────────────────
+if [ "$FILTER" = "all" ] && [ "$TOTAL" -gt 0 ]; then
+    echo -e "${BOLD}  性能分析:${NC}"
+    python3 -c "
+import json, sys
+rows = [json.loads(l) for l in open('${SUMMARY_FILE}') if l.strip()]
+safe = [r for r in rows if r['label'] == 'safe']
+mal  = [r for r in rows if r['label'] == 'malicious']
+
+safe_correct = sum(1 for r in safe if r['match'] == 'CORRECT')
+mal_correct  = sum(1 for r in mal if r['match'] == 'CORRECT')
+
+# 计算误报率和漏报率
+fp = sum(1 for r in safe if r['match'] == 'WRONG')    # False Positive: safe 被判恶意
+fn = sum(1 for r in mal if r['match'] == 'WRONG')     # False Negative: malicious 被判安全
+
+print(f'    白样本准确率 : {safe_correct}/{len(safe)} ({safe_correct/len(safe)*100:.0f}%)' if safe else '    白样本: N/A')
+print(f'    黑样本准确率 : {mal_correct}/{len(mal)} ({mal_correct/len(mal)*100:.0f}%)' if mal else '    黑样本: N/A')
+print(f'    误报率 (FPR) : {fp}/{len(safe)} ({fp/len(safe)*100:.0f}%)' if safe else '')
+print(f'    漏报率 (FNR) : {fn}/{len(mal)} ({fn/len(mal)*100:.0f}%)' if mal else '')
+print()
+
+# 平均风险评分
+safe_scores = [r['risk_score'] for r in safe if r.get('risk_score', -1) >= 0]
+mal_scores  = [r['risk_score'] for r in mal if r.get('risk_score', -1) >= 0]
+if safe_scores:
+    print(f'    白样本平均风险分 : {sum(safe_scores)/len(safe_scores):.1f}/100')
+if mal_scores:
+    print(f'    黑样本平均风险分 : {sum(mal_scores)/len(mal_scores):.1f}/100')
+" 2>/dev/null || true
+    echo ""
+fi
 
 # ─── Git 提交 ────────────────────────────────────────────
 if [ "$AUTO_COMMIT" = true ] && [ -d "${SCRIPT_DIR}/.git" ]; then
@@ -220,7 +273,7 @@ if [ "$AUTO_COMMIT" = true ] && [ -d "${SCRIPT_DIR}/.git" ]; then
     git add README.md 2>/dev/null || true
 
     TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
-    COMMIT_MSG="batch: ${TOTAL} samples (${PASS} correct, ${FAIL_COUNT} wrong, ${ERROR} error) @ ${TIMESTAMP}"
+    COMMIT_MSG="batch-v4: ${TOTAL} samples (${PASS} correct, ${FAIL_COUNT} wrong, ${ERROR} error) @ ${TIMESTAMP}"
 
     if git diff --cached --quiet; then
         info "无新变更, 跳过提交"
@@ -228,7 +281,6 @@ if [ "$AUTO_COMMIT" = true ] && [ -d "${SCRIPT_DIR}/.git" ]; then
         git commit -m "$COMMIT_MSG"
         ok "已提交: ${COMMIT_MSG}"
 
-        # 推送
         if git remote get-url origin &>/dev/null; then
             info "推送到 origin..."
             if git push -u origin main 2>/dev/null || git push -u origin master 2>/dev/null; then
