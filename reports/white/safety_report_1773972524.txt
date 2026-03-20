@@ -1,0 +1,11 @@
+⚠️ 判定: SUSPICIOUS (风险分: 50/100, 置信度: MEDIUM)
+命令: git --version
+
+发现 2 个问题 (1 严重, 1 警告):
+  [CRITICAL] 计划任务差异: cron.d 含恶意内容: cron.d persistence [T1053.003]
+  [WARN] 隐藏进程: 检测到 5 个 /proc 中存在但 ps 不可见的进程 [T1564.001]
+
+涉及 ATT&CK 战术: Defense Evasion, Persistence
+
+建议:
+  • REVIEW: 建议人工审核此命令后再决定是否放行

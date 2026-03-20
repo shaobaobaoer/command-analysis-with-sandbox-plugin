@@ -1,0 +1,246 @@
+{
+  "version": "4.1",
+  "command": "echo 'hello world'",
+  "timestamp": "2026-03-20T02:18:28.707486+00:00",
+  "verdict": "SUSPICIOUS",
+  "risk_score": 50,
+  "confidence": "MEDIUM",
+  "recommendations": [
+    "REVIEW: 建议人工审核此命令后再决定是否放行"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 2,
+    "critical": 1,
+    "warn": 1,
+    "info": 0,
+    "dimensions_hit": 2
+  },
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "dimension": "计划任务差异",
+      "description": "cron.d 含恶意内容: cron.d persistence",
+      "risk_score": 30,
+      "mitre_attack": [
+        {
+          "id": "T1053.003",
+          "name": "Scheduled Task/Job: Cron"
+        }
+      ],
+      "evidence": "=== /etc/cron.d/e2scrub_all ===\n30 3 * * 0 root test -e /run/systemd/system || SERVICE_MODE=1 /usr/lib/x86_64-linux-gnu/e2fsprogs/e2scrub_all_cron\n10 3 * * * root test -e /run/systemd/system || SERVIC"
+    },
+    {
+      "severity": "WARN",
+      "dimension": "隐藏进程",
+      "description": "检测到 5 个 /proc 中存在但 ps 不可见的进程",
+      "risk_score": 20,
+      "mitre_attack": [
+        {
+          "id": "T1564.001",
+          "name": "Hide Artifacts: Hidden Files and Directories"
+        }
+      ],
+      "evidence": "['1677', '1681', '1682', '1683', '1684']"
+    }
+  ],
+  "evidence": {
+    "stdout_lines": 1,
+    "stderr_lines": 0,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 0,
+    "files_deleted": 0,
+    "inotify_sys_events": 0,
+    "inotify_tmp_events": 5110,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1053.003",
+      "T1564.001"
+    ]
+  },
+  "dimensions": {
+    "files_added": [],
+    "files_deleted": [],
+    "inotify_sys_events": [],
+    "inotify_tmp_events": [
+      "2026-03-20T02:17:50 CREATE /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX",
+      "2026-03-20T02:17:50 MODIFY /tmp/sorturxQrX"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": []
+  },
+  "mitre_attack": {
+    "T1053.003": {
+      "name": "Scheduled Task/Job: Cron",
+      "findings": [
+        "cron.d 含恶意内容: cron.d persistence"
+      ]
+    },
+    "T1564.001": {
+      "name": "Hide Artifacts: Hidden Files and Directories",
+      "findings": [
+        "检测到 5 个 /proc 中存在但 ps 不可见的进程"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Persistence": [
+      "T1053.003"
+    ],
+    "Defense Evasion": [
+      "T1564.001"
+    ]
+  },
+  "deobfuscation": {
+    "original": "echo 'hello world'",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773973039",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773973063",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773973064",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773973109",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [
+    "hello world"
+  ],
+  "stderr": [],
+  "text_summary": "⚠️ 判定: SUSPICIOUS (风险分: 50/100, 置信度: MEDIUM)\n命令: echo 'hello world'\n\n发现 2 个问题 (1 严重, 1 警告):\n  [CRITICAL] 计划任务差异: cron.d 含恶意内容: cron.d persistence [T1053.003]\n  [WARN] 隐藏进程: 检测到 5 个 /proc 中存在但 ps 不可见的进程 [T1564.001]\n\n涉及 ATT&CK 战术: Defense Evasion, Persistence\n\n建议:\n  • REVIEW: 建议人工审核此命令后再决定是否放行",
+  "fast_triage": {
+    "level": "PASS",
+    "static_score": 0,
+    "is_legitimate": false,
+    "blacklisted": false,
+    "patterns_matched": 0,
+    "matches": [],
+    "deobfuscation_layers": 0
+  }
+}

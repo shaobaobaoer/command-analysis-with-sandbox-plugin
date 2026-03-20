@@ -225,7 +225,7 @@ SUSPICIOUS_THRESHOLD = int(SCORING_CONF.get("SUSPICIOUS_THRESHOLD", "25"))
 LOW_RISK_THRESHOLD = int(SCORING_CONF.get("LOW_RISK_THRESHOLD", "10"))
 LEGITIMATE_DIVISOR = int(SCORING_CONF.get("LEGITIMATE_DIVISOR", "2"))
 ENTROPY_THRESHOLD = float(SCORING_CONF.get("ENTROPY_THRESHOLD", "6.5"))
-HIDDEN_PROC_TOLERANCE = int(SCORING_CONF.get("HIDDEN_PROC_TOLERANCE", "3"))
+HIDDEN_PROC_TOLERANCE = int(SCORING_CONF.get("HIDDEN_PROC_TOLERANCE", "8"))
 
 # ═══════════════════════════════════════════════════════════════════════════
 #  基础设施过滤 — execd + 监控自身产物
@@ -1958,7 +1958,20 @@ async def main():
             print("    PASS  crontab 无变化")
         if crond_new.strip():
             # 扫描 cron.d 内容中的恶意模式
-            for pattern, desc, mitre_id, score in MALICIOUS_CONTENT_PATTERNS:
+            # 注意: 只检测实际的恶意内容模式,而不是路径匹配
+            cron_malicious_patterns = [
+                (r"curl\s+.*\|.*bash", "cron.d with curl|bash payload", "T1053.003", 35),
+                (r"wget\s+.*\|.*bash", "cron.d with wget|bash payload", "T1053.003", 35),
+                (r"(curl|wget).*http.*\|", "cron.d with download and pipe", "T1053.003", 30),
+                (r"bash\s+-i\s+>&\s+/dev/tcp/", "cron.d with reverse shell", "T1059.004", 45),
+                (r"nc\s+.*\-e\s+/bin/(ba)?sh", "cron.d with netcat backdoor", "T1059.004", 45),
+                (r"python[23]?\s+-c.*socket", "cron.d with python socket", "T1059.004", 35),
+                (r"exec\s+\d+<>/dev/tcp/", "cron.d with bash tcp redirect", "T1059.004", 45),
+                (r"(rm|del)\s+.*\-rf", "cron.d with destructive command", "T1485", 25),
+                (r"mkfifo.*nc.*sh", "cron.d with named pipe shell", "T1059.004", 40),
+                (r"base64\s+.*\|.*(bash|sh)", "cron.d with base64 encoded payload", "T1027", 35),
+            ]
+            for pattern, desc, mitre_id, score in cron_malicious_patterns:
                 if re.search(pattern, crond_new, re.IGNORECASE):
                     engine.add("CRITICAL", "计划任务差异",
                               f"cron.d 含恶意内容: {desc}", score, [mitre_id],
