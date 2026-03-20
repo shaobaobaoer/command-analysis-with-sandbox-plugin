@@ -1,0 +1,409 @@
+{
+  "version": "4.1",
+  "command": "apt-get update -qq && apt-get install -y -qq jq",
+  "timestamp": "2026-03-20T02:33:59.319405+00:00",
+  "verdict": "DANGEROUS",
+  "risk_score": 85,
+  "confidence": "HIGH",
+  "recommendations": [
+    "BLOCK: 强烈建议阻止此命令执行",
+    "检查 crontab -l、/etc/cron.d/、systemd services 是否被篡改",
+    "多维度攻击已确认, 建议全面安全审计"
+  ],
+  "is_legitimate_pattern": true,
+  "findings_summary": {
+    "total": 3,
+    "critical": 3,
+    "warn": 0,
+    "info": 0,
+    "dimensions_hit": 3
+  },
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "dimension": "文件变更",
+      "description": "敏感路径写入: ['/etc/ld.so.cache']",
+      "risk_score": 35,
+      "mitre_attack": [
+        {
+          "id": "T1222.002",
+          "name": "File/Dir Permissions Modification: Linux"
+        }
+      ],
+      "evidence": "['/etc/ld.so.cache']"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "持久化",
+      "description": "持久化机制被修改 (cron/systemd/rc.local)",
+      "risk_score": 35,
+      "mitre_attack": [
+        {
+          "id": "T1053.003",
+          "name": "Scheduled Task/Job: Cron"
+        },
+        {
+          "id": "T1543.002",
+          "name": "Create/Modify System Process: Systemd Service"
+        },
+        {
+          "id": "T1037.004",
+          "name": "Boot/Logon Init Scripts: RC Scripts"
+        }
+      ]
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "攻击链",
+      "description": "检测到恶意软件部署链: 文件落地 + 持久化",
+      "risk_score": 15,
+      "mitre_attack": [
+        {
+          "id": "T1105",
+          "name": "Ingress Tool Transfer"
+        },
+        {
+          "id": "T1053.003",
+          "name": "Scheduled Task/Job: Cron"
+        }
+      ]
+    }
+  ],
+  "evidence": {
+    "command_chain": {
+      "stages": 2,
+      "connectors": [
+        "&&",
+        "END"
+      ],
+      "safe_then_evil": false
+    },
+    "stdout_lines": 35,
+    "stderr_lines": 1,
+    "exec_duration_sec": 6.6,
+    "external_connections": [
+      "185.125.190.83:80",
+      "91.189.92.23:80",
+      "91.189.92.24:80"
+    ],
+    "c2_port_hits": [],
+    "files_added": 31,
+    "files_deleted": 11,
+    "inotify_sys_events": 9,
+    "inotify_tmp_events": 12866,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "attack_chains": [
+      "恶意软件部署链 (文件落地 + 持久化)"
+    ],
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1222.002",
+      "T1053.003",
+      "T1543.002",
+      "T1037.004",
+      "T1105"
+    ]
+  },
+  "dimensions": {
+    "files_added": [
+      "/etc/ld.so.cache",
+      "/usr/bin/jq",
+      "/usr/lib/x86_64-linux-gnu/libjq.so.1.0.4",
+      "/usr/lib/x86_64-linux-gnu/libonig.so.5.4.0",
+      "/usr/share/doc/jq/copyright",
+      "/usr/share/doc/libjq1/changelog.Debian.gz",
+      "/usr/share/doc/libjq1/copyright",
+      "/usr/share/doc/libonig5/changelog.Debian.gz",
+      "/usr/share/doc/libonig5/copyright",
+      "/var/cache/ldconfig/aux-cache",
+      "/var/lib/apt/extended_states",
+      "/var/lib/dpkg/info/jq.list",
+      "/var/lib/dpkg/info/jq.md5sums",
+      "/var/lib/dpkg/info/libjq1:amd64.list",
+      "/var/lib/dpkg/info/libjq1:amd64.md5sums",
+      "/var/lib/dpkg/info/libjq1:amd64.shlibs",
+      "/var/lib/dpkg/info/libjq1:amd64.symbols",
+      "/var/lib/dpkg/info/libjq1:amd64.triggers",
+      "/var/lib/dpkg/info/libonig5:amd64.list",
+      "/var/lib/dpkg/info/libonig5:amd64.md5sums",
+      "/var/lib/dpkg/info/libonig5:amd64.shlibs",
+      "/var/lib/dpkg/info/libonig5:amd64.symbols",
+      "/var/lib/dpkg/info/libonig5:amd64.triggers",
+      "/var/lib/dpkg/lock",
+      "/var/lib/dpkg/status",
+      "/var/lib/dpkg/status-old",
+      "/var/lib/dpkg/triggers/Lock",
+      "/var/log/apt/eipp.log.xz",
+      "/var/log/apt/history.log",
+      "/var/log/apt/term.log",
+      "/var/log/dpkg.log"
+    ],
+    "files_deleted": [
+      "/etc/ld.so.cache",
+      "/var/cache/ldconfig/aux-cache",
+      "/var/lib/apt/extended_states",
+      "/var/lib/dpkg/lock",
+      "/var/lib/dpkg/status",
+      "/var/lib/dpkg/status-old",
+      "/var/lib/dpkg/triggers/Lock",
+      "/var/log/apt/eipp.log.xz",
+      "/var/log/apt/history.log",
+      "/var/log/apt/term.log",
+      "/var/log/dpkg.log"
+    ],
+    "inotify_sys_events": [
+      "2026-03-20T02:33:11 CREATE /usr/bin/jq.dpkg-new",
+      "2026-03-20T02:33:11 MODIFY /usr/bin/jq.dpkg-new",
+      "2026-03-20T02:33:11 ATTRIB /usr/bin/jq.dpkg-new",
+      "2026-03-20T02:33:11 ATTRIB /usr/bin/jq.dpkg-new",
+      "2026-03-20T02:33:11 MOVED_TO /usr/bin/jq",
+      "2026-03-20T02:33:11 CREATE /etc/ld.so.cache~",
+      "2026-03-20T02:33:11 MODIFY /etc/ld.so.cache~",
+      "2026-03-20T02:33:11 ATTRIB /etc/ld.so.cache~",
+      "2026-03-20T02:33:11 MOVED_TO /etc/ld.so.cache"
+    ],
+    "inotify_tmp_events": [
+      "2026-03-20T02:33:06 CREATE /tmp/apt.conf.fHSlOO",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.conf.fHSlOO",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.conf.fHSlOO",
+      "2026-03-20T02:33:06 CREATE /tmp/apt.sig.hVWzSZ",
+      "2026-03-20T02:33:06 CREATE /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA",
+      "2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA"
+    ],
+    "external_connections": [
+      "185.125.190.83:80",
+      "91.189.92.23:80",
+      "91.189.92.24:80"
+    ],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": [
+      "恶意软件部署链 (文件落地 + 持久化)"
+    ]
+  },
+  "mitre_attack": {
+    "T1222.002": {
+      "name": "File/Dir Permissions Modification: Linux",
+      "findings": [
+        "敏感路径写入: ['/etc/ld.so.cache']"
+      ]
+    },
+    "T1053.003": {
+      "name": "Scheduled Task/Job: Cron",
+      "findings": [
+        "持久化机制被修改 (cron/systemd/rc.local)",
+        "检测到恶意软件部署链: 文件落地 + 持久化"
+      ]
+    },
+    "T1543.002": {
+      "name": "Create/Modify System Process: Systemd Service",
+      "findings": [
+        "持久化机制被修改 (cron/systemd/rc.local)"
+      ]
+    },
+    "T1037.004": {
+      "name": "Boot/Logon Init Scripts: RC Scripts",
+      "findings": [
+        "持久化机制被修改 (cron/systemd/rc.local)"
+      ]
+    },
+    "T1105": {
+      "name": "Ingress Tool Transfer",
+      "findings": [
+        "检测到恶意软件部署链: 文件落地 + 持久化"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Unknown": [
+      "T1222.002"
+    ],
+    "Persistence": [
+      "T1037.004",
+      "T1053.003",
+      "T1543.002"
+    ],
+    "Command and Control": [
+      "T1105"
+    ]
+  },
+  "deobfuscation": {
+    "original": "apt-get update -qq && apt-get install -y -qq jq",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773973964",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773973986",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773973993",
+      "desc": "命令执行结束 (耗时 6.6s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773974039",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [
+    "Selecting previously unselected package libonig5:amd64.",
+    "(Reading database ... ",
+    "(Reading database ... 5%",
+    "(Reading database ... 10%",
+    "(Reading database ... 15%",
+    "(Reading database ... 20%",
+    "(Reading database ... 25%",
+    "(Reading database ... 30%",
+    "(Reading database ... 35%",
+    "(Reading database ... 40%",
+    "(Reading database ... 45%",
+    "(Reading database ... 50%",
+    "(Reading database ... 55%",
+    "(Reading database ... 60%",
+    "(Reading database ... 65%",
+    "(Reading database ... 70%",
+    "(Reading database ... 75%",
+    "(Reading database ... 80%",
+    "(Reading database ... 85%",
+    "(Reading database ... 90%",
+    "(Reading database ... 95%",
+    "(Reading database ... 100%",
+    "(Reading database ... 35718 files and directories currently installed.)",
+    "Preparing to unpack .../libonig5_6.9.9-1build1_amd64.deb ...",
+    "Unpacking libonig5:amd64 (6.9.9-1build1) ...",
+    "Selecting previously unselected package libjq1:amd64.",
+    "Preparing to unpack .../libjq1_1.7.1-3ubuntu0.24.04.1_amd64.deb ...",
+    "Unpacking libjq1:amd64 (1.7.1-3ubuntu0.24.04.1) ...",
+    "Selecting previously unselected package jq.",
+    "Preparing to unpack .../jq_1.7.1-3ubuntu0.24.04.1_amd64.deb ...",
+    "Unpacking jq (1.7.1-3ubuntu0.24.04.1) ...",
+    "Setting up libonig5:amd64 (6.9.9-1build1) ...",
+    "Setting up libjq1:amd64 (1.7.1-3ubuntu0.24.04.1) ...",
+    "Setting up jq (1.7.1-3ubuntu0.24.04.1) ...",
+    "Processing triggers for libc-bin (2.39-0ubuntu8.6) ..."
+  ],
+  "stderr": [
+    "debconf: delaying package configuration, since apt-utils is not installed"
+  ],
+  "text_summary": "🚨 判定: DANGEROUS (风险分: 85/100, 置信度: HIGH)\n命令: apt-get update -qq && apt-get install -y -qq jq\n\n发现 3 个问题 (3 严重, 0 警告):\n  [CRITICAL] 文件变更: 敏感路径写入: ['/etc/ld.so.cache'] [T1222.002]\n  [CRITICAL] 持久化: 持久化机制被修改 (cron/systemd/rc.local) [T1053.003, T1543.002, T1037.004]\n  [CRITICAL] 攻击链: 检测到恶意软件部署链: 文件落地 + 持久化 [T1105, T1053.003]\n\n涉及 ATT&CK 战术: Command and Control, Persistence, Unknown\n\n建议:\n  • BLOCK: 强烈建议阻止此命令执行\n  • 检查 crontab -l、/etc/cron.d/、systemd services 是否被篡改\n  • 多维度攻击已确认, 建议全面安全审计",
+  "fast_triage": {
+    "level": "PASS",
+    "static_score": 0,
+    "is_legitimate": true,
+    "blacklisted": false,
+    "patterns_matched": 0,
+    "matches": [],
+    "deobfuscation_layers": 0
+  }
+}

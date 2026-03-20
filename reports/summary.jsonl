@@ -1,2 +1,2 @@
-{"id":"w10","category":"white","label":"safe","desc":"poetry installer","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
-{"id":"w07","category":"white","label":"safe","desc":"npm install lodash","verdict":"UNKNOWN","risk_score":-1,"mitre_count":0,"confidence":"N/A","match":"WRONG"}
+{"id":"w11","category":"white","label":"safe","desc":"create temp file","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
+{"id":"w08","category":"white","label":"safe","desc":"apt install jq","verdict":"UNKNOWN","risk_score":-1,"mitre_count":0,"confidence":"N/A","match":"WRONG"}
