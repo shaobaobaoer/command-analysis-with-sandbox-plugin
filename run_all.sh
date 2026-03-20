@@ -30,15 +30,23 @@ warn()  { echo -e "${YELLOW}[WARN]${NC} $*"; }
 fail()  { echo -e "${RED}[FAIL]${NC} $*"; }
 
 # ─── 解析参数 ────────────────────────────────────────────
-FILTER="${1:-all}"
+FILTER="all"
 AUTO_COMMIT=true
 MAX_RETRY=1
 args=("$@")
 for i in "${!args[@]}"; do
-    [ "${args[$i]}" = "--no-commit" ] && AUTO_COMMIT=false
-    if [ "${args[$i]}" = "--retry" ] && [ -n "${args[$((i+1))]:-}" ]; then
-        MAX_RETRY="${args[$((i+1))]}"
-    fi
+    case "${args[$i]}" in
+        --no-commit) AUTO_COMMIT=false ;;
+        --retry) MAX_RETRY="${args[$((i+1))]}" ;;
+        --*) ;; # skip other flags
+        *)
+            # Skip values consumed by --retry
+            if [ "$i" -gt 0 ] && [ "${args[$((i-1))]}" = "--retry" ]; then
+                continue
+            fi
+            FILTER="${args[$i]}"
+            ;;
+    esac
 done
 
 echo ""
