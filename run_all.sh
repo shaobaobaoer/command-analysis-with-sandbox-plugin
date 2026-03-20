@@ -165,8 +165,11 @@ for i in "${!JOBS[@]}"; do
         fi
     done
 
-    # 找到最新报告并重命名
-    latest_report=$(ls -t "${report_dir}"/safety_report_*.json 2>/dev/null | head -1)
+    # 找到最新报告并重命名 (支持 .json 和 .sarif.json 两种格式)
+    latest_report=$(ls -t "${report_dir}"/safety_report_*.json 2>/dev/null | grep -v sarif | head -1)
+    if [ -z "$latest_report" ]; then
+        latest_report=$(ls -t "${report_dir}"/safety_report_*.sarif.json 2>/dev/null | head -1)
+    fi
     if [ -n "$latest_report" ] && [ -f "$latest_report" ]; then
         mv "$latest_report" "$report_file"
         # Parse SARIF format JSON - verdict is in runs[0].tool.driver.properties.verdict or invocations[0].properties.verdict
