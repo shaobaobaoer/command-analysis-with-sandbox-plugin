@@ -1,2 +1,2 @@
-{"id":"w07","category":"white","label":"safe","desc":"npm install lodash","verdict":"LOW_RISK","risk_score":10,"mitre_count":1,"confidence":"MEDIUM","match":"CORRECT"}
-{"id":"w04","category":"white","label":"safe","desc":"list files","verdict":"SUSPICIOUS","risk_score":45,"mitre_count":1,"confidence":"LOW","match":"WRONG"}
+{"id":"w08","category":"white","label":"safe","desc":"apt install jq","verdict":"UNKNOWN","risk_score":-1,"mitre_count":0,"confidence":"N/A","match":"WRONG"}
+{"id":"w05","category":"white","label":"safe","desc":"uv installer","verdict":"LOW_RISK","risk_score":17,"mitre_count":1,"confidence":"MEDIUM","match":"CORRECT"}

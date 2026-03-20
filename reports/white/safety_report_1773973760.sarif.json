@@ -1,0 +1,92 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1105",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: download and execute (curl|sh)"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1105",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1105"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1105 (Ingress Tool Transfer)"
+              }
+            },
+            {
+              "id": "CMD-002",
+              "name": "资源",
+              "shortDescription": {
+                "text": "内存异常增长 (+209 MiB)"
+              },
+              "helpUri": "",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety"
+                ]
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "LOW_RISK",
+            "risk_score": 17,
+            "confidence": "MEDIUM"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1105",
+          "level": "warning",
+          "message": {
+            "text": "命令匹配恶意模式: download and execute (curl|sh)"
+          },
+          "properties": {
+            "risk_score": 12,
+            "dimension": "静态分析",
+            "evidence": "curl -LsSf https://astral.sh/uv/install.sh | sh"
+          }
+        },
+        {
+          "ruleId": "CMD-002",
+          "level": "warning",
+          "message": {
+            "text": "内存异常增长 (+209 MiB)"
+          },
+          "properties": {
+            "risk_score": 5,
+            "dimension": "资源",
+            "evidence": "Memory delta: 209 MiB"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "curl -LsSf https://astral.sh/uv/install.sh | sh",
+            "verdict": "LOW_RISK",
+            "risk_score": 17,
+            "confidence": "MEDIUM",
+            "timestamp": "2026-03-20T02:29:20.635055+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}
