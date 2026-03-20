@@ -57,7 +57,7 @@ echo ""
 
 # ─── 前置检查 ────────────────────────────────────────────
 command -v docker &>/dev/null || { fail "Docker 未安装"; exit 1; }
-docker info &>/dev/null 2>&1 || { fail "Docker 未运行"; exit 1; }
+sudo docker info &>/dev/null 2>&1 || { fail "Docker 未运行"; exit 1; }
 command -v python3 &>/dev/null || { fail "Python3 未安装"; exit 1; }
 [ -f "$CHECKER" ] || { fail "checker.sh 不存在: $CHECKER"; exit 1; }
 chmod +x "$CHECKER"
@@ -74,11 +74,11 @@ else
 fi
 
 for img in "$SANDBOX_IMAGE" "$EXECD_IMAGE"; do
-    if docker image inspect "$img" &>/dev/null; then
+    if sudo docker image inspect "$img" &>/dev/null; then
         ok "镜像就绪: $img"
     else
         info "拉取: $img"
-        docker pull "$img"
+        sudo docker pull "$img"
     fi
 done
 
@@ -117,7 +117,7 @@ case "$FILTER" in
         add_samples "${SAMPLES_DIR}/${category}.jsonl" "$category"
         FILTERED=()
         for job in "${JOBS[@]}"; do
-            IFS=$'\x1e' read -r _ job_id _ _ _ <<< "$job"
+            IFS=$'\x1e' read -r -d '' _ job_id _ _ _ <<< "$job"$'\x1e'
             [ "$job_id" = "$target_id" ] && FILTERED+=("$job")
         done
         JOBS=("${FILTERED[@]}")
@@ -140,7 +140,8 @@ SUMMARY_FILE="${REPORTS_DIR}/summary.jsonl"
 > "$SUMMARY_FILE"
 
 for i in "${!JOBS[@]}"; do
-    IFS=$'\x1e' read -r category id label desc command <<< "${JOBS[$i]}"
+    # 使用-d ''读取完整内容，避免换行符截断
+    IFS=$'\x1e' read -r -d '' category id label desc command _ <<< "${JOBS[$i]}"$'\x1e'
     idx=$((i + 1))
     report_dir="${REPORTS_DIR}/${category}"
     mkdir -p "$report_dir"
@@ -155,17 +156,17 @@ for i in "${!JOBS[@]}"; do
 
     # 使用base64编码传递命令，避免换行符问题
     COMMAND_B64=$(echo -n "$command" | base64 -w0)
-    export COMMAND_B64
-    export REPORT_DIR="$report_dir"
+    REPORT_DIR="$report_dir"
+    export COMMAND_B64 REPORT_DIR
     export SANDBOX_IMAGE EXECD_IMAGE REGISTRY_MIRROR
 
-    # 带重试的执行
+    # 带重试的执行 (使用sudo -E保留环境变量)
     checker_exit=1
     for attempt in $(seq 1 "$MAX_RETRY"); do
         if [ "$attempt" -gt 1 ]; then
             warn "[${id}] 重试 (${attempt}/${MAX_RETRY})..."
         fi
-        if bash "$CHECKER" > "$log_file" 2>&1; then
+        if sudo -E bash "$CHECKER" > "$log_file" 2>&1; then
             checker_exit=0
             break
         else

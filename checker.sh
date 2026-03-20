@@ -44,7 +44,12 @@ else
     DEFAULT_EXECD_IMAGE="opensandbox/execd:v1.0.7"
 fi
 
-COMMAND="${COMMAND:-curl -fsSL https://claude.ai/install.sh | bash}"
+# 支持base64编码的命令传递（优先级最高）
+if [ -n "${COMMAND_B64:-}" ]; then
+    COMMAND=$(echo "$COMMAND_B64" | base64 -d)
+else
+    COMMAND="${COMMAND:-curl -fsSL https://claude.ai/install.sh | bash}"
+fi
 SANDBOX_PORT="${SANDBOX_PORT:-8080}"
 SANDBOX_IMAGE="${SANDBOX_IMAGE:-$DEFAULT_SANDBOX_IMAGE}"
 EXECD_IMAGE="${EXECD_IMAGE:-$DEFAULT_EXECD_IMAGE}"
