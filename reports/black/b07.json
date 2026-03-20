@@ -1,0 +1,256 @@
+{
+  "version": "4.1",
+  "command": "cat /etc/shadow | base64 > /tmp/exfil.txt",
+  "timestamp": "2026-03-20T03:10:07.308877+00:00",
+  "verdict": "DANGEROUS",
+  "risk_score": 65,
+  "confidence": "LOW",
+  "recommendations": [
+    "BLOCK: 强烈建议阻止此命令执行"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 2,
+    "critical": 1,
+    "warn": 1,
+    "info": 0,
+    "dimensions_hit": 1
+  },
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: shadow file exfiltration via base64",
+      "risk_score": 40,
+      "mitre_attack": [
+        {
+          "id": "T1048",
+          "name": "Exfiltration Over Alternative Protocol"
+        }
+      ],
+      "evidence": "cat /etc/shadow | base64 > /tmp/exfil.txt"
+    },
+    {
+      "severity": "WARN",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: reading shadow file",
+      "risk_score": 25,
+      "mitre_attack": [
+        {
+          "id": "T1048",
+          "name": "Exfiltration Over Alternative Protocol"
+        }
+      ],
+      "evidence": "cat /etc/shadow | base64 > /tmp/exfil.txt"
+    }
+  ],
+  "evidence": {
+    "command_chain": {
+      "stages": 2,
+      "connectors": [
+        "|",
+        "END"
+      ],
+      "safe_then_evil": false
+    },
+    "stdout_lines": 0,
+    "stderr_lines": 0,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 1,
+    "files_deleted": 0,
+    "inotify_sys_events": 0,
+    "inotify_tmp_events": 6303,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1048"
+    ]
+  },
+  "dimensions": {
+    "files_added": [
+      "/tmp/exfil.txt"
+    ],
+    "files_deleted": [],
+    "inotify_sys_events": [],
+    "inotify_tmp_events": [
+      "2026-03-20T03:09:20 CREATE /tmp/exfil.txt",
+      "2026-03-20T03:09:20 MODIFY /tmp/exfil.txt",
+      "2026-03-20T03:09:26 CREATE /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd",
+      "2026-03-20T03:09:26 MODIFY /tmp/sortYufFTd"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": []
+  },
+  "mitre_attack": {
+    "T1048": {
+      "name": "Exfiltration Over Alternative Protocol",
+      "findings": [
+        "命令匹配恶意模式: shadow file exfiltration via base64",
+        "命令匹配恶意模式: reading shadow file"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Exfiltration": [
+      "T1048"
+    ]
+  },
+  "deobfuscation": {
+    "original": "cat /etc/shadow | base64 > /tmp/exfil.txt",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773976138",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773976160",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773976161",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773976207",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [],
+  "stderr": [],
+  "text_summary": "🚨 判定: DANGEROUS (风险分: 65/100, 置信度: LOW)\n命令: cat /etc/shadow | base64 > /tmp/exfil.txt\n\n发现 2 个问题 (1 严重, 1 警告):\n  [CRITICAL] 静态分析: 命令匹配恶意模式: shadow file exfiltration via base64 [T1048]\n  [WARN] 静态分析: 命令匹配恶意模式: reading shadow file [T1048]\n\n涉及 ATT&CK 战术: Exfiltration\n\n建议:\n  • BLOCK: 强烈建议阻止此命令执行",
+  "fast_triage": {
+    "level": "BLOCK",
+    "static_score": 65,
+    "is_legitimate": false,
+    "blacklisted": true,
+    "patterns_matched": 2,
+    "matches": [
+      {
+        "pattern": "shadow file exfiltration via base64",
+        "mitre": "T1048",
+        "score": 40
+      },
+      {
+        "pattern": "reading shadow file",
+        "mitre": "T1048",
+        "score": 25
+      }
+    ],
+    "deobfuscation_layers": 0
+  }
+}

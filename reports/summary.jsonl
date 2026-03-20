@@ -1,1 +1,1 @@
-{"id":"b06","category":"black","label":"malicious","desc":"suid backdoor","verdict":"DANGEROUS","risk_score":75,"mitre_count":1,"confidence":"MEDIUM","match":"CORRECT"}
+{"id":"b07","category":"black","label":"malicious","desc":"exfil shadow","verdict":"DANGEROUS","risk_score":65,"mitre_count":1,"confidence":"LOW","match":"CORRECT"}
