@@ -1,2 +1,2 @@
-{"id":"w21","category":"white","label":"safe","desc":"docker build","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
-{"id":"w05","category":"white","label":"safe","desc":"uv installer","verdict":"LOW_RISK","risk_score":12,"mitre_count":1,"confidence":"MEDIUM","match":"CORRECT"}
+{"id":"w22","category":"white","label":"safe","desc":"go build","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
+{"id":"w06","category":"white","label":"safe","desc":"pip install requests","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}

@@ -53,3 +53,297 @@ everything's installed!
 ============================================================================
   4/9  启动多层探针 + 执行待测命令
 ============================================================================
+  [探针1] inotify: /usr/local/bin /usr/bin /usr/sbin /etc /root /home
+  [探针2] inotify: /tmp /var/tmp /dev/shm (独立探针)
+  [探针3] network: /proc/net/tcp 轮询 (0.5s)
+  [探针5] process: 进程树轮询 (1s)
+
+  --- 命令链分解分析 ---
+    命令包含 2 个执行阶段:
+    [1] [OK] go version 2>/dev/null ||
+    [2] [OK] echo 'go not installed' END
+
+  --- 命令去混淆分析 ---
+    PASS  未发现编码/混淆层
+
+  --- 命令静态分析 ---
+    PASS  未匹配已知恶意模式
+
+  $ go version 2>/dev/null || echo 'go not installed'
+  ────────────────────────────────────────────────────────────
+
+  耗时     : 1.0s
+  退出码   : 0
+  stdout   : 1 行
+  stderr   : 0 行
+
+  --- stdout (前 50 行) ---
+    | go version go1.25.5 linux/amd64
+
+============================================================================
+  5/9  采集执行后快照 (全维度)
+============================================================================
+  文件数       : 221690
+  SUID/SGID    : 14
+  inotify 系统 : 4 条
+  inotify /tmp : 179205 条
+
+============================================================================
+  6/9  网络行为深度分析
+============================================================================
+
+  --- 外部连接 (出站) ---
+    (无外部连接)
+
+    [20 个内部连接已忽略]
+
+  --- DNS 配置 ---
+    PASS  /etc/resolv.conf 未被修改
+
+============================================================================
+  7/9  全维度安全对比分析 (24 维度)
+============================================================================
+
+  --- [D1] 文件变更 (+2 / -1) ---
+    新增 2 个:
+      + /root/.config/go/telemetry/local/go@go1.25.5-go1.25.5-linux-amd64-2026-03-20.v1.count
+      + /root/.config/go/telemetry/local/upload.token
+    删除 1 个:
+      - /root/.config/go/telemetry/local/upload.token
+
+  --- [D2] 实时文件事件 (inotifywait) ---
+    系统目录事件 (4 条):
+      2026-03-20T02:48:20 CREATE /root/.config/go/telemetry/local/go@go1.25.5-go1.25.5-linux-amd64-2026-03-20.v1.count
+      2026-03-20T02:48:20 MODIFY /root/.config/go/telemetry/local/go@go1.25.5-go1.25.5-linux-amd64-2026-03-20.v1.count
+      2026-03-20T02:48:20 DELETE /root/.config/go/telemetry/local/upload.token
+      2026-03-20T02:48:20 CREATE /root/.config/go/telemetry/local/upload.token
+    临时目录事件 (5398 条):
+      2026-03-20T02:48:26 CREATE /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+      2026-03-20T02:48:27 MODIFY /tmp/sortC95fku
+
+  --- [D3] 用户与权限 ---
+    PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
+
+  --- [D4] 持久化 (cron/systemd/rc.local/init.d/at) ---
+    PASS  无新增
+
+  --- [D5] Shell 环境 (.bashrc/.profile/etc) ---
+    PASS  无变化
+
+  --- [D6] 进程树分析 ---
+    观察到 17 个独立进程:
+      > /opt/opensandbox/execd
+      > COMMAND
+      > [go] <defunct>
+      > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
+      > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
+      > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
+      > \_ bash -c getcap -r / 2>/dev/null | sort || true
+      > \_ cat /proc/net/tcp /proc/net/tcp6
+      > \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
+      > \_ getcap -r /
+      > \_ sort
+      > tail -f /dev/null
+      > |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      > |   \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
+      > |   \_ getcap -r /
+      > |   \_ sort
+      > |   |   \_ [ls]
+
+    残留进程 (执行后):
+      USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+      root           1  0.0  0.0   3156  1664 ?        Ss   02:47   0:00 tail -f /dev/null
+      root           7 18.3  0.1 1244224 22204 ?       Sl   02:47   0:06 /opt/opensandbox/execd
+      root         848  0.0  0.0   4752  3584 ?        S    02:48   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root         849  0.0  0.0   4084  2432 ?        R    02:48   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root         851  0.0  0.0  24904  3200 ?        S    02:48   0:00  |   \_ sort
+      root         850  0.0  0.0   4752  3712 ?        S    02:48   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root         852  0.0  0.0   8280  4224 ?        R    02:48   0:00  |   \_ ps auxf
+      root         853  0.0  0.0   4752  3456 ?        S    02:48   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+      root         816  0.0  0.0      0     0 ?        Zs   02:48   0:00 [go] <defunct>
+
+  --- [D7] 残留网络连接 ---
+        sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
+         0: 0100007F:CB36 0100007F:AEE4 01 00000000:00000000 02:00000821 00000000     0        0 2919346 2 0000000000000000 20 4 30 10 -1                  
+         1: 0100007F:CA90 0100007F:AEE4 01 00000000:00000000 02:000001FC 00000000     0        0 2887515 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:CA82 0100007F:AEE4 01 00000000:00000000 02:000001EF 00000000     0        0 2875373 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:83AC 0100007F:AEE4 01 00000000:00000000 02:00000400 00000000     0        0 2896317 2 0000000000000000 20 4 30 10 -1                  
+         4: 0100007F:83E4 0100007F:AEE4 01 00000000:00000000 02:00000020 00000000     0        0 2901594 2 0000000000000000 20 4 30 10 -1                  
+         5: 0100007F:CA94 0100007F:AEE4 01 00000000:00000000 02:000004A9 00000000     0        0 2887523 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:CEA8 0100007F:AEE4 01 00000000:00000000 02:000001A9 00000000     0        0 2885866 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:83B4 0100007F:AEE4 01 00000000:00000000 02:00000466 00000000     0        0 2901530 2 0000000000000000 20 4 30 10 -1                  
+         8: 020011AC:84E8 51BE7DB9:0050 06 00000000:00000000 03:00000000 00000000     0        0 0 3 0000000000000000                                      
+         9: 020011AC:B438 175CBD5B:0050 06 00000000:00000000 03:0000010E 00000000     0        0 0 3 0000000000000000                                      
+        10: 0100007F:CA76 0100007F:AEE4 01 00000000:00000000 02:0000019A 00000000     0        0 2885629 2 0000000000000000 20 4 30 10 -1                  
+        11: 020011AC:E5CC 165CBD5B:0050 06 00000000:00000000 03:00000000 00000000     0        0 0 3 0000000000000000                                      
+        12: 0100007F:CAA0 0100007F:AEE4 01 00000000:00000000 02:000001EF 00000000     0        0 2887525 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:CAB0 0100007F:AEE4 01 00000000:00000000 02:000001EF 00000000     0        0 2887527 2 0000000000000000 20 4 30 10 -1                  
+
+  --- [D8] 资源消耗 ---
+    CPU    : 12.3% -> 15.4% (Δ +3.1%)
+    Memory : 2021.0 -> 1942.8 MiB (Δ -78.2 MiB)
+
+  --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
+    PASS
+
+  --- [D10] SUID/SGID 文件变更 ---
+    PASS  无新增 SUID/SGID 文件
+
+  --- [D11] 内核模块 ---
+    PASS  无变化
+
+  --- [D12] 挂载点 ---
+    PASS  无变化
+
+  --- [D13] 安全相关环境变量 ---
+    PASS  无变化
+
+  --- [D14] 关键文件内容分析 ---
+    PASS  未发现恶意内容模式
+
+  --- [D15] 关键系统二进制完整性 ---
+    PASS  /bin/bash, su, sudo, passwd, sshd 等均未被篡改
+
+  --- [D16] 符号链接变更 ---
+    PASS  无新增符号链接
+
+  --- [D17] 文件能力 (Linux Capabilities) ---
+    PASS  无新增文件能力
+
+  --- [D18] 输出内容分析 ---
+    PASS  输出内容无敏感信息泄露
+
+  --- [D19] 新增文件熵分析 ---
+    PASS  无异常高熵文件
+
+  --- [D20] 计划任务详细差异 ---
+    PASS  crontab 无变化
+
+  --- [D21] 隐藏进程检测 ---
+    PASS  未发现隐藏进程
+
+  --- [D22] 信号处理 / trap 分析 ---
+    PASS  未发现恶意信号处理
+
+  --- [D23] 攻击链关联分析 ---
+    PASS  未检测到攻击链组合
+
+  --- [D24] 敏感文件权限变更 ---
+    PASS  敏感文件权限正常
+
+============================================================================
+  8/9  MITRE ATT&CK 技术映射
+============================================================================
+    未映射到任何 ATT&CK 技术
+
+============================================================================
+  9/9  综合判定
+============================================================================
+
+  +──────────────────────────────────────────────────────────────────────────+
+  |  [OK] 判定: LIKELY_SAFE           风险评分:   0/100            |
+  |  [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]                              |
+  |  置信度: HIGH    维度覆盖:  0/24              |
+  +──────────────────────────────────────────────────────────────────────────+
+
+  命令           : go version 2>/dev/null || echo 'go not installed'
+  合法命令模式   : 否
+  退出码         : 0
+  文件 +/-       : +2 / -1
+  inotify 事件   : 4 系统 + 5398 临时
+  外部连接       : 0 个
+  SUID/SGID 变更 : +0
+  二进制完整性   : PASS
+  新增符号链接   : 0
+  新增文件能力   : 0
+  执行耗时       : 1.0s
+  MITRE 技术     : 0 个
+  ATT&CK 战术    : 无
+  发现           : 0 critical, 0 warnings, 0 info
+  置信度         : HIGH
+
+  全部 24 维度检查通过:
+    [PASS] 无敏感路径写入
+    [PASS] 用户/权限未被修改
+    [PASS] 无持久化后门 (cron/systemd/rc.local)
+    [PASS] Shell 环境未被篡改
+    [PASS] DNS 配置未被修改
+    [PASS] 无可疑残留进程
+    [PASS] 临时目录无可执行文件
+    [PASS] 无新增 SUID/SGID 文件
+    [PASS] 内核模块未变化
+    [PASS] 挂载点未变化
+    [PASS] 无 LD_PRELOAD 注入
+    [PASS] 未发现恶意内容模式
+    [PASS] 关键二进制完整性通过
+    [PASS] 无危险符号链接
+    [PASS] 无新增文件能力
+    [PASS] 输出无敏感信息泄露
+    [PASS] 无异常高熵文件
+    [PASS] 计划任务无变化
+    [PASS] 未发现隐藏进程
+    [PASS] 无恶意信号处理
+    [PASS] 未检测到攻击链
+    [PASS] 敏感文件权限正常
+    [PASS] 外部连接 0 个
+    [PASS] MITRE ATT&CK 映射 0 个技术
+
+  安全建议:
+    -> ALLOW: 命令安全, 可放行
+
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974945.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974945.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974945.sarif.json
+
+  快速预判: PASS (静态分: 0, 模式匹配: 0)
+
+============================================================================
+  人类可读摘要:
+============================================================================
+  ✅ 判定: LIKELY_SAFE (风险分: 0/100, 置信度: HIGH)
+  命令: go version 2>/dev/null || echo 'go not installed'
+  
+  全部 24 维度检查通过, 命令安全。
+  
+  建议:
+    • ALLOW: 命令安全, 可放行
+
+  沙箱已销毁。
+
+
+[0;36m[INFO][0m  [Step 7/7] 完成!
+[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974945.json
+[0;32m[ OK ][0m 报告 (文本): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974945.txt
+  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974945.json
+  快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
+
+[0;36m[INFO][0m  Cleaning up...
+[0;32m[ OK ][0m Cleanup done.
