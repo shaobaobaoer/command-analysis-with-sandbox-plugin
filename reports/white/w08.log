@@ -1,0 +1,123 @@
+
+[1m==========================================
+  OpenSandbox Behavioral Analysis Engine v4
+==========================================[0m
+
+[0;36m[INFO][0m  待检测命令: apt-get update -qq && apt-get install -y -qq jq
+
+[0;36m[INFO][0m  [Step 1/7] 检查环境...
+[0;32m[ OK ][0m Docker: Docker version 27.5.1, build 27.5.1-0ubuntu3~24.04.2
+[0;32m[ OK ][0m Python: Python 3.12.3
+[0;36m[INFO][0m  安装 uv...
+downloading uv 0.10.12 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+[0;32m[ OK ][0m uv: uv 0.10.12 (x86_64-unknown-linux-gnu)
+[0;36m[INFO][0m  [Step 2/7] 预拉取 Docker 镜像...
+[0;32m[ OK ][0m 沙箱镜像: opensandbox/code-interpreter:v1.0.2 (已存在)
+[0;32m[ OK ][0m Execd镜像: opensandbox/execd:v1.0.7 (已存在)
+[0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
+[0;32m[ OK ][0m opensandbox-server + SDK 已安装
+[0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.RXmNncbM9y/sandbox.toml
+[0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
+[0;32m[ OK ][0m Server 就绪 (PID: 436568, port: 8080)
+[0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
+
+
+============================================================================
+  1/9  创建隔离沙箱
+============================================================================
+  镜像: opensandbox/code-interpreter:v1.0.2
+  Sandbox ID: e2782b93-894b-4b85-8457-133384a97205
+
+============================================================================
+  2/9  安装监控工具 (快照前, 避免污染基线)
+============================================================================
+  监控工具已安装
+
+============================================================================
+  3/9  采集执行前基线 (24 维度)
+============================================================================
+  文件数       : 221689
+  SUID/SGID    : 14
+  符号链接     : 483
+  文件能力     : 1
+  基线采集耗时 : 15.2s
+  CPU          : 15.0%
+  Memory       : 2012.1/15069.3 MiB
+
+============================================================================
+  4/9  启动多层探针 + 执行待测命令
+============================================================================
+  [探针1] inotify: /usr/local/bin /usr/bin /usr/sbin /etc /root /home
+  [探针2] inotify: /tmp /var/tmp /dev/shm (独立探针)
+  [探针3] network: /proc/net/tcp 轮询 (0.5s)
+  [探针5] process: 进程树轮询 (1s)
+
+  --- 命令链分解分析 ---
+    命令包含 2 个执行阶段:
+    [1] [OK] apt-get update -qq &&
+    [2] [OK] apt-get install -y -qq jq END
+
+  --- 命令去混淆分析 ---
+    PASS  未发现编码/混淆层
+
+  --- 命令静态分析 ---
+    PASS  未匹配已知恶意模式
+    [INFO] 命令匹配合法安装器模式, 部分告警已降权
+
+  $ apt-get update -qq && apt-get install -y -qq jq
+  ────────────────────────────────────────────────────────────
+
+  耗时     : 7.1s
+  退出码   : 0
+  stdout   : 35 行
+  stderr   : 1 行
+
+  --- stdout (前 50 行) ---
+    | Selecting previously unselected package libonig5:amd64.
+    | (Reading database ... 
+    | (Reading database ... 5%
+    | (Reading database ... 10%
+    | (Reading database ... 15%
+    | (Reading database ... 20%
+    | (Reading database ... 25%
+    | (Reading database ... 30%
+    | (Reading database ... 35%
+    | (Reading database ... 40%
+    | (Reading database ... 45%
+    | (Reading database ... 50%
+    | (Reading database ... 55%
+    | (Reading database ... 60%
+    | (Reading database ... 65%
+    | (Reading database ... 70%
+    | (Reading database ... 75%
+    | (Reading database ... 80%
+    | (Reading database ... 85%
+    | (Reading database ... 90%
+    | (Reading database ... 95%
+    | (Reading database ... 100%
+    | (Reading database ... 35718 files and directories currently installed.)
+    | Preparing to unpack .../libonig5_6.9.9-1build1_amd64.deb ...
+    | Unpacking libonig5:amd64 (6.9.9-1build1) ...
+    | Selecting previously unselected package libjq1:amd64.
+    | Preparing to unpack .../libjq1_1.7.1-3ubuntu0.24.04.1_amd64.deb ...
+    | Unpacking libjq1:amd64 (1.7.1-3ubuntu0.24.04.1) ...
+    | Selecting previously unselected package jq.
+    | Preparing to unpack .../jq_1.7.1-3ubuntu0.24.04.1_amd64.deb ...
+    | Unpacking jq (1.7.1-3ubuntu0.24.04.1) ...
+    | Setting up libonig5:amd64 (6.9.9-1build1) ...
+    | Setting up libjq1:amd64 (1.7.1-3ubuntu0.24.04.1) ...
+    | Setting up jq (1.7.1-3ubuntu0.24.04.1) ...
+    | Processing triggers for libc-bin (2.39-0ubuntu8.6) ...
+
+  --- stderr (前 30 行) ---
+    | debconf: delaying package configuration, since apt-utils is not installed
+
+============================================================================
+  5/9  采集执行后快照 (全维度)
+============================================================================

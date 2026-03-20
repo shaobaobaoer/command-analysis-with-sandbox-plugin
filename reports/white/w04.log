@@ -10,7 +10,6 @@
 [0;32m[ OK ][0m Python: Python 3.12.3
 [0;36m[INFO][0m  安装 uv...
 downloading uv 0.10.12 x86_64-unknown-linux-gnu
-downloading uv 0.10.12 x86_64-unknown-linux-gnu
 no checksums to verify
 installing to /root/.local/bin
   uv
@@ -23,9 +22,9 @@ everything's installed!
 [0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
 [0;32m[ OK ][0m opensandbox-server + SDK 已安装
 [0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
-[0;32m[ OK ][0m 配置写入: /tmp/tmp.mJPV8vnoc3/sandbox.toml
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.q0aLj0AQ0J/sandbox.toml
 [0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
-[0;32m[ OK ][0m Server 就绪 (PID: 406501, port: 8080)
+[0;32m[ OK ][0m Server 就绪 (PID: 435688, port: 8080)
 [0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
 
 
@@ -33,42 +32,10 @@ everything's installed!
   1/9  创建隔离沙箱
 ============================================================================
   镜像: opensandbox/code-interpreter:v1.0.2
-  Sandbox ID: 5e2706e0-e0b4-415c-85f4-3afca305128d
+  Sandbox ID: 9a526bbb-d78c-4a7a-b0da-19ad97c57eab
 
 ============================================================================
   2/9  安装监控工具 (快照前, 避免污染基线)
-============================================================================
-no checksums to verify
-installing to /root/.local/bin
-  uv
-  uvx
-everything's installed!
-[0;32m[ OK ][0m uv: uv 0.10.12 (x86_64-unknown-linux-gnu)
-[0;36m[INFO][0m  [Step 2/7] 预拉取 Docker 镜像...
-[0;32m[ OK ][0m 沙箱镜像: opensandbox/code-interpreter:v1.0.2 (已存在)
-[0;32m[ OK ][0m Execd镜像: opensandbox/execd:v1.0.7 (已存在)
-[0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
-[0;32m[ OK ][0m opensandbox-server + SDK 已安装
-[0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
-[0;32m[ OK ][0m 配置写入: /tmp/tmp.VnQBGWBpX0/sandbox.toml
-[0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
-[0;32m[ OK ][0m Server 就绪 (PID: 407098, port: 8080)
-[0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
-
-
-============================================================================
-  1/9  创建隔离沙箱
-============================================================================
-  镜像: opensandbox/code-interpreter:v1.0.2
-  Sandbox ID: 9b15c4bd-db2d-4dcd-b656-a2c8f0c2ab61
-
-============================================================================
-  2/9  安装监控工具 (快照前, 避免污染基线)
-============================================================================
-  监控工具已安装
-
-============================================================================
-  3/9  采集执行前基线 (24 维度)
 ============================================================================
   监控工具已安装
 
@@ -79,20 +46,9 @@ everything's installed!
   SUID/SGID    : 14
   符号链接     : 483
   文件能力     : 1
-  基线采集耗时 : 17.0s
-  CPU          : 36.4%
-  Memory       : 1909.0/15069.3 MiB
-
-============================================================================
-  4/9  启动多层探针 + 执行待测命令
-============================================================================
-  文件数       : 221689
-  SUID/SGID    : 14
-  符号链接     : 483
-  文件能力     : 1
-  基线采集耗时 : 17.3s
-  CPU          : 4.1%
-  Memory       : 1890.2/15069.3 MiB
+  基线采集耗时 : 15.7s
+  CPU          : 7.0%
+  Memory       : 2012.5/15069.3 MiB
 
 ============================================================================
   4/9  启动多层探针 + 执行待测命令
@@ -121,13 +77,13 @@ everything's installed!
 
   --- stdout (前 50 行) ---
     | total 76
-    | drwxr-xr-x   1 root root 4096 Mar 20 02:20 .
-    | drwxr-xr-x   1 root root 4096 Mar 20 02:20 ..
-    | -rwxr-xr-x   1 root root    0 Mar 20 02:20 .dockerenv
+    | drwxr-xr-x   1 root root 4096 Mar 20 02:26 .
+    | drwxr-xr-x   1 root root 4096 Mar 20 02:26 ..
+    | -rwxr-xr-x   1 root root    0 Mar 20 02:26 .dockerenv
     | lrwxrwxrwx   1 root root    7 Apr 22  2024 bin -> usr/bin
     | drwxr-xr-x   2 root root 4096 Apr 22  2024 boot
-    | drwxr-xr-x   5 root root  340 Mar 20 02:20 dev
-    | drwxr-xr-x   1 root root 4096 Mar 20 02:20 etc
+    | drwxr-xr-x   5 root root  340 Mar 20 02:26 dev
+    | drwxr-xr-x   1 root root 4096 Mar 20 02:26 etc
     | drwxr-xr-x   3 root root 4096 Oct 13 14:09 home
     | lrwxrwxrwx   1 root root    7 Apr 22  2024 lib -> usr/lib
     | drwxr-xr-x   2 root root 4096 Nov 14  2024 lib.usr-is-merged
@@ -135,65 +91,13 @@ everything's installed!
     | drwxr-xr-x   2 root root 4096 Oct 13 14:02 media
     | drwxr-xr-x   2 root root 4096 Oct 13 14:02 mnt
     | drwxr-xr-x   1 root root 4096 Dec 13 09:46 opt
-    | dr-xr-xr-x 342 root root    0 Mar 20 02:20 proc
+    | dr-xr-xr-x 368 root root    0 Mar 20 02:26 proc
     | drwx------   1 root root 4096 Dec 13 09:49 root
     | drwxr-xr-x   1 root root 4096 Dec 11 09:10 run
     | lrwxrwxrwx   1 root root    8 Apr 22  2024 sbin -> usr/sbin
     | drwxr-xr-x   2 root root 4096 Oct 13 14:02 srv
     | dr-xr-xr-x  13 root root    0 Mar 19 13:31 sys
-    | drwxrwxrwt   1 root root 4096 Mar 20 02:21 tmp
-    | drwxr-xr-x   1 root root 4096 Oct 13 14:02 usr
-    | drwxr-xr-x   1 root root 4096 Oct 13 14:09 var
-    | drwxr-xr-x   2 root root 4096 Dec 13 09:50 workspace
-
-============================================================================
-  5/9  采集执行后快照 (全维度)
-============================================================================
-  [探针1] inotify: /usr/local/bin /usr/bin /usr/sbin /etc /root /home
-  [探针2] inotify: /tmp /var/tmp /dev/shm (独立探针)
-  [探针3] network: /proc/net/tcp 轮询 (0.5s)
-  [探针5] process: 进程树轮询 (1s)
-
-  --- 命令链分解分析 ---
-    单阶段命令
-
-  --- 命令去混淆分析 ---
-    PASS  未发现编码/混淆层
-
-  --- 命令静态分析 ---
-    PASS  未匹配已知恶意模式
-
-  $ ls -la /
-  ────────────────────────────────────────────────────────────
-
-  耗时     : 1.0s
-  退出码   : 0
-  stdout   : 25 行
-  stderr   : 0 行
-
-  --- stdout (前 50 行) ---
-    | total 76
-    | drwxr-xr-x   1 root root 4096 Mar 20 02:20 .
-    | drwxr-xr-x   1 root root 4096 Mar 20 02:20 ..
-    | -rwxr-xr-x   1 root root    0 Mar 20 02:20 .dockerenv
-    | lrwxrwxrwx   1 root root    7 Apr 22  2024 bin -> usr/bin
-    | drwxr-xr-x   2 root root 4096 Apr 22  2024 boot
-    | drwxr-xr-x   5 root root  340 Mar 20 02:20 dev
-    | drwxr-xr-x   1 root root 4096 Mar 20 02:20 etc
-    | drwxr-xr-x   3 root root 4096 Oct 13 14:09 home
-    | lrwxrwxrwx   1 root root    7 Apr 22  2024 lib -> usr/lib
-    | drwxr-xr-x   2 root root 4096 Nov 14  2024 lib.usr-is-merged
-    | lrwxrwxrwx   1 root root    9 Apr 22  2024 lib64 -> usr/lib64
-    | drwxr-xr-x   2 root root 4096 Oct 13 14:02 media
-    | drwxr-xr-x   2 root root 4096 Oct 13 14:02 mnt
-    | drwxr-xr-x   1 root root 4096 Dec 13 09:46 opt
-    | dr-xr-xr-x 344 root root    0 Mar 20 02:20 proc
-    | drwx------   1 root root 4096 Dec 13 09:49 root
-    | drwxr-xr-x   1 root root 4096 Dec 11 09:10 run
-    | lrwxrwxrwx   1 root root    8 Apr 22  2024 sbin -> usr/sbin
-    | drwxr-xr-x   2 root root 4096 Oct 13 14:02 srv
-    | dr-xr-xr-x  13 root root    0 Mar 19 13:31 sys
-    | drwxrwxrwt   1 root root 4096 Mar 20 02:21 tmp
+    | drwxrwxrwt   1 root root 4096 Mar 20 02:27 tmp
     | drwxr-xr-x   1 root root 4096 Oct 13 14:02 usr
     | drwxr-xr-x   1 root root 4096 Oct 13 14:09 var
     | drwxr-xr-x   2 root root 4096 Dec 13 09:50 workspace
@@ -204,7 +108,7 @@ everything's installed!
   文件数       : 221689
   SUID/SGID    : 14
   inotify 系统 : 0 条
-  inotify /tmp : 142166 条
+  inotify /tmp : 206851 条
 
 ============================================================================
   6/9  网络行为深度分析
@@ -227,37 +131,37 @@ everything's installed!
 
   --- [D2] 实时文件事件 (inotifywait) ---
     系统目录: (无事件)
-    临时目录事件 (4783 条):
-      2026-03-20T02:21:25 CREATE /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
-      2026-03-20T02:21:25 MODIFY /tmp/sortzAKuJM
+    临时目录事件 (4280 条):
+      2026-03-20T02:27:08 CREATE /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
+      2026-03-20T02:27:08 MODIFY /tmp/sortk76EGs
 
   --- [D3] 用户与权限 ---
     PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
@@ -269,162 +173,10 @@ everything's installed!
     PASS  无变化
 
   --- [D6] 进程树分析 ---
-    观察到 17 个独立进程:
+    观察到 18 个独立进程:
       > /opt/opensandbox/execd
       > COMMAND
-      > \_ [bash]
-      > \_ [sleep] <defunct>
-      > \_ bash -c cat /tmp/.inotify_tmp_log 2>/dev/null
-      > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
-      > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
-      > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
-      > \_ bash -c getcap -r / 2>/dev/null | sort || true
-      > \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
-      > \_ getcap -r /
-      > \_ sort
-      > tail -f /dev/null
-      > |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
-      > |   \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
-      > |   \_ getcap -r /
-      > |   \_ sort
-
-    残留进程 (执行后):
-      USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-      root           1  0.0  0.0   3156  1792 ?        Ss   02:20   0:00 tail -f /dev/null
-      root           7 19.1  0.1 1244224 21656 ?       Sl   02:20   0:07 /opt/opensandbox/execd
-      root         838  0.0  0.0   4752  3584 ?        S    02:21   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
-      root         840  0.0  0.0   4084  2560 ?        R    02:21   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
-      root         841  0.0  0.0  24904  3200 ?        S    02:21   0:00  |   \_ sort
-      root         839  0.0  0.0   4752  3584 ?        S    02:21   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
-      root         842  0.0  0.0   8280  4224 ?        R    02:21   0:00  |   \_ ps auxf
-      root         843  0.0  0.0   4752  3584 ?        S    02:21   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
-
-  --- [D7] 残留网络连接 ---
-        sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
-         0: 0100007F:B9BE 0100007F:AEE4 01 00000000:00000000 02:00000816 00000000     0        0 1881393 2 0000000000000000 20 4 30 10 -1                  
-         1: 0100007F:B9C8 0100007F:AEE4 01 00000000:00000000 02:0000087B 00000000     0        0 1880569 2 0000000000000000 20 4 30 10 -1                  
-         2: 0100007F:E7F8 0100007F:AEE4 01 00000000:00000000 02:00000087 00000000     0        0 1865752 2 0000000000000000 20 4 30 10 -1                  
-         3: 0100007F:ADB4 0100007F:AEE4 01 00000000:00000000 02:000001C2 00000000     0        0 1841147 2 0000000000000000 20 4 30 10 -1                  
-         4: 0100007F:906A 0100007F:AEE4 01 00000000:00000000 02:00000A0D 00000000     0        0 1873575 2 0000000000000000 20 4 2 10 -1                   
-         5: 0100007F:AD84 0100007F:AEE4 01 00000000:00000000 02:000001B5 00000000     0        0 1841129 2 0000000000000000 20 4 30 10 -1                  
-         6: 0100007F:E7B6 0100007F:AEE4 01 00000000:00000000 02:00000085 00000000     0        0 1849169 2 0000000000000000 20 4 30 10 -1                  
-         7: 0100007F:E77E 0100007F:AEE4 01 00000000:00000000 02:000004D3 00000000     0        0 1852714 2 0000000000000000 20 4 30 10 -1                  
-         8: 0100007F:E816 0100007F:AEE4 01 00000000:00000000 02:00000087 00000000     0        0 1851092 2 0000000000000000 20 4 30 10 -1                  
-         9: 0100007F:AD9E 0100007F:AEE4 01 00000000:00000000 02:0000031B 00000000     0        0 1845294 2 0000000000000000 20 4 4 10 -1                   
-        10: 0100007F:E81E 0100007F:AEE4 01 00000000:00000000 02:00000087 00000000     0        0 1849200 2 0000000000000000 20 4 30 10 -1                  
-        11: 0100007F:E7F6 0100007F:AEE4 01 00000000:00000000 02:00000086 00000000     0        0 1854673 2 0000000000000000 20 4 30 10 -1                  
-        12: 0100007F:E7EC 0100007F:AEE4 01 00000000:00000000 02:00000086 00000000     0        0 1865743 2 0000000000000000 20 4 30 10 -1                  
-        13: 0100007F:ADAC 0100007F:AEE4 01 00000000:00000000 02:000001C2 00000000     0        0 1845295 2 0000000000000000 20 4 30 10 -1                  
-
-  --- [D8] 资源消耗 ---
-    CPU    : 36.4% -> 40.9% (Δ +4.5%)
-    Memory : 1909.0 -> 2031.0 MiB (Δ +122.0 MiB)
-
-  --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
-    PASS
-
-  --- [D10] SUID/SGID 文件变更 ---
-    PASS  无新增 SUID/SGID 文件
-
-  --- [D11] 内核模块 ---
-    PASS  无变化
-
-  --- [D12] 挂载点 ---
-    PASS  无变化
-
-  --- [D13] 安全相关环境变量 ---
-    PASS  无变化
-
-  --- [D14] 关键文件内容分析 ---
-    PASS  未发现恶意内容模式
-
-  --- [D15] 关键系统二进制完整性 ---
-    PASS  /bin/bash, su, sudo, passwd, sshd 等均未被篡改
-
-  --- [D16] 符号链接变更 ---
-    PASS  无新增符号链接
-
-  --- [D17] 文件能力 (Linux Capabilities) ---
-    PASS  无新增文件能力
-
-  --- [D18] 输出内容分析 ---
-    PASS  输出内容无敏感信息泄露
-
-  --- [D19] 新增文件熵分析 ---
-    PASS  无异常高熵文件
-
-  --- [D20] 计划任务详细差异 ---
-  文件数       : 221689
-  SUID/SGID    : 14
-  inotify 系统 : 0 条
-  inotify /tmp : 152735 条
-
-============================================================================
-  6/9  网络行为深度分析
-============================================================================
-
-  --- 外部连接 (出站) ---
-    (无外部连接)
-
-    [20 个内部连接已忽略]
-
-  --- DNS 配置 ---
-    PASS  /etc/resolv.conf 未被修改
-
-============================================================================
-  7/9  全维度安全对比分析 (24 维度)
-============================================================================
-
-  --- [D1] 文件变更 (+0 / -0) ---
-    (无新增)
-
-  --- [D2] 实时文件事件 (inotifywait) ---
-    系统目录: (无事件)
-    临时目录事件 (2637 条):
-      2026-03-20T02:21:28 CREATE /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-      2026-03-20T02:21:28 MODIFY /tmp/sortO4BOAK
-
-  --- [D3] 用户与权限 ---
-    PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
-
-  --- [D4] 持久化 (cron/systemd/rc.local/init.d/at) ---
-    PASS  无新增
-
-  --- [D5] Shell 环境 (.bashrc/.profile/etc) ---
-    PASS  无变化
-
-  --- [D6] 进程树分析 ---
-    观察到 16 个独立进程:
-      > /opt/opensandbox/execd
-      > COMMAND
+      > \_ [cat]
       > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
       > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
       > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
@@ -438,40 +190,42 @@ everything's installed!
       > |   \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
       > |   \_ getcap -r /
       > |   \_ sort
-      > |   |   \_ ls -la /etc/ssl/certs/D-TRUST_EV_Root_CA_1_2020.pem
+      > |   |   \_ ls -la /etc/fonts/conf.d/20-unhint-small-dejavu-lgc-serif.conf
+      > |   |   \_ ls -la /etc/ssl/certs/T-TeleSec_GlobalRoot_Class_3.pem
 
     残留进程 (执行后):
       USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-      root           1  0.0  0.0   3156  1792 ?        Ss   02:20   0:00 tail -f /dev/null
-      root           7 19.1  0.1 1244224 22204 ?       Sl   02:20   0:07 /opt/opensandbox/execd
-      root         840  0.0  0.0   4752  3456 ?        S    02:21   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
-      root         842  0.0  0.0   4084  2560 ?        R    02:21   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
-      root         843  0.0  0.0  24904  3200 ?        S    02:21   0:00  |   \_ sort
-      root         841  0.0  0.0   4752  3584 ?        S    02:21   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
-      root         844  0.0  0.0   8280  4352 ?        R    02:21   0:00  |   \_ ps auxf
-      root         845  0.0  0.0   4752  3584 ?        S    02:21   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
-      root         847  0.0  0.0   7788  1536 ?        R    02:21   0:00      \_ md5sum
+      root           1  0.0  0.0   3156  1664 ?        Ss   02:26   0:00 tail -f /dev/null
+      root           7 18.9  0.1 1243968 21956 ?       Sl   02:26   0:07 /opt/opensandbox/execd
+      root         840  0.0  0.0   4752  3712 ?        S    02:27   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root         841  0.0  0.0   4084  2432 ?        R    02:27   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root         842  0.0  0.0  24904  3200 ?        S    02:27   0:00  |   \_ sort
+      root         843  0.0  0.0   4752  3456 ?        S    02:27   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root         844  0.0  0.0   8280  4224 ?        R    02:27   0:00  |   \_ ps auxf
+      root         845  0.0  0.0   4752  3456 ?        S    02:27   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+      root         846  0.0  0.0   2580   256 ?        R    02:27   0:00      \_ cat /root/.bashrc /root/.bash_profile /root/.profile /root/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/01-locale-fix.sh
+      root         847  0.0  0.0   7788   896 ?        R    02:27   0:00      \_ md5sum
 
   --- [D7] 残留网络连接 ---
         sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
-         0: 0100007F:E832 0100007F:AEE4 01 00000000:00000000 02:00000020 00000000     0        0 1865645 2 0000000000000000 20 4 30 10 -1                  
-         1: 0100007F:B9D0 0100007F:AEE4 01 00000000:00000000 02:000007B2 00000000     0        0 1880680 2 0000000000000000 20 4 30 10 -1                  
-         2: 0100007F:E866 0100007F:AEE4 01 00000000:00000000 02:00000023 00000000     0        0 1855173 2 0000000000000000 20 4 30 10 -1                  
-         3: 0100007F:E828 0100007F:AEE4 01 00000000:00000000 02:00000020 00000000     0        0 1851365 2 0000000000000000 20 4 30 10 -1                  
-         4: 0100007F:E7AA 0100007F:AEE4 01 00000000:00000000 02:000004D1 00000000     0        0 1847252 2 0000000000000000 20 4 30 10 -1                  
-         5: 0100007F:E78E 0100007F:AEE4 01 00000000:00000000 02:00000405 00000000     0        0 1854592 2 0000000000000000 20 4 30 10 -1                  
-         6: 030011AC:CFFE 51BE7DB9:0050 06 00000000:00000000 03:00000047 00000000     0        0 0 3 0000000000000000                                      
-         7: 0100007F:E85A 0100007F:AEE4 01 00000000:00000000 02:00000022 00000000     0        0 1855162 2 0000000000000000 20 4 30 10 -1                  
-         8: 0100007F:E856 0100007F:AEE4 01 00000000:00000000 02:00000021 00000000     0        0 1851374 2 0000000000000000 20 4 30 10 -1                  
-         9: 0100007F:EE3E 0100007F:AEE4 01 00000000:00000000 02:000002D8 00000000     0        0 1851021 2 0000000000000000 20 4 30 10 -1                  
-        10: 0100007F:E87C 0100007F:AEE4 01 00000000:00000000 02:00000023 00000000     0        0 1860594 2 0000000000000000 20 4 30 10 -1                  
-        11: 0100007F:ADD6 0100007F:AEE4 01 00000000:00000000 02:00000134 00000000     0        0 1846829 2 0000000000000000 20 4 30 10 -1                  
-        12: 0100007F:9BC0 0100007F:AEE4 01 00000000:00000000 02:000002D8 00000000     0        0 1841610 2 0000000000000000 20 4 30 10 -1                  
-        13: 0100007F:ADE6 0100007F:AEE4 01 00000000:00000000 02:00000481 00000000     0        0 1848492 2 0000000000000000 20 4 30 10 -1                  
+         0: 0100007F:B382 0100007F:AEE4 01 00000000:00000000 02:00000285 00000000     0        0 2119631 2 0000000000000000 20 4 30 10 -1                  
+         1: 0100007F:D0CA 0100007F:AEE4 01 00000000:00000000 02:000002F9 00000000     0        0 2127303 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:88D8 0100007F:AEE4 01 00000000:00000000 02:0000080F 00000000     0        0 2150996 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:B312 0100007F:AEE4 01 00000000:00000000 02:00000722 00000000     0        0 2130164 2 0000000000000000 20 4 30 10 -1                  
+         4: 0100007F:9B96 0100007F:AEE4 01 00000000:00000000 02:00000A11 00000000     0        0 2156772 2 0000000000000000 20 4 30 10 -1                  
+         5: 0100007F:D028 0100007F:AEE4 01 00000000:00000000 02:000001C6 00000000     0        0 2126932 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:D0C2 0100007F:AEE4 01 00000000:00000000 02:00000293 00000000     0        0 2117342 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:BED8 0100007F:AEE4 01 00000000:00000000 02:0000014F 00000000     0        0 2105877 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:99DA 0100007F:AEE4 01 00000000:00000000 02:00000196 00000000     0        0 2110628 2 0000000000000000 20 4 30 10 -1                  
+         9: 0100007F:99FC 0100007F:AEE4 01 00000000:00000000 02:000002C2 00000000     0        0 2105227 2 0000000000000000 20 4 0 10 -1                   
+        10: 0100007F:99EA 0100007F:AEE4 01 00000000:00000000 02:0000044F 00000000     0        0 2110636 2 0000000000000000 20 4 30 10 -1                  
+        11: 040011AC:AE4C 185CBD5B:0050 06 00000000:00000000 03:000000A9 00000000     0        0 0 3 0000000000000000                                      
+        12: 0100007F:88D0 0100007F:AEE4 01 00000000:00000000 02:00000746 00000000     0        0 2142088 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:9BA0 0100007F:AEE4 01 00000000:00000000 02:00000AED 00000000     0        0 2149238 2 0000000000000000 20 4 30 10 -1                  
 
   --- [D8] 资源消耗 ---
-    CPU    : 4.1% -> 61.6% (Δ +57.5%)
-    Memory : 1890.2 -> 2179.5 MiB (Δ +289.4 MiB)
+    CPU    : 7.0% -> 2.8% (Δ -4.3%)
+    Memory : 2012.5 -> 2165.2 MiB (Δ +152.7 MiB)
 
   --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
     PASS
@@ -489,14 +243,16 @@ everything's installed!
     PASS  无变化
 
   --- [D14] 关键文件内容分析 ---
-    PASS  crontab 无变化
-    !! cron.d 恶意内容: cron.d persistence
-
-  --- [D21] 隐藏进程检测 ---
     PASS  未发现恶意内容模式
 
   --- [D15] 关键系统二进制完整性 ---
-    PASS  /bin/bash, su, sudo, passwd, sshd 等均未被篡改
+    !! FAIL  关键系统二进制文件 hash 变更!
+      <- 原始: c9bf97edac589db7516498957b76e946  /usr/bin/passwd
+      <- 原始: 0a9d284ce212a08cbce7ae5ea63629c2  /usr/bin/newgrp
+      <- 原始: 303330f9f1b6617b3b533e4dcfe1faf0  /bin/bash
+      <- 原始: 810e21e04351963c67ef5f1884b00e3c  /bin/login
+      <- 原始: 08999f0eb8972a24cf22cb061ce92d64  /bin/su
+      <- 原始: 06c607d76755c1bc7e994981951ee015  /bin/sh
 
   --- [D16] 符号链接变更 ---
     PASS  无新增符号链接
@@ -511,7 +267,10 @@ everything's installed!
     PASS  无异常高熵文件
 
   --- [D20] 计划任务详细差异 ---
-    !! 5 个潜在隐藏进程
+    PASS  crontab 无变化
+
+  --- [D21] 隐藏进程检测 ---
+    PASS  未发现隐藏进程
 
   --- [D22] 信号处理 / trap 分析 ---
     PASS  未发现恶意信号处理
@@ -520,56 +279,50 @@ everything's installed!
     PASS  未检测到攻击链组合
 
   --- [D24] 敏感文件权限变更 ---
-    PASS  crontab 无变化
-    !! cron.d 恶意内容: cron.d persistence
-
-  --- [D21] 隐藏进程检测 ---
     PASS  敏感文件权限正常
 
 ============================================================================
   8/9  MITRE ATT&CK 技术映射
 ============================================================================
-    [T1053.003] Scheduled Task/Job: Cron
-      └─ cron.d 含恶意内容: cron.d persistence
-    [T1564.001] Hide Artifacts: Hidden Files and Directories
-      └─ 检测到 5 个 /proc 中存在但 ps 不可见的进程
+    [T1554] Compromise Client Software Binary
+      └─ 关键系统二进制被篡改
 
 ============================================================================
   9/9  综合判定
 ============================================================================
 
   +──────────────────────────────────────────────────────────────────────────+
-  |  [??] 判定: SUSPICIOUS            风险评分:  50/100            |
-  |  [████████████████████░░░░░░░░░░░░░░░░░░░░]                              |
-  |  置信度: MEDIUM  维度覆盖:  2/24              |
+  |  [??] 判定: SUSPICIOUS            风险评分:  45/100            |
+  |  [██████████████████░░░░░░░░░░░░░░░░░░░░░░]                              |
+  |  置信度: LOW     维度覆盖:  1/24              |
   +──────────────────────────────────────────────────────────────────────────+
 
   命令           : ls -la /
   合法命令模式   : 否
   退出码         : 0
   文件 +/-       : +0 / -0
-  inotify 事件   : 0 系统 + 4783 临时
+  inotify 事件   : 0 系统 + 4280 临时
   外部连接       : 0 个
   SUID/SGID 变更 : +0
-  二进制完整性   : PASS
+  二进制完整性   : FAIL
   新增符号链接   : 0
   新增文件能力   : 0
   执行耗时       : 1.0s
-  MITRE 技术     : 2 个
-  ATT&CK 战术    : Defense Evasion, Persistence
-  发现           : 1 critical, 1 warnings, 0 info
-  置信度         : MEDIUM
+  MITRE 技术     : 1 个
+  ATT&CK 战术    : Unknown
+  发现           : 1 critical, 0 warnings, 0 info
+  置信度         : LOW
 
   详细发现 (按严重程度排序):
-    [!!!] [计划任务差异] cron.d 含恶意内容: cron.d persistence [T1053.003] (score: 30)
-    [ ! ] [隐藏进程] 检测到 5 个 /proc 中存在但 ps 不可见的进程 [T1564.001] (score: 20)
+    [!!!] [二进制完整性] 关键系统二进制被篡改 [T1554] (score: 45)
 
   安全建议:
     -> REVIEW: 建议人工审核此命令后再决定是否放行
+    -> 置信度较低, 可能为误报, 请结合上下文判断
 
-  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973323.json
-  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973323.txt
-  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973323.sarif.json
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973666.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973666.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973666.sarif.json
 
   快速预判: PASS (静态分: 0, 模式匹配: 0)
   [WARN] 快速预判未能识别 — 此攻击需要沙箱动态分析才能发现
@@ -577,245 +330,26 @@ everything's installed!
 ============================================================================
   人类可读摘要:
 ============================================================================
-  ⚠️ 判定: SUSPICIOUS (风险分: 50/100, 置信度: MEDIUM)
+  ⚠️ 判定: SUSPICIOUS (风险分: 45/100, 置信度: LOW)
   命令: ls -la /
   
-  发现 2 个问题 (1 严重, 1 警告):
-    [CRITICAL] 计划任务差异: cron.d 含恶意内容: cron.d persistence [T1053.003]
-    [WARN] 隐藏进程: 检测到 5 个 /proc 中存在但 ps 不可见的进程 [T1564.001]
+  发现 1 个问题 (1 严重, 0 警告):
+    [CRITICAL] 二进制完整性: 关键系统二进制被篡改 [T1554]
   
-  涉及 ATT&CK 战术: Defense Evasion, Persistence
+  涉及 ATT&CK 战术: Unknown
   
   建议:
     • REVIEW: 建议人工审核此命令后再决定是否放行
+    • 置信度较低, 可能为误报, 请结合上下文判断
 
   沙箱已销毁。
 
-/home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/checker.sh: line 2344: syntax error near unexpected token `('
-[0;36m[INFO][0m  Cleaning up...
-[0;32m[ OK ][0m Cleanup done.
-    !! 5 个潜在隐藏进程
 
-  --- [D22] 信号处理 / trap 分析 ---
-    PASS  未发现恶意信号处理
+[0;36m[INFO][0m  [Step 7/7] 完成!
+[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973666.json
+[0;32m[ OK ][0m 报告 (文本): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973666.txt
+  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973666.json
+  快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
 
-  --- [D23] 攻击链关联分析 ---
-    PASS  未检测到攻击链组合
-
-  --- [D24] 敏感文件权限变更 ---
-    PASS  敏感文件权限正常
-
-============================================================================
-  8/9  MITRE ATT&CK 技术映射
-============================================================================
-    [T1053.003] Scheduled Task/Job: Cron
-      └─ cron.d 含恶意内容: cron.d persistence
-    [T1564.001] Hide Artifacts: Hidden Files and Directories
-      └─ 检测到 5 个 /proc 中存在但 ps 不可见的进程
-
-============================================================================
-  9/9  综合判定
-============================================================================
-Failed to terminate sandbox: 9b15c4bd-db2d-4dcd-b656-a2c8f0c2ab61
-Traceback (most recent call last):
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
-    yield
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
-    resp = await self._pool.handle_async_request(req)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
-    raise exc from None
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
-    response = await connection.handle_async_request(
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
-    raise exc
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
-    stream = await self._connect(request)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
-    stream = await self._network_backend.connect_tcp(**kwargs)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
-    return await self._backend.connect_tcp(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
-    with map_exceptions(exc_map):
-  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
-    self.gen.throw(value)
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
-    raise to_exc(exc) from exc
-httpcore.ConnectError: All connection attempts failed
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/opensandbox/adapters/sandboxes_adapter.py", line 358, in kill_sandbox
-    response_obj = await delete_sandboxes_sandbox_id.asyncio_detailed(
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/opensandbox/api/lifecycle/api/sandboxes/delete_sandboxes_sandbox_id.py", line 171, in asyncio_detailed
-    response = await client.get_async_httpx_client().request(**kwargs)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1540, in request
-    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1629, in send
-    response = await self._send_handling_auth(
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
-    response = await self._send_handling_redirects(
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
-    response = await self._send_single_request(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1730, in _send_single_request
-    response = await transport.handle_async_request(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
-    with map_httpcore_exceptions():
-  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
-    self.gen.throw(value)
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
-    raise mapped_exc(message) from exc
-httpx.ConnectError: All connection attempts failed
-
-  +──────────────────────────────────────────────────────────────────────────+
-  |  [!!] 判定: DANGEROUS             风险评分:  60/100            |
-  |  [████████████████████████░░░░░░░░░░░░░░░░]                              |
-  |  置信度: MEDIUM  维度覆盖:  3/24              |
-  +──────────────────────────────────────────────────────────────────────────+
-
-  命令           : ls -la /
-  合法命令模式   : 否
-  退出码         : 0
-  文件 +/-       : +0 / -0
-  inotify 事件   : 0 系统 + 2637 临时
-  外部连接       : 0 个
-  SUID/SGID 变更 : +0
-  二进制完整性   : PASS
-  新增符号链接   : 0
-  新增文件能力   : 0
-  执行耗时       : 1.0s
-  MITRE 技术     : 2 个
-  ATT&CK 战术    : Defense Evasion, Persistence
-  发现           : 1 critical, 2 warnings, 0 info
-  置信度         : MEDIUM
-
-  详细发现 (按严重程度排序):
-    [!!!] [计划任务差异] cron.d 含恶意内容: cron.d persistence [T1053.003] (score: 30)
-    [ ! ] [资源] 内存异常增长 (+289 MiB) (score: 10)
-    [ ! ] [隐藏进程] 检测到 5 个 /proc 中存在但 ps 不可见的进程 [T1564.001] (score: 20)
-
-  安全建议:
-    -> BLOCK: 强烈建议阻止此命令执行
-    -> 检查 crontab -l、/etc/cron.d/、systemd services 是否被篡改
-
-  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973326.json
-  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973326.txt
-  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973326.sarif.json
-
-  快速预判: PASS (静态分: 0, 模式匹配: 0)
-  [WARN] 快速预判未能识别 — 此攻击需要沙箱动态分析才能发现
-
-============================================================================
-  人类可读摘要:
-============================================================================
-  🚨 判定: DANGEROUS (风险分: 60/100, 置信度: MEDIUM)
-  命令: ls -la /
-  
-  发现 3 个问题 (1 严重, 2 警告):
-    [CRITICAL] 计划任务差异: cron.d 含恶意内容: cron.d persistence [T1053.003]
-    [WARN] 资源: 内存异常增长 (+289 MiB)
-    [WARN] 隐藏进程: 检测到 5 个 /proc 中存在但 ps 不可见的进程 [T1564.001]
-  
-  涉及 ATT&CK 战术: Defense Evasion, Persistence
-  
-  建议:
-    • BLOCK: 强烈建议阻止此命令执行
-    • 检查 crontab -l、/etc/cron.d/、systemd services 是否被篡改
-
-Traceback (most recent call last):
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
-    yield
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
-    resp = await self._pool.handle_async_request(req)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
-    raise exc from None
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
-    response = await connection.handle_async_request(
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
-    raise exc
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
-    stream = await self._connect(request)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
-    stream = await self._network_backend.connect_tcp(**kwargs)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
-    return await self._backend.connect_tcp(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
-    with map_exceptions(exc_map):
-  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
-    self.gen.throw(value)
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
-    raise to_exc(exc) from exc
-httpcore.ConnectError: All connection attempts failed
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/opensandbox/adapters/sandboxes_adapter.py", line 358, in kill_sandbox
-    response_obj = await delete_sandboxes_sandbox_id.asyncio_detailed(
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/opensandbox/api/lifecycle/api/sandboxes/delete_sandboxes_sandbox_id.py", line 171, in asyncio_detailed
-    response = await client.get_async_httpx_client().request(**kwargs)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1540, in request
-    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1629, in send
-    response = await self._send_handling_auth(
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
-    response = await self._send_handling_redirects(
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
-    response = await self._send_single_request(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1730, in _send_single_request
-    response = await transport.handle_async_request(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
-    with map_httpcore_exceptions():
-  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
-    self.gen.throw(value)
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
-    raise mapped_exc(message) from exc
-httpx.ConnectError: All connection attempts failed
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/tmp/tmp.VnQBGWBpX0/checker.py", line 2144, in <module>
-    asyncio.run(main())
-  File "/usr/lib/python3.12/asyncio/runners.py", line 194, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/tmp/tmp.VnQBGWBpX0/checker.py", line 2135, in main
-    await sandbox.kill()
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/opensandbox/sandbox.py", line 251, in kill
-    await self._sandbox_service.kill_sandbox(self.id)
-  File "/tmp/tmp.VnQBGWBpX0/.venv/lib/python3.12/site-packages/opensandbox/adapters/sandboxes_adapter.py", line 369, in kill_sandbox
-    raise ExceptionConverter.to_sandbox_exception(e) from e
-opensandbox.exceptions.sandbox.SandboxInternalException: Network connectivity error: All connection attempts failed
 [0;36m[INFO][0m  Cleaning up...
 [0;32m[ OK ][0m Cleanup done.

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1554",
+              "name": "二进制完整性",
+              "shortDescription": {
+                "text": "关键系统二进制被篡改"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1554",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1554"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1554 (Compromise Client Software Binary)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "SUSPICIOUS",
+            "risk_score": 45,
+            "confidence": "LOW"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1554",
+          "level": "error",
+          "message": {
+            "text": "关键系统二进制被篡改"
+          },
+          "properties": {
+            "risk_score": 45,
+            "dimension": "二进制完整性",
+            "evidence": "Before:\n06c607d76755c1bc7e994981951ee015  /bin/sh\n08999f0eb8972a24cf22cb061ce92d64  /bin/su\n0a9d284ce212a08cbce7ae5ea63629c2  /usr/bin/newgrp\n303330f9f1b6617b3b533e4dcfe1faf0  /bin/bash\n810e21e04351963c67ef5f\nAfter:\n"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "ls -la /",
+            "verdict": "SUSPICIOUS",
+            "risk_score": 45,
+            "confidence": "LOW",
+            "timestamp": "2026-03-20T02:27:46.934434+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}

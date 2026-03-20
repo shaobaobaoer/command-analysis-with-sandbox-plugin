@@ -1,0 +1,10 @@
+🔶 判定: LOW_RISK (风险分: 10/100, 置信度: MEDIUM)
+命令: npm install -g lodash
+
+发现 1 个问题 (0 严重, 1 警告):
+  [WARN] 挂载点: 挂载点配置变更 [T1611]
+
+涉及 ATT&CK 战术: Execution
+
+建议:
+  • ALLOW: 风险较低, 可考虑放行但建议记录审计日志
