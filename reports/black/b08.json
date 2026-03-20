@@ -1,0 +1,187 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1098",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: SSH authorized_keys manipulation"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1098",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1098"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1098 (Account Manipulation)"
+              }
+            },
+            {
+              "id": "T1222.002",
+              "name": "文件变更",
+              "shortDescription": {
+                "text": "敏感路径写入: ['/root/.ssh/authorized_keys']"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1222/002",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1222.002"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1222.002 (File/Dir Permissions Modification: Linux)"
+              }
+            },
+            {
+              "id": "T1136.001",
+              "name": "用户/权限",
+              "shortDescription": {
+                "text": "用户/权限配置被修改"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1136/001",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1136.001",
+                  "mitre/T1098"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1136.001 (Create Account: Local Account), T1098 (Account Manipulation)"
+              }
+            },
+            {
+              "id": "T1548.001",
+              "name": "文件能力",
+              "shortDescription": {
+                "text": "新增文件能力: 1"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1548/001",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1548.001"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1548.001 (Abuse Elevation Control: Setuid/Setgid)"
+              }
+            },
+            {
+              "id": "T1098-4",
+              "name": "攻击链",
+              "shortDescription": {
+                "text": "检测到后门账户链: 用户变更 + SSH key 注入"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1098",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1098",
+                  "mitre/T1021.004"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1098 (Account Manipulation), T1021.004 (Remote Services: SSH)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "DANGEROUS",
+            "risk_score": 100,
+            "confidence": "HIGH"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1098",
+          "level": "warning",
+          "message": {
+            "text": "命令匹配恶意模式: SSH authorized_keys manipulation"
+          },
+          "properties": {
+            "risk_score": 30,
+            "dimension": "静态分析",
+            "evidence": "mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys"
+          }
+        },
+        {
+          "ruleId": "T1222.002",
+          "level": "error",
+          "message": {
+            "text": "敏感路径写入: ['/root/.ssh/authorized_keys']"
+          },
+          "properties": {
+            "risk_score": 35,
+            "dimension": "文件变更",
+            "evidence": "['/root/.ssh/authorized_keys']"
+          }
+        },
+        {
+          "ruleId": "T1136.001",
+          "level": "error",
+          "message": {
+            "text": "用户/权限配置被修改"
+          },
+          "properties": {
+            "risk_score": 40,
+            "dimension": "用户/权限",
+            "evidence": "Before hash: cb1c1e78eda84e1b2b5efd818868b63f\nAfter hash: c6809e284b839033d332e50710464117"
+          }
+        },
+        {
+          "ruleId": "T1548.001",
+          "level": "error",
+          "message": {
+            "text": "新增文件能力: 1"
+          },
+          "properties": {
+            "risk_score": 35,
+            "dimension": "文件能力",
+            "evidence": "/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper cap_net_bind_service,cap_net_admin,cap_sys_nice=ep"
+          }
+        },
+        {
+          "ruleId": "T1098-4",
+          "level": "error",
+          "message": {
+            "text": "检测到后门账户链: 用户变更 + SSH key 注入"
+          },
+          "properties": {
+            "risk_score": 15,
+            "dimension": "攻击链"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys",
+            "verdict": "DANGEROUS",
+            "risk_score": 100,
+            "confidence": "HIGH",
+            "timestamp": "2026-03-20T03:12:37.480158+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}

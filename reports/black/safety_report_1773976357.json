@@ -1,0 +1,351 @@
+{
+  "version": "4.1",
+  "command": "mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys",
+  "timestamp": "2026-03-20T03:12:37.480158+00:00",
+  "verdict": "DANGEROUS",
+  "risk_score": 100,
+  "confidence": "HIGH",
+  "recommendations": [
+    "BLOCK: 强烈建议阻止此命令执行",
+    "检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更",
+    "审查 ~/.ssh/authorized_keys 中是否有未知公钥",
+    "多维度攻击已确认, 建议全面安全审计"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 5,
+    "critical": 4,
+    "warn": 1,
+    "info": 0,
+    "dimensions_hit": 5
+  },
+  "findings": [
+    {
+      "severity": "WARN",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: SSH authorized_keys manipulation",
+      "risk_score": 30,
+      "mitre_attack": [
+        {
+          "id": "T1098",
+          "name": "Account Manipulation"
+        }
+      ],
+      "evidence": "mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "文件变更",
+      "description": "敏感路径写入: ['/root/.ssh/authorized_keys']",
+      "risk_score": 35,
+      "mitre_attack": [
+        {
+          "id": "T1222.002",
+          "name": "File/Dir Permissions Modification: Linux"
+        }
+      ],
+      "evidence": "['/root/.ssh/authorized_keys']"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "用户/权限",
+      "description": "用户/权限配置被修改",
+      "risk_score": 40,
+      "mitre_attack": [
+        {
+          "id": "T1136.001",
+          "name": "Create Account: Local Account"
+        },
+        {
+          "id": "T1098",
+          "name": "Account Manipulation"
+        }
+      ],
+      "evidence": "Before hash: cb1c1e78eda84e1b2b5efd818868b63f\nAfter hash: c6809e284b839033d332e50710464117"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "文件能力",
+      "description": "新增文件能力: 1",
+      "risk_score": 35,
+      "mitre_attack": [
+        {
+          "id": "T1548.001",
+          "name": "Abuse Elevation Control: Setuid/Setgid"
+        }
+      ],
+      "evidence": "/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper cap_net_bind_service,cap_net_admin,cap_sys_nice=ep"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "攻击链",
+      "description": "检测到后门账户链: 用户变更 + SSH key 注入",
+      "risk_score": 15,
+      "mitre_attack": [
+        {
+          "id": "T1098",
+          "name": "Account Manipulation"
+        },
+        {
+          "id": "T1021.004",
+          "name": "Remote Services: SSH"
+        }
+      ]
+    }
+  ],
+  "evidence": {
+    "command_chain": {
+      "stages": 3,
+      "connectors": [
+        "&&",
+        "&&",
+        "END"
+      ],
+      "safe_then_evil": false
+    },
+    "stdout_lines": 0,
+    "stderr_lines": 0,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 1,
+    "files_deleted": 0,
+    "inotify_sys_events": 3,
+    "inotify_tmp_events": 5711,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 1,
+    "attack_chains": [
+      "后门账户链 (用户变更 + SSH key 注入)"
+    ],
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1098",
+      "T1222.002",
+      "T1136.001",
+      "T1548.001",
+      "T1021.004"
+    ]
+  },
+  "dimensions": {
+    "files_added": [
+      "/root/.ssh/authorized_keys"
+    ],
+    "files_deleted": [],
+    "inotify_sys_events": [
+      "2026-03-20T03:11:53 CREATE /root/.ssh/authorized_keys",
+      "2026-03-20T03:11:53 MODIFY /root/.ssh/authorized_keys",
+      "2026-03-20T03:11:53 ATTRIB /root/.ssh/authorized_keys"
+    ],
+    "inotify_tmp_events": [
+      "2026-03-20T03:12:00 CREATE /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep",
+      "2026-03-20T03:12:00 MODIFY /tmp/sortLqgnep"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [
+      "/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper cap_net_bind_service,cap_net_admin,cap_sys_nice=ep"
+    ],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": [
+      "后门账户链 (用户变更 + SSH key 注入)"
+    ]
+  },
+  "mitre_attack": {
+    "T1098": {
+      "name": "Account Manipulation",
+      "findings": [
+        "命令匹配恶意模式: SSH authorized_keys manipulation",
+        "用户/权限配置被修改",
+        "检测到后门账户链: 用户变更 + SSH key 注入"
+      ]
+    },
+    "T1222.002": {
+      "name": "File/Dir Permissions Modification: Linux",
+      "findings": [
+        "敏感路径写入: ['/root/.ssh/authorized_keys']"
+      ]
+    },
+    "T1136.001": {
+      "name": "Create Account: Local Account",
+      "findings": [
+        "用户/权限配置被修改"
+      ]
+    },
+    "T1548.001": {
+      "name": "Abuse Elevation Control: Setuid/Setgid",
+      "findings": [
+        "新增文件能力: 1"
+      ]
+    },
+    "T1021.004": {
+      "name": "Remote Services: SSH",
+      "findings": [
+        "检测到后门账户链: 用户变更 + SSH key 注入"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Persistence": [
+      "T1098",
+      "T1136.001"
+    ],
+    "Unknown": [
+      "T1222.002"
+    ],
+    "Privilege Escalation": [
+      "T1548.001"
+    ],
+    "Lateral Movement": [
+      "T1021.004"
+    ]
+  },
+  "deobfuscation": {
+    "original": "mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773976291",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773976313",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773976314",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773976357",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [],
+  "stderr": [],
+  "text_summary": "🚨 判定: DANGEROUS (风险分: 100/100, 置信度: HIGH)\n命令: mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/author\n\n发现 5 个问题 (4 严重, 1 警告):\n  [CRITICAL] 文件变更: 敏感路径写入: ['/root/.ssh/authorized_keys'] [T1222.002]\n  [CRITICAL] 用户/权限: 用户/权限配置被修改 [T1136.001, T1098]\n  [CRITICAL] 文件能力: 新增文件能力: 1 [T1548.001]\n  [CRITICAL] 攻击链: 检测到后门账户链: 用户变更 + SSH key 注入 [T1098, T1021.004]\n  [WARN] 静态分析: 命令匹配恶意模式: SSH authorized_keys manipulation [T1098]\n\n涉及 ATT&CK 战术: Lateral Movement, Persistence, Privilege Escalation, Unknown\n\n建议:\n  • BLOCK: 强烈建议阻止此命令执行\n  • 检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更\n  • 审查 ~/.ssh/authorized_keys 中是否有未知公钥",
+  "fast_triage": {
+    "level": "BLOCK",
+    "static_score": 30,
+    "is_legitimate": false,
+    "blacklisted": true,
+    "patterns_matched": 1,
+    "matches": [
+      {
+        "pattern": "SSH authorized_keys manipulation",
+        "mitre": "T1098",
+        "score": 30
+      }
+    ],
+    "deobfuscation_layers": 0
+  }
+}
