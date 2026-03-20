@@ -103,3 +103,452 @@ everything's installed!
 ============================================================================
   5/9  采集执行后快照 (全维度)
 ============================================================================
+  文件数       : 226059
+  SUID/SGID    : 14
+  inotify 系统 : 11856 条
+  inotify /tmp : 212360 条
+
+============================================================================
+  6/9  网络行为深度分析
+============================================================================
+
+  --- 外部连接 (出站) ---
+    -> 151.101.192.223:443 (HTTPS)
+    -> 151.101.64.223:443 (HTTPS)
+    -> 151.101.76.175:443 (HTTPS)
+    -> 66.33.60.129:443 (HTTPS)
+
+    [30 个内部连接已忽略]
+
+  --- DNS 配置 ---
+    PASS  /etc/resolv.conf 未被修改
+
+============================================================================
+  7/9  全维度安全对比分析 (24 维度)
+============================================================================
+
+  --- [D1] 文件变更 (+4392 / -22) ---
+    新增 4392 个:
+      + /root/.cache/pip/http-v2/0/0/d/d/3/00dd3784cf230ccf6c043059b6555022a6ec336498510166b4828df1
+      + /root/.cache/pip/http-v2/0/0/d/d/3/00dd3784cf230ccf6c043059b6555022a6ec336498510166b4828df1.body
+      + /root/.cache/pip/http-v2/0/3/5/9/5/03595f024098ed084eba12d86fd2749d935b061fa35d6b1f18cc0b84
+      + /root/.cache/pip/http-v2/0/3/5/9/5/03595f024098ed084eba12d86fd2749d935b061fa35d6b1f18cc0b84.body
+      + /root/.cache/pip/http-v2/0/3/b/7/e/03b7e31ef41a67b4d5d0212d71d27b02703ce649d01a9d3a622a0976
+      + /root/.cache/pip/http-v2/0/3/b/7/e/03b7e31ef41a67b4d5d0212d71d27b02703ce649d01a9d3a622a0976.body
+      + /root/.cache/pip/http-v2/0/3/e/2/2/03e221c511c06e114a123c8a89a22541da587aa96526e9f3d12acead
+      + /root/.cache/pip/http-v2/0/3/e/2/2/03e221c511c06e114a123c8a89a22541da587aa96526e9f3d12acead.body
+      + /root/.cache/pip/http-v2/0/4/3/c/5/043c5436ab58fe00f4947e073da46878751ec535f5fb37ee31d056d4
+      + /root/.cache/pip/http-v2/0/4/3/c/5/043c5436ab58fe00f4947e073da46878751ec535f5fb37ee31d056d4.body
+      + /root/.cache/pip/http-v2/0/4/4/0/9/04409a64cbe9342d7e3b5728f6ad45c1cb35fb3ec830064d6f7f201a
+      + /root/.cache/pip/http-v2/0/4/4/0/9/04409a64cbe9342d7e3b5728f6ad45c1cb35fb3ec830064d6f7f201a.body
+      + /root/.cache/pip/http-v2/0/6/9/2/0/06920338a4965470bb832ba925694800e223b1b981e0345ba1c9929a
+      + /root/.cache/pip/http-v2/0/6/9/2/0/06920338a4965470bb832ba925694800e223b1b981e0345ba1c9929a.body
+      + /root/.cache/pip/http-v2/0/a/e/8/4/0ae84cda1068eb8069d0d031ff1b592b6ce0646c279bf59396ff2d05
+      + /root/.cache/pip/http-v2/0/b/9/c/5/0b9c559a23f7ec191b44c3b9d027ec34f5f840e530f8bedaf013b634
+      + /root/.cache/pip/http-v2/0/b/9/c/5/0b9c559a23f7ec191b44c3b9d027ec34f5f840e530f8bedaf013b634.body
+      + /root/.cache/pip/http-v2/1/0/9/4/f/1094fc54fa0f578a89d95768552190189d29bf5ab306a135a08b373f
+      + /root/.cache/pip/http-v2/1/0/9/4/f/1094fc54fa0f578a89d95768552190189d29bf5ab306a135a08b373f.body
+      + /root/.cache/pip/http-v2/1/0/d/d/5/10dd5c50b23ad56b8faa63f376c35f0714d75c239731faf78ce79022
+      + /root/.cache/pip/http-v2/1/0/d/d/5/10dd5c50b23ad56b8faa63f376c35f0714d75c239731faf78ce79022.body
+      + /root/.cache/pip/http-v2/1/1/5/8/4/11584f31ec41215071940705e8c92c248476c2eb9f8321e581bc327d
+      + /root/.cache/pip/http-v2/1/1/5/8/4/11584f31ec41215071940705e8c92c248476c2eb9f8321e581bc327d.body
+      + /root/.cache/pip/http-v2/1/2/c/b/3/12cb321f43f8e2a84605c825a1f61e93fee04ba05e5500cf90885bc5
+      + /root/.cache/pip/http-v2/1/2/c/b/3/12cb321f43f8e2a84605c825a1f61e93fee04ba05e5500cf90885bc5.body
+      + /root/.cache/pip/http-v2/1/8/7/a/c/187ac7a4026b4029cf282bde24a9146cdf595a03aa442cb15441ac5c
+      + /root/.cache/pip/http-v2/1/8/7/a/c/187ac7a4026b4029cf282bde24a9146cdf595a03aa442cb15441ac5c.body
+      + /root/.cache/pip/http-v2/1/a/a/9/3/1aa93177f63584761c951c731336f631596e12d3b4e0b67c5c164470
+      + /root/.cache/pip/http-v2/1/a/a/9/3/1aa93177f63584761c951c731336f631596e12d3b4e0b67c5c164470.body
+      + /root/.cache/pip/http-v2/1/c/8/1/b/1c81b93817f31aa9418642808feaab487be448dbe0773e4bd01b9229
+      + /root/.cache/pip/http-v2/1/c/8/1/b/1c81b93817f31aa9418642808feaab487be448dbe0773e4bd01b9229.body
+      + /root/.cache/pip/http-v2/1/f/d/9/a/1fd9ade2b751542e96db097082f121ecac23098b3cd95c8a877f0716
+      + /root/.cache/pip/http-v2/1/f/d/9/a/1fd9ade2b751542e96db097082f121ecac23098b3cd95c8a877f0716.body
+      + /root/.cache/pip/http-v2/2/4/8/5/6/24856b0952c4297aaf6e60793909712b3058ba200334a96acdd81c1f
+      + /root/.cache/pip/http-v2/2/4/8/5/6/24856b0952c4297aaf6e60793909712b3058ba200334a96acdd81c1f.body
+      + /root/.cache/pip/http-v2/2/8/3/9/a/2839a1e60014c8f0cdf9453a6036b2fef7bf06342761e3d37258b029
+      + /root/.cache/pip/http-v2/2/8/3/9/a/2839a1e60014c8f0cdf9453a6036b2fef7bf06342761e3d37258b029.body
+      + /root/.cache/pip/http-v2/2/8/8/5/1/28851bfda9e7b366cbac79b783dc038d1fee039b3e50c3151b437013
+      + /root/.cache/pip/http-v2/2/8/8/5/1/28851bfda9e7b366cbac79b783dc038d1fee039b3e50c3151b437013.body
+      + /root/.cache/pip/http-v2/2/9/b/8/4/29b846fa7f6005b036bbc29a9fc39cf316179ea14e4d6b3ed7b0c995
+      + /root/.cache/pip/http-v2/2/9/b/8/4/29b846fa7f6005b036bbc29a9fc39cf316179ea14e4d6b3ed7b0c995.body
+      + /root/.cache/pip/http-v2/2/a/c/7/4/2ac74edfff77175c59d3e994bd00047129fba4c0b3bf50adae2e3a05
+      + /root/.cache/pip/http-v2/2/a/c/7/4/2ac74edfff77175c59d3e994bd00047129fba4c0b3bf50adae2e3a05.body
+      + /root/.cache/pip/http-v2/2/b/c/2/c/2bc2c639f0e257872d44f52ca105c080f22847b857973c6d446fa8f3
+      + /root/.cache/pip/http-v2/2/b/c/2/c/2bc2c639f0e257872d44f52ca105c080f22847b857973c6d446fa8f3.body
+      + /root/.cache/pip/http-v2/2/c/5/5/d/2c55d6b54b47ea5ef260ddd64d0e4b22df3ef3c647c3f17473048843
+      + /root/.cache/pip/http-v2/2/c/5/5/d/2c55d6b54b47ea5ef260ddd64d0e4b22df3ef3c647c3f17473048843.body
+      + /root/.cache/pip/http-v2/3/2/7/f/0/327f0380de23010729d12b6a8a48f24b952353d527064c8bf3cfd875
+      + /root/.cache/pip/http-v2/3/2/7/f/0/327f0380de23010729d12b6a8a48f24b952353d527064c8bf3cfd875.body
+      + /root/.cache/pip/http-v2/3/3/2/4/5/332454e85308b01fc4d6e249eb40b756e07e4189f493712d40f03875
+      + /root/.cache/pip/http-v2/3/3/2/4/5/332454e85308b01fc4d6e249eb40b756e07e4189f493712d40f03875.body
+      + /root/.cache/pip/http-v2/3/6/1/b/f/361bf053ab706a1212f013301d35a0c4b0af9cd8cc559d24c73d6a6f
+      + /root/.cache/pip/http-v2/3/c/e/7/7/3ce770df07ea321ab056bed31a67391a50e82aea9460d349fd057276
+      + /root/.cache/pip/http-v2/3/c/e/7/7/3ce770df07ea321ab056bed31a67391a50e82aea9460d349fd057276.body
+      + /root/.cache/pip/http-v2/3/d/b/a/4/3dba48e33e4deae5b8e0b5d8173f7d8b9ede86f6e2f3b423cb213061
+      + /root/.cache/pip/http-v2/3/e/b/b/b/3ebbbc11193419af195b732ba30e424053ff5ab50362a0ecd4ede384
+      + /root/.cache/pip/http-v2/3/e/b/b/b/3ebbbc11193419af195b732ba30e424053ff5ab50362a0ecd4ede384.body
+      + /root/.cache/pip/http-v2/3/f/1/8/3/3f1831de5c013ea5c0cdef890fb37908acf5692d338515305311a3ab
+      + /root/.cache/pip/http-v2/3/f/1/8/3/3f1831de5c013ea5c0cdef890fb37908acf5692d338515305311a3ab.body
+      + /root/.cache/pip/http-v2/3/f/e/c/3/3fec34894257a80934e9246a0a3053a6a96740587f3ddbf5b4fa6f02
+      + /root/.cache/pip/http-v2/3/f/e/c/3/3fec34894257a80934e9246a0a3053a6a96740587f3ddbf5b4fa6f02.body
+      + /root/.cache/pip/http-v2/4/1/e/3/c/41e3c68bb5038e20a3418971e070f9076b9eaa6e2c345d3e7f55e6b3
+      + /root/.cache/pip/http-v2/4/1/e/3/c/41e3c68bb5038e20a3418971e070f9076b9eaa6e2c345d3e7f55e6b3.body
+      + /root/.cache/pip/http-v2/4/3/1/c/b/431cb314816158095751e31111af98190227c2d41f5fd9f63fd59238
+      + /root/.cache/pip/http-v2/4/3/1/c/b/431cb314816158095751e31111af98190227c2d41f5fd9f63fd59238.body
+      + /root/.cache/pip/http-v2/4/3/9/4/0/43940c1ffa291a23244e10de06849b33fae6638badc063f4ade3cc1a
+      + /root/.cache/pip/http-v2/4/3/9/4/0/43940c1ffa291a23244e10de06849b33fae6638badc063f4ade3cc1a.body
+      + /root/.cache/pip/http-v2/4/4/e/5/b/44e5b11a6caa92636d8ccfe658d420ba4ed8f67f7f4e835b214255aa
+      + /root/.cache/pip/http-v2/4/4/e/5/b/44e5b11a6caa92636d8ccfe658d420ba4ed8f67f7f4e835b214255aa.body
+      + /root/.cache/pip/http-v2/4/5/1/0/d/4510db332e79737a02db842d5bce6f9297b396da115c0042fbf401ca
+      + /root/.cache/pip/http-v2/4/5/1/0/d/4510db332e79737a02db842d5bce6f9297b396da115c0042fbf401ca.body
+      + /root/.cache/pip/http-v2/4/6/1/d/c/461dc09e8f6de124407790b13833a5c526191c1e01488264ac3bf808
+      + /root/.cache/pip/http-v2/4/6/1/d/c/461dc09e8f6de124407790b13833a5c526191c1e01488264ac3bf808.body
+      + /root/.cache/pip/http-v2/4/7/3/b/5/473b567ed60bd8d114e60b94c85763a77f3c28f2fb2dace2aa12dc93
+      + /root/.cache/pip/http-v2/4/7/3/b/5/473b567ed60bd8d114e60b94c85763a77f3c28f2fb2dace2aa12dc93.body
+      + /root/.cache/pip/http-v2/4/8/3/8/e/4838e51432c6c88a78b5234e817caf0cf3bf1c3fc933f4861329b80f
+      + /root/.cache/pip/http-v2/4/8/3/8/e/4838e51432c6c88a78b5234e817caf0cf3bf1c3fc933f4861329b80f.body
+      + /root/.cache/pip/http-v2/4/a/1/b/f/4a1bf8b4ff9043ded328f5cac498e6f3c8c0fe5becdeb129446a30f1
+      + /root/.cache/pip/http-v2/4/a/1/b/f/4a1bf8b4ff9043ded328f5cac498e6f3c8c0fe5becdeb129446a30f1.body
+      + /root/.cache/pip/http-v2/4/b/e/0/7/4be07d3ac353e38d2c9e3a257cad36ee2a758fc88b4cd5f0d479a5a9
+      + /root/.cache/pip/http-v2/4/b/e/0/7/4be07d3ac353e38d2c9e3a257cad36ee2a758fc88b4cd5f0d479a5a9.body
+      + /root/.cache/pip/http-v2/4/d/8/8/6/4d886541bc3d904564fd839e7bc448c8daeeb92fd9e7b4c0401ef412
+      + /root/.cache/pip/http-v2/4/d/8/8/6/4d886541bc3d904564fd839e7bc448c8daeeb92fd9e7b4c0401ef412.body
+      + /root/.cache/pip/http-v2/5/1/a/c/8/51ac8481baebbefd76fea528ca65066bb6812dde9d27c0c59ba5567b
+      + /root/.cache/pip/http-v2/5/1/a/c/8/51ac8481baebbefd76fea528ca65066bb6812dde9d27c0c59ba5567b.body
+      + /root/.cache/pip/http-v2/5/b/5/7/6/5b576ddc69cb2cda42f61333b85f066e4990a5eab5c96e0670cbb445
+      + /root/.cache/pip/http-v2/5/b/5/7/6/5b576ddc69cb2cda42f61333b85f066e4990a5eab5c96e0670cbb445.body
+      + /root/.cache/pip/http-v2/5/b/d/8/9/5bd894eeb3dfe1c8aaee1daecdfb74bbb314293813a730238621f077
+      + /root/.cache/pip/http-v2/5/b/d/8/9/5bd894eeb3dfe1c8aaee1daecdfb74bbb314293813a730238621f077.body
+      + /root/.cache/pip/http-v2/6/0/3/3/8/60338f3b9ec0994b74f9ee7c46bdfe6fabb9da5ddab4d2e5d0f5715f
+      + /root/.cache/pip/http-v2/6/0/3/3/8/60338f3b9ec0994b74f9ee7c46bdfe6fabb9da5ddab4d2e5d0f5715f.body
+      + /root/.cache/pip/http-v2/6/a/0/8/8/6a088fc192b69f4692b96903e0d1df2f92839b402221a47a2ca3b5be
+      + /root/.cache/pip/http-v2/6/a/0/8/8/6a088fc192b69f4692b96903e0d1df2f92839b402221a47a2ca3b5be.body
+      + /root/.cache/pip/http-v2/6/c/3/7/f/6c37fbfdf697cce77ac3a3add5b61c639e47de9b9b9d1eb63cf429d5
+      + /root/.cache/pip/http-v2/6/c/3/7/f/6c37fbfdf697cce77ac3a3add5b61c639e47de9b9b9d1eb63cf429d5.body
+      + /root/.cache/pip/http-v2/6/d/d/7/f/6dd7f72563c9dcb2a786e420e686844bbc8f61eb5d9fae5d3bcb6458
+      + /root/.cache/pip/http-v2/6/d/d/7/f/6dd7f72563c9dcb2a786e420e686844bbc8f61eb5d9fae5d3bcb6458.body
+      + /root/.cache/pip/http-v2/7/0/b/9/c/70b9c022893d41f3d2b5cd47c3935b21f2c02945201dbf0acd4f302c
+      + /root/.cache/pip/http-v2/7/0/b/9/c/70b9c022893d41f3d2b5cd47c3935b21f2c02945201dbf0acd4f302c.body
+      + /root/.cache/pip/http-v2/7/4/9/a/4/749a44933d57ff5f5887c48cf71835fe9b67e5d0c69770d82f1f758b
+      ... 还有 4292 个
+    删除 22 个:
+      - /root/.cache/pip/http-v2/0/a/e/8/4/0ae84cda1068eb8069d0d031ff1b592b6ce0646c279bf59396ff2d05
+      - /root/.cache/pip/http-v2/3/6/1/b/f/361bf053ab706a1212f013301d35a0c4b0af9cd8cc559d24c73d6a6f
+      - /root/.cache/pip/http-v2/3/d/b/a/4/3dba48e33e4deae5b8e0b5d8173f7d8b9ede86f6e2f3b423cb213061
+      - /root/.cache/pip/http-v2/4/4/e/5/b/44e5b11a6caa92636d8ccfe658d420ba4ed8f67f7f4e835b214255aa
+      - /root/.cache/pip/http-v2/4/4/e/5/b/44e5b11a6caa92636d8ccfe658d420ba4ed8f67f7f4e835b214255aa.body
+      - /root/.cache/pip/http-v2/4/b/e/0/7/4be07d3ac353e38d2c9e3a257cad36ee2a758fc88b4cd5f0d479a5a9
+      - /root/.cache/pip/http-v2/4/b/e/0/7/4be07d3ac353e38d2c9e3a257cad36ee2a758fc88b4cd5f0d479a5a9.body
+      - /root/.cache/pip/http-v2/5/b/5/7/6/5b576ddc69cb2cda42f61333b85f066e4990a5eab5c96e0670cbb445
+      - /root/.cache/pip/http-v2/5/b/5/7/6/5b576ddc69cb2cda42f61333b85f066e4990a5eab5c96e0670cbb445.body
+      - /root/.cache/pip/http-v2/5/b/d/8/9/5bd894eeb3dfe1c8aaee1daecdfb74bbb314293813a730238621f077
+      - /root/.cache/pip/http-v2/5/b/d/8/9/5bd894eeb3dfe1c8aaee1daecdfb74bbb314293813a730238621f077.body
+      - /root/.cache/pip/http-v2/8/8/f/7/d/88f7d71f2d1361f8fb38230bb8ae05bdb624c08a2414e1c535731370
+      - /root/.cache/pip/http-v2/8/8/f/7/d/88f7d71f2d1361f8fb38230bb8ae05bdb624c08a2414e1c535731370.body
+      - /root/.cache/pip/http-v2/8/b/2/4/2/8b24226e2da88df4abeee0d8ca6bce79b19ca2bcd5f94b543939c66c
+      - /root/.cache/pip/http-v2/8/d/0/e/1/8d0e104919449355aedb55b5b546bb9fd53f0e1a8ca1b082109464e9
+      - /root/.cache/pip/http-v2/8/d/0/e/1/8d0e104919449355aedb55b5b546bb9fd53f0e1a8ca1b082109464e9.body
+      - /root/.cache/pip/http-v2/9/1/a/c/4/91ac4141ee513b48d6e2106b8504eedf08543a9ac70e664c84a86c9b
+      - /root/.cache/pip/http-v2/e/0/e/c/2/e0ec2dc4f16c229de1a3b9cfde95f8d429c0097f1325cf7842b15aa3
+      - /root/.cache/pip/http-v2/e/1/0/2/1/e102129ec3eda00211eef9e8d1b4a9f1ca870f9e1a83dc530f859b68
+      - /root/.cache/pip/http-v2/e/1/0/2/1/e102129ec3eda00211eef9e8d1b4a9f1ca870f9e1a83dc530f859b68.body
+      - /root/.cache/pip/http-v2/e/2/0/7/4/e207426cbcf220918fdf354826064190a066f96cd6ad8830f1f11fdc
+      - /root/.cache/pip/http-v2/e/a/c/6/1/eac61126daf80149d2a016f12a54eab5e3b5c1dbc77410ff1a97edc4
+
+  --- [D2] 实时文件事件 (inotifywait) ---
+    系统目录事件 (11856 条):
+      2026-03-20T02:30:37 CREATE,ISDIR /root/.local/share
+      2026-03-20T02:30:39 CREATE,ISDIR /root/.cache/virtualenv
+      2026-03-20T02:30:39 CREATE,ISDIR /root/.local/share/pypoetry/venv
+      2026-03-20T02:30:39 CREATE,ISDIR /root/.local/share/pypoetry/venv/lib
+      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/pyvenv.cfg
+      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/pyvenv.cfg
+      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/bin/python
+      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/bin/python
+      2026-03-20T02:30:39 ATTRIB /root/.local/share/pypoetry/venv/bin/python
+      2026-03-20T02:30:39 ATTRIB /root/.local/share/pypoetry/venv/bin/python
+      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/bin/python3
+      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/bin/python3
+      2026-03-20T02:30:39 ATTRIB /root/.local/share/pypoetry/venv/bin/python3
+      2026-03-20T02:30:39 ATTRIB /root/.local/share/pypoetry/venv/bin/python3
+      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/bin/python3.12
+      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/bin/python3.12
+      2026-03-20T02:30:39 ATTRIB /root/.local/share/pypoetry/venv/bin/python3.12
+      2026-03-20T02:30:39 ATTRIB /root/.local/share/pypoetry/venv/bin/python3.12
+      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/lib/libpython3.12.so.1.0
+      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/lib/libpython3.12.so.1.0
+      2026-03-20T02:30:39 ATTRIB /root/.local/share/pypoetry/venv/lib/libpython3.12.so.1.0
+      2026-03-20T02:30:39 CREATE,ISDIR /root/.cache/virtualenv/unzip
+      2026-03-20T02:30:39 CREATE /root/.cache/virtualenv/unzip/21.2.0/_virtualenv.py.lock
+      2026-03-20T02:30:39 CREATE /root/.cache/virtualenv/unzip/21.2.0/_virtualenv.py
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/unzip/21.2.0/_virtualenv.py
+      2026-03-20T02:30:39 DELETE /root/.cache/virtualenv/unzip/21.2.0/_virtualenv.py.lock
+      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/lib/python3.12/site-packages/_virtualenv.pth
+      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/lib/python3.12/site-packages/_virtualenv.pth
+      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/lib/python3.12/site-packages/_virtualenv.py
+      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/lib/python3.12/site-packages/_virtualenv.py
+      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/CACHEDIR.TAG
+      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/CACHEDIR.TAG
+      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/.gitignore
+      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/.gitignore
+      2026-03-20T02:30:39 CREATE,ISDIR /root/.cache/virtualenv/wheel
+      2026-03-20T02:30:39 CREATE /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl.lock
+      2026-03-20T02:30:39 CREATE /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      ... 还有 11796 条
+    临时目录事件 (6922 条):
+      2026-03-20T02:30:37 CREATE /tmp/ld2jub6y
+      2026-03-20T02:30:37 MODIFY /tmp/ld2jub6y
+      2026-03-20T02:30:37 DELETE /tmp/ld2jub6y
+      2026-03-20T02:30:37 CREATE,ISDIR /tmp/poetry-installere5kqhjt5
+      2026-03-20T02:30:39 CREATE /tmp/poetry-installere5kqhjt5/virtualenv.pyz
+      2026-03-20T02:30:39 MODIFY /tmp/poetry-installere5kqhjt5/virtualenv.pyz
+      2026-03-20T02:30:39 CREATE /tmp/f_bvvhs6
+      2026-03-20T02:30:39 MODIFY /tmp/f_bvvhs6
+      2026-03-20T02:30:39 DELETE /tmp/f_bvvhs6
+      2026-03-20T02:30:39 CREATE /tmp/TmPddp7l60y
+      2026-03-20T02:30:39 DELETE /tmp/TmPddp7l60y
+      2026-03-20T02:30:39 CREATE /tmp/TmPg1foy8b_
+      2026-03-20T02:30:39 CREATE /tmp/TmPg1foy8b_-b
+      2026-03-20T02:30:39 DELETE /tmp/TmPg1foy8b_-b
+      2026-03-20T02:30:39 DELETE /tmp/TmPg1foy8b_
+      2026-03-20T02:30:39 CREATE /tmp/TmP8bvh8pko
+      2026-03-20T02:30:39 DELETE /tmp/TmP8bvh8pko
+      2026-03-20T02:30:39 CREATE,ISDIR /tmp/tmp3f_wl59e
+      2026-03-20T02:30:39 CREATE /tmp/tmp3f_wl59e/pip3
+      2026-03-20T02:30:39 MODIFY /tmp/tmp3f_wl59e/pip3
+      2026-03-20T02:30:39 ATTRIB /tmp/tmp3f_wl59e/pip3
+      2026-03-20T02:30:39 CREATE /tmp/tmp3f_wl59e/pip-3.12
+      2026-03-20T02:30:39 MODIFY /tmp/tmp3f_wl59e/pip-3.12
+      2026-03-20T02:30:39 ATTRIB /tmp/tmp3f_wl59e/pip-3.12
+      2026-03-20T02:30:39 CREATE /tmp/tmp3f_wl59e/pip
+      2026-03-20T02:30:39 MODIFY /tmp/tmp3f_wl59e/pip
+      2026-03-20T02:30:39 ATTRIB /tmp/tmp3f_wl59e/pip
+      2026-03-20T02:30:39 CREATE /tmp/tmp3f_wl59e/pip3.12
+      2026-03-20T02:30:39 MODIFY /tmp/tmp3f_wl59e/pip3.12
+      2026-03-20T02:30:39 ATTRIB /tmp/tmp3f_wl59e/pip3.12
+
+  --- [D3] 用户与权限 ---
+    PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
+
+  --- [D4] 持久化 (cron/systemd/rc.local/init.d/at) ---
+    PASS  无新增
+
+  --- [D5] Shell 环境 (.bashrc/.profile/etc) ---
+    PASS  无变化
+
+  --- [D6] 进程树分析 ---
+    观察到 19 个独立进程:
+      > /opt/opensandbox/execd
+      > COMMAND
+      > [python3] <defunct>
+      > \_ /root/.local/share/pypoetry/venv/bin/python -m pip install --disable-pip-version-check --upgrade pip
+      > \_ /root/.local/share/pypoetry/venv/bin/python -m pip install poetry==2.3.2
+      > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
+      > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
+      > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
+      > \_ bash -c getcap -r / 2>/dev/null | sort || true
+      > \_ bash -c { curl -sSL https://install.python-poetry.org | python3 - ; }; echo "__EXIT_CODE__$?"
+      > \_ cat /proc/net/tcp /proc/net/tcp6
+      > \_ getcap -r /
+      > \_ python3 -
+      > \_ sort
+      > tail -f /dev/null
+      > |   \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
+      > |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      > |   \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
+      > |   \_ sort
+
+    残留进程 (执行后):
+      USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+      root           1  0.0  0.0   3156  1664 ?        Ss   02:30   0:00 tail -f /dev/null
+      root           7 14.6  0.1 1243968 22084 ?       Sl   02:30   0:07 /opt/opensandbox/execd
+      root         962  0.0  0.0   4752  3456 ?        S    02:30   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root         964  0.0  0.0   4084  2432 ?        R    02:30   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root         966  0.0  0.0  24904  3328 ?        R    02:30   0:00  |   \_ sort
+      root         963  0.0  0.0   4752  3456 ?        S    02:30   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root         965  0.0  0.0   8280  4224 ?        R    02:30   0:00  |   \_ ps auxf
+      root         967  0.0  0.0   4752  3584 ?        S    02:30   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+      root         968  0.0  0.0   3132  1792 ?        R    02:30   0:00      \_ cat /root/.bashrc /root/.bash_profile /root/.profile /root/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/01-locale-fix.sh
+      root         969  0.0  0.0   7788  1536 ?        R    02:30   0:00      \_ md5sum
+      root         829  0.0  0.0      0     0 ?        Z    02:30   0:00 [python3] <defunct>
+
+  --- [D7] 残留网络连接 ---
+        sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
+         0: 020011AC:DE6C 813C2142:01BB 06 00000000:00000000 03:00000555 00000000     0        0 0 3 0000000000000000                                      
+         1: 0100007F:8F0E 0100007F:AEE4 01 00000000:00000000 02:0000041F 00000000     0        0 2269805 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:AEFE 0100007F:AEE4 01 00000000:00000000 02:000005D6 00000000     0        0 2286145 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:CE0C 0100007F:AEE4 01 00000000:00000000 02:00000A87 00000000     0        0 2306267 2 0000000000000000 20 4 30 10 -1                  
+         4: 0100007F:AF50 0100007F:AEE4 01 00000000:00000000 02:00000004 00000000     0        0 2284361 2 0000000000000000 20 4 30 10 -1                  
+         5: 0100007F:8624 0100007F:AEE4 01 00000000:00000000 02:00000764 00000000     0        0 2299456 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:AF7A 0100007F:AEE4 01 00000000:00000000 02:00000311 00000000     0        0 2271206 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:CE12 0100007F:AEE4 01 00000000:00000000 02:00000AEC 00000000     0        0 2313490 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:AEFC 0100007F:AEE4 01 00000000:00000000 02:000006DA 00000000     0        0 2282132 2 0000000000000000 20 4 30 10 -1                  
+         9: 0100007F:AF08 0100007F:AEE4 01 00000000:00000000 02:000005D6 00000000     0        0 2284351 2 0000000000000000 20 4 30 10 -1                  
+        10: 0100007F:8DDE 0100007F:AEE4 01 00000000:00000000 02:000005B0 00000000     0        0 2261213 2 0000000000000000 20 4 30 10 -1                  
+        11: 0100007F:8DE0 0100007F:AEE4 01 00000000:00000000 02:0000027D 00000000     0        0 2263500 2 0000000000000000 20 4 30 10 -1                  
+        12: 0100007F:8DC0 0100007F:AEE4 01 00000000:00000000 02:0000027D 00000000     0        0 2262740 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:C5EE 0100007F:AEE4 01 00000000:00000000 02:000003F2 00000000     0        0 2258967 2 0000000000000000 20 4 30 10 -1                  
+
+  --- [D8] 资源消耗 ---
+    CPU    : 32.8% -> 5.4% (Δ -27.4%)
+    Memory : 2052.3 -> 2030.6 MiB (Δ -21.7 MiB)
+
+  --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
+    PASS
+
+  --- [D10] SUID/SGID 文件变更 ---
+    PASS  无新增 SUID/SGID 文件
+
+  --- [D11] 内核模块 ---
+    PASS  无变化
+
+  --- [D12] 挂载点 ---
+    PASS  无变化
+
+  --- [D13] 安全相关环境变量 ---
+    PASS  无变化
+
+  --- [D14] 关键文件内容分析 ---
+    PASS  未发现恶意内容模式
+
+  --- [D15] 关键系统二进制完整性 ---
+    PASS  /bin/bash, su, sudo, passwd, sshd 等均未被篡改
+
+  --- [D16] 符号链接变更 ---
+    [INFO] 新增 1 个符号链接 (非敏感目标)
+      + lrwxrwxrwx 1 root root 43 Mar 20 02:30 /root/.local/bin/poetry -> /root/.local/share/pypoetry/venv/bin/poetry
+
+  --- [D17] 文件能力 (Linux Capabilities) ---
+    PASS  无新增文件能力
+
+  --- [D18] 输出内容分析 ---
+    PASS  输出内容无敏感信息泄露
+
+  --- [D19] 新增文件熵分析 ---
+    PASS  无异常高熵文件
+
+  --- [D20] 计划任务详细差异 ---
+    PASS  crontab 无变化
+
+  --- [D21] 隐藏进程检测 ---
+    PASS  未发现隐藏进程
+
+  --- [D22] 信号处理 / trap 分析 ---
+    PASS  未发现恶意信号处理
+
+  --- [D23] 攻击链关联分析 ---
+    PASS  未检测到攻击链组合
+
+  --- [D24] 敏感文件权限变更 ---
+    PASS  敏感文件权限正常
+
+============================================================================
+  8/9  MITRE ATT&CK 技术映射
+============================================================================
+    未映射到任何 ATT&CK 技术
+
+============================================================================
+  9/9  综合判定
+============================================================================
+
+  +──────────────────────────────────────────────────────────────────────────+
+  |  [OK] 判定: LIKELY_SAFE           风险评分:   0/100            |
+  |  [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]                              |
+  |  置信度: HIGH    维度覆盖:  0/24              |
+  +──────────────────────────────────────────────────────────────────────────+
+
+  命令           : curl -sSL https://install.python-poetry.org | python3 -
+  合法命令模式   : 是
+  退出码         : 0
+  文件 +/-       : +4392 / -22
+  inotify 事件   : 11856 系统 + 6922 临时
+  外部连接       : 4 个
+  SUID/SGID 变更 : +0
+  二进制完整性   : PASS
+  新增符号链接   : 1
+  新增文件能力   : 0
+  执行耗时       : 12.3s
+  MITRE 技术     : 0 个
+  ATT&CK 战术    : 无
+  发现           : 0 critical, 0 warnings, 0 info
+  置信度         : HIGH
+
+  全部 24 维度检查通过:
+    [PASS] 无敏感路径写入
+    [PASS] 用户/权限未被修改
+    [PASS] 无持久化后门 (cron/systemd/rc.local)
+    [PASS] Shell 环境未被篡改
+    [PASS] DNS 配置未被修改
+    [PASS] 无可疑残留进程
+    [PASS] 临时目录无可执行文件
+    [PASS] 无新增 SUID/SGID 文件
+    [PASS] 内核模块未变化
+    [PASS] 挂载点未变化
+    [PASS] 无 LD_PRELOAD 注入
+    [PASS] 未发现恶意内容模式
+    [PASS] 关键二进制完整性通过
+    [PASS] 无危险符号链接
+    [PASS] 无新增文件能力
+    [PASS] 输出无敏感信息泄露
+    [PASS] 无异常高熵文件
+    [PASS] 计划任务无变化
+    [PASS] 未发现隐藏进程
+    [PASS] 无恶意信号处理
+    [PASS] 未检测到攻击链
+    [PASS] 敏感文件权限正常
+    [PASS] 外部连接 4 个
+    [PASS] MITRE ATT&CK 映射 0 个技术
+
+  安全建议:
+    -> ALLOW: 命令安全, 可放行
+
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973895.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973895.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973895.sarif.json
+
+  快速预判: PASS (静态分: 0, 模式匹配: 0)
+
+============================================================================
+  人类可读摘要:
+============================================================================
+  ✅ 判定: LIKELY_SAFE (风险分: 0/100, 置信度: HIGH)
+  命令: curl -sSL https://install.python-poetry.org | python3 -
+  
+  全部 24 维度检查通过, 命令安全。
+  
+  建议:
+    • ALLOW: 命令安全, 可放行
+
+  沙箱已销毁。
+
+
+[0;36m[INFO][0m  [Step 7/7] 完成!
+[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973895.json
+[0;32m[ OK ][0m 报告 (文本): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973895.txt
+  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973895.json
+  快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
+
+[0;36m[INFO][0m  Cleaning up...
+[0;32m[ OK ][0m Cleanup done.

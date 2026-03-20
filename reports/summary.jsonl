@@ -1,2 +1,2 @@
-{"id":"w09","category":"white","label":"safe","desc":"nvm installer","verdict":"LOW_RISK","risk_score":22,"mitre_count":2,"confidence":"MEDIUM","match":"CORRECT"}
-{"id":"w06","category":"white","label":"safe","desc":"pip install requests","verdict":"LIKELY_SAFE","risk_score":5,"mitre_count":0,"confidence":"MEDIUM","match":"CORRECT"}
+{"id":"w10","category":"white","label":"safe","desc":"poetry installer","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
+{"id":"w07","category":"white","label":"safe","desc":"npm install lodash","verdict":"UNKNOWN","risk_score":-1,"mitre_count":0,"confidence":"N/A","match":"WRONG"}

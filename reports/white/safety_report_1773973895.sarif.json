@@ -21,11 +21,11 @@
         {
           "executionSuccessful": true,
           "properties": {
-            "command": "npm install -g lodash",
+            "command": "curl -sSL https://install.python-poetry.org | python3 -",
             "verdict": "LIKELY_SAFE",
             "risk_score": 0,
             "confidence": "HIGH",
-            "timestamp": "2026-03-20T02:32:22.760542+00:00"
+            "timestamp": "2026-03-20T02:31:35.231757+00:00"
           }
         }
       ]
