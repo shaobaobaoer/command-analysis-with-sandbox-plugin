@@ -22,19 +22,19 @@ everything's installed!
 [0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
 [0;32m[ OK ][0m opensandbox-server + SDK 已安装
 [0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
-[0;32m[ OK ][0m 配置写入: /tmp/tmp.iYiTeXPdPi/sandbox.toml
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.KPS7DKhUas/sandbox.toml
 [0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
-[0;32m[ OK ][0m Server 就绪 (PID: 613980, port: 8080)
+[0;32m[ OK ][0m Server 就绪 (PID: 650540, port: 8080)
 [0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
 
-/tmp/tmp.iYiTeXPdPi/checker.py:803: SyntaxWarning: invalid escape sequence '\$'
+/tmp/tmp.KPS7DKhUas/checker.py:803: SyntaxWarning: invalid escape sequence '\$'
   "echo '=== cron.d ==='; for f in /etc/cron.d/*; do [ -f \"\$f\" ] && echo \"--- \$f ---\" && cat \"\$f\"; done 2>/dev/null || true; "
 
 ============================================================================
   1/9  创建隔离沙箱
 ============================================================================
   镜像: opensandbox/code-interpreter:v1.0.2
-  Sandbox ID: d0373963-1fd0-430a-947a-ddafb9c8b53c
+  Sandbox ID: 395981b4-9244-4222-9b2c-16d4fc8bf804
 
 ============================================================================
   2/9  安装监控工具 (快照前, 避免污染基线)
@@ -48,9 +48,9 @@ everything's installed!
   SUID/SGID    : 14
   符号链接     : 483
   文件能力     : 1
-  基线采集耗时 : 14.9s
-  CPU          : 2.5%
-  Memory       : 1875.0/15069.3 MiB
+  基线采集耗时 : 15.0s
+  CPU          : 3.0%
+  Memory       : 1838.1/15069.3 MiB
 
 ============================================================================
   4/9  启动多层探针 + 执行待测命令
@@ -79,22 +79,22 @@ everything's installed!
   stderr   : 0 行
 
   --- stdout (前 50 行) ---
-    | added 1 package in 716ms
+    | added 1 package in 705ms
 
 ============================================================================
   5/9  采集执行后快照 (全维度)
 ============================================================================
   文件数       : 222745
   SUID/SGID    : 14
-  inotify 系统 : 125 条
-  inotify /tmp : 206223 条
+  inotify 系统 : 123 条
+  inotify /tmp : 210407 条
 
 ============================================================================
   6/9  网络行为深度分析
 ============================================================================
 
   --- 外部连接 (出站) ---
-    -> 104.16.10.34:443 (HTTPS)
+    -> 104.16.1.34:443 (HTTPS)
 
     [20 个内部连接已忽略]
 
@@ -210,99 +210,99 @@ everything's installed!
       ... 还有 956 个
 
   --- [D2] 实时文件事件 (inotifywait) ---
-    系统目录事件 (125 条):
-      2026-03-20T03:26:27 CREATE /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 CREATE /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/tmp/a948aa20
-      2026-03-20T03:26:27 CREATE,ISDIR /root/.npm/_cacache/content-v2/sha512/82
-      2026-03-20T03:26:27 MOVED_TO /root/.npm/_cacache/content-v2/sha512/82/80/42dacaf8407c39fb32b6fce9cc8708bc2b6c7b8fca05f8d261e3a35c44f110d2ea9c138af12971494427c90942b1adcdd47e934b52b4903ab70c8e88912e
-      2026-03-20T03:26:27 CREATE,ISDIR /root/.npm/_cacache/index-v5/ac
-      2026-03-20T03:26:27 CREATE /root/.npm/_cacache/index-v5/ac/ba/f22fa31b850d07f8d92263849db0d7019715081c71c9f9d45d4e901eec73
-      2026-03-20T03:26:27 MODIFY /root/.npm/_cacache/index-v5/ac/ba/f22fa31b850d07f8d92263849db0d7019715081c71c9f9d45d4e901eec73
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      2026-03-20T03:26:27 MODIFY /root/.npm/_logs/2026-03-20T03_26_27_057Z-debug-0.log
-      ... 还有 65 条
-    临时目录事件 (5521 条):
-      2026-03-20T03:26:34 CREATE /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
-      2026-03-20T03:26:34 MODIFY /tmp/sortIaJDU3
+    系统目录事件 (123 条):
+      2026-03-20T03:44:36 CREATE /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 CREATE /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/4a9ff4a1
+      2026-03-20T03:44:36 CREATE,ISDIR /root/.npm/_cacache/content-v2/sha512/82
+      2026-03-20T03:44:36 MOVED_TO /root/.npm/_cacache/content-v2/sha512/82/80/42dacaf8407c39fb32b6fce9cc8708bc2b6c7b8fca05f8d261e3a35c44f110d2ea9c138af12971494427c90942b1adcdd47e934b52b4903ab70c8e88912e
+      2026-03-20T03:44:36 CREATE,ISDIR /root/.npm/_cacache/index-v5/ac
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 MODIFY /root/.npm/_logs/2026-03-20T03_44_36_387Z-debug-0.log
+      2026-03-20T03:44:36 CREATE /root/.npm/_cacache/tmp/60796627
+      2026-03-20T03:44:36 MODIFY /root/.npm/_cacache/tmp/60796627
+      ... 还有 63 条
+    临时目录事件 (6195 条):
+      2026-03-20T03:44:44 CREATE /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
+      2026-03-20T03:44:44 MODIFY /tmp/sortxCD6ep
 
   --- [D3] 用户与权限 ---
     PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
@@ -329,41 +329,41 @@ everything's installed!
       > |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
       > |   \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
       > |   \_ getcap -r /
-      > |   \_ ls -la /usr/bin/mount
       > |   \_ sort
       > |   |   \_ [ls]
+      > |   |   \_ ls -la /etc/ssl/certs/DigiCert_Global_Root_CA.pem
 
     残留进程 (执行后):
       USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-      root           1  0.0  0.0   3156  1792 ?        Ss   03:25   0:00 tail -f /dev/null
-      root           7 17.5  0.1 1244224 22252 ?       Sl   03:25   0:06 /opt/opensandbox/execd
-      root         848  0.0  0.0   4752  3456 ?        S    03:26   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
-      root         850  0.0  0.0   4084  2432 ?        R    03:26   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
-      root         851  0.0  0.0  24904  3200 ?        S    03:26   0:00  |   \_ sort
-      root         849  0.0  0.0   4752  3456 ?        S    03:26   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
-      root         852  0.0  0.0   8280  4224 ?        R    03:26   0:00  |   \_ ps auxf
-      root         853  0.0  0.0   4324  2048 ?        R    03:26   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+      root           1  0.0  0.0   3156  1792 ?        Ss   03:44   0:00 tail -f /dev/null
+      root           7 17.9  0.1 1244480 21880 ?       Sl   03:44   0:06 /opt/opensandbox/execd
+      root         850  0.0  0.0   4752  3712 ?        S    03:44   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root         851  0.0  0.0   4084  2432 ?        R    03:44   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root         853  0.0  0.0  24904  3200 ?        S    03:44   0:00  |   \_ sort
+      root         852  0.0  0.0   4752  3584 ?        S    03:44   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root         854  0.0  0.0   8280  4224 ?        R    03:44   0:00  |   \_ ps auxf
+      root         855  0.0  0.0   4752  3456 ?        S    03:44   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
 
   --- [D7] 残留网络连接 ---
         sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
-         0: 0100007F:BD20 0100007F:AEE4 01 00000000:00000000 02:0000022D 00000000     0        0 3728550 2 0000000000000000 20 4 30 10 -1                  
-         1: 0100007F:BD2A 0100007F:AEE4 01 00000000:00000000 02:0000022D 00000000     0        0 3728552 2 0000000000000000 20 4 30 10 -1                  
-         2: 0100007F:98FC 0100007F:AEE4 01 00000000:00000000 02:000002E4 00000000     0        0 3727803 2 0000000000000000 20 4 30 10 -1                  
-         3: 0100007F:BD6A 0100007F:AEE4 01 00000000:00000000 02:00000514 00000000     0        0 3727657 2 0000000000000000 20 4 30 10 -1                  
-         4: 0100007F:9ABA 0100007F:AEE4 01 00000000:00000000 02:00000B52 00000000     0        0 3748496 2 0000000000000000 20 4 30 10 -1                  
-         5: 0100007F:8FF0 0100007F:AEE4 01 00000000:00000000 02:0000007B 00000000     0        0 3740998 2 0000000000000000 20 4 30 10 -1                  
-         6: 0100007F:8FC8 0100007F:AEE4 01 00000000:00000000 02:0000007A 00000000     0        0 3735842 2 0000000000000000 20 4 30 10 -1                  
-         7: 0100007F:9ACA 0100007F:AEE4 01 00000000:00000000 02:00000BB7 00000000     0        0 3736132 3 0000000000000000 20 4 26 10 -1                  
-         8: 0100007F:8F94 0100007F:AEE4 01 00000000:00000000 02:00000078 00000000     0        0 3741970 2 0000000000000000 20 4 30 10 -1                  
-         9: 0100007F:A6EE 0100007F:AEE4 01 00000000:00000000 02:000001E0 00000000     0        0 3726211 2 0000000000000000 20 4 30 10 -1                  
-        10: 0100007F:C610 0100007F:AEE4 01 00000000:00000000 02:000007D0 00000000     0        0 3750995 2 0000000000000000 20 4 30 10 -1                  
-        11: 0100007F:C61E 0100007F:AEE4 01 00000000:00000000 02:00000836 00000000     0        0 3736108 2 0000000000000000 20 4 30 10 -1                  
-        12: 0100007F:8FE0 0100007F:AEE4 01 00000000:00000000 02:0000007B 00000000     0        0 3740997 2 0000000000000000 20 4 30 10 -1                  
-        13: 0100007F:8FD4 0100007F:AEE4 01 00000000:00000000 02:0000007B 00000000     0        0 3729099 2 0000000000000000 20 4 30 10 -1                  
+         0: 0100007F:E158 0100007F:AEE4 01 00000000:00000000 02:000001E7 00000000     0        0 4054098 2 0000000000000000 20 4 30 10 -1                  
+         1: 0100007F:E38E 0100007F:AEE4 01 00000000:00000000 02:00000045 00000000     0        0 4061861 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:E18E 0100007F:AEE4 01 00000000:00000000 02:000003E0 00000000     0        0 4049823 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:BE74 0100007F:AEE4 01 00000000:00000000 02:000004C3 00000000     0        0 4048887 2 0000000000000000 20 4 30 10 -1                  
+         4: 020011AC:B398 175CBD5B:0050 06 00000000:00000000 03:00000111 00000000     0        0 0 3 0000000000000000                                      
+         5: 0100007F:8F84 0100007F:AEE4 01 00000000:00000000 02:0000075A 00000000     0        0 4071727 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:E15E 0100007F:AEE4 01 00000000:00000000 02:0000024D 00000000     0        0 4055859 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:BE84 0100007F:AEE4 01 00000000:00000000 02:000001FC 00000000     0        0 4055064 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:BE48 0100007F:AEE4 01 00000000:00000000 02:000001E9 00000000     0        0 4049414 2 0000000000000000 20 4 30 10 -1                  
+         9: 0100007F:E3BE 0100007F:AEE4 01 00000000:00000000 02:00000047 00000000     0        0 4064304 2 0000000000000000 20 4 30 10 -1                  
+        10: 0100007F:BE46 0100007F:AEE4 01 00000000:00000000 02:00000180 00000000     0        0 4050534 2 0000000000000000 20 4 30 10 -1                  
+        11: 0100007F:8F9A 0100007F:AEE4 01 00000000:00000000 02:00000A0D 00000000     0        0 4067043 2 0000000000000000 20 4 30 10 -1                  
+        12: 0100007F:E3BC 0100007F:AEE4 01 00000000:00000000 02:00000047 00000000     0        0 4054133 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:BE8E 0100007F:AEE4 01 00000000:00000000 02:00000316 00000000     0        0 4055069 2 0000000000000000 20 4 20 10 -1                  
 
   --- [D8] 资源消耗 ---
-    CPU    : 2.5% -> 11.1% (Δ +8.6%)
-    Memory : 1875.0 -> 1963.6 MiB (Δ +88.5 MiB)
+    CPU    : 3.0% -> 12.5% (Δ +9.4%)
+    Memory : 1838.1 -> 1970.0 MiB (Δ +131.9 MiB)
 
   --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
     PASS
@@ -432,7 +432,7 @@ everything's installed!
   合法命令模式   : 是
   退出码         : 0
   文件 +/-       : +1056 / -0
-  inotify 事件   : 125 系统 + 5521 临时
+  inotify 事件   : 123 系统 + 6195 临时
   外部连接       : 1 个
   SUID/SGID 变更 : +0
   二进制完整性   : PASS
@@ -473,9 +473,9 @@ everything's installed!
   安全建议:
     -> ALLOW: 命令安全, 可放行
 
-  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773977228.json
-  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773977228.txt
-  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773977228.sarif.json
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773978318.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773978318.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773978318.sarif.json
 
   快速预判: PASS (静态分: 0, 模式匹配: 0)
 

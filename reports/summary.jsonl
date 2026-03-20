@@ -1,1 +1,1 @@
-{"id":"w06","category":"white","label":"safe","desc":"pip install requests","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
+{"id":"w07","category":"white","label":"safe","desc":"npm install lodash","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
