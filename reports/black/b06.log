@@ -22,17 +22,19 @@ everything's installed!
 [0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
 [0;32m[ OK ][0m opensandbox-server + SDK 已安装
 [0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
-[0;32m[ OK ][0m 配置写入: /tmp/tmp.2RlFXR6X7o/sandbox.toml
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.klYFocczgw/sandbox.toml
 [0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
-[0;32m[ OK ][0m Server 就绪 (PID: 575708, port: 8080)
+[0;32m[ OK ][0m Server 就绪 (PID: 673607, port: 8080)
 [0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
 
+/tmp/tmp.klYFocczgw/checker.py:803: SyntaxWarning: invalid escape sequence '\$'
+  "echo '=== cron.d ==='; for f in /etc/cron.d/*; do [ -f \"\$f\" ] && echo \"--- \$f ---\" && cat \"\$f\"; done 2>/dev/null || true; "
 
 ============================================================================
   1/9  创建隔离沙箱
 ============================================================================
   镜像: opensandbox/code-interpreter:v1.0.2
-  Sandbox ID: ba5a5d3b-f990-440b-89a0-e1486771901e
+  Sandbox ID: b8b35a6b-20fa-484f-89ac-b54ca6119488
 
 ============================================================================
   2/9  安装监控工具 (快照前, 避免污染基线)
@@ -46,9 +48,9 @@ everything's installed!
   SUID/SGID    : 14
   符号链接     : 483
   文件能力     : 1
-  基线采集耗时 : 15.1s
-  CPU          : 2.9%
-  Memory       : 1882.8/15069.3 MiB
+  基线采集耗时 : 15.0s
+  CPU          : 10.5%
+  Memory       : 1986.2/15069.3 MiB
 
 ============================================================================
   4/9  启动多层探针 + 执行待测命令
@@ -84,7 +86,7 @@ everything's installed!
   文件数       : 221690
   SUID/SGID    : 15
   inotify 系统 : 0 条
-  inotify /tmp : 206210 条
+  inotify /tmp : 207915 条
 
 ============================================================================
   6/9  网络行为深度分析
@@ -108,37 +110,37 @@ everything's installed!
 
   --- [D2] 实时文件事件 (inotifywait) ---
     系统目录: (无事件)
-    临时目录事件 (5642 条):
-      2026-03-20T03:07:45 CREATE /tmp/.hidden_shell
-      2026-03-20T03:07:45 MODIFY /tmp/.hidden_shell
-      2026-03-20T03:07:45 ATTRIB /tmp/.hidden_shell
-      2026-03-20T03:07:51 CREATE /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
-      2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs
+    临时目录事件 (6002 条):
+      2026-03-20T03:53:12 CREATE /tmp/.hidden_shell
+      2026-03-20T03:53:12 MODIFY /tmp/.hidden_shell
+      2026-03-20T03:53:12 ATTRIB /tmp/.hidden_shell
+      2026-03-20T03:53:18 CREATE /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
+      2026-03-20T03:53:19 MODIFY /tmp/sortt3tHi7
 
   --- [D3] 用户与权限 ---
     PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
@@ -150,7 +152,7 @@ everything's installed!
     PASS  无变化
 
   --- [D6] 进程树分析 ---
-    观察到 15 个独立进程:
+    观察到 16 个独立进程:
       > /opt/opensandbox/execd
       > COMMAND
       > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
@@ -159,52 +161,53 @@ everything's installed!
       > \_ bash -c getcap -r / 2>/dev/null | sort || true
       > \_ cat /proc/net/tcp /proc/net/tcp6
       > \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
+      > \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
       > \_ getcap -r /
       > \_ sort
       > tail -f /dev/null
+      > |   \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
       > |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
-      > |   \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
       > |   \_ getcap -r /
       > |   \_ sort
 
     残留进程 (执行后):
       USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-      root           1  0.0  0.0   3156  1792 ?        Ss   03:07   0:00 tail -f /dev/null
-      root           7 19.0  0.1 1244480 22380 ?       Sl   03:07   0:06 /opt/opensandbox/execd
-      root         841  0.0  0.0   4752  3712 ?        S    03:07   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
-      root         843  0.0  0.0   4084  2560 ?        R    03:07   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
-      root         844  0.0  0.0  24904  3328 ?        S    03:07   0:00  |   \_ sort
-      root         842  0.0  0.0   4752  3456 ?        S    03:07   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
-      root         845  0.0  0.0   8280  4224 ?        R    03:07   0:00  |   \_ ps auxf
-      root         846  0.0  0.0   4752  3584 ?        S    03:07   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+      root           1  0.0  0.0   3156  1792 ?        Ss   03:52   0:00 tail -f /dev/null
+      root           7 18.5  0.1 1244480 22196 ?       Sl   03:52   0:06 /opt/opensandbox/execd
+      root         839  0.0  0.0   4752  3584 ?        S    03:53   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root         840  0.0  0.0   4084  2560 ?        R    03:53   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root         842  0.0  0.0  24904  3200 ?        R    03:53   0:00  |   \_ sort
+      root         841  0.0  0.0   4752  3456 ?        S    03:53   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root         843  0.0  0.0   8280  4224 ?        R    03:53   0:00  |   \_ ps auxf
+      root         844  0.0  0.0   4752  3584 ?        S    03:53   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
 
   --- [D7] 残留网络连接 ---
         sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
-         0: 0100007F:B2F2 0100007F:AEE4 01 00000000:00000000 02:0000054A 00000000     0        0 3407874 2 0000000000000000 20 4 30 10 -1                  
-         1: 0100007F:D050 0100007F:AEE4 01 00000000:00000000 02:00000B52 00000000     0        0 3426125 2 0000000000000000 20 4 30 10 -1                  
-         2: 0100007F:B30C 0100007F:AEE4 01 00000000:00000000 02:00000065 00000000     0        0 3402442 2 0000000000000000 20 4 30 10 -1                  
-         3: 0100007F:BFEC 0100007F:AEE4 01 00000000:00000000 02:000003E8 00000000     0        0 3402362 2 0000000000000000 20 4 30 10 -1                  
-         4: 0100007F:B2CE 0100007F:AEE4 01 00000000:00000000 02:00000257 00000000     0        0 3400683 2 0000000000000000 20 4 30 10 -1                  
-         5: 0100007F:B2DE 0100007F:AEE4 01 00000000:00000000 02:00000257 00000000     0        0 3405886 2 0000000000000000 20 4 30 10 -1                  
-         6: 0100007F:B32E 0100007F:AEE4 01 00000000:00000000 02:00000066 00000000     0        0 3415036 2 0000000000000000 20 4 30 10 -1                  
-         7: 0100007F:B318 0100007F:AEE4 01 00000000:00000000 02:00000065 00000000     0        0 3415537 2 0000000000000000 20 4 30 10 -1                  
-         8: 0100007F:B296 0100007F:AEE4 01 00000000:00000000 02:00000257 00000000     0        0 3397564 2 0000000000000000 20 4 30 10 -1                  
-         9: 0100007F:E65C 0100007F:AEE4 01 00000000:00000000 02:00000BB7 00000000     0        0 3422792 3 0000000000000000 20 4 26 10 -1                  
-        10: 0100007F:B2AC 0100007F:AEE4 01 00000000:00000000 02:000004E4 00000000     0        0 3404899 2 0000000000000000 20 4 30 10 -1                  
-        11: 0100007F:BFC8 0100007F:AEE4 01 00000000:00000000 02:00000255 00000000     0        0 3402356 2 0000000000000000 20 4 30 10 -1                  
-        12: 0100007F:D042 0100007F:AEE4 01 00000000:00000000 02:00000AED 00000000     0        0 3426123 2 0000000000000000 20 4 30 10 -1                  
-        13: 0100007F:C00E 0100007F:AEE4 01 00000000:00000000 02:00000515 00000000     0        0 3406493 2 0000000000000000 20 4 30 10 -1                  
+         0: 020011AC:B328 525BBD5B:0050 06 00000000:00000000 03:0000014A 00000000     0        0 0 3 0000000000000000                                      
+         1: 0100007F:C996 0100007F:AEE4 01 00000000:00000000 02:0000028D 00000000     0        0 4252004 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:B6A0 0100007F:AEE4 01 00000000:00000000 02:0000003F 00000000     0        0 4254156 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:E7A8 0100007F:AEE4 01 00000000:00000000 02:00000236 00000000     0        0 4244187 2 0000000000000000 20 4 30 10 -1                  
+         4: 0100007F:E766 0100007F:AEE4 01 00000000:00000000 02:000001A7 00000000     0        0 4249913 2 0000000000000000 20 4 30 10 -1                  
+         5: 0100007F:E8E4 0100007F:AEE4 01 00000000:00000000 02:000001E9 00000000     0        0 4244892 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:E79E 0100007F:AEE4 01 00000000:00000000 02:00000229 00000000     0        0 4238234 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:B630 0100007F:AEE4 01 00000000:00000000 02:00000487 00000000     0        0 4253783 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:C9BA 0100007F:AEE4 01 00000000:00000000 02:00000BB7 00000000     0        0 4273296 3 0000000000000000 20 4 26 10 -1                  
+         9: 0100007F:B63C 0100007F:AEE4 01 00000000:00000000 02:0000003D 00000000     0        0 4253655 2 0000000000000000 20 4 30 10 -1                  
+        10: 0100007F:A5BA 0100007F:AEE4 01 00000000:00000000 02:000007B2 00000000     0        0 4271719 2 0000000000000000 20 4 30 10 -1                  
+        11: 0100007F:C98C 0100007F:AEE4 01 00000000:00000000 02:00000A13 00000000     0        0 4263224 2 0000000000000000 20 4 30 10 -1                  
+        12: 0100007F:B638 0100007F:AEE4 01 00000000:00000000 02:0000003C 00000000     0        0 4252029 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:B632 0100007F:AEE4 01 00000000:00000000 02:000004ED 00000000     0        0 4260825 2 0000000000000000 20 4 30 10 -1                  
 
   --- [D8] 资源消耗 ---
-    CPU    : 2.9% -> 2.5% (Δ -0.4%)
-    Memory : 1882.8 -> 1837.1 MiB (Δ -45.7 MiB)
+    CPU    : 10.5% -> 3.5% (Δ -6.9%)
+    Memory : 1986.2 -> 1936.0 MiB (Δ -50.3 MiB)
 
   --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
     PASS
 
   --- [D10] SUID/SGID 文件变更 ---
     !! 新增 1 个 SUID/SGID 文件:
-      + -rwsr-xr-x 1 root root 1446024 Mar 20 03:07 /tmp/.hidden_shell
+      + -rwsr-xr-x 1 root root 1446024 Mar 20 03:53 /tmp/.hidden_shell
 
   --- [D11] 内核模块 ---
     PASS  无变化
@@ -234,7 +237,7 @@ everything's installed!
     PASS  无异常高熵文件
 
   --- [D20] 计划任务详细差异 ---
-    PASS  crontab 无变化
+    PASS  计划任务无变化
 
   --- [D21] 隐藏进程检测 ---
     PASS  未发现隐藏进程
@@ -269,7 +272,7 @@ everything's installed!
   合法命令模式   : 否
   退出码         : 0
   文件 +/-       : +1 / -0
-  inotify 事件   : 0 系统 + 5642 临时
+  inotify 事件   : 0 系统 + 6002 临时
   外部连接       : 0 个
   SUID/SGID 变更 : +1
   二进制完整性   : PASS
@@ -288,9 +291,9 @@ everything's installed!
   安全建议:
     -> BLOCK: 强烈建议阻止此命令执行
 
-  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773976110.json
-  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773976110.txt
-  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773976110.sarif.json
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773978835.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773978835.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773978835.sarif.json
 
   快速预判: BLOCK (静态分: 35, 模式匹配: 1)
 
@@ -313,9 +316,9 @@ everything's installed!
 
 
 [0;36m[INFO][0m  [Step 7/7] 完成!
-[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773976110.json
-[0;32m[ OK ][0m 报告 (文本): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773976110.txt
-  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773976110.json
+[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773978835.json
+[0;32m[ OK ][0m 报告 (文本): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773978835.txt
+  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773978835.json
   快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
 
 [0;36m[INFO][0m  Cleaning up...

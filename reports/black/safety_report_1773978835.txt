@@ -1,0 +1,11 @@
+🚨 判定: DANGEROUS (风险分: 75/100, 置信度: MEDIUM)
+命令: cp /bin/bash /tmp/.hidden_shell && chmod u+s /tmp/.hidden_shell
+
+发现 2 个问题 (2 严重, 0 警告):
+  [CRITICAL] 静态分析: 命令匹配恶意模式: setting SUID bit [T1548.001]
+  [CRITICAL] SUID/SGID: 新增 SUID/SGID 文件: 1 [T1548.001]
+
+涉及 ATT&CK 战术: Privilege Escalation
+
+建议:
+  • BLOCK: 强烈建议阻止此命令执行
