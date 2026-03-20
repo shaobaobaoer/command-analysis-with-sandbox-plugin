@@ -1580,7 +1580,18 @@ async def main():
                      "/etc/ld.so", "/etc/pam.d/", "/etc/security/",
                      "/etc/systemd/system/", "/etc/init.d/",
                      "/etc/cron", "/etc/profile"]
+        # 包管理器合法操作会更新的路径 — 当命令是合法安装器时排除
+        PKG_MGR_SAFE = {"/etc/ld.so.cache", "/etc/ld.so.conf.d/",
+                        "/etc/apt/", "/etc/dpkg/", "/etc/alternatives/",
+                        "/etc/default/", "/etc/logrotate.d/",
+                        "/etc/bash_completion.d/", "/etc/profile.d/",
+                        "/etc/init.d/", "/etc/systemd/system/"}
         suspicious_paths = [p for p in new_paths if any(p.startswith(s) for s in SENSITIVE)]
+        if engine.is_legitimate and suspicious_paths:
+            # 合法安装器:只保留真正异常的路径(排除包管理器常规更新)
+            suspicious_paths = [p for p in suspicious_paths
+                               if not any(p.startswith(safe) or p == safe.rstrip('/')
+                                          for safe in PKG_MGR_SAFE)]
         if suspicious_paths:
             engine.add("CRITICAL", "文件变更", f"敏感路径写入: {suspicious_paths[:10]}",
                       35, ["T1222.002"], str(suspicious_paths[:10]))
