@@ -1,0 +1,256 @@
+{
+  "version": "4.1",
+  "command": "echo '/tmp/evil.so' > /etc/ld.so.preload",
+  "timestamp": "2026-03-20T03:58:24.999053+00:00",
+  "verdict": "DANGEROUS",
+  "risk_score": 75,
+  "confidence": "MEDIUM",
+  "recommendations": [
+    "BLOCK: 强烈建议阻止此命令执行",
+    "检查 /etc/ld.so.preload 和 LD_PRELOAD 环境变量"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 2,
+    "critical": 2,
+    "warn": 0,
+    "info": 0,
+    "dimensions_hit": 2
+  },
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: LD_PRELOAD hijack",
+      "risk_score": 40,
+      "mitre_attack": [
+        {
+          "id": "T1574.006",
+          "name": "Hijack Execution Flow: LD_PRELOAD"
+        }
+      ],
+      "evidence": "echo '/tmp/evil.so' > /etc/ld.so.preload"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "文件变更",
+      "description": "敏感路径写入: ['/etc/ld.so.preload']",
+      "risk_score": 35,
+      "mitre_attack": [
+        {
+          "id": "T1222.002",
+          "name": "File/Dir Permissions Modification: Linux"
+        }
+      ],
+      "evidence": "['/etc/ld.so.preload']"
+    }
+  ],
+  "evidence": {
+    "stdout_lines": 0,
+    "stderr_lines": 0,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 1,
+    "files_deleted": 0,
+    "inotify_sys_events": 2,
+    "inotify_tmp_events": 6340,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1574.006",
+      "T1222.002"
+    ]
+  },
+  "dimensions": {
+    "files_added": [
+      "/etc/ld.so.preload"
+    ],
+    "files_deleted": [],
+    "inotify_sys_events": [
+      "2026-03-20T03:57:43 CREATE /etc/ld.so.preload",
+      "2026-03-20T03:57:43 MODIFY /etc/ld.so.preload"
+    ],
+    "inotify_tmp_events": [
+      "2026-03-20T03:57:50 CREATE /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv",
+      "2026-03-20T03:57:50 MODIFY /tmp/sortGsf4Mv"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": []
+  },
+  "mitre_attack": {
+    "T1574.006": {
+      "name": "Hijack Execution Flow: LD_PRELOAD",
+      "findings": [
+        "命令匹配恶意模式: LD_PRELOAD hijack"
+      ]
+    },
+    "T1222.002": {
+      "name": "File/Dir Permissions Modification: Linux",
+      "findings": [
+        "敏感路径写入: ['/etc/ld.so.preload']"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Privilege Escalation": [
+      "T1574.006"
+    ],
+    "Unknown": [
+      "T1222.002"
+    ]
+  },
+  "deobfuscation": {
+    "original": "echo '/tmp/evil.so' > /etc/ld.so.preload",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773979041",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773979063",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773979064",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773979105",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [],
+  "stderr": [],
+  "text_summary": "🚨 判定: DANGEROUS (风险分: 75/100, 置信度: MEDIUM)\n命令: echo '/tmp/evil.so' > /etc/ld.so.preload\n\n发现 2 个问题 (2 严重, 0 警告):\n  [CRITICAL] 静态分析: 命令匹配恶意模式: LD_PRELOAD hijack [T1574.006]\n  [CRITICAL] 文件变更: 敏感路径写入: ['/etc/ld.so.preload'] [T1222.002]\n\n涉及 ATT&CK 战术: Privilege Escalation, Unknown\n\n建议:\n  • BLOCK: 强烈建议阻止此命令执行\n  • 检查 /etc/ld.so.preload 和 LD_PRELOAD 环境变量",
+  "fast_triage": {
+    "level": "BLOCK",
+    "static_score": 40,
+    "is_legitimate": false,
+    "blacklisted": true,
+    "patterns_matched": 1,
+    "matches": [
+      {
+        "pattern": "LD_PRELOAD hijack",
+        "mitre": "T1574.006",
+        "score": 40
+      }
+    ],
+    "deobfuscation_layers": 0
+  }
+}

@@ -1,0 +1,12 @@
+🚨 判定: DANGEROUS (风险分: 75/100, 置信度: MEDIUM)
+命令: echo '/tmp/evil.so' > /etc/ld.so.preload
+
+发现 2 个问题 (2 严重, 0 警告):
+  [CRITICAL] 静态分析: 命令匹配恶意模式: LD_PRELOAD hijack [T1574.006]
+  [CRITICAL] 文件变更: 敏感路径写入: ['/etc/ld.so.preload'] [T1222.002]
+
+涉及 ATT&CK 战术: Privilege Escalation, Unknown
+
+建议:
+  • BLOCK: 强烈建议阻止此命令执行
+  • 检查 /etc/ld.so.preload 和 LD_PRELOAD 环境变量

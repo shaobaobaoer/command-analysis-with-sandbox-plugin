@@ -1,0 +1,96 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1574.006",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: LD_PRELOAD hijack"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1574/006",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1574.006"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1574.006 (Hijack Execution Flow: LD_PRELOAD)"
+              }
+            },
+            {
+              "id": "T1222.002",
+              "name": "文件变更",
+              "shortDescription": {
+                "text": "敏感路径写入: ['/etc/ld.so.preload']"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1222/002",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1222.002"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1222.002 (File/Dir Permissions Modification: Linux)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "DANGEROUS",
+            "risk_score": 75,
+            "confidence": "MEDIUM"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1574.006",
+          "level": "error",
+          "message": {
+            "text": "命令匹配恶意模式: LD_PRELOAD hijack"
+          },
+          "properties": {
+            "risk_score": 40,
+            "dimension": "静态分析",
+            "evidence": "echo '/tmp/evil.so' > /etc/ld.so.preload"
+          }
+        },
+        {
+          "ruleId": "T1222.002",
+          "level": "error",
+          "message": {
+            "text": "敏感路径写入: ['/etc/ld.so.preload']"
+          },
+          "properties": {
+            "risk_score": 35,
+            "dimension": "文件变更",
+            "evidence": "['/etc/ld.so.preload']"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "echo '/tmp/evil.so' > /etc/ld.so.preload",
+            "verdict": "DANGEROUS",
+            "risk_score": 75,
+            "confidence": "MEDIUM",
+            "timestamp": "2026-03-20T03:58:24.999053+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}
