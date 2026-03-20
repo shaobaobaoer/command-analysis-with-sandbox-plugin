@@ -134,3 +134,430 @@ everything's installed!
 ============================================================================
   5/9  采集执行后快照 (全维度)
 ============================================================================
+  文件数       : 227192
+  SUID/SGID    : 14
+  inotify 系统 : 48170 条
+  inotify /tmp : 214738 条
+
+============================================================================
+  6/9  网络行为深度分析
+============================================================================
+
+  --- 外部连接 (出站) ---
+    -> 104.20.1.252:443 (HTTPS)
+    -> 104.21.96.150:443 (HTTPS)
+    -> 172.66.128.70:443 (HTTPS)
+    -> 20.205.243.166:443 (HTTPS)
+
+    [31 个内部连接已忽略]
+
+  --- DNS 配置 ---
+    PASS  /etc/resolv.conf 未被修改
+
+============================================================================
+  7/9  全维度安全对比分析 (24 维度)
+============================================================================
+
+  --- [D1] 文件变更 (+5504 / -1) ---
+    新增 5504 个:
+      + /root/.bashrc
+      + /root/.npm/_logs/2026-03-20T02_28_57_690Z-debug-0.log
+      + /root/.nvm/.cache/bin/node-v22.22.1-linux-x64/node-v22.22.1-linux-x64.tar.xz
+      + /root/.nvm/.dockerignore
+      + /root/.nvm/.editorconfig
+      + /root/.nvm/.git/FETCH_HEAD
+      + /root/.nvm/.git/HEAD
+      + /root/.nvm/.git/config
+      + /root/.nvm/.git/description
+      + /root/.nvm/.git/hooks/applypatch-msg.sample
+      + /root/.nvm/.git/hooks/commit-msg.sample
+      + /root/.nvm/.git/hooks/fsmonitor-watchman.sample
+      + /root/.nvm/.git/hooks/post-update.sample
+      + /root/.nvm/.git/hooks/pre-applypatch.sample
+      + /root/.nvm/.git/hooks/pre-commit.sample
+      + /root/.nvm/.git/hooks/pre-merge-commit.sample
+      + /root/.nvm/.git/hooks/pre-push.sample
+      + /root/.nvm/.git/hooks/pre-rebase.sample
+      + /root/.nvm/.git/hooks/pre-receive.sample
+      + /root/.nvm/.git/hooks/prepare-commit-msg.sample
+      + /root/.nvm/.git/hooks/push-to-checkout.sample
+      + /root/.nvm/.git/hooks/sendemail-validate.sample
+      + /root/.nvm/.git/hooks/update.sample
+      + /root/.nvm/.git/index
+      + /root/.nvm/.git/info/exclude
+      + /root/.nvm/.git/logs/HEAD
+      + /root/.nvm/.git/logs/refs/remotes/origin/HEAD
+      + /root/.nvm/.git/objects/pack/pack-ae7bc4e9bada2ebd90b3f5231c74417e93a75f04.idx
+      + /root/.nvm/.git/objects/pack/pack-ae7bc4e9bada2ebd90b3f5231c74417e93a75f04.pack
+      + /root/.nvm/.git/objects/pack/pack-ae7bc4e9bada2ebd90b3f5231c74417e93a75f04.rev
+      + /root/.nvm/.git/objects/pack/pack-cfd3d61d0325ce1503b2f51d576c5f21d88915e4.idx
+      + /root/.nvm/.git/objects/pack/pack-cfd3d61d0325ce1503b2f51d576c5f21d88915e4.pack
+      + /root/.nvm/.git/objects/pack/pack-cfd3d61d0325ce1503b2f51d576c5f21d88915e4.rev
+      + /root/.nvm/.git/packed-refs
+      + /root/.nvm/.git/refs/remotes/origin/HEAD
+      + /root/.nvm/.git/refs/tags/v0.40.3
+      + /root/.nvm/.git/shallow
+      + /root/.nvm/.gitattributes
+      + /root/.nvm/.github/FUNDING.yml
+      + /root/.nvm/.github/ISSUE_TEMPLATE/config.yml
+      + /root/.nvm/.github/ISSUE_TEMPLATE/issue_template.md
+      + /root/.nvm/.github/SECURITY.md
+      + /root/.nvm/.github/THREAT_MODEL.md
+      + /root/.nvm/.github/external-threat-actor.png
+      + /root/.nvm/.github/insider-threat-actor-and-libs.png
+      + /root/.nvm/.github/workflows/latest-npm.yml
+      + /root/.nvm/.github/workflows/lint.yml
+      + /root/.nvm/.github/workflows/nvm-install-test.yml
+      + /root/.nvm/.github/workflows/rebase.yml
+      + /root/.nvm/.github/workflows/release.yml
+      + /root/.nvm/.github/workflows/require-allow-edits.yml
+      + /root/.nvm/.github/workflows/shellcheck.yml
+      + /root/.nvm/.github/workflows/tests.yml
+      + /root/.nvm/.github/workflows/toc.yml
+      + /root/.nvm/.github/workflows/windows-npm.yml
+      + /root/.nvm/.gitignore
+      + /root/.nvm/.gitmodules
+      + /root/.nvm/.mailmap
+      + /root/.nvm/.npmrc
+      + /root/.nvm/.travis.yml
+      + /root/.nvm/CODE_OF_CONDUCT.md
+      + /root/.nvm/CONTRIBUTING.md
+      + /root/.nvm/Dockerfile
+      + /root/.nvm/GOVERNANCE.md
+      + /root/.nvm/LICENSE.md
+      + /root/.nvm/Makefile
+      + /root/.nvm/PROJECT_CHARTER.md
+      + /root/.nvm/README.md
+      + /root/.nvm/ROADMAP.md
+      + /root/.nvm/alias/default
+      + /root/.nvm/alias/lts/*
+      + /root/.nvm/alias/lts/argon
+      + /root/.nvm/alias/lts/boron
+      + /root/.nvm/alias/lts/carbon
+      + /root/.nvm/alias/lts/dubnium
+      + /root/.nvm/alias/lts/erbium
+      + /root/.nvm/alias/lts/fermium
+      + /root/.nvm/alias/lts/gallium
+      + /root/.nvm/alias/lts/hydrogen
+      + /root/.nvm/alias/lts/iron
+      + /root/.nvm/alias/lts/jod
+      + /root/.nvm/alias/lts/krypton
+      + /root/.nvm/bash_completion
+      + /root/.nvm/install.sh
+      + /root/.nvm/nvm-exec
+      + /root/.nvm/nvm.sh
+      + /root/.nvm/package.json
+      + /root/.nvm/rename_test.sh
+      + /root/.nvm/test/common.sh
+      + /root/.nvm/test/fast/Aliases/'nvm alias' should ignore leading blank lines in the file
+      + /root/.nvm/test/fast/Aliases/'nvm alias' should not accept aliases with a hash
+      + /root/.nvm/test/fast/Aliases/'nvm alias' should not accept aliases with slashes
+      + /root/.nvm/test/fast/Aliases/'nvm unalias' should accept aliases when they shadow a built-in alias
+      + /root/.nvm/test/fast/Aliases/'nvm unalias' should not accept aliases with names equal to built-in alias
+      + /root/.nvm/test/fast/Aliases/'nvm unalias' should not accept aliases with slashes
+      + /root/.nvm/test/fast/Aliases/Running 'nvm alias ˂aliasname˃ ˂target˃' again should change the target
+      + /root/.nvm/test/fast/Aliases/Running 'nvm alias ˂aliasname˃' should list but one alias
+      + /root/.nvm/test/fast/Aliases/Running 'nvm alias' lists implicit aliases when they do not exist
+      + /root/.nvm/test/fast/Aliases/Running 'nvm alias' lists manual aliases instead of implicit aliases when present
+      + /root/.nvm/test/fast/Aliases/Running 'nvm alias' should list all aliases
+      ... 还有 5404 个
+    删除 1 个:
+      - /root/.bashrc
+
+  --- [D2] 实时文件事件 (inotifywait) ---
+    系统目录事件 (48170 条):
+      2026-03-20T02:28:54 CREATE,ISDIR /root/.nvm
+      2026-03-20T02:28:54 CREATE,ISDIR /root/.nvm/.git
+      2026-03-20T02:28:54 CREATE,ISDIR /root/.nvm/.git/hooks
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/hooks/prepare-commit-msg.sample
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/hooks/prepare-commit-msg.sample
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/hooks/pre-push.sample
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/hooks/pre-push.sample
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/hooks/pre-merge-commit.sample
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/hooks/pre-merge-commit.sample
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/hooks/applypatch-msg.sample
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/hooks/applypatch-msg.sample
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/hooks/pre-commit.sample
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/hooks/pre-commit.sample
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/hooks/commit-msg.sample
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/hooks/commit-msg.sample
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/hooks/sendemail-validate.sample
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/hooks/sendemail-validate.sample
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/hooks/update.sample
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/hooks/update.sample
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/hooks/pre-receive.sample
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/hooks/pre-receive.sample
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/hooks/post-update.sample
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/hooks/post-update.sample
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/hooks/pre-rebase.sample
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/hooks/pre-rebase.sample
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/hooks/push-to-checkout.sample
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/hooks/push-to-checkout.sample
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/hooks/fsmonitor-watchman.sample
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/hooks/fsmonitor-watchman.sample
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/hooks/pre-applypatch.sample
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/hooks/pre-applypatch.sample
+      2026-03-20T02:28:54 CREATE,ISDIR /root/.nvm/.git/info
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/info/exclude
+      2026-03-20T02:28:54 CREATE,ISDIR /root/.nvm/.git/branches
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/description
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/description
+      2026-03-20T02:28:54 CREATE,ISDIR /root/.nvm/.git/refs
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/HEAD.lock
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/HEAD.lock
+      2026-03-20T02:28:54 MOVED_TO /root/.nvm/.git/HEAD
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/config.lock
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/config.lock
+      2026-03-20T02:28:54 MOVED_TO /root/.nvm/.git/config
+      2026-03-20T02:28:54 ATTRIB /root/.nvm/.git/config
+      2026-03-20T02:28:54 ATTRIB /root/.nvm/.git/config
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/config.lock
+      2026-03-20T02:28:54 ATTRIB /root/.nvm/.git/config.lock
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/config.lock
+      2026-03-20T02:28:54 MOVED_TO /root/.nvm/.git/config
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/config.lock
+      2026-03-20T02:28:54 ATTRIB /root/.nvm/.git/config.lock
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/config.lock
+      2026-03-20T02:28:54 MOVED_TO /root/.nvm/.git/config
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/config.lock
+      2026-03-20T02:28:54 ATTRIB /root/.nvm/.git/config.lock
+      2026-03-20T02:28:54 MODIFY /root/.nvm/.git/config.lock
+      2026-03-20T02:28:54 MOVED_TO /root/.nvm/.git/config
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/tLJ8JtQ
+      2026-03-20T02:28:54 DELETE /root/.nvm/.git/tLJ8JtQ
+      2026-03-20T02:28:54 CREATE /root/.nvm/.git/tLJ8JtQ
+      ... 还有 48110 条
+    临时目录事件 (6662 条):
+      2026-03-20T02:28:58 CREATE /tmp/sh-thd.2zNhVf
+      2026-03-20T02:28:58 ATTRIB /tmp/sh-thd.2zNhVf
+      2026-03-20T02:28:58 MODIFY /tmp/sh-thd.2zNhVf
+      2026-03-20T02:28:58 DELETE /tmp/sh-thd.2zNhVf
+      2026-03-20T02:28:58 ATTRIB /tmp/sh-thd.2zNhVf
+      2026-03-20T02:28:58 CREATE /tmp/sh-thd.dDFp9D
+      2026-03-20T02:28:58 ATTRIB /tmp/sh-thd.dDFp9D
+      2026-03-20T02:28:58 MODIFY /tmp/sh-thd.dDFp9D
+      2026-03-20T02:28:58 DELETE /tmp/sh-thd.dDFp9D
+      2026-03-20T02:28:58 ATTRIB /tmp/sh-thd.dDFp9D
+      2026-03-20T02:29:04 CREATE,ISDIR /tmp/node-compile-cache
+      2026-03-20T02:29:04 CREATE /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/8fe4984c.v8i3vw
+      2026-03-20T02:29:04 MODIFY /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/8fe4984c.v8i3vw
+      2026-03-20T02:29:04 MOVED_TO /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/8fe4984c
+      2026-03-20T02:29:04 CREATE /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/2605f984.8Pidlp
+      2026-03-20T02:29:04 MODIFY /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/2605f984.8Pidlp
+      2026-03-20T02:29:04 MOVED_TO /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/2605f984
+      2026-03-20T02:29:04 CREATE /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/4addda24.Sp7O1u
+      2026-03-20T02:29:04 MODIFY /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/4addda24.Sp7O1u
+      2026-03-20T02:29:04 MOVED_TO /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/4addda24
+      2026-03-20T02:29:04 CREATE /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/81827fbb.qInueJ
+      2026-03-20T02:29:04 MODIFY /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/81827fbb.qInueJ
+      2026-03-20T02:29:04 MOVED_TO /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/81827fbb
+      2026-03-20T02:29:04 CREATE /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/c0d7f9b8.tafs3I
+      2026-03-20T02:29:04 MODIFY /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/c0d7f9b8.tafs3I
+      2026-03-20T02:29:04 MOVED_TO /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/c0d7f9b8
+      2026-03-20T02:29:04 CREATE /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/016ca98d.Cfsyhc
+      2026-03-20T02:29:04 MODIFY /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/016ca98d.Cfsyhc
+      2026-03-20T02:29:04 MOVED_TO /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/016ca98d
+      2026-03-20T02:29:04 CREATE /tmp/node-compile-cache/v22.22.1-x64-9de703df-0/8267715c.ZXPtVu
+
+  --- [D3] 用户与权限 ---
+    PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
+
+  --- [D4] 持久化 (cron/systemd/rc.local/init.d/at) ---
+    PASS  无新增
+
+  --- [D5] Shell 环境 (.bashrc/.profile/etc) ---
+    !! FAIL  Shell 配置被修改
+      0a1,3
+      > # ~/.bashrc: executed by bash(1) for non-login shells.
+      > # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+      > # for examples
+      1a5,116
+      > # If not running interactively, don't do anything
+      > [ -z "$PS1" ] && return
+      > 
+      > # don't put duplicate lines in the history. See bash(1) for more options
+      > # ... or force ignoredups and ignorespace
+      > HISTCONTROL=ignoredups:ignorespace
+      > 
+      > # append to the history file, don't overwrite it
+      > shopt -s histappend
+      > 
+
+  --- [D6] 进程树分析 ---
+    观察到 31 个独立进程:
+      > /opt/opensandbox/execd
+      > COMMAND
+      > \_ /usr/lib/git-core/git remote-https origin https://github.com/nvm-sh/nvm.git
+      > \_ /usr/lib/git-core/git-remote-https origin https://github.com/nvm-sh/nvm.git
+      > \_ bash
+      > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
+      > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
+      > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
+      > \_ bash -c getcap -r / 2>/dev/null | sort || true
+      > \_ bash -c { curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash ; }; echo "__EXIT_CODE__$?"
+      > \_ cat /proc/net/tcp /proc/net/tcp6
+      > \_ getcap -r /
+      > \_ git --git-dir=/root/.nvm/.git --work-tree=/root/.nvm fetch origin tag v0.40.3 --depth=1
+      > \_ git clone https://github.com/nvm-sh/nvm.git --depth=1 /root/.nvm
+      > \_ npm
+      > \_ sed -e / npm@/d -e / (empty)$/d
+      > \_ sort
+      > \_ tail -1
+      > \_ tar -xJf /root/.nvm/.cache/bin/node-v22.22.1-linux-x64/node-v22.22.1-linux-x64.tar.xz -C /root/.nvm/.cache/bin/node-v
+      > \_ xz -d
+
+    残留进程 (执行后):
+      USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+      root           1  0.0  0.0   3156  1792 ?        Ss   02:28   0:00 tail -f /dev/null
+      root           7 14.8  0.1 1244480 21972 ?       Sl   02:28   0:07 /opt/opensandbox/execd
+      root        1631  0.0  0.0   4752  3584 ?        S    02:29   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root        1633  0.0  0.0   4084  2432 ?        R    02:29   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root        1634  0.0  0.0  24904  3072 ?        S    02:29   0:00  |   \_ sort
+      root        1632  0.0  0.0   4752  3584 ?        S    02:29   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root        1635  0.0  0.0   8280  4352 ?        R    02:29   0:00  |   \_ ps auxf
+      root        1636  0.0  0.0   4752  3584 ?        S    02:29   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+      root        1637  0.0  0.0   2704  1408 ?        R    02:29   0:00      \_ cat /root/.bashrc /root/.bash_profile /root/.profile /root/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/01-locale-fix.sh
+
+  --- [D7] 残留网络连接 ---
+        sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
+         0: 0100007F:B794 0100007F:AEE4 01 00000000:00000000 02:00000566 00000000     0        0 2216008 2 0000000000000000 20 4 30 10 -1                  
+         1: 0100007F:8024 0100007F:AEE4 01 00000000:00000000 02:00000BB7 00000000     0        0 2240581 3 0000000000000000 20 4 26 10 -1                  
+         2: 0100007F:BB8E 0100007F:AEE4 01 00000000:00000000 02:000002A1 00000000     0        0 2210545 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:D54A 0100007F:AEE4 01 00000000:00000000 02:000005AA 00000000     0        0 2192712 2 0000000000000000 20 4 30 10 -1                  
+         4: 0100007F:D56A 0100007F:AEE4 01 00000000:00000000 02:000002DD 00000000     0        0 2191713 2 0000000000000000 20 4 30 10 -1                  
+         5: 0100007F:D518 0100007F:AEE4 01 00000000:00000000 02:00000286 00000000     0        0 2191682 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:BB46 0100007F:AEE4 01 00000000:00000000 02:000001A8 00000000     0        0 2210531 2 0000000000000000 20 4 28 10 -1                  
+         7: 0100007F:D114 0100007F:AEE4 01 00000000:00000000 02:000007CE 00000000     0        0 2227109 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:D570 0100007F:AEE4 01 00000000:00000000 02:000002DD 00000000     0        0 2194464 2 0000000000000000 20 4 30 10 -1                  
+         9: 0100007F:D536 0100007F:AEE4 01 00000000:00000000 02:000002DD 00000000     0        0 2182729 2 0000000000000000 20 4 30 10 -1                  
+        10: 0100007F:B760 0100007F:AEE4 01 00000000:00000000 02:000003D2 00000000     0        0 2213153 2 0000000000000000 20 4 30 10 -1                  
+        11: 0100007F:BB70 0100007F:AEE4 01 00000000:00000000 02:000005A3 00000000     0        0 2216505 2 0000000000000000 20 4 30 10 -1                  
+        12: 0100007F:B776 0100007F:AEE4 01 00000000:00000000 02:0000049F 00000000     0        0 2208019 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:B786 0100007F:AEE4 01 00000000:00000000 02:000004FF 00000000     0        0 2214040 2 0000000000000000 20 4 30 10 -1                  
+
+  --- [D8] 资源消耗 ---
+    CPU    : 38.6% -> 11.8% (Δ -26.8%)
+    Memory : 2143.2 -> 2001.8 MiB (Δ -141.5 MiB)
+
+  --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
+    PASS
+
+  --- [D10] SUID/SGID 文件变更 ---
+    PASS  无新增 SUID/SGID 文件
+
+  --- [D11] 内核模块 ---
+    PASS  无变化
+
+  --- [D12] 挂载点 ---
+    PASS  无变化
+
+  --- [D13] 安全相关环境变量 ---
+    PASS  无变化
+
+  --- [D14] 关键文件内容分析 ---
+    PASS  已检查 1 个新增文件, 未发现恶意内容
+
+  --- [D15] 关键系统二进制完整性 ---
+    PASS  /bin/bash, su, sudo, passwd, sshd 等均未被篡改
+
+  --- [D16] 符号链接变更 ---
+    PASS  无新增符号链接
+
+  --- [D17] 文件能力 (Linux Capabilities) ---
+    PASS  无新增文件能力
+
+  --- [D18] 输出内容分析 ---
+    PASS  输出内容无敏感信息泄露
+
+  --- [D19] 新增文件熵分析 ---
+    PASS  无异常高熵文件
+
+  --- [D20] 计划任务详细差异 ---
+    PASS  crontab 无变化
+
+  --- [D21] 隐藏进程检测 ---
+    PASS  未发现隐藏进程
+
+  --- [D22] 信号处理 / trap 分析 ---
+    PASS  未发现恶意信号处理
+
+  --- [D23] 攻击链关联分析 ---
+    PASS  未检测到攻击链组合
+
+  --- [D24] 敏感文件权限变更 ---
+    PASS  敏感文件权限正常
+
+============================================================================
+  8/9  MITRE ATT&CK 技术映射
+============================================================================
+    [T1105] Ingress Tool Transfer
+      └─ 命令匹配恶意模式: download and execute (curl|sh)
+    [T1546.004] Event Triggered Execution: .bash_profile/.bashrc
+      └─ Shell 配置文件被修改
+
+============================================================================
+  9/9  综合判定
+============================================================================
+
+  +──────────────────────────────────────────────────────────────────────────+
+  |  [~~] 判定: LOW_RISK              风险评分:  22/100            |
+  |  [████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]                              |
+  |  置信度: MEDIUM  维度覆盖:  2/24              |
+  +──────────────────────────────────────────────────────────────────────────+
+
+  命令           : curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+  合法命令模式   : 是
+  退出码         : 0
+  文件 +/-       : +5504 / -1
+  inotify 事件   : 48170 系统 + 6662 临时
+  外部连接       : 4 个
+  SUID/SGID 变更 : +0
+  二进制完整性   : PASS
+  新增符号链接   : 0
+  新增文件能力   : 0
+  执行耗时       : 11.4s
+  MITRE 技术     : 2 个
+  ATT&CK 战术    : Command and Control, Persistence
+  发现           : 0 critical, 2 warnings, 0 info
+  置信度         : MEDIUM
+
+  详细发现 (按严重程度排序):
+    [ ! ] [静态分析] 命令匹配恶意模式: download and execute (curl|sh) [T1105] (score: 12)
+    [ ! ] [Shell环境] Shell 配置文件被修改 [T1546.004] (score: 10)
+
+  安全建议:
+    -> ALLOW: 风险较低, 可考虑放行但建议记录审计日志
+
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973794.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973794.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973794.sarif.json
+
+  快速预判: REVIEW (静态分: 12, 模式匹配: 1)
+  [INFO] 快速预判与深度分析不一致 — 静态分析可能过于敏感
+
+============================================================================
+  人类可读摘要:
+============================================================================
+  🔶 判定: LOW_RISK (风险分: 22/100, 置信度: MEDIUM)
+  命令: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+  
+  发现 2 个问题 (0 严重, 2 警告):
+    [WARN] 静态分析: 命令匹配恶意模式: download and execute (curl|sh) [T1105]
+    [WARN] Shell环境: Shell 配置文件被修改 [T1546.004]
+  
+  涉及 ATT&CK 战术: Command and Control, Persistence
+  
+  建议:
+    • ALLOW: 风险较低, 可考虑放行但建议记录审计日志
+
+  沙箱已销毁。
+
+
+[0;36m[INFO][0m  [Step 7/7] 完成!
+[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973794.json
+[0;32m[ OK ][0m 报告 (文本): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973794.txt
+  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973794.json
+  快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
+
+[0;36m[INFO][0m  Cleaning up...
+[0;32m[ OK ][0m Cleanup done.

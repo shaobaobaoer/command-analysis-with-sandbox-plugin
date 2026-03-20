@@ -1,0 +1,105 @@
+
+[1m==========================================
+  OpenSandbox Behavioral Analysis Engine v4
+==========================================[0m
+
+[0;36m[INFO][0m  待检测命令: curl -sSL https://install.python-poetry.org | python3 -
+
+[0;36m[INFO][0m  [Step 1/7] 检查环境...
+[0;32m[ OK ][0m Docker: Docker version 27.5.1, build 27.5.1-0ubuntu3~24.04.2
+[0;32m[ OK ][0m Python: Python 3.12.3
+[0;36m[INFO][0m  安装 uv...
+downloading uv 0.10.12 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+[0;32m[ OK ][0m uv: uv 0.10.12 (x86_64-unknown-linux-gnu)
+[0;36m[INFO][0m  [Step 2/7] 预拉取 Docker 镜像...
+[0;32m[ OK ][0m 沙箱镜像: opensandbox/code-interpreter:v1.0.2 (已存在)
+[0;32m[ OK ][0m Execd镜像: opensandbox/execd:v1.0.7 (已存在)
+[0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
+[0;32m[ OK ][0m opensandbox-server + SDK 已安装
+[0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.qxRl1IeU59/sandbox.toml
+[0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
+[0;32m[ OK ][0m Server 就绪 (PID: 452595, port: 8080)
+[0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
+
+
+============================================================================
+  1/9  创建隔离沙箱
+============================================================================
+  镜像: opensandbox/code-interpreter:v1.0.2
+  Sandbox ID: 96719921-b78a-4c2e-9b55-ac1d1a70d00c
+
+============================================================================
+  2/9  安装监控工具 (快照前, 避免污染基线)
+============================================================================
+  监控工具已安装
+
+============================================================================
+  3/9  采集执行前基线 (24 维度)
+============================================================================
+  文件数       : 221689
+  SUID/SGID    : 14
+  符号链接     : 483
+  文件能力     : 1
+  基线采集耗时 : 16.5s
+  CPU          : 32.8%
+  Memory       : 2052.3/15069.3 MiB
+
+============================================================================
+  4/9  启动多层探针 + 执行待测命令
+============================================================================
+  [探针1] inotify: /usr/local/bin /usr/bin /usr/sbin /etc /root /home
+  [探针2] inotify: /tmp /var/tmp /dev/shm (独立探针)
+  [探针3] network: /proc/net/tcp 轮询 (0.5s)
+  [探针5] process: 进程树轮询 (1s)
+
+  --- 命令链分解分析 ---
+    命令包含 2 个执行阶段:
+    [1] [OK] curl -sSL https://install.python-poetry.org |
+    [2] [OK] python3 - END
+
+  --- 命令去混淆分析 ---
+    PASS  未发现编码/混淆层
+
+  --- 命令静态分析 ---
+    PASS  未匹配已知恶意模式
+    [INFO] 命令匹配合法安装器模式, 部分告警已降权
+
+  $ curl -sSL https://install.python-poetry.org | python3 -
+  ────────────────────────────────────────────────────────────
+
+  耗时     : 12.3s
+  退出码   : 0
+  stdout   : 20 行
+  stderr   : 0 行
+
+  --- stdout (前 50 行) ---
+    | Retrieving Poetry metadata
+    | # Welcome to Poetry!
+    | This will download and install the latest version of Poetry,
+    | a dependency and package manager for Python.
+    | It will add the `poetry` command to Poetry's bin directory, located at:
+    | /root/.local/bin
+    | You can uninstall at any time by executing this script with the --uninstall option,
+    | and these changes will be reverted.
+    | Installing Poetry (2.3.2)
+    | Installing Poetry (2.3.2): Creating environment
+    | Installing Poetry (2.3.2): Installing Poetry
+    | Installing Poetry (2.3.2): Creating script
+    | Installing Poetry (2.3.2): Done
+    | Poetry (2.3.2) is installed now. Great!
+    | To get started you need Poetry's bin directory (/root/.local/bin) in your `PATH`
+    | environment variable.
+    | Add `export PATH="/root/.local/bin:$PATH"` to your shell configuration file.
+    | Alternatively, you can call Poetry explicitly with `/root/.local/bin/poetry`.
+    | You can test that everything is set up by executing:
+    | `poetry --version`
+
+============================================================================
+  5/9  采集执行后快照 (全维度)
+============================================================================

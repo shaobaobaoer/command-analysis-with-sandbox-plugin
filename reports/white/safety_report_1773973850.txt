@@ -1,0 +1,8 @@
+✅ 判定: LIKELY_SAFE (风险分: 5/100, 置信度: MEDIUM)
+命令: pip install requests
+
+发现 1 个问题 (0 严重, 1 警告):
+  [WARN] 资源: 内存异常增长 (+309 MiB)
+
+建议:
+  • ALLOW: 命令安全, 可放行
