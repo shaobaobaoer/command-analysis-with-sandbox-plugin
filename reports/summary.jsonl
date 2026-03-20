@@ -1,2 +1,2 @@
-{"id":"w11","category":"white","label":"safe","desc":"create temp file","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
-{"id":"w08","category":"white","label":"safe","desc":"apt install jq","verdict":"UNKNOWN","risk_score":-1,"mitre_count":0,"confidence":"N/A","match":"WRONG"}
+{"id":"w13","category":"white","label":"safe","desc":"system info","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
+{"id":"w02","category":"white","label":"safe","desc":"python print","verdict":"UNKNOWN","risk_score":-1,"mitre_count":0,"confidence":"N/A","match":"WRONG"}
