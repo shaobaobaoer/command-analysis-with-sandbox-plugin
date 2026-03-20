@@ -169,10 +169,80 @@ for i in "${!JOBS[@]}"; do
     latest_report=$(ls -t "${report_dir}"/safety_report_*.json 2>/dev/null | head -1)
     if [ -n "$latest_report" ] && [ -f "$latest_report" ]; then
         mv "$latest_report" "$report_file"
-        verdict=$(python3 -c "import json; print(json.load(open('${report_file}'))['verdict'])" 2>/dev/null || echo "UNKNOWN")
-        risk_score=$(python3 -c "import json; print(json.load(open('${report_file}')).get('risk_score', -1))" 2>/dev/null || echo "-1")
-        mitre_count=$(python3 -c "import json; r=json.load(open('${report_file}')); print(len(r.get('mitre_attack', {})))" 2>/dev/null || echo "0")
-        confidence=$(python3 -c "import json; print(json.load(open('${report_file}')).get('confidence', 'N/A'))" 2>/dev/null || echo "N/A")
+        # Parse SARIF format JSON - verdict is in runs[0].tool.driver.properties.verdict or invocations[0].properties.verdict
+        verdict=$(python3 -c "
+import json
+try:
+    data = json.load(open('${report_file}'))
+    # Try SARIF format first
+    if 'runs' in data and len(data['runs']) > 0:
+        run = data['runs'][0]
+        # Try tool.driver.properties
+        if 'tool' in run and 'driver' in run['tool'] and 'properties' in run['tool']['driver']:
+            v = run['tool']['driver']['properties'].get('verdict')
+            if v:
+                print(v)
+                exit(0)
+        # Try invocations[0].properties
+        if 'invocations' in run and len(run['invocations']) > 0 and 'properties' in run['invocations'][0]:
+            v = run['invocations'][0]['properties'].get('verdict')
+            if v:
+                print(v)
+                exit(0)
+    # Fallback to direct property
+    if 'verdict' in data:
+        print(data['verdict'])
+        exit(0)
+    print('UNKNOWN')
+except Exception as e:
+    print('UNKNOWN')
+" 2>/dev/null || echo "UNKNOWN")
+        risk_score=$(python3 -c "
+import json
+try:
+    data = json.load(open('${report_file}'))
+    if 'runs' in data and len(data['runs']) > 0:
+        run = data['runs'][0]
+        if 'tool' in run and 'driver' in run['tool'] and 'properties' in run['tool']['driver']:
+            print(run['tool']['driver']['properties'].get('risk_score', -1))
+            exit(0)
+        if 'invocations' in run and len(run['invocations']) > 0 and 'properties' in run['invocations'][0]:
+            print(run['invocations'][0]['properties'].get('risk_score', -1))
+            exit(0)
+    print(data.get('risk_score', -1))
+except:
+    print(-1)
+" 2>/dev/null || echo "-1")
+        mitre_count=$(python3 -c "
+import json
+try:
+    data = json.load(open('${report_file}'))
+    if 'runs' in data and len(data['runs']) > 0:
+        run = data['runs'][0]
+        if 'tool' in run and 'driver' in run['tool'] and 'properties' in run['tool']['driver']:
+            mitre = run['tool']['driver']['properties'].get('mitre_attack', {})
+            print(len(mitre) if mitre else 0)
+            exit(0)
+    print(len(data.get('mitre_attack', {})))
+except:
+    print(0)
+" 2>/dev/null || echo "0")
+        confidence=$(python3 -c "
+import json
+try:
+    data = json.load(open('${report_file}'))
+    if 'runs' in data and len(data['runs']) > 0:
+        run = data['runs'][0]
+        if 'tool' in run and 'driver' in run['tool'] and 'properties' in run['tool']['driver']:
+            print(run['tool']['driver']['properties'].get('confidence', 'N/A'))
+            exit(0)
+        if 'invocations' in run and len(run['invocations']) > 0 and 'properties' in run['invocations'][0]:
+            print(run['invocations'][0]['properties'].get('confidence', 'N/A'))
+            exit(0)
+    print(data.get('confidence', 'N/A'))
+except:
+    print('N/A')
+" 2>/dev/null || echo "N/A")
     else
         verdict="ERROR"
         risk_score="-1"
