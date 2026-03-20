@@ -22,9 +22,9 @@ everything's installed!
 [0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
 [0;32m[ OK ][0m opensandbox-server + SDK 已安装
 [0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
-[0;32m[ OK ][0m 配置写入: /tmp/tmp.bPW629iQNQ/sandbox.toml
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.wfq1XPUZR9/sandbox.toml
 [0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
-[0;32m[ OK ][0m Server 就绪 (PID: 463552, port: 8080)
+[0;32m[ OK ][0m Server 就绪 (PID: 535457, port: 8080)
 [0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
 
 
@@ -32,7 +32,7 @@ everything's installed!
   1/9  创建隔离沙箱
 ============================================================================
   镜像: opensandbox/code-interpreter:v1.0.2
-  Sandbox ID: 19819806-1ff8-404a-9abf-9bb54e223103
+  Sandbox ID: 49888d06-a395-4c63-b089-de24949107b7
 
 ============================================================================
   2/9  安装监控工具 (快照前, 避免污染基线)
@@ -46,9 +46,9 @@ everything's installed!
   SUID/SGID    : 14
   符号链接     : 483
   文件能力     : 1
-  基线采集耗时 : 15.5s
-  CPU          : 2.4%
-  Memory       : 2065.6/15069.3 MiB
+  基线采集耗时 : 15.6s
+  CPU          : 6.4%
+  Memory       : 1892.1/15069.3 MiB
 
 ============================================================================
   4/9  启动多层探针 + 执行待测命令
@@ -124,16 +124,15 @@ everything's installed!
   文件数       : 221709
   SUID/SGID    : 14
   inotify 系统 : 9 条
-  inotify /tmp : 204212 条
+  inotify /tmp : 210747 条
 
 ============================================================================
   6/9  网络行为深度分析
 ============================================================================
 
   --- 外部连接 (出站) ---
-    -> 185.125.190.83:80 (HTTP)
-    -> 91.189.92.23:80 (HTTP)
-    -> 91.189.92.24:80 (HTTP)
+    -> 91.189.91.81:80 (HTTP)
+    -> 91.189.91.83:80 (HTTP)
 
     [29 个内部连接已忽略]
 
@@ -193,62 +192,60 @@ everything's installed!
 
   --- [D2] 实时文件事件 (inotifywait) ---
     系统目录事件 (9 条):
-      2026-03-20T02:33:11 CREATE /usr/bin/jq.dpkg-new
-      2026-03-20T02:33:11 MODIFY /usr/bin/jq.dpkg-new
-      2026-03-20T02:33:11 ATTRIB /usr/bin/jq.dpkg-new
-      2026-03-20T02:33:11 ATTRIB /usr/bin/jq.dpkg-new
-      2026-03-20T02:33:11 MOVED_TO /usr/bin/jq
-      2026-03-20T02:33:11 CREATE /etc/ld.so.cache~
-      2026-03-20T02:33:11 MODIFY /etc/ld.so.cache~
-      2026-03-20T02:33:11 ATTRIB /etc/ld.so.cache~
-      2026-03-20T02:33:11 MOVED_TO /etc/ld.so.cache
-    临时目录事件 (12866 条):
-      2026-03-20T02:33:06 CREATE /tmp/apt.conf.fHSlOO
-      2026-03-20T02:33:06 MODIFY /tmp/apt.conf.fHSlOO
-      2026-03-20T02:33:06 MODIFY /tmp/apt.conf.fHSlOO
-      2026-03-20T02:33:06 CREATE /tmp/apt.sig.hVWzSZ
-      2026-03-20T02:33:06 CREATE /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
-      2026-03-20T02:33:06 MODIFY /tmp/apt.data.nLTbpA
+      2026-03-20T02:53:10 CREATE /usr/bin/jq.dpkg-new
+      2026-03-20T02:53:10 MODIFY /usr/bin/jq.dpkg-new
+      2026-03-20T02:53:10 ATTRIB /usr/bin/jq.dpkg-new
+      2026-03-20T02:53:10 ATTRIB /usr/bin/jq.dpkg-new
+      2026-03-20T02:53:10 MOVED_TO /usr/bin/jq
+      2026-03-20T02:53:10 CREATE /etc/ld.so.cache~
+      2026-03-20T02:53:10 MODIFY /etc/ld.so.cache~
+      2026-03-20T02:53:10 ATTRIB /etc/ld.so.cache~
+      2026-03-20T02:53:10 MOVED_TO /etc/ld.so.cache
+    临时目录事件 (11446 条):
+      2026-03-20T02:53:05 CREATE /tmp/apt.conf.S0vOrF
+      2026-03-20T02:53:05 MODIFY /tmp/apt.conf.S0vOrF
+      2026-03-20T02:53:05 MODIFY /tmp/apt.conf.S0vOrF
+      2026-03-20T02:53:05 CREATE /tmp/apt.sig.f8nfiZ
+      2026-03-20T02:53:05 CREATE /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
+      2026-03-20T02:53:05 MODIFY /tmp/apt.data.PUaq0f
 
   --- [D3] 用户与权限 ---
     PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
 
   --- [D4] 持久化 (cron/systemd/rc.local/init.d/at) ---
-    !! FAIL  持久化配置已变更!
+    PASS  无新增
 
   --- [D5] Shell 环境 (.bashrc/.profile/etc) ---
     PASS  无变化
 
   --- [D6] 进程树分析 ---
-    观察到 21 个独立进程:
+    观察到 19 个独立进程:
       > /opt/opensandbox/execd
       > COMMAND
-      > \_ /bin/sh /usr/bin/apt-key --quiet --readonly --keyring /usr/share/keyrings/ubuntu-archive-keyring.gpg verify --status-
-      > \_ /usr/lib/apt/methods/gpgv
       > \_ /usr/lib/apt/methods/http
       > \_ apt-get install -y -qq jq
       > \_ apt-get update -qq
@@ -258,45 +255,46 @@ everything's installed!
       > \_ bash -c getcap -r / 2>/dev/null | sort || true
       > \_ bash -c { apt-get update -qq && apt-get install -y -qq jq ; }; echo "__EXIT_CODE__$?"
       > \_ cat /proc/net/tcp /proc/net/tcp6
+      > \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
       > \_ getcap -r /
-      > \_ gpgconf --kill all
       > \_ sort
       > tail -f /dev/null
       > |   \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
       > |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
-      > |   \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
+      > |   \_ getcap -r /
+      > |   \_ sort
 
     残留进程 (执行后):
       USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-      root           1  0.0  0.0   3156  1792 ?        Ss   02:32   0:00 tail -f /dev/null
-      root           7 15.6  0.1 1243968 22480 ?       Sl   02:32   0:06 /opt/opensandbox/execd
-      root        1073  0.0  0.0   4752  3456 ?        S    02:33   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
-      root        1075  0.0  0.0   8280  4096 ?        R    02:33   0:00  |   \_ ps auxf
-      root        1074  0.0  0.0   4752  3712 ?        S    02:33   0:00  \_ bash -c { echo '=== CRONTAB ==='; crontab -l 2>/dev/null || true; echo '=== /etc/crontab ==='; cat /etc/crontab 2>/dev/null || true; echo '=== cron.d ==='; ls /etc/cron.d/ 2>/dev/null | sort || true; echo '=== cron.daily ==='; ls /etc/cron.daily/ 2>/dev/null | sort || true; echo '=== systemd user ==='; ls ~/.config/systemd/user/*.service 2>/dev/null || true; echo '=== systemd system ==='; ls /etc/systemd/system/*.service 2>/dev/null || true; echo '=== rc.local ==='; cat /etc/rc.local 2>/dev/null || true; echo '=== init.d ==='; ls /etc/init.d/ 2>/dev/null | sort || true; echo '=== at queue ==='; atq 2>/dev/null || true; echo '=== systemd timers ==='; systemctl list-timers --no-pager 2>/dev/null || true; } | md5sum
-      root        1076  0.0  0.0   4752  2080 ?        S    02:33   0:00  |   \_ bash -c { echo '=== CRONTAB ==='; crontab -l 2>/dev/null || true; echo '=== /etc/crontab ==='; cat /etc/crontab 2>/dev/null || true; echo '=== cron.d ==='; ls /etc/cron.d/ 2>/dev/null | sort || true; echo '=== cron.daily ==='; ls /etc/cron.daily/ 2>/dev/null | sort || true; echo '=== systemd user ==='; ls ~/.config/systemd/user/*.service 2>/dev/null || true; echo '=== systemd system ==='; ls /etc/systemd/system/*.service 2>/dev/null || true; echo '=== rc.local ==='; cat /etc/rc.local 2>/dev/null || true; echo '=== init.d ==='; ls /etc/init.d/ 2>/dev/null | sort || true; echo '=== at queue ==='; atq 2>/dev/null || true; echo '=== systemd timers ==='; systemctl list-timers --no-pager 2>/dev/null || true; } | md5sum
-      root        1077  0.0  0.0   8328  3072 ?        S    02:33   0:00  |   \_ md5sum
-      root        1080  0.0  0.0   4752  3584 ?        S    02:33   0:00  \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
+      root           1  0.0  0.0   3156  1792 ?        Ss   02:52   0:00 tail -f /dev/null
+      root           7 16.5  0.1 1244224 22160 ?       Sl   02:52   0:07 /opt/opensandbox/execd
+      root        1072  0.0  0.0   4752  3584 ?        S    02:53   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root        1074  0.0  0.0   8280  4224 ?        R    02:53   0:00  |   \_ ps auxf
+      root        1073  0.0  0.0   4752  3456 ?        S    02:53   0:00  \_ bash -c { echo '=== CRONTAB ==='; crontab -l 2>/dev/null || true; echo '=== /etc/crontab ==='; cat /etc/crontab 2>/dev/null || true; echo '=== cron.d ==='; ls /etc/cron.d/ 2>/dev/null | sort || true; echo '=== cron.daily ==='; ls /etc/cron.daily/ 2>/dev/null | sort || true; echo '=== systemd user ==='; ls ~/.config/systemd/user/*.service 2>/dev/null || true; echo '=== systemd system ==='; ls /etc/systemd/system/*.service 2>/dev/null || true; echo '=== rc.local ==='; cat /etc/rc.local 2>/dev/null || true; echo '=== init.d ==='; ls /etc/init.d/ 2>/dev/null | sort || true; echo '=== at queue ==='; atq 2>/dev/null || true; echo '=== systemd timers ==='; systemctl list-timers --no-pager 2>/dev/null || true; } | md5sum
+      root        1075  0.0  0.0   4752  1952 ?        S    02:53   0:00  |   \_ bash -c { echo '=== CRONTAB ==='; crontab -l 2>/dev/null || true; echo '=== /etc/crontab ==='; cat /etc/crontab 2>/dev/null || true; echo '=== cron.d ==='; ls /etc/cron.d/ 2>/dev/null | sort || true; echo '=== cron.daily ==='; ls /etc/cron.daily/ 2>/dev/null | sort || true; echo '=== systemd user ==='; ls ~/.config/systemd/user/*.service 2>/dev/null || true; echo '=== systemd system ==='; ls /etc/systemd/system/*.service 2>/dev/null || true; echo '=== rc.local ==='; cat /etc/rc.local 2>/dev/null || true; echo '=== init.d ==='; ls /etc/init.d/ 2>/dev/null | sort || true; echo '=== at queue ==='; atq 2>/dev/null || true; echo '=== systemd timers ==='; systemctl list-timers --no-pager 2>/dev/null || true; } | md5sum
+      root        1076  0.0  0.0   8328  3072 ?        S    02:53   0:00  |   \_ md5sum
+      root        1079  0.0  0.0   4752  3584 ?        S    02:53   0:00  \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
 
   --- [D7] 残留网络连接 ---
         sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
-         0: 0100007F:AD1C 0100007F:AEE4 01 00000000:00000000 02:00000164 00000000     0        0 2372716 2 0000000000000000 20 4 30 10 -1                  
-         1: 0100007F:CB4A 0100007F:AEE4 01 00000000:00000000 02:00000013 00000000     0        0 2380108 2 0000000000000000 20 4 30 10 -1                  
-         2: 0100007F:8404 0100007F:AEE4 01 00000000:00000000 02:000005C4 00000000     0        0 2351794 2 0000000000000000 20 4 30 10 -1                  
-         3: 0100007F:AD56 0100007F:AEE4 01 00000000:00000000 02:000004C4 00000000     0        0 2365016 2 0000000000000000 20 4 30 10 -1                  
-         4: 0100007F:AD48 0100007F:AEE4 01 00000000:00000000 02:00000231 00000000     0        0 2357954 2 0000000000000000 20 4 30 10 -1                  
-         5: 0100007F:CB64 0100007F:AEE4 01 00000000:00000000 02:00000013 00000000     0        0 2377187 2 0000000000000000 20 4 30 10 -1                  
-         6: 030011AC:E212 53BE7DB9:0050 06 00000000:00000000 03:00000A22 00000000     0        0 0 3 0000000000000000                                      
-         7: 030011AC:DC96 185CBD5B:0050 06 00000000:00000000 03:00000885 00000000     0        0 0 3 0000000000000000                                      
-         8: 0100007F:C674 0100007F:AEE4 01 00000000:00000000 02:00000A88 00000000     0        0 2403957 2 0000000000000000 20 4 30 10 -1                  
-         9: 0100007F:83D6 0100007F:AEE4 01 00000000:00000000 02:00000591 00000000     0        0 2348996 2 0000000000000000 20 4 30 10 -1                  
-        10: 0100007F:83E4 0100007F:AEE4 01 00000000:00000000 02:000005C4 00000000     0        0 2360441 2 0000000000000000 20 4 30 10 -1                  
-        11: 0100007F:8418 0100007F:AEE4 01 00000000:00000000 02:000002D3 00000000     0        0 2356103 2 0000000000000000 20 4 30 10 -1                  
-        12: 0100007F:8406 0100007F:AEE4 01 00000000:00000000 02:000005C4 00000000     0        0 2349056 2 0000000000000000 20 4 30 10 -1                  
-        13: 0100007F:8402 0100007F:AEE4 01 00000000:00000000 02:00000591 00000000     0        0 2351793 2 0000000000000000 20 4 30 10 -1                  
+         0: 0100007F:E84E 0100007F:AEE4 01 00000000:00000000 02:00000796 00000000     0        0 3095981 2 0000000000000000 20 4 30 10 -1                  
+         1: 0100007F:8730 0100007F:AEE4 01 00000000:00000000 02:0000054A 00000000     0        0 3056416 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:8C9E 0100007F:AEE4 01 00000000:00000000 02:000001CA 00000000     0        0 3075497 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:8C6A 0100007F:AEE4 01 00000000:00000000 02:000005AD 00000000     0        0 3075459 2 0000000000000000 20 4 30 10 -1                  
+         4: 0100007F:8754 0100007F:AEE4 01 00000000:00000000 02:000001F3 00000000     0        0 3056424 2 0000000000000000 20 4 30 10 -1                  
+         5: 0100007F:E83E 0100007F:AEE4 01 00000000:00000000 02:00000732 00000000     0        0 3101076 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:B7B6 0100007F:AEE4 01 00000000:00000000 02:0000001A 00000000     0        0 3082708 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:B7BA 0100007F:AEE4 01 00000000:00000000 02:0000036B 00000000     0        0 3082712 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:BC32 0100007F:AEE4 01 00000000:00000000 02:000004E4 00000000     0        0 3052401 2 0000000000000000 20 4 30 10 -1                  
+         9: 0100007F:B7D4 0100007F:AEE4 01 00000000:00000000 02:00000023 00000000     0        0 3078696 2 0000000000000000 20 4 30 10 -1                  
+        10: 0100007F:C9B4 0100007F:AEE4 01 00000000:00000000 02:00000A87 00000000     0        0 3098500 2 0000000000000000 20 4 30 10 -1                  
+        11: 0100007F:B7CE 0100007F:AEE4 01 00000000:00000000 02:000001C6 00000000     0        0 3084619 2 0000000000000000 20 8 2 10 -1                   
+        12: 0100007F:B7C0 0100007F:AEE4 01 00000000:00000000 02:0000070C 00000000     0        0 3084616 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:8C80 0100007F:AEE4 01 00000000:00000000 02:00000104 00000000     0        0 3078180 2 0000000000000000 20 4 30 10 -1                  
 
   --- [D8] 资源消耗 ---
-    CPU    : 2.4% -> 54.2% (Δ +51.8%)
-    Memory : 2065.6 -> 2149.1 MiB (Δ +83.5 MiB)
+    CPU    : 6.4% -> 16.6% (Δ +10.2%)
+    Memory : 1892.1 -> 1996.1 MiB (Δ +104.1 MiB)
 
   --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
     PASS
@@ -341,7 +339,7 @@ everything's installed!
     PASS  未发现恶意信号处理
 
   --- [D23] 攻击链关联分析 ---
-    !! 攻击链: 恶意软件部署链 (文件落地 + 持久化)
+    PASS  未检测到攻击链组合
 
   --- [D24] 敏感文件权限变更 ---
     PASS  敏感文件权限正常
@@ -349,57 +347,45 @@ everything's installed!
 ============================================================================
   8/9  MITRE ATT&CK 技术映射
 ============================================================================
-    [T1037.004] Boot/Logon Init Scripts: RC Scripts
-      └─ 持久化机制被修改 (cron/systemd/rc.local)
-    [T1053.003] Scheduled Task/Job: Cron
-      └─ 持久化机制被修改 (cron/systemd/rc.local)
-      └─ 检测到恶意软件部署链: 文件落地 + 持久化
-    [T1105] Ingress Tool Transfer
-      └─ 检测到恶意软件部署链: 文件落地 + 持久化
     [T1222.002] File/Dir Permissions Modification: Linux
       └─ 敏感路径写入: ['/etc/ld.so.cache']
-    [T1543.002] Create/Modify System Process: Systemd Service
-      └─ 持久化机制被修改 (cron/systemd/rc.local)
 
 ============================================================================
   9/9  综合判定
 ============================================================================
 
   +──────────────────────────────────────────────────────────────────────────+
-  |  [!!] 判定: DANGEROUS             风险评分:  85/100            |
-  |  [██████████████████████████████████░░░░░░]                              |
-  |  置信度: HIGH    维度覆盖:  3/24              |
+  |  [??] 判定: SUSPICIOUS            风险评分:  35/100            |
+  |  [██████████████░░░░░░░░░░░░░░░░░░░░░░░░░░]                              |
+  |  置信度: LOW     维度覆盖:  1/24              |
   +──────────────────────────────────────────────────────────────────────────+
 
   命令           : apt-get update -qq && apt-get install -y -qq jq
   合法命令模式   : 是
   退出码         : 0
   文件 +/-       : +31 / -11
-  inotify 事件   : 9 系统 + 12866 临时
-  外部连接       : 3 个
+  inotify 事件   : 9 系统 + 11446 临时
+  外部连接       : 2 个
   SUID/SGID 变更 : +0
   二进制完整性   : PASS
   新增符号链接   : 0
   新增文件能力   : 0
   执行耗时       : 6.6s
-  MITRE 技术     : 5 个
-  ATT&CK 战术    : Command and Control, Persistence, Unknown
-  发现           : 3 critical, 0 warnings, 0 info
-  置信度         : HIGH
+  MITRE 技术     : 1 个
+  ATT&CK 战术    : Unknown
+  发现           : 1 critical, 0 warnings, 0 info
+  置信度         : LOW
 
   详细发现 (按严重程度排序):
     [!!!] [文件变更] 敏感路径写入: ['/etc/ld.so.cache'] [T1222.002] (score: 35)
-    [!!!] [持久化] 持久化机制被修改 (cron/systemd/rc.local) [T1053.003,T1543.002,T1037.004] (score: 35)
-    [!!!] [攻击链] 检测到恶意软件部署链: 文件落地 + 持久化 [T1105,T1053.003] (score: 15)
 
   安全建议:
-    -> BLOCK: 强烈建议阻止此命令执行
-    -> 检查 crontab -l、/etc/cron.d/、systemd services 是否被篡改
-    -> 多维度攻击已确认, 建议全面安全审计
+    -> REVIEW: 建议人工审核此命令后再决定是否放行
+    -> 置信度较低, 可能为误报, 请结合上下文判断
 
-  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974039.json
-  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974039.txt
-  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974039.sarif.json
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773975239.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773975239.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773975239.sarif.json
 
   快速预判: PASS (静态分: 0, 模式匹配: 0)
   [WARN] 快速预判未能识别 — 此攻击需要沙箱动态分析才能发现
@@ -407,28 +393,21 @@ everything's installed!
 ============================================================================
   人类可读摘要:
 ============================================================================
-  🚨 判定: DANGEROUS (风险分: 85/100, 置信度: HIGH)
+  ⚠️ 判定: SUSPICIOUS (风险分: 35/100, 置信度: LOW)
   命令: apt-get update -qq && apt-get install -y -qq jq
   
-  发现 3 个问题 (3 严重, 0 警告):
+  发现 1 个问题 (1 严重, 0 警告):
     [CRITICAL] 文件变更: 敏感路径写入: ['/etc/ld.so.cache'] [T1222.002]
-    [CRITICAL] 持久化: 持久化机制被修改 (cron/systemd/rc.local) [T1053.003, T1543.002, T1037.004]
-    [CRITICAL] 攻击链: 检测到恶意软件部署链: 文件落地 + 持久化 [T1105, T1053.003]
   
-  涉及 ATT&CK 战术: Command and Control, Persistence, Unknown
+  涉及 ATT&CK 战术: Unknown
   
   建议:
-    • BLOCK: 强烈建议阻止此命令执行
-    • 检查 crontab -l、/etc/cron.d/、systemd services 是否被篡改
-    • 多维度攻击已确认, 建议全面安全审计
+    • REVIEW: 建议人工审核此命令后再决定是否放行
+    • 置信度较低, 可能为误报, 请结合上下文判断
 
   沙箱已销毁。
 
 
 [0;36m[INFO][0m  [Step 7/7] 完成!
-[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974039.sarif.json
-  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974039.sarif.json
-  快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
-
 [0;36m[INFO][0m  Cleaning up...
 [0;32m[ OK ][0m Cleanup done.

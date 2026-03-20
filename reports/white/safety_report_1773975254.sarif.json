@@ -1,0 +1,62 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "CMD-001",
+              "name": "资源",
+              "shortDescription": {
+                "text": "内存异常增长 (+212 MiB)"
+              },
+              "helpUri": "",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety"
+                ]
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "LOW_RISK",
+            "risk_score": 10,
+            "confidence": "MEDIUM"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "CMD-001",
+          "level": "warning",
+          "message": {
+            "text": "内存异常增长 (+212 MiB)"
+          },
+          "properties": {
+            "risk_score": 10,
+            "dimension": "资源",
+            "evidence": "Memory delta: 212 MiB"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "echo test | gzip > /tmp/test.gz && tar tzf /tmp/test.gz 2>/dev/null; rm -f /tmp/test.gz",
+            "verdict": "LOW_RISK",
+            "risk_score": 10,
+            "confidence": "MEDIUM",
+            "timestamp": "2026-03-20T02:54:14.912429+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+🔶 判定: LOW_RISK (风险分: 10/100, 置信度: MEDIUM)
+命令: echo test | gzip > /tmp/test.gz && tar tzf /tmp/test.gz 2>/dev/null; rm -f /tmp/test.gz
+
+发现 1 个问题 (0 严重, 1 警告):
+  [WARN] 资源: 内存异常增长 (+212 MiB)
+
+建议:
+  • ALLOW: 风险较低, 可考虑放行但建议记录审计日志

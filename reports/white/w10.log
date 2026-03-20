@@ -22,9 +22,9 @@ everything's installed!
 [0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
 [0;32m[ OK ][0m opensandbox-server + SDK 已安装
 [0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
-[0;32m[ OK ][0m 配置写入: /tmp/tmp.qxRl1IeU59/sandbox.toml
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.n1mzx7MxJw/sandbox.toml
 [0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
-[0;32m[ OK ][0m Server 就绪 (PID: 452595, port: 8080)
+[0;32m[ OK ][0m Server 就绪 (PID: 546447, port: 8080)
 [0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
 
 
@@ -32,7 +32,7 @@ everything's installed!
   1/9  创建隔离沙箱
 ============================================================================
   镜像: opensandbox/code-interpreter:v1.0.2
-  Sandbox ID: 96719921-b78a-4c2e-9b55-ac1d1a70d00c
+  Sandbox ID: 7d3d305f-d096-43bf-956c-18ed615f581c
 
 ============================================================================
   2/9  安装监控工具 (快照前, 避免污染基线)
@@ -46,9 +46,9 @@ everything's installed!
   SUID/SGID    : 14
   符号链接     : 483
   文件能力     : 1
-  基线采集耗时 : 16.5s
-  CPU          : 32.8%
-  Memory       : 2052.3/15069.3 MiB
+  基线采集耗时 : 15.0s
+  CPU          : 4.0%
+  Memory       : 1841.2/15069.3 MiB
 
 ============================================================================
   4/9  启动多层探针 + 执行待测命令
@@ -73,7 +73,7 @@ everything's installed!
   $ curl -sSL https://install.python-poetry.org | python3 -
   ────────────────────────────────────────────────────────────
 
-  耗时     : 12.3s
+  耗时     : 10.7s
   退出码   : 0
   stdout   : 20 行
   stderr   : 0 行
@@ -105,18 +105,18 @@ everything's installed!
 ============================================================================
   文件数       : 226059
   SUID/SGID    : 14
-  inotify 系统 : 11856 条
-  inotify /tmp : 212360 条
+  inotify 系统 : 11819 条
+  inotify /tmp : 219390 条
 
 ============================================================================
   6/9  网络行为深度分析
 ============================================================================
 
   --- 外部连接 (出站) ---
-    -> 151.101.192.223:443 (HTTPS)
-    -> 151.101.64.223:443 (HTTPS)
+    -> 151.101.0.223:443 (HTTPS)
+    -> 151.101.128.223:443 (HTTPS)
     -> 151.101.76.175:443 (HTTPS)
-    -> 66.33.60.129:443 (HTTPS)
+    -> 66.33.60.130:443 (HTTPS)
 
     [30 个内部连接已忽略]
 
@@ -255,99 +255,99 @@ everything's installed!
       - /root/.cache/pip/http-v2/e/a/c/6/1/eac61126daf80149d2a016f12a54eab5e3b5c1dbc77410ff1a97edc4
 
   --- [D2] 实时文件事件 (inotifywait) ---
-    系统目录事件 (11856 条):
-      2026-03-20T02:30:37 CREATE,ISDIR /root/.local/share
-      2026-03-20T02:30:39 CREATE,ISDIR /root/.cache/virtualenv
-      2026-03-20T02:30:39 CREATE,ISDIR /root/.local/share/pypoetry/venv
-      2026-03-20T02:30:39 CREATE,ISDIR /root/.local/share/pypoetry/venv/lib
-      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/pyvenv.cfg
-      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/pyvenv.cfg
-      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/bin/python
-      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/bin/python
-      2026-03-20T02:30:39 ATTRIB /root/.local/share/pypoetry/venv/bin/python
-      2026-03-20T02:30:39 ATTRIB /root/.local/share/pypoetry/venv/bin/python
-      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/bin/python3
-      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/bin/python3
-      2026-03-20T02:30:39 ATTRIB /root/.local/share/pypoetry/venv/bin/python3
-      2026-03-20T02:30:39 ATTRIB /root/.local/share/pypoetry/venv/bin/python3
-      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/bin/python3.12
-      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/bin/python3.12
-      2026-03-20T02:30:39 ATTRIB /root/.local/share/pypoetry/venv/bin/python3.12
-      2026-03-20T02:30:39 ATTRIB /root/.local/share/pypoetry/venv/bin/python3.12
-      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/lib/libpython3.12.so.1.0
-      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/lib/libpython3.12.so.1.0
-      2026-03-20T02:30:39 ATTRIB /root/.local/share/pypoetry/venv/lib/libpython3.12.so.1.0
-      2026-03-20T02:30:39 CREATE,ISDIR /root/.cache/virtualenv/unzip
-      2026-03-20T02:30:39 CREATE /root/.cache/virtualenv/unzip/21.2.0/_virtualenv.py.lock
-      2026-03-20T02:30:39 CREATE /root/.cache/virtualenv/unzip/21.2.0/_virtualenv.py
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/unzip/21.2.0/_virtualenv.py
-      2026-03-20T02:30:39 DELETE /root/.cache/virtualenv/unzip/21.2.0/_virtualenv.py.lock
-      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/lib/python3.12/site-packages/_virtualenv.pth
-      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/lib/python3.12/site-packages/_virtualenv.pth
-      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/lib/python3.12/site-packages/_virtualenv.py
-      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/lib/python3.12/site-packages/_virtualenv.py
-      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/CACHEDIR.TAG
-      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/CACHEDIR.TAG
-      2026-03-20T02:30:39 CREATE /root/.local/share/pypoetry/venv/.gitignore
-      2026-03-20T02:30:39 MODIFY /root/.local/share/pypoetry/venv/.gitignore
-      2026-03-20T02:30:39 CREATE,ISDIR /root/.cache/virtualenv/wheel
-      2026-03-20T02:30:39 CREATE /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl.lock
-      2026-03-20T02:30:39 CREATE /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      2026-03-20T02:30:39 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
-      ... 还有 11796 条
-    临时目录事件 (6922 条):
-      2026-03-20T02:30:37 CREATE /tmp/ld2jub6y
-      2026-03-20T02:30:37 MODIFY /tmp/ld2jub6y
-      2026-03-20T02:30:37 DELETE /tmp/ld2jub6y
-      2026-03-20T02:30:37 CREATE,ISDIR /tmp/poetry-installere5kqhjt5
-      2026-03-20T02:30:39 CREATE /tmp/poetry-installere5kqhjt5/virtualenv.pyz
-      2026-03-20T02:30:39 MODIFY /tmp/poetry-installere5kqhjt5/virtualenv.pyz
-      2026-03-20T02:30:39 CREATE /tmp/f_bvvhs6
-      2026-03-20T02:30:39 MODIFY /tmp/f_bvvhs6
-      2026-03-20T02:30:39 DELETE /tmp/f_bvvhs6
-      2026-03-20T02:30:39 CREATE /tmp/TmPddp7l60y
-      2026-03-20T02:30:39 DELETE /tmp/TmPddp7l60y
-      2026-03-20T02:30:39 CREATE /tmp/TmPg1foy8b_
-      2026-03-20T02:30:39 CREATE /tmp/TmPg1foy8b_-b
-      2026-03-20T02:30:39 DELETE /tmp/TmPg1foy8b_-b
-      2026-03-20T02:30:39 DELETE /tmp/TmPg1foy8b_
-      2026-03-20T02:30:39 CREATE /tmp/TmP8bvh8pko
-      2026-03-20T02:30:39 DELETE /tmp/TmP8bvh8pko
-      2026-03-20T02:30:39 CREATE,ISDIR /tmp/tmp3f_wl59e
-      2026-03-20T02:30:39 CREATE /tmp/tmp3f_wl59e/pip3
-      2026-03-20T02:30:39 MODIFY /tmp/tmp3f_wl59e/pip3
-      2026-03-20T02:30:39 ATTRIB /tmp/tmp3f_wl59e/pip3
-      2026-03-20T02:30:39 CREATE /tmp/tmp3f_wl59e/pip-3.12
-      2026-03-20T02:30:39 MODIFY /tmp/tmp3f_wl59e/pip-3.12
-      2026-03-20T02:30:39 ATTRIB /tmp/tmp3f_wl59e/pip-3.12
-      2026-03-20T02:30:39 CREATE /tmp/tmp3f_wl59e/pip
-      2026-03-20T02:30:39 MODIFY /tmp/tmp3f_wl59e/pip
-      2026-03-20T02:30:39 ATTRIB /tmp/tmp3f_wl59e/pip
-      2026-03-20T02:30:39 CREATE /tmp/tmp3f_wl59e/pip3.12
-      2026-03-20T02:30:39 MODIFY /tmp/tmp3f_wl59e/pip3.12
-      2026-03-20T02:30:39 ATTRIB /tmp/tmp3f_wl59e/pip3.12
+    系统目录事件 (11819 条):
+      2026-03-20T02:56:23 CREATE,ISDIR /root/.local/share
+      2026-03-20T02:56:24 CREATE,ISDIR /root/.cache/virtualenv
+      2026-03-20T02:56:24 CREATE,ISDIR /root/.local/share/pypoetry/venv
+      2026-03-20T02:56:24 CREATE,ISDIR /root/.local/share/pypoetry/venv/lib
+      2026-03-20T02:56:24 CREATE /root/.local/share/pypoetry/venv/pyvenv.cfg
+      2026-03-20T02:56:24 MODIFY /root/.local/share/pypoetry/venv/pyvenv.cfg
+      2026-03-20T02:56:24 CREATE /root/.local/share/pypoetry/venv/bin/python
+      2026-03-20T02:56:24 MODIFY /root/.local/share/pypoetry/venv/bin/python
+      2026-03-20T02:56:24 ATTRIB /root/.local/share/pypoetry/venv/bin/python
+      2026-03-20T02:56:24 ATTRIB /root/.local/share/pypoetry/venv/bin/python
+      2026-03-20T02:56:24 CREATE /root/.local/share/pypoetry/venv/bin/python3
+      2026-03-20T02:56:24 MODIFY /root/.local/share/pypoetry/venv/bin/python3
+      2026-03-20T02:56:24 ATTRIB /root/.local/share/pypoetry/venv/bin/python3
+      2026-03-20T02:56:24 ATTRIB /root/.local/share/pypoetry/venv/bin/python3
+      2026-03-20T02:56:24 CREATE /root/.local/share/pypoetry/venv/bin/python3.12
+      2026-03-20T02:56:24 MODIFY /root/.local/share/pypoetry/venv/bin/python3.12
+      2026-03-20T02:56:24 ATTRIB /root/.local/share/pypoetry/venv/bin/python3.12
+      2026-03-20T02:56:24 ATTRIB /root/.local/share/pypoetry/venv/bin/python3.12
+      2026-03-20T02:56:24 CREATE /root/.local/share/pypoetry/venv/lib/libpython3.12.so.1.0
+      2026-03-20T02:56:24 MODIFY /root/.local/share/pypoetry/venv/lib/libpython3.12.so.1.0
+      2026-03-20T02:56:24 ATTRIB /root/.local/share/pypoetry/venv/lib/libpython3.12.so.1.0
+      2026-03-20T02:56:24 CREATE,ISDIR /root/.cache/virtualenv/unzip
+      2026-03-20T02:56:24 CREATE /root/.cache/virtualenv/unzip/21.2.0/_virtualenv.py.lock
+      2026-03-20T02:56:24 CREATE /root/.cache/virtualenv/unzip/21.2.0/_virtualenv.py
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/unzip/21.2.0/_virtualenv.py
+      2026-03-20T02:56:24 DELETE /root/.cache/virtualenv/unzip/21.2.0/_virtualenv.py.lock
+      2026-03-20T02:56:24 CREATE /root/.local/share/pypoetry/venv/lib/python3.12/site-packages/_virtualenv.pth
+      2026-03-20T02:56:24 MODIFY /root/.local/share/pypoetry/venv/lib/python3.12/site-packages/_virtualenv.pth
+      2026-03-20T02:56:24 CREATE /root/.local/share/pypoetry/venv/lib/python3.12/site-packages/_virtualenv.py
+      2026-03-20T02:56:24 MODIFY /root/.local/share/pypoetry/venv/lib/python3.12/site-packages/_virtualenv.py
+      2026-03-20T02:56:24 CREATE /root/.local/share/pypoetry/venv/CACHEDIR.TAG
+      2026-03-20T02:56:24 MODIFY /root/.local/share/pypoetry/venv/CACHEDIR.TAG
+      2026-03-20T02:56:24 CREATE /root/.local/share/pypoetry/venv/.gitignore
+      2026-03-20T02:56:24 MODIFY /root/.local/share/pypoetry/venv/.gitignore
+      2026-03-20T02:56:24 CREATE,ISDIR /root/.cache/virtualenv/wheel
+      2026-03-20T02:56:24 CREATE /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl.lock
+      2026-03-20T02:56:24 CREATE /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      2026-03-20T02:56:24 MODIFY /root/.cache/virtualenv/wheel/house/pip-26.0.1-py3-none-any.whl
+      ... 还有 11759 条
+    临时目录事件 (7102 条):
+      2026-03-20T02:56:23 CREATE /tmp/duioabdt
+      2026-03-20T02:56:23 MODIFY /tmp/duioabdt
+      2026-03-20T02:56:23 DELETE /tmp/duioabdt
+      2026-03-20T02:56:23 CREATE,ISDIR /tmp/poetry-installerl8d_ps52
+      2026-03-20T02:56:23 CREATE /tmp/poetry-installerl8d_ps52/virtualenv.pyz
+      2026-03-20T02:56:23 MODIFY /tmp/poetry-installerl8d_ps52/virtualenv.pyz
+      2026-03-20T02:56:24 CREATE /tmp/kw1ieks0
+      2026-03-20T02:56:24 MODIFY /tmp/kw1ieks0
+      2026-03-20T02:56:24 DELETE /tmp/kw1ieks0
+      2026-03-20T02:56:24 CREATE /tmp/TmPjhi_uos9
+      2026-03-20T02:56:24 DELETE /tmp/TmPjhi_uos9
+      2026-03-20T02:56:24 CREATE /tmp/TmPvgy5dvgr
+      2026-03-20T02:56:24 CREATE /tmp/TmPvgy5dvgr-b
+      2026-03-20T02:56:24 DELETE /tmp/TmPvgy5dvgr-b
+      2026-03-20T02:56:24 DELETE /tmp/TmPvgy5dvgr
+      2026-03-20T02:56:24 CREATE /tmp/TmPgsylbcbg
+      2026-03-20T02:56:24 DELETE /tmp/TmPgsylbcbg
+      2026-03-20T02:56:24 CREATE,ISDIR /tmp/tmp2d7ccxbh
+      2026-03-20T02:56:24 CREATE /tmp/tmp2d7ccxbh/pip3
+      2026-03-20T02:56:24 MODIFY /tmp/tmp2d7ccxbh/pip3
+      2026-03-20T02:56:24 ATTRIB /tmp/tmp2d7ccxbh/pip3
+      2026-03-20T02:56:24 CREATE /tmp/tmp2d7ccxbh/pip3.12
+      2026-03-20T02:56:24 MODIFY /tmp/tmp2d7ccxbh/pip3.12
+      2026-03-20T02:56:24 ATTRIB /tmp/tmp2d7ccxbh/pip3.12
+      2026-03-20T02:56:24 CREATE /tmp/tmp2d7ccxbh/pip
+      2026-03-20T02:56:24 MODIFY /tmp/tmp2d7ccxbh/pip
+      2026-03-20T02:56:24 ATTRIB /tmp/tmp2d7ccxbh/pip
+      2026-03-20T02:56:24 CREATE /tmp/tmp2d7ccxbh/pip-3.12
+      2026-03-20T02:56:24 MODIFY /tmp/tmp2d7ccxbh/pip-3.12
+      2026-03-20T02:56:24 ATTRIB /tmp/tmp2d7ccxbh/pip-3.12
 
   --- [D3] 用户与权限 ---
     PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
@@ -359,12 +359,13 @@ everything's installed!
     PASS  无变化
 
   --- [D6] 进程树分析 ---
-    观察到 19 个独立进程:
+    观察到 20 个独立进程:
       > /opt/opensandbox/execd
       > COMMAND
       > [python3] <defunct>
       > \_ /root/.local/share/pypoetry/venv/bin/python -m pip install --disable-pip-version-check --upgrade pip
       > \_ /root/.local/share/pypoetry/venv/bin/python -m pip install poetry==2.3.2
+      > \_ /usr/bin/python3 /tmp/poetry-installerl8d_ps52/virtualenv.pyz --clear --always-copy /root/.local/share/pypoetry/venv
       > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
       > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
       > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
@@ -382,38 +383,39 @@ everything's installed!
 
     残留进程 (执行后):
       USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-      root           1  0.0  0.0   3156  1664 ?        Ss   02:30   0:00 tail -f /dev/null
-      root           7 14.6  0.1 1243968 22084 ?       Sl   02:30   0:07 /opt/opensandbox/execd
-      root         962  0.0  0.0   4752  3456 ?        S    02:30   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
-      root         964  0.0  0.0   4084  2432 ?        R    02:30   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
-      root         966  0.0  0.0  24904  3328 ?        R    02:30   0:00  |   \_ sort
-      root         963  0.0  0.0   4752  3456 ?        S    02:30   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
-      root         965  0.0  0.0   8280  4224 ?        R    02:30   0:00  |   \_ ps auxf
-      root         967  0.0  0.0   4752  3584 ?        S    02:30   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
-      root         968  0.0  0.0   3132  1792 ?        R    02:30   0:00      \_ cat /root/.bashrc /root/.bash_profile /root/.profile /root/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/01-locale-fix.sh
-      root         969  0.0  0.0   7788  1536 ?        R    02:30   0:00      \_ md5sum
-      root         829  0.0  0.0      0     0 ?        Z    02:30   0:00 [python3] <defunct>
+      root           1  0.0  0.0   3156  1664 ?        Ss   02:55   0:00 tail -f /dev/null
+      root           7 14.3  0.1 1244224 22344 ?       Sl   02:55   0:06 /opt/opensandbox/execd
+      root         950  0.0  0.0   4752  3456 ?        S    02:56   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root         952  0.0  0.0   8280  4224 ?        R    02:56   0:00  |   \_ ps auxf
+      root         951  0.0  0.0   4752  3456 ?        S    02:56   0:00  \_ bash -c { echo '=== CRONTAB ==='; crontab -l 2>/dev/null || true; echo '=== /etc/crontab ==='; cat /etc/crontab 2>/dev/null || true; echo '=== cron.d ==='; ls /etc/cron.d/ 2>/dev/null | sort || true; echo '=== cron.daily ==='; ls /etc/cron.daily/ 2>/dev/null | sort || true; echo '=== systemd user ==='; ls ~/.config/systemd/user/*.service 2>/dev/null || true; echo '=== systemd system ==='; ls /etc/systemd/system/*.service 2>/dev/null || true; echo '=== rc.local ==='; cat /etc/rc.local 2>/dev/null || true; echo '=== init.d ==='; ls /etc/init.d/ 2>/dev/null | sort || true; echo '=== at queue ==='; atq 2>/dev/null || true; echo '=== systemd timers ==='; systemctl list-timers --no-pager 2>/dev/null || true; } | md5sum
+      root         953  0.0  0.0   4752  1952 ?        S    02:56   0:00  |   \_ bash -c { echo '=== CRONTAB ==='; crontab -l 2>/dev/null || true; echo '=== /etc/crontab ==='; cat /etc/crontab 2>/dev/null || true; echo '=== cron.d ==='; ls /etc/cron.d/ 2>/dev/null | sort || true; echo '=== cron.daily ==='; ls /etc/cron.daily/ 2>/dev/null | sort || true; echo '=== systemd user ==='; ls ~/.config/systemd/user/*.service 2>/dev/null || true; echo '=== systemd system ==='; ls /etc/systemd/system/*.service 2>/dev/null || true; echo '=== rc.local ==='; cat /etc/rc.local 2>/dev/null || true; echo '=== init.d ==='; ls /etc/init.d/ 2>/dev/null | sort || true; echo '=== at queue ==='; atq 2>/dev/null || true; echo '=== systemd timers ==='; systemctl list-timers --no-pager 2>/dev/null || true; } | md5sum
+      root         960  0.0  0.0   3672  1920 ?        R    02:56   0:00  |   |   \_ ls /etc/cron.d/
+      root         954  0.0  0.0   8328  3200 ?        S    02:56   0:00  |   \_ md5sum
+      root         956  0.0  0.0   4752  3584 ?        S    02:56   0:00  \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
+      root         958  0.0  0.0   3724  2048 ?        R    02:56   0:00      \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
+      root         959  0.0  0.0   7848  1408 ?        R    02:56   0:00      \_ sort
+      root         822  0.0  0.0      0     0 ?        Z    02:56   0:00 [python3] <defunct>
 
   --- [D7] 残留网络连接 ---
         sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
-         0: 020011AC:DE6C 813C2142:01BB 06 00000000:00000000 03:00000555 00000000     0        0 0 3 0000000000000000                                      
-         1: 0100007F:8F0E 0100007F:AEE4 01 00000000:00000000 02:0000041F 00000000     0        0 2269805 2 0000000000000000 20 4 30 10 -1                  
-         2: 0100007F:AEFE 0100007F:AEE4 01 00000000:00000000 02:000005D6 00000000     0        0 2286145 2 0000000000000000 20 4 30 10 -1                  
-         3: 0100007F:CE0C 0100007F:AEE4 01 00000000:00000000 02:00000A87 00000000     0        0 2306267 2 0000000000000000 20 4 30 10 -1                  
-         4: 0100007F:AF50 0100007F:AEE4 01 00000000:00000000 02:00000004 00000000     0        0 2284361 2 0000000000000000 20 4 30 10 -1                  
-         5: 0100007F:8624 0100007F:AEE4 01 00000000:00000000 02:00000764 00000000     0        0 2299456 2 0000000000000000 20 4 30 10 -1                  
-         6: 0100007F:AF7A 0100007F:AEE4 01 00000000:00000000 02:00000311 00000000     0        0 2271206 2 0000000000000000 20 4 30 10 -1                  
-         7: 0100007F:CE12 0100007F:AEE4 01 00000000:00000000 02:00000AEC 00000000     0        0 2313490 2 0000000000000000 20 4 30 10 -1                  
-         8: 0100007F:AEFC 0100007F:AEE4 01 00000000:00000000 02:000006DA 00000000     0        0 2282132 2 0000000000000000 20 4 30 10 -1                  
-         9: 0100007F:AF08 0100007F:AEE4 01 00000000:00000000 02:000005D6 00000000     0        0 2284351 2 0000000000000000 20 4 30 10 -1                  
-        10: 0100007F:8DDE 0100007F:AEE4 01 00000000:00000000 02:000005B0 00000000     0        0 2261213 2 0000000000000000 20 4 30 10 -1                  
-        11: 0100007F:8DE0 0100007F:AEE4 01 00000000:00000000 02:0000027D 00000000     0        0 2263500 2 0000000000000000 20 4 30 10 -1                  
-        12: 0100007F:8DC0 0100007F:AEE4 01 00000000:00000000 02:0000027D 00000000     0        0 2262740 2 0000000000000000 20 4 30 10 -1                  
-        13: 0100007F:C5EE 0100007F:AEE4 01 00000000:00000000 02:000003F2 00000000     0        0 2258967 2 0000000000000000 20 4 30 10 -1                  
+         0: 0100007F:90F4 0100007F:AEE4 01 00000000:00000000 02:000003E3 00000000     0        0 3156061 2 0000000000000000 20 4 30 10 -1                  
+         1: 0100007F:9122 0100007F:AEE4 01 00000000:00000000 02:000003E3 00000000     0        0 3156077 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:9110 0100007F:AEE4 01 00000000:00000000 02:000003E3 00000000     0        0 3158054 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:E7A6 0100007F:AEE4 01 00000000:00000000 02:00000000 00000000     0        0 3170108 2 0000000000000000 20 4 30 10 -1                  
+         4: 0100007F:9BCE 0100007F:AEE4 01 00000000:00000000 02:00000000 00000000     0        0 3173539 2 0000000000000000 20 4 30 10 -1                  
+         5: 0100007F:9BB8 0100007F:AEE4 01 00000000:00000000 02:00000000 00000000     0        0 3171666 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:E78E 0100007F:AEE4 01 00000000:00000000 02:000004A5 00000000     0        0 3163549 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:90FA 0100007F:AEE4 01 00000000:00000000 02:00000416 00000000     0        0 3153420 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:9BB4 0100007F:AEE4 01 00000000:00000000 02:00000000 00000000     0        0 3171665 2 0000000000000000 20 4 30 10 -1                  
+         9: 0100007F:9BDE 0100007F:AEE4 01 00000000:00000000 02:00000000 00000000     0        0 3170814 2 0000000000000000 20 4 2 10 -1                   
+        10: 0100007F:9BAA 0100007F:AEE4 01 00000000:00000000 02:00000000 00000000     0        0 3156845 2 0000000000000000 20 4 30 10 -1                  
+        11: 0100007F:BE92 0100007F:AEE4 01 00000000:00000000 02:00000525 00000000     0        0 3138474 2 0000000000000000 20 4 30 10 -1                  
+        12: 0100007F:9142 0100007F:AEE4 01 00000000:00000000 02:00000516 00000000     0        0 3147748 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:9114 0100007F:AEE4 01 00000000:00000000 02:000000BF 00000000     0        0 3147739 2 0000000000000000 20 4 30 10 -1                  
 
   --- [D8] 资源消耗 ---
-    CPU    : 32.8% -> 5.4% (Δ -27.4%)
-    Memory : 2052.3 -> 2030.6 MiB (Δ -21.7 MiB)
+    CPU    : 4.0% -> 2.9% (Δ -1.1%)
+    Memory : 1841.2 -> 1904.0 MiB (Δ +62.8 MiB)
 
   --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
     PASS
@@ -438,7 +440,7 @@ everything's installed!
 
   --- [D16] 符号链接变更 ---
     [INFO] 新增 1 个符号链接 (非敏感目标)
-      + lrwxrwxrwx 1 root root 43 Mar 20 02:30 /root/.local/bin/poetry -> /root/.local/share/pypoetry/venv/bin/poetry
+      + lrwxrwxrwx 1 root root 43 Mar 20 02:56 /root/.local/bin/poetry -> /root/.local/share/pypoetry/venv/bin/poetry
 
   --- [D17] 文件能力 (Linux Capabilities) ---
     PASS  无新增文件能力
@@ -483,13 +485,13 @@ everything's installed!
   合法命令模式   : 是
   退出码         : 0
   文件 +/-       : +4392 / -22
-  inotify 事件   : 11856 系统 + 6922 临时
+  inotify 事件   : 11819 系统 + 7102 临时
   外部连接       : 4 个
   SUID/SGID 变更 : +0
   二进制完整性   : PASS
   新增符号链接   : 1
   新增文件能力   : 0
-  执行耗时       : 12.3s
+  执行耗时       : 10.7s
   MITRE 技术     : 0 个
   ATT&CK 战术    : 无
   发现           : 0 critical, 0 warnings, 0 info
@@ -524,9 +526,9 @@ everything's installed!
   安全建议:
     -> ALLOW: 命令安全, 可放行
 
-  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973895.json
-  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973895.txt
-  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973895.sarif.json
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773975438.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773975438.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773975438.sarif.json
 
   快速预判: PASS (静态分: 0, 模式匹配: 0)
 
@@ -545,10 +547,5 @@ everything's installed!
 
 
 [0;36m[INFO][0m  [Step 7/7] 完成!
-[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973895.json
-[0;32m[ OK ][0m 报告 (文本): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973895.txt
-  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973895.json
-  快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
-
 [0;36m[INFO][0m  Cleaning up...
 [0;32m[ OK ][0m Cleanup done.

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1222.002",
+              "name": "文件变更",
+              "shortDescription": {
+                "text": "敏感路径写入: ['/etc/ld.so.cache']"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1222/002",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1222.002"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1222.002 (File/Dir Permissions Modification: Linux)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "SUSPICIOUS",
+            "risk_score": 35,
+            "confidence": "LOW"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1222.002",
+          "level": "error",
+          "message": {
+            "text": "敏感路径写入: ['/etc/ld.so.cache']"
+          },
+          "properties": {
+            "risk_score": 35,
+            "dimension": "文件变更",
+            "evidence": "['/etc/ld.so.cache']"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "apt-get update -qq && apt-get install -y -qq jq",
+            "verdict": "SUSPICIOUS",
+            "risk_score": 35,
+            "confidence": "LOW",
+            "timestamp": "2026-03-20T02:53:59.167536+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}

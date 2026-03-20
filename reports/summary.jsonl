@@ -1,3 +1,1 @@
-{"id":"w07","category":"white","label":"safe","desc":"npm install lodash","verdict":"LOW_RISK","risk_score":22,"mitre_count":2,"confidence":"MEDIUM","match":"CORRECT"}
-{"id":"w23","category":"white","label":"safe","desc":"rustup installer","verdict":"UNKNOWN","risk_score":-1,"mitre_count":0,"confidence":"N/A","match":"WRONG"}
-{"id":"w07","category":"white","label":"safe","desc":"npm install lodash","verdict":"LIKELY_SAFE","risk_score":5,"mitre_count":0,"confidence":"MEDIUM","match":"CORRECT"}
+{"id":"w10","category":"white","label":"safe","desc":"poetry installer","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
