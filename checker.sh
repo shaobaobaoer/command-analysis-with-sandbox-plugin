@@ -953,11 +953,12 @@ async def snap_ps(sb):
 
 async def snap_persist(sb):
     """持久化机制全面快照: cron + systemd + rc.local + init.d + at + timer"""
+    # 采集 cron.d 文件内容(不只是列表)
     o, _ = await run_cmd(sb,
         "{ "
         "echo '=== CRONTAB ==='; crontab -l 2>/dev/null || true; "
         "echo '=== /etc/crontab ==='; cat /etc/crontab 2>/dev/null || true; "
-        "echo '=== cron.d ==='; ls /etc/cron.d/ 2>/dev/null | sort || true; "
+        "echo '=== cron.d ==='; for f in /etc/cron.d/*; do [ -f \"\$f\" ] && echo \"--- \$f ---\" && cat \"\$f\"; done 2>/dev/null || true; "
         "echo '=== cron.daily ==='; ls /etc/cron.daily/ 2>/dev/null | sort || true; "
         "echo '=== systemd user ==='; ls ~/.config/systemd/user/*.service 2>/dev/null || true; "
         "echo '=== systemd system ==='; ls /etc/systemd/system/*.service 2>/dev/null || true; "
@@ -1936,47 +1937,64 @@ async def main():
 
         # ━━ 维度 20: 计划任务详细差异 ━━
         sub("[D20] 计划任务详细差异")
-        cron_before, _ = await run_cmd(sandbox,
-            "crontab -l 2>/dev/null || echo '__EMPTY__'")
-        cron_after_raw, _ = await run_cmd(sandbox,
-            "crontab -l 2>/dev/null || echo '__EMPTY__'")
-        # 也检查 /etc/cron.d 下新增文件内容
-        crond_new, _ = await run_cmd(sandbox,
-            "for f in /etc/cron.d/*; do [ -f \"$f\" ] && echo \"=== $f ===\" && cat \"$f\"; done 2>/dev/null || true")
-        if cron_before.strip() != cron_after_raw.strip():
-            pre_cron_lines = set(cron_before.strip().splitlines())
-            post_cron_lines = set(cron_after_raw.strip().splitlines())
-            new_cron_entries = post_cron_lines - pre_cron_lines
-            if new_cron_entries:
-                for entry in new_cron_entries:
-                    if entry.strip() and not entry.startswith("#"):
-                        engine.add("CRITICAL", "计划任务差异",
-                                  f"新增 cron 条目: {entry[:120]}",
-                                  35, ["T1053.003"], entry[:300])
-                        print(f"    !! 新增: {entry[:120]}")
+        # 使用 pre_persist 和 post_persist 的差值来检测真正的变化
+        if pre_persist.strip() != post_persist.strip():
+            print("    !! 计划任务发生变化")
+            # 解析 cron.d 内容(从 persist 快照中提取)
+            def extract_cron_d(content):
+                """从 persist 快照中提取 cron.d 部分的内容"""
+                lines = content.splitlines()
+                in_cron_d = False
+                cron_d_content = []
+                for line in lines:
+                    if '=== cron.d ===' in line:
+                        in_cron_d = True
+                        continue
+                    if in_cron_d:
+                        if line.startswith('===') and 'cron.d' not in line:
+                            break
+                        cron_d_content.append(line)
+                return '\n'.join(cron_d_content)
+
+            pre_cron_d = extract_cron_d(pre_persist)
+            post_cron_d = extract_cron_d(post_persist)
+
+            # 检测 cron.d 的变化(新增或修改)
+            if post_cron_d.strip() != pre_cron_d.strip():
+                # 只分析"新增"的内容(执行后才出现的)
+                cron_d_diff = post_cron_d.replace(pre_cron_d, '').strip()
+                if cron_d_diff:
+                    # 扫描 cron.d 新增内容中的恶意模式
+                    cron_malicious_patterns = [
+                        (r"curl\s+.*\|.*bash", "cron.d with curl|bash payload", "T1053.003", 35),
+                        (r"wget\s+.*\|.*bash", "cron.d with wget|bash payload", "T1053.003", 35),
+                        (r"(curl|wget).*http.*\|", "cron.d with download and pipe", "T1053.003", 30),
+                        (r"bash\s+-i\s+>&\s+/dev/tcp/", "cron.d with reverse shell", "T1059.004", 45),
+                        (r"nc\s+.*\-e\s+/bin/(ba)?sh", "cron.d with netcat backdoor", "T1059.004", 45),
+                        (r"python[23]?\s+-c.*socket", "cron.d with python socket", "T1059.004", 35),
+                        (r"exec\s+\d+<>/dev/tcp/", "cron.d with bash tcp redirect", "T1059.004", 45),
+                        (r"(rm|del)\s+.*\-rf", "cron.d with destructive command", "T1485", 25),
+                        (r"mkfifo.*nc.*sh", "cron.d with named pipe shell", "T1059.004", 40),
+                        (r"base64\s+.*\|.*(bash|sh)", "cron.d with base64 encoded payload", "T1027", 35),
+                    ]
+                    malicious_found = False
+                    for pattern, desc, mitre_id, score in cron_malicious_patterns:
+                        if re.search(pattern, cron_d_diff, re.IGNORECASE):
+                            engine.add("CRITICAL", "计划任务差异",
+                                      f"cron.d 新增恶意内容: {desc}", score, [mitre_id],
+                                      cron_d_diff[:200])
+                            print(f"    !! cron.d 新增恶意内容: {desc}")
+                            malicious_found = True
+                    if not malicious_found:
+                        # cron.d 有变化但没有恶意模式,给予较低分数
+                        engine.add("WARN", "计划任务差异",
+                                  "cron.d 文件发生变化", 10, ["T1053.003"],
+                                  cron_d_diff[:200])
+                        print(f"    ! cron.d 文件发生变化(无恶意内容)")
+            else:
+                print("    PASS  cron.d 无变化")
         else:
-            print("    PASS  crontab 无变化")
-        if crond_new.strip():
-            # 扫描 cron.d 内容中的恶意模式
-            # 注意: 只检测实际的恶意内容模式,而不是路径匹配
-            cron_malicious_patterns = [
-                (r"curl\s+.*\|.*bash", "cron.d with curl|bash payload", "T1053.003", 35),
-                (r"wget\s+.*\|.*bash", "cron.d with wget|bash payload", "T1053.003", 35),
-                (r"(curl|wget).*http.*\|", "cron.d with download and pipe", "T1053.003", 30),
-                (r"bash\s+-i\s+>&\s+/dev/tcp/", "cron.d with reverse shell", "T1059.004", 45),
-                (r"nc\s+.*\-e\s+/bin/(ba)?sh", "cron.d with netcat backdoor", "T1059.004", 45),
-                (r"python[23]?\s+-c.*socket", "cron.d with python socket", "T1059.004", 35),
-                (r"exec\s+\d+<>/dev/tcp/", "cron.d with bash tcp redirect", "T1059.004", 45),
-                (r"(rm|del)\s+.*\-rf", "cron.d with destructive command", "T1485", 25),
-                (r"mkfifo.*nc.*sh", "cron.d with named pipe shell", "T1059.004", 40),
-                (r"base64\s+.*\|.*(bash|sh)", "cron.d with base64 encoded payload", "T1027", 35),
-            ]
-            for pattern, desc, mitre_id, score in cron_malicious_patterns:
-                if re.search(pattern, crond_new, re.IGNORECASE):
-                    engine.add("CRITICAL", "计划任务差异",
-                              f"cron.d 含恶意内容: {desc}", score, [mitre_id],
-                              crond_new[:200])
-                    print(f"    !! cron.d 恶意内容: {desc}")
+            print("    PASS  计划任务无变化")
 
         # ━━ 维度 21: 隐藏进程检测 ━━
         sub("[D21] 隐藏进程检测")
