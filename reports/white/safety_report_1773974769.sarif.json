@@ -1,0 +1,67 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1136.001",
+              "name": "用户/权限",
+              "shortDescription": {
+                "text": "用户/权限配置被修改"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1136/001",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1136.001",
+                  "mitre/T1098"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1136.001 (Create Account: Local Account), T1098 (Account Manipulation)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "SUSPICIOUS",
+            "risk_score": 40,
+            "confidence": "LOW"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1136.001",
+          "level": "error",
+          "message": {
+            "text": "用户/权限配置被修改"
+          },
+          "properties": {
+            "risk_score": 40,
+            "dimension": "用户/权限",
+            "evidence": "Before hash: d41d8cd98f00b204e9800998ecf8427e\nAfter hash: cb1c1e78eda84e1b2b5efd818868b63f"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "env | head -20 && whoami && pwd",
+            "verdict": "SUSPICIOUS",
+            "risk_score": 40,
+            "confidence": "LOW",
+            "timestamp": "2026-03-20T02:46:09.362545+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}

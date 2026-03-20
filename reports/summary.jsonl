@@ -1,5 +1,2 @@
-{"id":"w19","category":"white","label":"safe","desc":"network info","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
-{"id":"w03","category":"white","label":"safe","desc":"git version","verdict":"LIKELY_SAFE","risk_score":0
--1,"mitre_count":0
-0,"confidence":"HIGH
-N/A","match":"CORRECT"}
+{"id":"w20","category":"white","label":"safe","desc":"env check","verdict":"SUSPICIOUS","risk_score":40,"mitre_count":2,"confidence":"LOW","match":"WRONG"}
+{"id":"w04","category":"white","label":"safe","desc":"list files","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
