@@ -1,1 +1,0 @@
-{"id":"b10","category":"black","label":"malicious","desc":"ld preload hijack","verdict":"DANGEROUS","risk_score":75,"mitre_count":2,"confidence":"MEDIUM","match":"CORRECT"}
