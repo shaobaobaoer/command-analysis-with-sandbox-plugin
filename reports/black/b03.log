@@ -1,0 +1,410 @@
+
+[1m==========================================
+  OpenSandbox Behavioral Analysis Engine v4
+==========================================[0m
+
+[0;36m[INFO][0m  待检测命令: useradd -o -u 0 -g 0 backdoor -s /bin/bash -p '$1$hack$xyz'
+
+[0;36m[INFO][0m  [Step 1/7] 检查环境...
+[0;32m[ OK ][0m Docker: Docker version 27.5.1, build 27.5.1-0ubuntu3~24.04.2
+[0;32m[ OK ][0m Python: Python 3.12.3
+[0;36m[INFO][0m  安装 uv...
+downloading uv 0.10.12 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+[0;32m[ OK ][0m uv: uv 0.10.12 (x86_64-unknown-linux-gnu)
+[0;36m[INFO][0m  [Step 2/7] 预拉取 Docker 镜像...
+[0;32m[ OK ][0m 沙箱镜像: opensandbox/code-interpreter:v1.0.2 (已存在)
+[0;32m[ OK ][0m Execd镜像: opensandbox/execd:v1.0.7 (已存在)
+[0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
+[0;32m[ OK ][0m opensandbox-server + SDK 已安装
+[0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.hNQ9XEOSlH/sandbox.toml
+[0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
+[0;32m[ OK ][0m Server 就绪 (PID: 564309, port: 8080)
+[0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
+
+
+============================================================================
+  1/9  创建隔离沙箱
+============================================================================
+  镜像: opensandbox/code-interpreter:v1.0.2
+  Sandbox ID: 424b2b3d-fc21-4f82-8461-d1553fbcb73b
+
+============================================================================
+  2/9  安装监控工具 (快照前, 避免污染基线)
+============================================================================
+  监控工具已安装
+
+============================================================================
+  3/9  采集执行前基线 (24 维度)
+============================================================================
+  文件数       : 221689
+  SUID/SGID    : 14
+  符号链接     : 483
+  文件能力     : 1
+  基线采集耗时 : 15.0s
+  CPU          : 9.1%
+  Memory       : 1891.6/15069.3 MiB
+
+============================================================================
+  4/9  启动多层探针 + 执行待测命令
+============================================================================
+  [探针1] inotify: /usr/local/bin /usr/bin /usr/sbin /etc /root /home
+  [探针2] inotify: /tmp /var/tmp /dev/shm (独立探针)
+  [探针3] network: /proc/net/tcp 轮询 (0.5s)
+  [探针5] process: 进程树轮询 (1s)
+
+  --- 命令链分解分析 ---
+    单阶段命令
+
+  --- 命令去混淆分析 ---
+    PASS  未发现编码/混淆层
+
+  --- 命令静态分析 ---
+    PASS  未匹配已知恶意模式
+
+  $ useradd -o -u 0 -g 0 backdoor -s /bin/bash -p '$1$hack$xyz'
+  ────────────────────────────────────────────────────────────
+
+  耗时     : 1.0s
+  退出码   : 0
+  stdout   : 0 行
+  stderr   : 1 行
+
+  --- stderr (前 30 行) ---
+    | useradd warning: backdoor's uid 0 outside of the UID_MIN 1000 and UID_MAX 60000 range.
+
+============================================================================
+  5/9  采集执行后快照 (全维度)
+============================================================================
+  文件数       : 221689
+  SUID/SGID    : 14
+  inotify 系统 : 67 条
+  inotify /tmp : 204567 条
+
+============================================================================
+  6/9  网络行为深度分析
+============================================================================
+
+  --- 外部连接 (出站) ---
+    (无外部连接)
+
+    [20 个内部连接已忽略]
+
+  --- DNS 配置 ---
+    PASS  /etc/resolv.conf 未被修改
+
+============================================================================
+  7/9  全维度安全对比分析 (24 维度)
+============================================================================
+
+  --- [D1] 文件变更 (+8 / -8) ---
+    新增 8 个:
+      + /etc/passwd
+      + /etc/passwd-
+      + /etc/shadow
+      + /etc/shadow-
+      + /etc/subgid
+      + /etc/subgid-
+      + /etc/subuid
+      + /etc/subuid-
+    删除 8 个:
+      - /etc/passwd
+      - /etc/passwd-
+      - /etc/shadow
+      - /etc/shadow-
+      - /etc/subgid
+      - /etc/subgid-
+      - /etc/subuid
+      - /etc/subuid-
+    !! 敏感路径写入: ['/etc/passwd', '/etc/passwd-', '/etc/shadow', '/etc/shadow-']
+
+  --- [D2] 实时文件事件 (inotifywait) ---
+    系统目录事件 (67 条):
+      2026-03-20T03:03:09 CREATE /etc/passwd.809
+      2026-03-20T03:03:09 MODIFY /etc/passwd.809
+      2026-03-20T03:03:09 CREATE /etc/passwd.lock
+      2026-03-20T03:03:09 DELETE /etc/passwd.809
+      2026-03-20T03:03:09 CREATE /etc/group.809
+      2026-03-20T03:03:09 MODIFY /etc/group.809
+      2026-03-20T03:03:09 CREATE /etc/group.lock
+      2026-03-20T03:03:09 DELETE /etc/group.809
+      2026-03-20T03:03:09 CREATE /etc/gshadow.809
+      2026-03-20T03:03:09 MODIFY /etc/gshadow.809
+      2026-03-20T03:03:09 CREATE /etc/gshadow.lock
+      2026-03-20T03:03:09 DELETE /etc/gshadow.809
+      2026-03-20T03:03:09 CREATE /etc/subuid.809
+      2026-03-20T03:03:09 MODIFY /etc/subuid.809
+      2026-03-20T03:03:09 CREATE /etc/subuid.lock
+      2026-03-20T03:03:09 DELETE /etc/subuid.809
+      2026-03-20T03:03:09 CREATE /etc/subgid.809
+      2026-03-20T03:03:09 MODIFY /etc/subgid.809
+      2026-03-20T03:03:09 CREATE /etc/subgid.lock
+      2026-03-20T03:03:09 DELETE /etc/subgid.809
+      2026-03-20T03:03:09 CREATE /etc/shadow.809
+      2026-03-20T03:03:09 MODIFY /etc/shadow.809
+      2026-03-20T03:03:09 CREATE /etc/shadow.lock
+      2026-03-20T03:03:09 DELETE /etc/shadow.809
+      2026-03-20T03:03:09 MODIFY /etc/passwd-
+      2026-03-20T03:03:09 ATTRIB /etc/passwd-
+      2026-03-20T03:03:09 ATTRIB /etc/passwd-
+      2026-03-20T03:03:09 MODIFY /etc/passwd-
+      2026-03-20T03:03:09 ATTRIB /etc/passwd-
+      2026-03-20T03:03:09 CREATE /etc/passwd+
+      2026-03-20T03:03:09 ATTRIB /etc/passwd+
+      2026-03-20T03:03:09 ATTRIB /etc/passwd+
+      2026-03-20T03:03:09 MODIFY /etc/passwd+
+      2026-03-20T03:03:09 MOVED_TO /etc/passwd
+      2026-03-20T03:03:09 MODIFY /etc/shadow-
+      2026-03-20T03:03:09 ATTRIB /etc/shadow-
+      2026-03-20T03:03:09 MODIFY /etc/shadow-
+      2026-03-20T03:03:09 ATTRIB /etc/shadow-
+      2026-03-20T03:03:09 CREATE /etc/shadow+
+      2026-03-20T03:03:09 ATTRIB /etc/shadow+
+      2026-03-20T03:03:09 ATTRIB /etc/shadow+
+      2026-03-20T03:03:09 MODIFY /etc/shadow+
+      2026-03-20T03:03:09 MOVED_TO /etc/shadow
+      2026-03-20T03:03:09 MODIFY /etc/subuid-
+      2026-03-20T03:03:09 ATTRIB /etc/subuid-
+      2026-03-20T03:03:09 MODIFY /etc/subuid-
+      2026-03-20T03:03:09 ATTRIB /etc/subuid-
+      2026-03-20T03:03:09 CREATE /etc/subuid+
+      2026-03-20T03:03:09 ATTRIB /etc/subuid+
+      2026-03-20T03:03:09 ATTRIB /etc/subuid+
+      2026-03-20T03:03:09 MODIFY /etc/subuid+
+      2026-03-20T03:03:09 MOVED_TO /etc/subuid
+      2026-03-20T03:03:09 MODIFY /etc/subgid-
+      2026-03-20T03:03:09 ATTRIB /etc/subgid-
+      2026-03-20T03:03:09 MODIFY /etc/subgid-
+      2026-03-20T03:03:09 ATTRIB /etc/subgid-
+      2026-03-20T03:03:09 CREATE /etc/subgid+
+      2026-03-20T03:03:09 ATTRIB /etc/subgid+
+      2026-03-20T03:03:09 ATTRIB /etc/subgid+
+      2026-03-20T03:03:09 MODIFY /etc/subgid+
+      ... 还有 7 条
+    临时目录事件 (6103 条):
+      2026-03-20T03:03:16 CREATE /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+
+  --- [D3] 用户与权限 ---
+    !! FAIL  用户/权限配置已变更!
+    新增行:
+      + backdoor:0:/bin/bash
+      + 23 /etc/shadow
+    删除行:
+      - 22 /etc/shadow
+
+  --- [D4] 持久化 (cron/systemd/rc.local/init.d/at) ---
+    PASS  无新增
+
+  --- [D5] Shell 环境 (.bashrc/.profile/etc) ---
+    PASS  无变化
+
+  --- [D6] 进程树分析 ---
+    观察到 16 个独立进程:
+      > /opt/opensandbox/execd
+      > COMMAND
+      > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
+      > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
+      > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
+      > \_ bash -c getcap -r / 2>/dev/null | sort || true
+      > \_ cat /proc/net/tcp /proc/net/tcp6
+      > \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
+      > \_ getcap -r /
+      > \_ sort
+      > tail -f /dev/null
+      > |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      > |   \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
+      > |   \_ getcap -r /
+      > |   \_ sort
+      > |   |   \_ ls -la /etc/fonts/conf.d/45-generic.conf
+
+    残留进程 (执行后):
+      USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+      root           1  0.0  0.0   3156  1792 ?        Ss   03:02   0:00 tail -f /dev/null
+      root           7 16.4  0.1 1244224 21852 ?       Sl   03:02   0:06 /opt/opensandbox/execd
+      root         844  0.0  0.0   4752  3584 ?        S    03:03   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root         846  0.0  0.0   4084  2560 ?        R    03:03   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root         847  0.0  0.0  24904  3200 ?        R    03:03   0:00  |   \_ sort
+      root         845  0.0  0.0   4752  3584 ?        S    03:03   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root         848  0.0  0.0   8280  4224 ?        R    03:03   0:00  |   \_ ps auxf
+      root         849  0.0  0.0   4752  3456 ?        S    03:03   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+      root         850  0.0  0.0      0     0 ?        R    03:03   0:00      \_ [cat]
+
+  --- [D7] 残留网络连接 ---
+        sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
+         0: 0100007F:E452 0100007F:AEE4 01 00000000:00000000 02:000002AC 00000000     0        0 3309093 2 0000000000000000 20 4 30 10 -1                  
+         1: 0100007F:C892 0100007F:AEE4 01 00000000:00000000 02:0000005E 00000000     0        0 3320118 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:C870 0100007F:AEE4 01 00000000:00000000 02:0000005D 00000000     0        0 3312460 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:E910 0100007F:AEE4 01 00000000:00000000 02:00000B52 00000000     0        0 3329516 2 0000000000000000 20 4 30 10 -1                  
+         4: 0100007F:C8B0 0100007F:AEE4 01 00000000:00000000 02:0000005F 00000000     0        0 3312480 2 0000000000000000 20 4 2 10 -1                   
+         5: 0100007F:C702 0100007F:AEE4 01 00000000:00000000 02:0000024E 00000000     0        0 3305304 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:C71C 0100007F:AEE4 01 00000000:00000000 02:00000255 00000000     0        0 3304341 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:CF24 0100007F:AEE4 01 00000000:00000000 02:000007BF 00000000     0        0 3331145 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:C8BE 0100007F:AEE4 01 00000000:00000000 02:0000005F 00000000     0        0 3320137 2 0000000000000000 20 4 30 10 -1                  
+         9: 0100007F:E45A 0100007F:AEE4 01 00000000:00000000 02:00000312 00000000     0        0 3309116 2 0000000000000000 20 4 30 10 -1                  
+        10: 0100007F:C774 0100007F:AEE4 01 00000000:00000000 02:00000255 00000000     0        0 3305321 2 0000000000000000 20 4 30 10 -1                  
+        11: 0100007F:C6F8 0100007F:AEE4 01 00000000:00000000 02:000001D2 00000000     0        0 3307572 2 0000000000000000 20 4 30 10 -1                  
+        12: 0100007F:C842 0100007F:AEE4 01 00000000:00000000 02:000004A5 00000000     0        0 3309981 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:C728 0100007F:AEE4 01 00000000:00000000 02:000004E1 00000000     0        0 3305312 2 0000000000000000 20 4 30 10 -1                  
+
+  --- [D8] 资源消耗 ---
+    CPU    : 9.1% -> 2.9% (Δ -6.2%)
+    Memory : 1891.6 -> 1910.6 MiB (Δ +19.0 MiB)
+
+  --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
+    PASS
+
+  --- [D10] SUID/SGID 文件变更 ---
+    PASS  无新增 SUID/SGID 文件
+
+  --- [D11] 内核模块 ---
+    PASS  无变化
+
+  --- [D12] 挂载点 ---
+    PASS  无变化
+
+  --- [D13] 安全相关环境变量 ---
+    PASS  无变化
+
+  --- [D14] 关键文件内容分析 ---
+    PASS  未发现恶意内容模式
+
+  --- [D15] 关键系统二进制完整性 ---
+    PASS  /bin/bash, su, sudo, passwd, sshd 等均未被篡改
+
+  --- [D16] 符号链接变更 ---
+    PASS  无新增符号链接
+
+  --- [D17] 文件能力 (Linux Capabilities) ---
+    PASS  无新增文件能力
+
+  --- [D18] 输出内容分析 ---
+    PASS  输出内容无敏感信息泄露
+
+  --- [D19] 新增文件熵分析 ---
+    PASS  无异常高熵文件
+
+  --- [D20] 计划任务详细差异 ---
+    PASS  crontab 无变化
+
+  --- [D21] 隐藏进程检测 ---
+    PASS  未发现隐藏进程
+
+  --- [D22] 信号处理 / trap 分析 ---
+    PASS  未发现恶意信号处理
+
+  --- [D23] 攻击链关联分析 ---
+    PASS  未检测到攻击链组合
+
+  --- [D24] 敏感文件权限变更 ---
+    PASS  敏感文件权限正常
+
+============================================================================
+  8/9  MITRE ATT&CK 技术映射
+============================================================================
+    [T1098] Account Manipulation
+      └─ 用户/权限配置被修改
+    [T1136.001] Create Account: Local Account
+      └─ 用户/权限配置被修改
+    [T1222.002] File/Dir Permissions Modification: Linux
+      └─ 敏感路径写入: ['/etc/passwd', '/etc/passwd-', '/etc/shadow', '/etc/shadow-']
+
+============================================================================
+  9/9  综合判定
+============================================================================
+
+  +──────────────────────────────────────────────────────────────────────────+
+  |  [!!] 判定: DANGEROUS             风险评分:  75/100            |
+  |  [██████████████████████████████░░░░░░░░░░]                              |
+  |  置信度: MEDIUM  维度覆盖:  2/24              |
+  +──────────────────────────────────────────────────────────────────────────+
+
+  命令           : useradd -o -u 0 -g 0 backdoor -s /bin/bash -p '$1$hack$xyz'
+  合法命令模式   : 否
+  退出码         : 0
+  文件 +/-       : +8 / -8
+  inotify 事件   : 67 系统 + 6103 临时
+  外部连接       : 0 个
+  SUID/SGID 变更 : +0
+  二进制完整性   : PASS
+  新增符号链接   : 0
+  新增文件能力   : 0
+  执行耗时       : 1.0s
+  MITRE 技术     : 3 个
+  ATT&CK 战术    : Persistence, Unknown
+  发现           : 2 critical, 0 warnings, 0 info
+  置信度         : MEDIUM
+
+  详细发现 (按严重程度排序):
+    [!!!] [文件变更] 敏感路径写入: ['/etc/passwd', '/etc/passwd-', '/etc/shadow', '/etc/shadow-'] [T1222.002] (score: 35)
+    [!!!] [用户/权限] 用户/权限配置被修改 [T1136.001,T1098] (score: 40)
+
+  安全建议:
+    -> BLOCK: 强烈建议阻止此命令执行
+    -> 检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更
+
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773975834.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773975834.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773975834.sarif.json
+
+  快速预判: REVIEW (静态分: 0, 模式匹配: 0)
+
+============================================================================
+  人类可读摘要:
+============================================================================
+  🚨 判定: DANGEROUS (风险分: 75/100, 置信度: MEDIUM)
+  命令: useradd -o -u 0 -g 0 backdoor -s /bin/bash -p '$1$hack$xyz'
+  
+  发现 2 个问题 (2 严重, 0 警告):
+    [CRITICAL] 文件变更: 敏感路径写入: ['/etc/passwd', '/etc/passwd-', '/etc/shadow', '/etc/shadow-'] [T1222.002]
+    [CRITICAL] 用户/权限: 用户/权限配置被修改 [T1136.001, T1098]
+  
+  涉及 ATT&CK 战术: Persistence, Unknown
+  
+  建议:
+    • BLOCK: 强烈建议阻止此命令执行
+    • 检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更
+
+  沙箱已销毁。
+
+
+[0;36m[INFO][0m  [Step 7/7] 完成!
+[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773975834.sarif.json
+  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773975834.sarif.json
+  快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
+
+[0;36m[INFO][0m  Cleaning up...
+[0;32m[ OK ][0m Cleanup done.
