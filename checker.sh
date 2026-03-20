@@ -952,13 +952,13 @@ async def snap_ps(sb):
     return o
 
 async def snap_persist(sb):
-    """持久化机制全面快照: cron + systemd + rc.local + init.d + at + timer"""
-    # 采集 cron.d 文件内容(不只是列表)
+    """持久化机制全面快照: cron + systemd + rc.local + init.d + at + timer
+       返回完整内容而非 md5, 以便后续做精确差值分析"""
     o, _ = await run_cmd(sb,
         "{ "
         "echo '=== CRONTAB ==='; crontab -l 2>/dev/null || true; "
         "echo '=== /etc/crontab ==='; cat /etc/crontab 2>/dev/null || true; "
-        "echo '=== cron.d ==='; for f in /etc/cron.d/*; do [ -f \"\$f\" ] && echo \"--- \$f ---\" && cat \"\$f\"; done 2>/dev/null || true; "
+        "echo '=== cron.d ==='; for f in /etc/cron.d/*; do [ -f \"$f\" ] && echo \"--- $f ---\" && cat \"$f\"; done 2>/dev/null || true; "
         "echo '=== cron.daily ==='; ls /etc/cron.daily/ 2>/dev/null | sort || true; "
         "echo '=== systemd user ==='; ls ~/.config/systemd/user/*.service 2>/dev/null || true; "
         "echo '=== systemd system ==='; ls /etc/systemd/system/*.service 2>/dev/null || true; "
@@ -966,7 +966,7 @@ async def snap_persist(sb):
         "echo '=== init.d ==='; ls /etc/init.d/ 2>/dev/null | sort || true; "
         "echo '=== at queue ==='; atq 2>/dev/null || true; "
         "echo '=== systemd timers ==='; systemctl list-timers --no-pager 2>/dev/null || true; "
-        "} | md5sum")
+        "}")
     return o
 
 async def snap_auth(sb):
@@ -985,11 +985,16 @@ async def snap_auth(sb):
     return o
 
 async def snap_shell(sb):
-    """Shell 配置快照 — 包括全局和用户级"""
+    """Shell 配置快照 — 包括全局和用户级, 返回完整内容以便差值分析"""
     o, _ = await run_cmd(sb,
-        "cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout "
-        "/etc/profile /etc/bash.bashrc /etc/environment "
-        "/etc/profile.d/*.sh 2>/dev/null | md5sum")
+        "echo '=== bashrc ==='; cat ~/.bashrc 2>/dev/null || true; "
+        "echo '=== bash_profile ==='; cat ~/.bash_profile 2>/dev/null || true; "
+        "echo '=== profile ==='; cat ~/.profile 2>/dev/null || true; "
+        "echo '=== bash_logout ==='; cat ~/.bash_logout 2>/dev/null || true; "
+        "echo '=== etc_profile ==='; cat /etc/profile 2>/dev/null || true; "
+        "echo '=== etc_bashrc ==='; cat /etc/bash.bashrc 2>/dev/null || true; "
+        "echo '=== etc_environment ==='; cat /etc/environment 2>/dev/null || true; "
+        "echo '=== profile.d ==='; cat /etc/profile.d/*.sh 2>/dev/null || true")
     return o
 
 async def snap_suid(sb):
