@@ -1,0 +1,341 @@
+{
+  "version": "4.1",
+  "command": "ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0",
+  "timestamp": "2026-03-20T04:01:29.117047+00:00",
+  "verdict": "DANGEROUS",
+  "risk_score": 100,
+  "confidence": "LOW",
+  "recommendations": [
+    "BLOCK: 强烈建议阻止此命令执行",
+    "多维度攻击已确认, 建议全面安全审计"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 6,
+    "critical": 0,
+    "warn": 6,
+    "info": 0,
+    "dimensions_hit": 4
+  },
+  "findings": [
+    {
+      "severity": "WARN",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: disabling bash history",
+      "risk_score": 20,
+      "mitre_attack": [
+        {
+          "id": "T1070.003",
+          "name": "Indicator Removal: Clear Command History"
+        }
+      ],
+      "evidence": "ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0"
+    },
+    {
+      "severity": "WARN",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: zeroing history size",
+      "risk_score": 15,
+      "mitre_attack": [
+        {
+          "id": "T1070.003",
+          "name": "Indicator Removal: Clear Command History"
+        }
+      ],
+      "evidence": "ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0"
+    },
+    {
+      "severity": "WARN",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: nulling history file",
+      "risk_score": 25,
+      "mitre_attack": [
+        {
+          "id": "T1070.003",
+          "name": "Indicator Removal: Clear Command History"
+        }
+      ],
+      "evidence": "ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0"
+    },
+    {
+      "severity": "WARN",
+      "dimension": "挂载点",
+      "description": "挂载点配置变更",
+      "risk_score": 20,
+      "mitre_attack": [
+        {
+          "id": "T1611",
+          "name": "Escape to Host"
+        }
+      ],
+      "evidence": "/dev/vda3 on /etc/hostname type ext4 (rw,relatime)\n/dev/vda3 on /etc/hosts type ext4 (rw,relatime)\n/dev/vda3 on /etc/resolv.conf type ext4 (rw,relatime)\ncgroup on /sys/fs/cgroup type cgroup2 (ro,nosui"
+    },
+    {
+      "severity": "WARN",
+      "dimension": "符号链接",
+      "description": "新增指向敏感目标的符号链接",
+      "risk_score": 20,
+      "mitre_attack": [
+        {
+          "id": "T1036",
+          "name": "Masquerading"
+        }
+      ],
+      "evidence": "lrwxrwxrwx 1 root root 9 Mar 20 04:00 /root/.bash_history -> /dev/null"
+    },
+    {
+      "severity": "WARN",
+      "dimension": "攻击链",
+      "description": "检测到反取证措施配合其他恶意行为",
+      "risk_score": 10,
+      "mitre_attack": [
+        {
+          "id": "T1070.003",
+          "name": "Indicator Removal: Clear Command History"
+        }
+      ]
+    }
+  ],
+  "evidence": {
+    "command_chain": {
+      "stages": 3,
+      "connectors": [
+        "&&",
+        "&&",
+        "END"
+      ],
+      "safe_then_evil": false
+    },
+    "stdout_lines": 0,
+    "stderr_lines": 0,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 0,
+    "files_deleted": 0,
+    "inotify_sys_events": 1,
+    "inotify_tmp_events": 5851,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 1,
+    "new_file_caps": 0,
+    "attack_chains": [
+      "高级攻击链 (反取证 + 多维度恶意行为)"
+    ],
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1070.003",
+      "T1611",
+      "T1036"
+    ]
+  },
+  "dimensions": {
+    "files_added": [],
+    "files_deleted": [],
+    "inotify_sys_events": [
+      "2026-03-20T04:00:47 CREATE /root/.bash_history"
+    ],
+    "inotify_tmp_events": [
+      "2026-03-20T04:00:53 CREATE /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY",
+      "2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [
+      "lrwxrwxrwx 1 root root 9 Mar 20 04:00 /root/.bash_history -> /dev/null"
+    ],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": [
+      "高级攻击链 (反取证 + 多维度恶意行为)"
+    ]
+  },
+  "mitre_attack": {
+    "T1070.003": {
+      "name": "Indicator Removal: Clear Command History",
+      "findings": [
+        "命令匹配恶意模式: disabling bash history",
+        "命令匹配恶意模式: zeroing history size",
+        "命令匹配恶意模式: nulling history file",
+        "检测到反取证措施配合其他恶意行为"
+      ]
+    },
+    "T1611": {
+      "name": "Escape to Host",
+      "findings": [
+        "挂载点配置变更"
+      ]
+    },
+    "T1036": {
+      "name": "Masquerading",
+      "findings": [
+        "新增指向敏感目标的符号链接"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Defense Evasion": [
+      "T1036",
+      "T1070.003"
+    ],
+    "Execution": [
+      "T1611"
+    ]
+  },
+  "deobfuscation": {
+    "original": "ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773979225",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773979247",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773979248",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773979289",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [],
+  "stderr": [],
+  "text_summary": "🚨 判定: DANGEROUS (风险分: 100/100, 置信度: LOW)\n命令: ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0\n\n发现 6 个问题 (0 严重, 6 警告):\n  [WARN] 静态分析: 命令匹配恶意模式: disabling bash history [T1070.003]\n  [WARN] 静态分析: 命令匹配恶意模式: zeroing history size [T1070.003]\n  [WARN] 静态分析: 命令匹配恶意模式: nulling history file [T1070.003]\n  [WARN] 挂载点: 挂载点配置变更 [T1611]\n  [WARN] 符号链接: 新增指向敏感目标的符号链接 [T1036]\n  [WARN] 攻击链: 检测到反取证措施配合其他恶意行为 [T1070.003]\n\n涉及 ATT&CK 战术: Defense Evasion, Execution\n\n建议:\n  • BLOCK: 强烈建议阻止此命令执行\n  • 多维度攻击已确认, 建议全面安全审计",
+  "fast_triage": {
+    "level": "BLOCK",
+    "static_score": 60,
+    "is_legitimate": false,
+    "blacklisted": false,
+    "patterns_matched": 3,
+    "matches": [
+      {
+        "pattern": "disabling bash history",
+        "mitre": "T1070.003",
+        "score": 20
+      },
+      {
+        "pattern": "zeroing history size",
+        "mitre": "T1070.003",
+        "score": 15
+      },
+      {
+        "pattern": "nulling history file",
+        "mitre": "T1070.003",
+        "score": 25
+      }
+    ],
+    "deobfuscation_layers": 0
+  }
+}

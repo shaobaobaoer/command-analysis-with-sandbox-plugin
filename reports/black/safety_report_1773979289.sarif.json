@@ -1,0 +1,215 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1070.003",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: disabling bash history"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1070/003",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1070.003"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1070.003 (Indicator Removal: Clear Command History)"
+              }
+            },
+            {
+              "id": "T1070.003-1",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: zeroing history size"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1070/003",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1070.003"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1070.003 (Indicator Removal: Clear Command History)"
+              }
+            },
+            {
+              "id": "T1070.003-2",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: nulling history file"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1070/003",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1070.003"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1070.003 (Indicator Removal: Clear Command History)"
+              }
+            },
+            {
+              "id": "T1611",
+              "name": "挂载点",
+              "shortDescription": {
+                "text": "挂载点配置变更"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1611",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1611"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1611 (Escape to Host)"
+              }
+            },
+            {
+              "id": "T1036",
+              "name": "符号链接",
+              "shortDescription": {
+                "text": "新增指向敏感目标的符号链接"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1036",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1036"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1036 (Masquerading)"
+              }
+            },
+            {
+              "id": "T1070.003-5",
+              "name": "攻击链",
+              "shortDescription": {
+                "text": "检测到反取证措施配合其他恶意行为"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1070/003",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1070.003"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1070.003 (Indicator Removal: Clear Command History)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "DANGEROUS",
+            "risk_score": 100,
+            "confidence": "LOW"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1070.003",
+          "level": "warning",
+          "message": {
+            "text": "命令匹配恶意模式: disabling bash history"
+          },
+          "properties": {
+            "risk_score": 20,
+            "dimension": "静态分析",
+            "evidence": "ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0"
+          }
+        },
+        {
+          "ruleId": "T1070.003-1",
+          "level": "warning",
+          "message": {
+            "text": "命令匹配恶意模式: zeroing history size"
+          },
+          "properties": {
+            "risk_score": 15,
+            "dimension": "静态分析",
+            "evidence": "ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0"
+          }
+        },
+        {
+          "ruleId": "T1070.003-2",
+          "level": "warning",
+          "message": {
+            "text": "命令匹配恶意模式: nulling history file"
+          },
+          "properties": {
+            "risk_score": 25,
+            "dimension": "静态分析",
+            "evidence": "ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0"
+          }
+        },
+        {
+          "ruleId": "T1611",
+          "level": "warning",
+          "message": {
+            "text": "挂载点配置变更"
+          },
+          "properties": {
+            "risk_score": 20,
+            "dimension": "挂载点",
+            "evidence": "/dev/vda3 on /etc/hostname type ext4 (rw,relatime)\n/dev/vda3 on /etc/hosts type ext4 (rw,relatime)\n/dev/vda3 on /etc/resolv.conf type ext4 (rw,relatime)\ncgroup on /sys/fs/cgroup type cgroup2 (ro,nosui"
+          }
+        },
+        {
+          "ruleId": "T1036",
+          "level": "warning",
+          "message": {
+            "text": "新增指向敏感目标的符号链接"
+          },
+          "properties": {
+            "risk_score": 20,
+            "dimension": "符号链接",
+            "evidence": "lrwxrwxrwx 1 root root 9 Mar 20 04:00 /root/.bash_history -> /dev/null"
+          }
+        },
+        {
+          "ruleId": "T1070.003-5",
+          "level": "warning",
+          "message": {
+            "text": "检测到反取证措施配合其他恶意行为"
+          },
+          "properties": {
+            "risk_score": 10,
+            "dimension": "攻击链"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0",
+            "verdict": "DANGEROUS",
+            "risk_score": 100,
+            "confidence": "LOW",
+            "timestamp": "2026-03-20T04:01:29.117047+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}

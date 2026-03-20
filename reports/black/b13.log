@@ -1,0 +1,346 @@
+
+[1m==========================================
+  OpenSandbox Behavioral Analysis Engine v4
+==========================================[0m
+
+[0;36m[INFO][0m  待检测命令: ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0
+
+[0;36m[INFO][0m  [Step 1/7] 检查环境...
+[0;32m[ OK ][0m Docker: Docker version 27.5.1, build 27.5.1-0ubuntu3~24.04.2
+[0;32m[ OK ][0m Python: Python 3.12.3
+[0;36m[INFO][0m  安装 uv...
+downloading uv 0.10.12 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+[0;32m[ OK ][0m uv: uv 0.10.12 (x86_64-unknown-linux-gnu)
+[0;36m[INFO][0m  [Step 2/7] 预拉取 Docker 镜像...
+[0;32m[ OK ][0m 沙箱镜像: opensandbox/code-interpreter:v1.0.2 (已存在)
+[0;32m[ OK ][0m Execd镜像: opensandbox/execd:v1.0.7 (已存在)
+[0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
+[0;32m[ OK ][0m opensandbox-server + SDK 已安装
+[0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.KtKx613DAk/sandbox.toml
+[0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
+[0;32m[ OK ][0m Server 就绪 (PID: 693709, port: 8080)
+[0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
+
+/tmp/tmp.KtKx613DAk/checker.py:803: SyntaxWarning: invalid escape sequence '\$'
+  "echo '=== cron.d ==='; for f in /etc/cron.d/*; do [ -f \"\$f\" ] && echo \"--- \$f ---\" && cat \"\$f\"; done 2>/dev/null || true; "
+
+============================================================================
+  1/9  创建隔离沙箱
+============================================================================
+  镜像: opensandbox/code-interpreter:v1.0.2
+  Sandbox ID: b0b7f1e1-f934-4fba-8191-d5481a9168af
+
+============================================================================
+  2/9  安装监控工具 (快照前, 避免污染基线)
+============================================================================
+  监控工具已安装
+
+============================================================================
+  3/9  采集执行前基线 (24 维度)
+============================================================================
+  文件数       : 221689
+  SUID/SGID    : 14
+  符号链接     : 483
+  文件能力     : 1
+  基线采集耗时 : 15.2s
+  CPU          : 11.2%
+  Memory       : 1904.6/15069.3 MiB
+
+============================================================================
+  4/9  启动多层探针 + 执行待测命令
+============================================================================
+  [探针1] inotify: /usr/local/bin /usr/bin /usr/sbin /etc /root /home
+  [探针2] inotify: /tmp /var/tmp /dev/shm (独立探针)
+  [探针3] network: /proc/net/tcp 轮询 (0.5s)
+  [探针5] process: 进程树轮询 (1s)
+
+  --- 命令链分解分析 ---
+    命令包含 3 个执行阶段:
+    [1] [!!] ln -sf /dev/null ~/.bash_history &&
+        匹配: nulling history file
+    [2] [!!] export HISTFILE=/dev/null &&
+        匹配: disabling bash history
+    [3] [!!] export HISTSIZE=0 END
+        匹配: zeroing history size
+
+  --- 命令去混淆分析 ---
+    PASS  未发现编码/混淆层
+
+  --- 命令静态分析 ---
+    !! [T1070.003] disabling bash history (score: 20)
+    !! [T1070.003] zeroing history size (score: 15)
+    !! [T1070.003] nulling history file (score: 25)
+
+  $ ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0
+  ────────────────────────────────────────────────────────────
+
+  耗时     : 1.0s
+  退出码   : 0
+  stdout   : 0 行
+  stderr   : 0 行
+
+============================================================================
+  5/9  采集执行后快照 (全维度)
+============================================================================
+  文件数       : 221689
+  SUID/SGID    : 14
+  inotify 系统 : 1 条
+  inotify /tmp : 207731 条
+
+============================================================================
+  6/9  网络行为深度分析
+============================================================================
+
+  --- 外部连接 (出站) ---
+    (无外部连接)
+
+    [20 个内部连接已忽略]
+
+  --- DNS 配置 ---
+    PASS  /etc/resolv.conf 未被修改
+
+============================================================================
+  7/9  全维度安全对比分析 (24 维度)
+============================================================================
+
+  --- [D1] 文件变更 (+0 / -0) ---
+    (无新增)
+
+  --- [D2] 实时文件事件 (inotifywait) ---
+    系统目录事件 (1 条):
+      2026-03-20T04:00:47 CREATE /root/.bash_history
+    临时目录事件 (5851 条):
+      2026-03-20T04:00:53 CREATE /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+      2026-03-20T04:00:53 MODIFY /tmp/sorthuXvdY
+
+  --- [D3] 用户与权限 ---
+    PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
+
+  --- [D4] 持久化 (cron/systemd/rc.local/init.d/at) ---
+    PASS  无新增
+
+  --- [D5] Shell 环境 (.bashrc/.profile/etc) ---
+    PASS  无变化
+
+  --- [D6] 进程树分析 ---
+    观察到 16 个独立进程:
+      > /opt/opensandbox/execd
+      > COMMAND
+      > \_ [sleep] <defunct>
+      > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
+      > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
+      > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
+      > \_ bash -c getcap -r / 2>/dev/null | sort || true
+      > \_ cat /proc/net/tcp /proc/net/tcp6
+      > \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
+      > \_ getcap -r /
+      > \_ sort
+      > tail -f /dev/null
+      > |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      > |   \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
+      > |   \_ getcap -r /
+      > |   \_ sort
+
+    残留进程 (执行后):
+      USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+      root           1  0.0  0.0   3156  1792 ?        Ss   04:00   0:00 tail -f /dev/null
+      root           7 18.0  0.1 1244224 22148 ?       Sl   04:00   0:06 /opt/opensandbox/execd
+      root         836  0.0  0.0   4752  3584 ?        S    04:00   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root         838  0.0  0.0   4084  2432 ?        R    04:00   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root         839  0.0  0.0  24904  3200 ?        R    04:00   0:00  |   \_ sort
+      root         837  0.0  0.0   4752  3456 ?        S    04:00   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root         840  0.0  0.0   8280  4224 ?        R    04:00   0:00  |   \_ ps auxf
+      root         841  0.0  0.0   4752  3584 ?        S    04:00   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+      root         842  0.0  0.0      0     0 ?        Z    04:00   0:00      \_ [cat] <defunct>
+      root         843  0.0  0.0   7788  1792 ?        R    04:00   0:00      \_ md5sum
+
+  --- [D7] 残留网络连接 ---
+        sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
+         0: 0100007F:A418 0100007F:AEE4 01 00000000:00000000 02:00000A0E 00000000     0        0 4425869 2 0000000000000000 20 4 30 10 -1                  
+         1: 0100007F:99F6 0100007F:AEE4 01 00000000:00000000 02:000001BD 00000000     0        0 4406601 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:A014 0100007F:AEE4 01 00000000:00000000 02:00000037 00000000     0        0 4412191 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:A414 0100007F:AEE4 01 00000000:00000000 02:00000811 00000000     0        0 4430961 2 0000000000000000 20 4 30 10 -1                  
+         4: 0100007F:A84C 0100007F:AEE4 01 00000000:00000000 02:00000A88 00000000     0        0 4425895 2 0000000000000000 20 4 30 10 -1                  
+         5: 0100007F:D518 0100007F:AEE4 01 00000000:00000000 02:000003AE 00000000     0        0 4419612 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:C6D6 0100007F:AEE4 01 00000000:00000000 02:0000021D 00000000     0        0 4407856 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:9FBE 0100007F:AEE4 01 00000000:00000000 02:0000002D 00000000     0        0 4411250 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:C710 0100007F:AEE4 01 00000000:00000000 02:0000021D 00000000     0        0 4406834 2 0000000000000000 20 4 30 10 -1                  
+         9: 0100007F:9FA6 0100007F:AEE4 01 00000000:00000000 02:0000002D 00000000     0        0 4395983 2 0000000000000000 20 4 30 10 -1                  
+        10: 0100007F:9FE2 0100007F:AEE4 01 00000000:00000000 02:0000002E 00000000     0        0 4420658 2 0000000000000000 20 4 30 10 -1                  
+        11: 0100007F:C6EA 0100007F:AEE4 01 00000000:00000000 02:00000210 00000000     0        0 4406827 2 0000000000000000 20 4 30 10 -1                  
+        12: 0100007F:A854 0100007F:AEE4 01 00000000:00000000 02:00000B51 00000000     0        0 4425295 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:C6D4 0100007F:AEE4 01 00000000:00000000 02:00000210 00000000     0        0 4406819 2 0000000000000000 20 4 30 10 -1                  
+
+  --- [D8] 资源消耗 ---
+    CPU    : 11.2% -> 2.9% (Δ -8.3%)
+    Memory : 1904.6 -> 1852.6 MiB (Δ -52.0 MiB)
+
+  --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
+    PASS
+
+  --- [D10] SUID/SGID 文件变更 ---
+    PASS  无新增 SUID/SGID 文件
+
+  --- [D11] 内核模块 ---
+    PASS  无变化
+
+  --- [D12] 挂载点 ---
+    !! FAIL  挂载点已变更!
+
+  --- [D13] 安全相关环境变量 ---
+    PASS  无变化
+
+  --- [D14] 关键文件内容分析 ---
+    PASS  未发现恶意内容模式
+
+  --- [D15] 关键系统二进制完整性 ---
+    PASS  /bin/bash, su, sudo, passwd, sshd 等均未被篡改
+
+  --- [D16] 符号链接变更 ---
+    !! lrwxrwxrwx 1 root root 9 Mar 20 04:00 /root/.bash_history -> /dev/null
+
+  --- [D17] 文件能力 (Linux Capabilities) ---
+    PASS  无新增文件能力
+
+  --- [D18] 输出内容分析 ---
+    PASS  输出内容无敏感信息泄露
+
+  --- [D19] 新增文件熵分析 ---
+    PASS  无异常高熵文件
+
+  --- [D20] 计划任务详细差异 ---
+    PASS  计划任务无变化
+
+  --- [D21] 隐藏进程检测 ---
+    PASS  未发现隐藏进程
+
+  --- [D22] 信号处理 / trap 分析 ---
+    PASS  未发现恶意信号处理
+
+  --- [D23] 攻击链关联分析 ---
+    !! 攻击链: 高级攻击链 (反取证 + 多维度恶意行为)
+
+  --- [D24] 敏感文件权限变更 ---
+    PASS  敏感文件权限正常
+
+============================================================================
+  8/9  MITRE ATT&CK 技术映射
+============================================================================
+    [T1036] Masquerading
+      └─ 新增指向敏感目标的符号链接
+    [T1070.003] Indicator Removal: Clear Command History
+      └─ 命令匹配恶意模式: disabling bash history
+      └─ 命令匹配恶意模式: zeroing history size
+      └─ 命令匹配恶意模式: nulling history file
+    [T1611] Escape to Host
+      └─ 挂载点配置变更
+
+============================================================================
+  9/9  综合判定
+============================================================================
+
+  +──────────────────────────────────────────────────────────────────────────+
+  |  [!!] 判定: DANGEROUS             风险评分: 100/100            |
+  |  [████████████████████████████████████████]                              |
+  |  置信度: LOW     维度覆盖:  4/24              |
+  +──────────────────────────────────────────────────────────────────────────+
+
+  命令           : ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0
+  合法命令模式   : 否
+  退出码         : 0
+  文件 +/-       : +0 / -0
+  inotify 事件   : 1 系统 + 5851 临时
+  外部连接       : 0 个
+  SUID/SGID 变更 : +0
+  二进制完整性   : PASS
+  新增符号链接   : 1
+  新增文件能力   : 0
+  执行耗时       : 1.0s
+  MITRE 技术     : 3 个
+  ATT&CK 战术    : Defense Evasion, Execution
+  发现           : 0 critical, 6 warnings, 0 info
+  置信度         : LOW
+
+  详细发现 (按严重程度排序):
+    [ ! ] [静态分析] 命令匹配恶意模式: disabling bash history [T1070.003] (score: 20)
+    [ ! ] [静态分析] 命令匹配恶意模式: zeroing history size [T1070.003] (score: 15)
+    [ ! ] [静态分析] 命令匹配恶意模式: nulling history file [T1070.003] (score: 25)
+    [ ! ] [挂载点] 挂载点配置变更 [T1611] (score: 20)
+    [ ! ] [符号链接] 新增指向敏感目标的符号链接 [T1036] (score: 20)
+    [ ! ] [攻击链] 检测到反取证措施配合其他恶意行为 [T1070.003] (score: 10)
+
+  安全建议:
+    -> BLOCK: 强烈建议阻止此命令执行
+    -> 多维度攻击已确认, 建议全面安全审计
+
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979289.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979289.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979289.sarif.json
+
+  快速预判: BLOCK (静态分: 60, 模式匹配: 3)
+
+============================================================================
+  人类可读摘要:
+============================================================================
+  🚨 判定: DANGEROUS (风险分: 100/100, 置信度: LOW)
+  命令: ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0
+  
+  发现 6 个问题 (0 严重, 6 警告):
+    [WARN] 静态分析: 命令匹配恶意模式: disabling bash history [T1070.003]
+    [WARN] 静态分析: 命令匹配恶意模式: zeroing history size [T1070.003]
+    [WARN] 静态分析: 命令匹配恶意模式: nulling history file [T1070.003]
+    [WARN] 挂载点: 挂载点配置变更 [T1611]
+    [WARN] 符号链接: 新增指向敏感目标的符号链接 [T1036]
+    [WARN] 攻击链: 检测到反取证措施配合其他恶意行为 [T1070.003]
+  
+  涉及 ATT&CK 战术: Defense Evasion, Execution
+  
+  建议:
+    • BLOCK: 强烈建议阻止此命令执行
+    • 多维度攻击已确认, 建议全面安全审计
+
+  沙箱已销毁。
+
+
+[0;36m[INFO][0m  [Step 7/7] 完成!
+[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979289.json
+[0;32m[ OK ][0m 报告 (文本): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979289.txt
+  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979289.json
+  快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
+
+[0;36m[INFO][0m  Cleaning up...
+[0;32m[ OK ][0m Cleanup done.

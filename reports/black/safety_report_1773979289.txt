@@ -1,0 +1,16 @@
+🚨 判定: DANGEROUS (风险分: 100/100, 置信度: LOW)
+命令: ln -sf /dev/null ~/.bash_history && export HISTFILE=/dev/null && export HISTSIZE=0
+
+发现 6 个问题 (0 严重, 6 警告):
+  [WARN] 静态分析: 命令匹配恶意模式: disabling bash history [T1070.003]
+  [WARN] 静态分析: 命令匹配恶意模式: zeroing history size [T1070.003]
+  [WARN] 静态分析: 命令匹配恶意模式: nulling history file [T1070.003]
+  [WARN] 挂载点: 挂载点配置变更 [T1611]
+  [WARN] 符号链接: 新增指向敏感目标的符号链接 [T1036]
+  [WARN] 攻击链: 检测到反取证措施配合其他恶意行为 [T1070.003]
+
+涉及 ATT&CK 战术: Defense Evasion, Execution
+
+建议:
+  • BLOCK: 强烈建议阻止此命令执行
+  • 多维度攻击已确认, 建议全面安全审计
