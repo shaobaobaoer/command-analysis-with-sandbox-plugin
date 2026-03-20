@@ -1,1 +1,2 @@
 {"id":"b07","category":"black","label":"malicious","desc":"exfil shadow","verdict":"DANGEROUS","risk_score":65,"mitre_count":1,"confidence":"LOW","match":"CORRECT"}
+{"id":"b08","category":"black","label":"malicious","desc":"ssh key injection","verdict":"DANGEROUS","risk_score":100,"mitre_count":4,"confidence":"HIGH","match":"CORRECT"}

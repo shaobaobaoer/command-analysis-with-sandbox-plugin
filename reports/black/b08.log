@@ -10,3 +10,341 @@
 [0;32m[ OK ][0m Python: Python 3.12.3
 [0;36m[INFO][0m  安装 uv...
 downloading uv 0.10.12 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+[0;32m[ OK ][0m uv: uv 0.10.12 (x86_64-unknown-linux-gnu)
+[0;36m[INFO][0m  [Step 2/7] 预拉取 Docker 镜像...
+[0;32m[ OK ][0m 沙箱镜像: opensandbox/code-interpreter:v1.0.2 (已存在)
+[0;32m[ OK ][0m Execd镜像: opensandbox/execd:v1.0.7 (已存在)
+[0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
+[0;32m[ OK ][0m opensandbox-server + SDK 已安装
+[0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.GcJItPW6rr/sandbox.toml
+[0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
+[0;32m[ OK ][0m Server 就绪 (PID: 682233, port: 8080)
+[0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
+
+/tmp/tmp.GcJItPW6rr/checker.py:803: SyntaxWarning: invalid escape sequence '\$'
+  "echo '=== cron.d ==='; for f in /etc/cron.d/*; do [ -f \"\$f\" ] && echo \"--- \$f ---\" && cat \"\$f\"; done 2>/dev/null || true; "
+
+============================================================================
+  1/9  创建隔离沙箱
+============================================================================
+  镜像: opensandbox/code-interpreter:v1.0.2
+  Sandbox ID: f251b605-48fe-4d55-aa76-70488c39f39a
+
+============================================================================
+  2/9  安装监控工具 (快照前, 避免污染基线)
+============================================================================
+  监控工具已安装
+
+============================================================================
+  3/9  采集执行前基线 (24 维度)
+============================================================================
+  文件数       : 221689
+  SUID/SGID    : 14
+  符号链接     : 483
+  文件能力     : 1
+  基线采集耗时 : 15.0s
+  CPU          : 2.6%
+  Memory       : 1849.7/15069.3 MiB
+
+============================================================================
+  4/9  启动多层探针 + 执行待测命令
+============================================================================
+  [探针1] inotify: /usr/local/bin /usr/bin /usr/sbin /etc /root /home
+  [探针2] inotify: /tmp /var/tmp /dev/shm (独立探针)
+  [探针3] network: /proc/net/tcp 轮询 (0.5s)
+  [探针5] process: 进程树轮询 (1s)
+
+  --- 命令链分解分析 ---
+    命令包含 3 个执行阶段:
+    [1] [OK] mkdir -p /root/.ssh &&
+    [2] [!!] echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys &&
+        匹配: SSH authorized_keys manipulation
+    [3] [!!] chmod 600 /root/.ssh/authorized_keys END
+        匹配: SSH authorized_keys manipulation
+
+  --- 命令去混淆分析 ---
+    PASS  未发现编码/混淆层
+
+  --- 命令静态分析 ---
+    !! [T1098] SSH authorized_keys manipulation (score: 30)
+
+  $ mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys
+  ────────────────────────────────────────────────────────────
+
+  耗时     : 1.0s
+  退出码   : 0
+  stdout   : 0 行
+  stderr   : 0 行
+
+============================================================================
+  5/9  采集执行后快照 (全维度)
+============================================================================
+  文件数       : 221690
+  SUID/SGID    : 14
+  inotify 系统 : 3 条
+  inotify /tmp : 209021 条
+
+============================================================================
+  6/9  网络行为深度分析
+============================================================================
+
+  --- 外部连接 (出站) ---
+    (无外部连接)
+
+    [20 个内部连接已忽略]
+
+  --- DNS 配置 ---
+    PASS  /etc/resolv.conf 未被修改
+
+============================================================================
+  7/9  全维度安全对比分析 (24 维度)
+============================================================================
+
+  --- [D1] 文件变更 (+1 / -0) ---
+    新增 1 个:
+      + /root/.ssh/authorized_keys
+    !! 敏感路径写入: ['/root/.ssh/authorized_keys']
+
+  --- [D2] 实时文件事件 (inotifywait) ---
+    系统目录事件 (3 条):
+      2026-03-20T03:56:09 CREATE /root/.ssh/authorized_keys
+      2026-03-20T03:56:09 MODIFY /root/.ssh/authorized_keys
+      2026-03-20T03:56:09 ATTRIB /root/.ssh/authorized_keys
+    临时目录事件 (5969 条):
+      2026-03-20T03:56:16 CREATE /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+      2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle
+
+  --- [D3] 用户与权限 ---
+    !! FAIL  用户/权限配置已变更!
+    新增行:
+      + b668451fe4eb2758d7932e4c17076e60  /root/.ssh/authorized_keys
+
+  --- [D4] 持久化 (cron/systemd/rc.local/init.d/at) ---
+    PASS  无新增
+
+  --- [D5] Shell 环境 (.bashrc/.profile/etc) ---
+    PASS  无变化
+
+  --- [D6] 进程树分析 ---
+    观察到 19 个独立进程:
+      > /opt/opensandbox/execd
+      > COMMAND
+      > \_ [cat]
+      > \_ [sleep] <defunct>
+      > \_ bash -c cat /tmp/.resolv_baseline 2>/dev/null
+      > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
+      > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
+      > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
+      > \_ bash -c getcap -r / 2>/dev/null | sort || true
+      > \_ cat /proc/net/tcp /proc/net/tcp6
+      > \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
+      > \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
+      > \_ getcap -r /
+      > \_ sort
+      > tail -f /dev/null
+      > |   \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
+      > |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      > |   \_ getcap -r /
+      > |   \_ sort
+
+    残留进程 (执行后):
+      USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+      root           1  0.0  0.0   3156  1664 ?        Ss   03:55   0:00 tail -f /dev/null
+      root           7 18.7  0.1 1243968 21984 ?       Sl   03:55   0:06 /opt/opensandbox/execd
+      root         837  0.0  0.0   4752  3584 ?        S    03:56   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root         839  0.0  0.0   4084  2560 ?        R    03:56   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root         840  0.0  0.0  24904  3200 ?        S    03:56   0:00  |   \_ sort
+      root         838  0.0  0.0   4752  3584 ?        S    03:56   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root         841  0.0  0.0   8280  4352 ?        R    03:56   0:00  |   \_ ps auxf
+      root         842  0.0  0.0   4752  2944 ?        R    03:56   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+
+  --- [D7] 残留网络连接 ---
+        sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
+         0: 0100007F:9D3A 0100007F:AEE4 01 00000000:00000000 02:00000031 00000000     0        0 4321709 2 0000000000000000 20 4 30 10 -1                  
+         1: 0100007F:DCF2 0100007F:AEE4 01 00000000:00000000 02:0000022C 00000000     0        0 4318508 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:D87C 0100007F:AEE4 01 00000000:00000000 02:00000B52 00000000     0        0 4339770 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:A7D4 0100007F:AEE4 01 00000000:00000000 02:00000283 00000000     0        0 4315044 2 0000000000000000 20 4 30 10 -1                  
+         4: 0100007F:9D3C 0100007F:AEE4 01 00000000:00000000 02:00000031 00000000     0        0 4320972 2 0000000000000000 20 4 30 10 -1                  
+         5: 0100007F:DD1A 0100007F:AEE4 01 00000000:00000000 02:00000239 00000000     0        0 4319337 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:D87E 0100007F:AEE4 01 00000000:00000000 02:00000BB7 00000000     0        0 4335179 3 0000000000000000 20 4 26 10 -1                  
+         7: 0100007F:A7E6 0100007F:AEE4 01 00000000:00000000 02:00000350 00000000     0        0 4327389 2 0000000000000000 20 4 30 10 -1                  
+         8: 020011AC:AA76 165CBD5B:0050 06 00000000:00000000 03:00000148 00000000     0        0 0 3 0000000000000000                                      
+         9: 0100007F:9D98 0100007F:AEE4 01 00000000:00000000 02:00000035 00000000     0        0 4328543 2 0000000000000000 20 4 6 10 -1                   
+        10: 0100007F:9D94 0100007F:AEE4 01 00000000:00000000 02:00000035 00000000     0        0 4316986 2 0000000000000000 20 4 30 10 -1                  
+        11: 0100007F:D85A 0100007F:AEE4 01 00000000:00000000 02:00000A10 00000000     0        0 4339174 2 0000000000000000 20 4 30 10 -1                  
+        12: 0100007F:DD32 0100007F:AEE4 01 00000000:00000000 02:00000239 00000000     0        0 4313617 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:DCE4 0100007F:AEE4 01 00000000:00000000 02:00000239 00000000     0        0 4316481 2 0000000000000000 20 8 30 10 -1                  
+
+  --- [D8] 资源消耗 ---
+    CPU    : 2.6% -> 2.6% (Δ -0.0%)
+    Memory : 1849.7 -> 1843.4 MiB (Δ -6.3 MiB)
+
+  --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
+    PASS
+
+  --- [D10] SUID/SGID 文件变更 ---
+    PASS  无新增 SUID/SGID 文件
+
+  --- [D11] 内核模块 ---
+    PASS  无变化
+
+  --- [D12] 挂载点 ---
+    PASS  无变化
+
+  --- [D13] 安全相关环境变量 ---
+    PASS  无变化
+
+  --- [D14] 关键文件内容分析 ---
+    PASS  未发现恶意内容模式
+
+  --- [D15] 关键系统二进制完整性 ---
+    PASS  /bin/bash, su, sudo, passwd, sshd 等均未被篡改
+
+  --- [D16] 符号链接变更 ---
+    PASS  无新增符号链接
+
+  --- [D17] 文件能力 (Linux Capabilities) ---
+    PASS  无新增文件能力
+
+  --- [D18] 输出内容分析 ---
+    PASS  输出内容无敏感信息泄露
+
+  --- [D19] 新增文件熵分析 ---
+    PASS  无异常高熵文件
+
+  --- [D20] 计划任务详细差异 ---
+    PASS  计划任务无变化
+
+  --- [D21] 隐藏进程检测 ---
+    PASS  未发现隐藏进程
+
+  --- [D22] 信号处理 / trap 分析 ---
+    PASS  未发现恶意信号处理
+
+  --- [D23] 攻击链关联分析 ---
+    !! 攻击链: 后门账户链 (用户变更 + SSH key 注入)
+
+  --- [D24] 敏感文件权限变更 ---
+    PASS  敏感文件权限正常
+
+============================================================================
+  8/9  MITRE ATT&CK 技术映射
+============================================================================
+    [T1021.004] Remote Services: SSH
+      └─ 检测到后门账户链: 用户变更 + SSH key 注入
+    [T1098] Account Manipulation
+      └─ 命令匹配恶意模式: SSH authorized_keys manipulation
+      └─ 用户/权限配置被修改
+      └─ 检测到后门账户链: 用户变更 + SSH key 注入
+    [T1136.001] Create Account: Local Account
+      └─ 用户/权限配置被修改
+    [T1222.002] File/Dir Permissions Modification: Linux
+      └─ 敏感路径写入: ['/root/.ssh/authorized_keys']
+
+============================================================================
+  9/9  综合判定
+============================================================================
+
+  +──────────────────────────────────────────────────────────────────────────+
+  |  [!!] 判定: DANGEROUS             风险评分: 100/100            |
+  |  [████████████████████████████████████████]                              |
+  |  置信度: HIGH    维度覆盖:  4/24              |
+  +──────────────────────────────────────────────────────────────────────────+
+
+  命令           : mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys
+  合法命令模式   : 否
+  退出码         : 0
+  文件 +/-       : +1 / -0
+  inotify 事件   : 3 系统 + 5969 临时
+  外部连接       : 0 个
+  SUID/SGID 变更 : +0
+  二进制完整性   : PASS
+  新增符号链接   : 0
+  新增文件能力   : 0
+  执行耗时       : 1.0s
+  MITRE 技术     : 4 个
+  ATT&CK 战术    : Lateral Movement, Persistence, Unknown
+  发现           : 3 critical, 1 warnings, 0 info
+  置信度         : HIGH
+
+  详细发现 (按严重程度排序):
+    [!!!] [文件变更] 敏感路径写入: ['/root/.ssh/authorized_keys'] [T1222.002] (score: 35)
+    [!!!] [用户/权限] 用户/权限配置被修改 [T1136.001,T1098] (score: 40)
+    [!!!] [攻击链] 检测到后门账户链: 用户变更 + SSH key 注入 [T1098,T1021.004] (score: 15)
+    [ ! ] [静态分析] 命令匹配恶意模式: SSH authorized_keys manipulation [T1098] (score: 30)
+
+  安全建议:
+    -> BLOCK: 强烈建议阻止此命令执行
+    -> 检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更
+    -> 审查 ~/.ssh/authorized_keys 中是否有未知公钥
+    -> 多维度攻击已确认, 建议全面安全审计
+
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979011.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979011.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979011.sarif.json
+
+  快速预判: BLOCK (静态分: 30, 模式匹配: 1)
+
+============================================================================
+  人类可读摘要:
+============================================================================
+  🚨 判定: DANGEROUS (风险分: 100/100, 置信度: HIGH)
+  命令: mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/author
+  
+  发现 4 个问题 (3 严重, 1 警告):
+    [CRITICAL] 文件变更: 敏感路径写入: ['/root/.ssh/authorized_keys'] [T1222.002]
+    [CRITICAL] 用户/权限: 用户/权限配置被修改 [T1136.001, T1098]
+    [CRITICAL] 攻击链: 检测到后门账户链: 用户变更 + SSH key 注入 [T1098, T1021.004]
+    [WARN] 静态分析: 命令匹配恶意模式: SSH authorized_keys manipulation [T1098]
+  
+  涉及 ATT&CK 战术: Lateral Movement, Persistence, Unknown
+  
+  建议:
+    • BLOCK: 强烈建议阻止此命令执行
+    • 检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更
+    • 审查 ~/.ssh/authorized_keys 中是否有未知公钥
+
+  沙箱已销毁。
+
+
+[0;36m[INFO][0m  [Step 7/7] 完成!
+[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979011.sarif.json
+  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979011.sarif.json
+  快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
+
+[0;36m[INFO][0m  Cleaning up...
+[0;32m[ OK ][0m Cleanup done.

@@ -1,187 +1,326 @@
 {
-  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
-  "version": "2.1.0",
-  "runs": [
+  "version": "4.1",
+  "command": "mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys",
+  "timestamp": "2026-03-20T03:56:51.074930+00:00",
+  "verdict": "DANGEROUS",
+  "risk_score": 100,
+  "confidence": "HIGH",
+  "recommendations": [
+    "BLOCK: 强烈建议阻止此命令执行",
+    "检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更",
+    "审查 ~/.ssh/authorized_keys 中是否有未知公钥",
+    "多维度攻击已确认, 建议全面安全审计"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 4,
+    "critical": 3,
+    "warn": 1,
+    "info": 0,
+    "dimensions_hit": 4
+  },
+  "findings": [
     {
-      "tool": {
-        "driver": {
-          "name": "Command Safety Analyzer",
-          "version": "4.1",
-          "informationUri": "https://github.com/command-safety-analyzer",
-          "rules": [
-            {
-              "id": "T1098",
-              "name": "静态分析",
-              "shortDescription": {
-                "text": "命令匹配恶意模式: SSH authorized_keys manipulation"
-              },
-              "helpUri": "https://attack.mitre.org/techniques/T1098",
-              "properties": {
-                "tags": [
-                  "security",
-                  "command-safety",
-                  "mitre/T1098"
-                ]
-              },
-              "help": {
-                "text": "MITRE ATT&CK: T1098 (Account Manipulation)"
-              }
-            },
-            {
-              "id": "T1222.002",
-              "name": "文件变更",
-              "shortDescription": {
-                "text": "敏感路径写入: ['/root/.ssh/authorized_keys']"
-              },
-              "helpUri": "https://attack.mitre.org/techniques/T1222/002",
-              "properties": {
-                "tags": [
-                  "security",
-                  "command-safety",
-                  "mitre/T1222.002"
-                ]
-              },
-              "help": {
-                "text": "MITRE ATT&CK: T1222.002 (File/Dir Permissions Modification: Linux)"
-              }
-            },
-            {
-              "id": "T1136.001",
-              "name": "用户/权限",
-              "shortDescription": {
-                "text": "用户/权限配置被修改"
-              },
-              "helpUri": "https://attack.mitre.org/techniques/T1136/001",
-              "properties": {
-                "tags": [
-                  "security",
-                  "command-safety",
-                  "mitre/T1136.001",
-                  "mitre/T1098"
-                ]
-              },
-              "help": {
-                "text": "MITRE ATT&CK: T1136.001 (Create Account: Local Account), T1098 (Account Manipulation)"
-              }
-            },
-            {
-              "id": "T1548.001",
-              "name": "文件能力",
-              "shortDescription": {
-                "text": "新增文件能力: 1"
-              },
-              "helpUri": "https://attack.mitre.org/techniques/T1548/001",
-              "properties": {
-                "tags": [
-                  "security",
-                  "command-safety",
-                  "mitre/T1548.001"
-                ]
-              },
-              "help": {
-                "text": "MITRE ATT&CK: T1548.001 (Abuse Elevation Control: Setuid/Setgid)"
-              }
-            },
-            {
-              "id": "T1098-4",
-              "name": "攻击链",
-              "shortDescription": {
-                "text": "检测到后门账户链: 用户变更 + SSH key 注入"
-              },
-              "helpUri": "https://attack.mitre.org/techniques/T1098",
-              "properties": {
-                "tags": [
-                  "security",
-                  "command-safety",
-                  "mitre/T1098",
-                  "mitre/T1021.004"
-                ]
-              },
-              "help": {
-                "text": "MITRE ATT&CK: T1098 (Account Manipulation), T1021.004 (Remote Services: SSH)"
-              }
-            }
-          ],
-          "properties": {
-            "verdict": "DANGEROUS",
-            "risk_score": 100,
-            "confidence": "HIGH"
-          }
-        }
-      },
-      "results": [
+      "severity": "WARN",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: SSH authorized_keys manipulation",
+      "risk_score": 30,
+      "mitre_attack": [
         {
-          "ruleId": "T1098",
-          "level": "warning",
-          "message": {
-            "text": "命令匹配恶意模式: SSH authorized_keys manipulation"
-          },
-          "properties": {
-            "risk_score": 30,
-            "dimension": "静态分析",
-            "evidence": "mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys"
-          }
-        },
-        {
-          "ruleId": "T1222.002",
-          "level": "error",
-          "message": {
-            "text": "敏感路径写入: ['/root/.ssh/authorized_keys']"
-          },
-          "properties": {
-            "risk_score": 35,
-            "dimension": "文件变更",
-            "evidence": "['/root/.ssh/authorized_keys']"
-          }
-        },
-        {
-          "ruleId": "T1136.001",
-          "level": "error",
-          "message": {
-            "text": "用户/权限配置被修改"
-          },
-          "properties": {
-            "risk_score": 40,
-            "dimension": "用户/权限",
-            "evidence": "Before hash: cb1c1e78eda84e1b2b5efd818868b63f\nAfter hash: c6809e284b839033d332e50710464117"
-          }
-        },
-        {
-          "ruleId": "T1548.001",
-          "level": "error",
-          "message": {
-            "text": "新增文件能力: 1"
-          },
-          "properties": {
-            "risk_score": 35,
-            "dimension": "文件能力",
-            "evidence": "/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper cap_net_bind_service,cap_net_admin,cap_sys_nice=ep"
-          }
-        },
-        {
-          "ruleId": "T1098-4",
-          "level": "error",
-          "message": {
-            "text": "检测到后门账户链: 用户变更 + SSH key 注入"
-          },
-          "properties": {
-            "risk_score": 15,
-            "dimension": "攻击链"
-          }
+          "id": "T1098",
+          "name": "Account Manipulation"
         }
       ],
-      "invocations": [
+      "evidence": "mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "文件变更",
+      "description": "敏感路径写入: ['/root/.ssh/authorized_keys']",
+      "risk_score": 35,
+      "mitre_attack": [
         {
-          "executionSuccessful": true,
-          "properties": {
-            "command": "mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys",
-            "verdict": "DANGEROUS",
-            "risk_score": 100,
-            "confidence": "HIGH",
-            "timestamp": "2026-03-20T03:12:37.480158+00:00"
-          }
+          "id": "T1222.002",
+          "name": "File/Dir Permissions Modification: Linux"
+        }
+      ],
+      "evidence": "['/root/.ssh/authorized_keys']"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "用户/权限",
+      "description": "用户/权限配置被修改",
+      "risk_score": 40,
+      "mitre_attack": [
+        {
+          "id": "T1136.001",
+          "name": "Create Account: Local Account"
+        },
+        {
+          "id": "T1098",
+          "name": "Account Manipulation"
+        }
+      ],
+      "evidence": "Before hash: cb1c1e78eda84e1b2b5efd818868b63f\nAfter hash: c6809e284b839033d332e50710464117"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "攻击链",
+      "description": "检测到后门账户链: 用户变更 + SSH key 注入",
+      "risk_score": 15,
+      "mitre_attack": [
+        {
+          "id": "T1098",
+          "name": "Account Manipulation"
+        },
+        {
+          "id": "T1021.004",
+          "name": "Remote Services: SSH"
         }
       ]
     }
-  ]
+  ],
+  "evidence": {
+    "command_chain": {
+      "stages": 3,
+      "connectors": [
+        "&&",
+        "&&",
+        "END"
+      ],
+      "safe_then_evil": false
+    },
+    "stdout_lines": 0,
+    "stderr_lines": 0,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 1,
+    "files_deleted": 0,
+    "inotify_sys_events": 3,
+    "inotify_tmp_events": 5969,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "attack_chains": [
+      "后门账户链 (用户变更 + SSH key 注入)"
+    ],
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1098",
+      "T1222.002",
+      "T1136.001",
+      "T1021.004"
+    ]
+  },
+  "dimensions": {
+    "files_added": [
+      "/root/.ssh/authorized_keys"
+    ],
+    "files_deleted": [],
+    "inotify_sys_events": [
+      "2026-03-20T03:56:09 CREATE /root/.ssh/authorized_keys",
+      "2026-03-20T03:56:09 MODIFY /root/.ssh/authorized_keys",
+      "2026-03-20T03:56:09 ATTRIB /root/.ssh/authorized_keys"
+    ],
+    "inotify_tmp_events": [
+      "2026-03-20T03:56:16 CREATE /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle",
+      "2026-03-20T03:56:16 MODIFY /tmp/sort8pAxle"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": [
+      "后门账户链 (用户变更 + SSH key 注入)"
+    ]
+  },
+  "mitre_attack": {
+    "T1098": {
+      "name": "Account Manipulation",
+      "findings": [
+        "命令匹配恶意模式: SSH authorized_keys manipulation",
+        "用户/权限配置被修改",
+        "检测到后门账户链: 用户变更 + SSH key 注入"
+      ]
+    },
+    "T1222.002": {
+      "name": "File/Dir Permissions Modification: Linux",
+      "findings": [
+        "敏感路径写入: ['/root/.ssh/authorized_keys']"
+      ]
+    },
+    "T1136.001": {
+      "name": "Create Account: Local Account",
+      "findings": [
+        "用户/权限配置被修改"
+      ]
+    },
+    "T1021.004": {
+      "name": "Remote Services: SSH",
+      "findings": [
+        "检测到后门账户链: 用户变更 + SSH key 注入"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Persistence": [
+      "T1098",
+      "T1136.001"
+    ],
+    "Unknown": [
+      "T1222.002"
+    ],
+    "Lateral Movement": [
+      "T1021.004"
+    ]
+  },
+  "deobfuscation": {
+    "original": "mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/authorized_keys",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773978947",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773978969",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773978970",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773979011",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [],
+  "stderr": [],
+  "text_summary": "🚨 判定: DANGEROUS (风险分: 100/100, 置信度: HIGH)\n命令: mkdir -p /root/.ssh && echo 'ssh-rsa AAAAB3...attacker-key' >> /root/.ssh/authorized_keys && chmod 600 /root/.ssh/author\n\n发现 4 个问题 (3 严重, 1 警告):\n  [CRITICAL] 文件变更: 敏感路径写入: ['/root/.ssh/authorized_keys'] [T1222.002]\n  [CRITICAL] 用户/权限: 用户/权限配置被修改 [T1136.001, T1098]\n  [CRITICAL] 攻击链: 检测到后门账户链: 用户变更 + SSH key 注入 [T1098, T1021.004]\n  [WARN] 静态分析: 命令匹配恶意模式: SSH authorized_keys manipulation [T1098]\n\n涉及 ATT&CK 战术: Lateral Movement, Persistence, Unknown\n\n建议:\n  • BLOCK: 强烈建议阻止此命令执行\n  • 检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更\n  • 审查 ~/.ssh/authorized_keys 中是否有未知公钥",
+  "fast_triage": {
+    "level": "BLOCK",
+    "static_score": 30,
+    "is_legitimate": false,
+    "blacklisted": true,
+    "patterns_matched": 1,
+    "matches": [
+      {
+        "pattern": "SSH authorized_keys manipulation",
+        "mitre": "T1098",
+        "score": 30
+      }
+    ],
+    "deobfuscation_layers": 0
+  }
 }
