@@ -1,0 +1,12 @@
+🚨 判定: DANGEROUS (风险分: 75/100, 置信度: MEDIUM)
+命令: useradd -o -u 0 -g 0 backdoor -s /bin/bash -p '$1$hack$xyz'
+
+发现 2 个问题 (2 严重, 0 警告):
+  [CRITICAL] 文件变更: 敏感路径写入: ['/etc/passwd', '/etc/passwd-', '/etc/shadow', '/etc/shadow-'] [T1222.002]
+  [CRITICAL] 用户/权限: 用户/权限配置被修改 [T1136.001, T1098]
+
+涉及 ATT&CK 战术: Persistence, Unknown
+
+建议:
+  • BLOCK: 强烈建议阻止此命令执行
+  • 检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更

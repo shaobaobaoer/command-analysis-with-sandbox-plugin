@@ -22,17 +22,19 @@ everything's installed!
 [0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
 [0;32m[ OK ][0m opensandbox-server + SDK 已安装
 [0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
-[0;32m[ OK ][0m 配置写入: /tmp/tmp.hNQ9XEOSlH/sandbox.toml
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.7QInGPVK9u/sandbox.toml
 [0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
-[0;32m[ OK ][0m Server 就绪 (PID: 564309, port: 8080)
+[0;32m[ OK ][0m Server 就绪 (PID: 661009, port: 8080)
 [0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
 
+/tmp/tmp.7QInGPVK9u/checker.py:803: SyntaxWarning: invalid escape sequence '\$'
+  "echo '=== cron.d ==='; for f in /etc/cron.d/*; do [ -f \"\$f\" ] && echo \"--- \$f ---\" && cat \"\$f\"; done 2>/dev/null || true; "
 
 ============================================================================
   1/9  创建隔离沙箱
 ============================================================================
   镜像: opensandbox/code-interpreter:v1.0.2
-  Sandbox ID: 424b2b3d-fc21-4f82-8461-d1553fbcb73b
+  Sandbox ID: 7680eb13-288d-4ce9-b6f5-f0f592ed7887
 
 ============================================================================
   2/9  安装监控工具 (快照前, 避免污染基线)
@@ -47,8 +49,8 @@ everything's installed!
   符号链接     : 483
   文件能力     : 1
   基线采集耗时 : 15.0s
-  CPU          : 9.1%
-  Memory       : 1891.6/15069.3 MiB
+  CPU          : 3.3%
+  Memory       : 1832.1/15069.3 MiB
 
 ============================================================================
   4/9  启动多层探针 + 执行待测命令
@@ -83,8 +85,8 @@ everything's installed!
 ============================================================================
   文件数       : 221689
   SUID/SGID    : 14
-  inotify 系统 : 67 条
-  inotify /tmp : 204567 条
+  inotify 系统 : 64 条
+  inotify /tmp : 202106 条
 
 ============================================================================
   6/9  网络行为深度分析
@@ -124,105 +126,105 @@ everything's installed!
     !! 敏感路径写入: ['/etc/passwd', '/etc/passwd-', '/etc/shadow', '/etc/shadow-']
 
   --- [D2] 实时文件事件 (inotifywait) ---
-    系统目录事件 (67 条):
-      2026-03-20T03:03:09 CREATE /etc/passwd.809
-      2026-03-20T03:03:09 MODIFY /etc/passwd.809
-      2026-03-20T03:03:09 CREATE /etc/passwd.lock
-      2026-03-20T03:03:09 DELETE /etc/passwd.809
-      2026-03-20T03:03:09 CREATE /etc/group.809
-      2026-03-20T03:03:09 MODIFY /etc/group.809
-      2026-03-20T03:03:09 CREATE /etc/group.lock
-      2026-03-20T03:03:09 DELETE /etc/group.809
-      2026-03-20T03:03:09 CREATE /etc/gshadow.809
-      2026-03-20T03:03:09 MODIFY /etc/gshadow.809
-      2026-03-20T03:03:09 CREATE /etc/gshadow.lock
-      2026-03-20T03:03:09 DELETE /etc/gshadow.809
-      2026-03-20T03:03:09 CREATE /etc/subuid.809
-      2026-03-20T03:03:09 MODIFY /etc/subuid.809
-      2026-03-20T03:03:09 CREATE /etc/subuid.lock
-      2026-03-20T03:03:09 DELETE /etc/subuid.809
-      2026-03-20T03:03:09 CREATE /etc/subgid.809
-      2026-03-20T03:03:09 MODIFY /etc/subgid.809
-      2026-03-20T03:03:09 CREATE /etc/subgid.lock
-      2026-03-20T03:03:09 DELETE /etc/subgid.809
-      2026-03-20T03:03:09 CREATE /etc/shadow.809
-      2026-03-20T03:03:09 MODIFY /etc/shadow.809
-      2026-03-20T03:03:09 CREATE /etc/shadow.lock
-      2026-03-20T03:03:09 DELETE /etc/shadow.809
-      2026-03-20T03:03:09 MODIFY /etc/passwd-
-      2026-03-20T03:03:09 ATTRIB /etc/passwd-
-      2026-03-20T03:03:09 ATTRIB /etc/passwd-
-      2026-03-20T03:03:09 MODIFY /etc/passwd-
-      2026-03-20T03:03:09 ATTRIB /etc/passwd-
-      2026-03-20T03:03:09 CREATE /etc/passwd+
-      2026-03-20T03:03:09 ATTRIB /etc/passwd+
-      2026-03-20T03:03:09 ATTRIB /etc/passwd+
-      2026-03-20T03:03:09 MODIFY /etc/passwd+
-      2026-03-20T03:03:09 MOVED_TO /etc/passwd
-      2026-03-20T03:03:09 MODIFY /etc/shadow-
-      2026-03-20T03:03:09 ATTRIB /etc/shadow-
-      2026-03-20T03:03:09 MODIFY /etc/shadow-
-      2026-03-20T03:03:09 ATTRIB /etc/shadow-
-      2026-03-20T03:03:09 CREATE /etc/shadow+
-      2026-03-20T03:03:09 ATTRIB /etc/shadow+
-      2026-03-20T03:03:09 ATTRIB /etc/shadow+
-      2026-03-20T03:03:09 MODIFY /etc/shadow+
-      2026-03-20T03:03:09 MOVED_TO /etc/shadow
-      2026-03-20T03:03:09 MODIFY /etc/subuid-
-      2026-03-20T03:03:09 ATTRIB /etc/subuid-
-      2026-03-20T03:03:09 MODIFY /etc/subuid-
-      2026-03-20T03:03:09 ATTRIB /etc/subuid-
-      2026-03-20T03:03:09 CREATE /etc/subuid+
-      2026-03-20T03:03:09 ATTRIB /etc/subuid+
-      2026-03-20T03:03:09 ATTRIB /etc/subuid+
-      2026-03-20T03:03:09 MODIFY /etc/subuid+
-      2026-03-20T03:03:09 MOVED_TO /etc/subuid
-      2026-03-20T03:03:09 MODIFY /etc/subgid-
-      2026-03-20T03:03:09 ATTRIB /etc/subgid-
-      2026-03-20T03:03:09 MODIFY /etc/subgid-
-      2026-03-20T03:03:09 ATTRIB /etc/subgid-
-      2026-03-20T03:03:09 CREATE /etc/subgid+
-      2026-03-20T03:03:09 ATTRIB /etc/subgid+
-      2026-03-20T03:03:09 ATTRIB /etc/subgid+
-      2026-03-20T03:03:09 MODIFY /etc/subgid+
-      ... 还有 7 条
-    临时目录事件 (6103 条):
-      2026-03-20T03:03:16 CREATE /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
-      2026-03-20T03:03:16 MODIFY /tmp/sortJjF9I5
+    系统目录事件 (64 条):
+      2026-03-20T03:48:45 CREATE /etc/passwd.808
+      2026-03-20T03:48:45 MODIFY /etc/passwd.808
+      2026-03-20T03:48:45 CREATE /etc/passwd.lock
+      2026-03-20T03:48:45 DELETE /etc/passwd.808
+      2026-03-20T03:48:45 CREATE /etc/group.808
+      2026-03-20T03:48:45 MODIFY /etc/group.808
+      2026-03-20T03:48:45 CREATE /etc/group.lock
+      2026-03-20T03:48:45 DELETE /etc/group.808
+      2026-03-20T03:48:45 CREATE /etc/gshadow.808
+      2026-03-20T03:48:45 MODIFY /etc/gshadow.808
+      2026-03-20T03:48:45 CREATE /etc/gshadow.lock
+      2026-03-20T03:48:45 DELETE /etc/gshadow.808
+      2026-03-20T03:48:45 CREATE /etc/subuid.808
+      2026-03-20T03:48:45 MODIFY /etc/subuid.808
+      2026-03-20T03:48:45 CREATE /etc/subuid.lock
+      2026-03-20T03:48:45 DELETE /etc/subuid.808
+      2026-03-20T03:48:45 CREATE /etc/subgid.808
+      2026-03-20T03:48:45 MODIFY /etc/subgid.808
+      2026-03-20T03:48:45 CREATE /etc/subgid.lock
+      2026-03-20T03:48:45 DELETE /etc/subgid.808
+      2026-03-20T03:48:45 CREATE /etc/shadow.808
+      2026-03-20T03:48:45 MODIFY /etc/shadow.808
+      2026-03-20T03:48:45 CREATE /etc/shadow.lock
+      2026-03-20T03:48:45 DELETE /etc/shadow.808
+      2026-03-20T03:48:45 MODIFY /etc/passwd-
+      2026-03-20T03:48:45 ATTRIB /etc/passwd-
+      2026-03-20T03:48:45 ATTRIB /etc/passwd-
+      2026-03-20T03:48:45 MODIFY /etc/passwd-
+      2026-03-20T03:48:45 ATTRIB /etc/passwd-
+      2026-03-20T03:48:45 CREATE /etc/passwd+
+      2026-03-20T03:48:45 ATTRIB /etc/passwd+
+      2026-03-20T03:48:45 MODIFY /etc/passwd+
+      2026-03-20T03:48:45 MOVED_TO /etc/passwd
+      2026-03-20T03:48:45 MODIFY /etc/shadow-
+      2026-03-20T03:48:45 ATTRIB /etc/shadow-
+      2026-03-20T03:48:45 MODIFY /etc/shadow-
+      2026-03-20T03:48:45 ATTRIB /etc/shadow-
+      2026-03-20T03:48:45 CREATE /etc/shadow+
+      2026-03-20T03:48:45 ATTRIB /etc/shadow+
+      2026-03-20T03:48:45 MODIFY /etc/shadow+
+      2026-03-20T03:48:45 MOVED_TO /etc/shadow
+      2026-03-20T03:48:45 MODIFY /etc/subuid-
+      2026-03-20T03:48:45 ATTRIB /etc/subuid-
+      2026-03-20T03:48:45 ATTRIB /etc/subuid-
+      2026-03-20T03:48:45 MODIFY /etc/subuid-
+      2026-03-20T03:48:45 ATTRIB /etc/subuid-
+      2026-03-20T03:48:45 CREATE /etc/subuid+
+      2026-03-20T03:48:45 ATTRIB /etc/subuid+
+      2026-03-20T03:48:45 MODIFY /etc/subuid+
+      2026-03-20T03:48:45 MOVED_TO /etc/subuid
+      2026-03-20T03:48:45 MODIFY /etc/subgid-
+      2026-03-20T03:48:45 ATTRIB /etc/subgid-
+      2026-03-20T03:48:45 MODIFY /etc/subgid-
+      2026-03-20T03:48:45 ATTRIB /etc/subgid-
+      2026-03-20T03:48:45 CREATE /etc/subgid+
+      2026-03-20T03:48:45 ATTRIB /etc/subgid+
+      2026-03-20T03:48:45 MODIFY /etc/subgid+
+      2026-03-20T03:48:45 MOVED_TO /etc/subgid
+      2026-03-20T03:48:45 DELETE /etc/shadow.lock
+      2026-03-20T03:48:45 DELETE /etc/passwd.lock
+      ... 还有 4 条
+    临时目录事件 (5749 条):
+      2026-03-20T03:48:52 CREATE /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
+      2026-03-20T03:48:52 MODIFY /tmp/sortn5bUpt
 
   --- [D3] 用户与权限 ---
     !! FAIL  用户/权限配置已变更!
     新增行:
-      + backdoor:0:/bin/bash
       + 23 /etc/shadow
+      + backdoor:0:/bin/bash
     删除行:
       - 22 /etc/shadow
 
@@ -233,9 +235,10 @@ everything's installed!
     PASS  无变化
 
   --- [D6] 进程树分析 ---
-    观察到 16 个独立进程:
+    观察到 17 个独立进程:
       > /opt/opensandbox/execd
       > COMMAND
+      > \_ [sleep]
       > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
       > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
       > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
@@ -249,40 +252,39 @@ everything's installed!
       > |   \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
       > |   \_ getcap -r /
       > |   \_ sort
-      > |   |   \_ ls -la /etc/fonts/conf.d/45-generic.conf
+      > |   |   \_ ls -la /etc/ssl/certs/ff34af3f.0
 
     残留进程 (执行后):
       USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-      root           1  0.0  0.0   3156  1792 ?        Ss   03:02   0:00 tail -f /dev/null
-      root           7 16.4  0.1 1244224 21852 ?       Sl   03:02   0:06 /opt/opensandbox/execd
-      root         844  0.0  0.0   4752  3584 ?        S    03:03   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
-      root         846  0.0  0.0   4084  2560 ?        R    03:03   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
-      root         847  0.0  0.0  24904  3200 ?        R    03:03   0:00  |   \_ sort
-      root         845  0.0  0.0   4752  3584 ?        S    03:03   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
-      root         848  0.0  0.0   8280  4224 ?        R    03:03   0:00  |   \_ ps auxf
-      root         849  0.0  0.0   4752  3456 ?        S    03:03   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
-      root         850  0.0  0.0      0     0 ?        R    03:03   0:00      \_ [cat]
+      root           1  0.0  0.0   3156  1792 ?        Ss   03:48   0:00 tail -f /dev/null
+      root           7 18.5  0.1 1244480 21776 ?       Sl   03:48   0:06 /opt/opensandbox/execd
+      root         843  0.0  0.0   4752  3712 ?        S    03:48   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root         845  0.0  0.0   4084  2432 ?        R    03:48   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root         846  0.0  0.0  24904  3328 ?        S    03:48   0:00  |   \_ sort
+      root         844  0.0  0.0   4752  3584 ?        S    03:48   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root         847  0.0  0.0   8280  4224 ?        R    03:48   0:00  |   \_ ps auxf
+      root         848  0.0  0.0   4752  3328 ?        R    03:48   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
 
   --- [D7] 残留网络连接 ---
         sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
-         0: 0100007F:E452 0100007F:AEE4 01 00000000:00000000 02:000002AC 00000000     0        0 3309093 2 0000000000000000 20 4 30 10 -1                  
-         1: 0100007F:C892 0100007F:AEE4 01 00000000:00000000 02:0000005E 00000000     0        0 3320118 2 0000000000000000 20 4 30 10 -1                  
-         2: 0100007F:C870 0100007F:AEE4 01 00000000:00000000 02:0000005D 00000000     0        0 3312460 2 0000000000000000 20 4 30 10 -1                  
-         3: 0100007F:E910 0100007F:AEE4 01 00000000:00000000 02:00000B52 00000000     0        0 3329516 2 0000000000000000 20 4 30 10 -1                  
-         4: 0100007F:C8B0 0100007F:AEE4 01 00000000:00000000 02:0000005F 00000000     0        0 3312480 2 0000000000000000 20 4 2 10 -1                   
-         5: 0100007F:C702 0100007F:AEE4 01 00000000:00000000 02:0000024E 00000000     0        0 3305304 2 0000000000000000 20 4 30 10 -1                  
-         6: 0100007F:C71C 0100007F:AEE4 01 00000000:00000000 02:00000255 00000000     0        0 3304341 2 0000000000000000 20 4 30 10 -1                  
-         7: 0100007F:CF24 0100007F:AEE4 01 00000000:00000000 02:000007BF 00000000     0        0 3331145 2 0000000000000000 20 4 30 10 -1                  
-         8: 0100007F:C8BE 0100007F:AEE4 01 00000000:00000000 02:0000005F 00000000     0        0 3320137 2 0000000000000000 20 4 30 10 -1                  
-         9: 0100007F:E45A 0100007F:AEE4 01 00000000:00000000 02:00000312 00000000     0        0 3309116 2 0000000000000000 20 4 30 10 -1                  
-        10: 0100007F:C774 0100007F:AEE4 01 00000000:00000000 02:00000255 00000000     0        0 3305321 2 0000000000000000 20 4 30 10 -1                  
-        11: 0100007F:C6F8 0100007F:AEE4 01 00000000:00000000 02:000001D2 00000000     0        0 3307572 2 0000000000000000 20 4 30 10 -1                  
-        12: 0100007F:C842 0100007F:AEE4 01 00000000:00000000 02:000004A5 00000000     0        0 3309981 2 0000000000000000 20 4 30 10 -1                  
-        13: 0100007F:C728 0100007F:AEE4 01 00000000:00000000 02:000004E1 00000000     0        0 3305312 2 0000000000000000 20 4 30 10 -1                  
+         0: 0100007F:A828 0100007F:AEE4 01 00000000:00000000 02:000004ED 00000000     0        0 4150437 2 0000000000000000 20 4 30 10 -1                  
+         1: 0100007F:8F72 0100007F:AEE4 01 00000000:00000000 02:000001C3 00000000     0        0 4141264 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:B9A2 0100007F:AEE4 01 00000000:00000000 02:0000003D 00000000     0        0 4145634 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:A5C2 0100007F:AEE4 01 00000000:00000000 02:00000236 00000000     0        0 4139803 2 0000000000000000 20 4 30 10 -1                  
+         4: 020011AC:B1E6 535BBD5B:0050 06 00000000:00000000 03:00000000 00000000     0        0 0 3 0000000000000000                                      
+         5: 0100007F:A5D2 0100007F:AEE4 01 00000000:00000000 02:00000236 00000000     0        0 4145188 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:A5F6 0100007F:AEE4 01 00000000:00000000 02:0000055C 00000000     0        0 4142930 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:A5C4 0100007F:AEE4 01 00000000:00000000 02:00000230 00000000     0        0 4145181 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:A5B6 0100007F:AEE4 01 00000000:00000000 02:00000230 00000000     0        0 4145176 2 0000000000000000 20 4 30 10 -1                  
+         9: 0100007F:A5BA 0100007F:AEE4 01 00000000:00000000 02:00000236 00000000     0        0 4136491 2 0000000000000000 20 4 30 10 -1                  
+        10: 0100007F:A5FE 0100007F:AEE4 01 00000000:00000000 02:00000230 00000000     0        0 4142931 2 0000000000000000 20 4 30 10 -1                  
+        11: 0100007F:A5CC 0100007F:AEE4 01 00000000:00000000 02:000004C3 00000000     0        0 4145187 2 0000000000000000 20 4 30 10 -1                  
+        12: 0100007F:B9F6 0100007F:AEE4 01 00000000:00000000 02:00000040 00000000     0        0 4149142 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:A80E 0100007F:AEE4 01 00000000:00000000 02:000003BA 00000000     0        0 4145413 2 0000000000000000 20 4 30 10 -1                  
 
   --- [D8] 资源消耗 ---
-    CPU    : 9.1% -> 2.9% (Δ -6.2%)
-    Memory : 1891.6 -> 1910.6 MiB (Δ +19.0 MiB)
+    CPU    : 3.3% -> 3.9% (Δ +0.6%)
+    Memory : 1832.1 -> 1938.4 MiB (Δ +106.3 MiB)
 
   --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
     PASS
@@ -318,7 +320,7 @@ everything's installed!
     PASS  无异常高熵文件
 
   --- [D20] 计划任务详细差异 ---
-    PASS  crontab 无变化
+    PASS  计划任务无变化
 
   --- [D21] 隐藏进程检测 ---
     PASS  未发现隐藏进程
@@ -356,7 +358,7 @@ everything's installed!
   合法命令模式   : 否
   退出码         : 0
   文件 +/-       : +8 / -8
-  inotify 事件   : 67 系统 + 6103 临时
+  inotify 事件   : 64 系统 + 5749 临时
   外部连接       : 0 个
   SUID/SGID 变更 : +0
   二进制完整性   : PASS
@@ -376,9 +378,9 @@ everything's installed!
     -> BLOCK: 强烈建议阻止此命令执行
     -> 检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更
 
-  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773975834.json
-  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773975834.txt
-  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773975834.sarif.json
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773978567.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773978567.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773978567.sarif.json
 
   快速预判: REVIEW (静态分: 0, 模式匹配: 0)
 
@@ -402,8 +404,9 @@ everything's installed!
 
 
 [0;36m[INFO][0m  [Step 7/7] 完成!
-[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773975834.sarif.json
-  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773975834.sarif.json
+[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773978567.json
+[0;32m[ OK ][0m 报告 (文本): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773978567.txt
+  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773978567.json
   快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
 
 [0;36m[INFO][0m  Cleaning up...
