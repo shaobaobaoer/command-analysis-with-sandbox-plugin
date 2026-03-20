@@ -1,1 +1,1 @@
-{"id":"b03","category":"black","label":"malicious","desc":"backdoor user","verdict":"DANGEROUS","risk_score":75,"mitre_count":3,"confidence":"MEDIUM","match":"CORRECT"}
+{"id":"b04","category":"black","label":"malicious","desc":"sudoers escalation","verdict":"DANGEROUS","risk_score":90,"mitre_count":3,"confidence":"HIGH","match":"CORRECT"}
