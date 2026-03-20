@@ -1,4 +1,1 @@
-{"id":"b05","category":"black","label":"malicious","desc":"dns hijack","verdict":"SUSPICIOUS","risk_score":30
--1,"mitre_count":0
-0,"confidence":"LOW
-N/A","match":"CORRECT"}
+{"id":"b06","category":"black","label":"malicious","desc":"suid backdoor","verdict":"DANGEROUS","risk_score":75,"mitre_count":1,"confidence":"MEDIUM","match":"CORRECT"}

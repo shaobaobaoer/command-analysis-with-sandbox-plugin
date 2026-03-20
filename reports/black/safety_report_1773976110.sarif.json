@@ -1,0 +1,96 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1548.001",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: setting SUID bit"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1548/001",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1548.001"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1548.001 (Abuse Elevation Control: Setuid/Setgid)"
+              }
+            },
+            {
+              "id": "T1548.001-1",
+              "name": "SUID/SGID",
+              "shortDescription": {
+                "text": "新增 SUID/SGID 文件: 1"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1548/001",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1548.001"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1548.001 (Abuse Elevation Control: Setuid/Setgid)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "DANGEROUS",
+            "risk_score": 75,
+            "confidence": "MEDIUM"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1548.001",
+          "level": "error",
+          "message": {
+            "text": "命令匹配恶意模式: setting SUID bit"
+          },
+          "properties": {
+            "risk_score": 35,
+            "dimension": "静态分析",
+            "evidence": "cp /bin/bash /tmp/.hidden_shell && chmod u+s /tmp/.hidden_shell"
+          }
+        },
+        {
+          "ruleId": "T1548.001-1",
+          "level": "error",
+          "message": {
+            "text": "新增 SUID/SGID 文件: 1"
+          },
+          "properties": {
+            "risk_score": 40,
+            "dimension": "SUID/SGID",
+            "evidence": "-rwsr-xr-x 1 root root 1446024 Mar 20 03:07 /tmp/.hidden_shell"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "cp /bin/bash /tmp/.hidden_shell && chmod u+s /tmp/.hidden_shell",
+            "verdict": "DANGEROUS",
+            "risk_score": 75,
+            "confidence": "MEDIUM",
+            "timestamp": "2026-03-20T03:08:30.675364+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}

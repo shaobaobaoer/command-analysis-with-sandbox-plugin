@@ -1,0 +1,253 @@
+{
+  "version": "4.1",
+  "command": "cp /bin/bash /tmp/.hidden_shell && chmod u+s /tmp/.hidden_shell",
+  "timestamp": "2026-03-20T03:08:30.675364+00:00",
+  "verdict": "DANGEROUS",
+  "risk_score": 75,
+  "confidence": "MEDIUM",
+  "recommendations": [
+    "BLOCK: 强烈建议阻止此命令执行"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 2,
+    "critical": 2,
+    "warn": 0,
+    "info": 0,
+    "dimensions_hit": 2
+  },
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: setting SUID bit",
+      "risk_score": 35,
+      "mitre_attack": [
+        {
+          "id": "T1548.001",
+          "name": "Abuse Elevation Control: Setuid/Setgid"
+        }
+      ],
+      "evidence": "cp /bin/bash /tmp/.hidden_shell && chmod u+s /tmp/.hidden_shell"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "SUID/SGID",
+      "description": "新增 SUID/SGID 文件: 1",
+      "risk_score": 40,
+      "mitre_attack": [
+        {
+          "id": "T1548.001",
+          "name": "Abuse Elevation Control: Setuid/Setgid"
+        }
+      ],
+      "evidence": "-rwsr-xr-x 1 root root 1446024 Mar 20 03:07 /tmp/.hidden_shell"
+    }
+  ],
+  "evidence": {
+    "command_chain": {
+      "stages": 2,
+      "connectors": [
+        "&&",
+        "END"
+      ],
+      "safe_then_evil": false
+    },
+    "stdout_lines": 0,
+    "stderr_lines": 0,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 1,
+    "files_deleted": 0,
+    "inotify_sys_events": 0,
+    "inotify_tmp_events": 5642,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1548.001"
+    ]
+  },
+  "dimensions": {
+    "files_added": [
+      "/tmp/.hidden_shell"
+    ],
+    "files_deleted": [],
+    "inotify_sys_events": [],
+    "inotify_tmp_events": [
+      "2026-03-20T03:07:45 CREATE /tmp/.hidden_shell",
+      "2026-03-20T03:07:45 MODIFY /tmp/.hidden_shell",
+      "2026-03-20T03:07:45 ATTRIB /tmp/.hidden_shell",
+      "2026-03-20T03:07:51 CREATE /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs",
+      "2026-03-20T03:07:51 MODIFY /tmp/sortOp3CAs"
+    ],
+    "external_connections": [],
+    "suid_new": [
+      "-rwsr-xr-x 1 root root 1446024 Mar 20 03:07 /tmp/.hidden_shell"
+    ],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": []
+  },
+  "mitre_attack": {
+    "T1548.001": {
+      "name": "Abuse Elevation Control: Setuid/Setgid",
+      "findings": [
+        "命令匹配恶意模式: setting SUID bit",
+        "新增 SUID/SGID 文件: 1"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Privilege Escalation": [
+      "T1548.001"
+    ]
+  },
+  "deobfuscation": {
+    "original": "cp /bin/bash /tmp/.hidden_shell && chmod u+s /tmp/.hidden_shell",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773976043",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773976065",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773976066",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773976111",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [],
+  "stderr": [],
+  "text_summary": "🚨 判定: DANGEROUS (风险分: 75/100, 置信度: MEDIUM)\n命令: cp /bin/bash /tmp/.hidden_shell && chmod u+s /tmp/.hidden_shell\n\n发现 2 个问题 (2 严重, 0 警告):\n  [CRITICAL] 静态分析: 命令匹配恶意模式: setting SUID bit [T1548.001]\n  [CRITICAL] SUID/SGID: 新增 SUID/SGID 文件: 1 [T1548.001]\n\n涉及 ATT&CK 战术: Privilege Escalation\n\n建议:\n  • BLOCK: 强烈建议阻止此命令执行",
+  "fast_triage": {
+    "level": "BLOCK",
+    "static_score": 35,
+    "is_legitimate": false,
+    "blacklisted": true,
+    "patterns_matched": 1,
+    "matches": [
+      {
+        "pattern": "setting SUID bit",
+        "mitre": "T1548.001",
+        "score": 35
+      }
+    ],
+    "deobfuscation_layers": 0
+  }
+}
