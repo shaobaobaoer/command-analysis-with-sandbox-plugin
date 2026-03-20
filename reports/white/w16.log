@@ -3,7 +3,7 @@
   OpenSandbox Behavioral Analysis Engine v4
 ==========================================[0m
 
-[0;36m[INFO][0m  待检测命令: python3 -c "print('hello from python')"
+[0;36m[INFO][0m  待检测命令: python3 -m venv /tmp/test-env && /tmp/test-env/bin/python -c 'print(1+1)' && rm -rf /tmp/test-env
 
 [0;36m[INFO][0m  [Step 1/7] 检查环境...
 [0;32m[ OK ][0m Docker: Docker version 27.5.1, build 27.5.1-0ubuntu3~24.04.2
@@ -22,9 +22,9 @@ everything's installed!
 [0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
 [0;32m[ OK ][0m opensandbox-server + SDK 已安装
 [0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
-[0;32m[ OK ][0m 配置写入: /tmp/tmp.RhShLS5WD9/sandbox.toml
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.M1AvlC0uPO/sandbox.toml
 [0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
-[0;32m[ OK ][0m Server 就绪 (PID: 486044, port: 8080)
+[0;32m[ OK ][0m Server 就绪 (PID: 484637, port: 8080)
 [0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
 
 
@@ -32,7 +32,7 @@ everything's installed!
   1/9  创建隔离沙箱
 ============================================================================
   镜像: opensandbox/code-interpreter:v1.0.2
-  Sandbox ID: 13f3841b-6fd9-4d95-b45b-85216b2a6999
+  Sandbox ID: 20d2405e-81b6-4aa7-b037-4d1fe73a85a8
 
 ============================================================================
   2/9  安装监控工具 (快照前, 避免污染基线)
@@ -46,9 +46,9 @@ everything's installed!
   SUID/SGID    : 14
   符号链接     : 483
   文件能力     : 1
-  基线采集耗时 : 16.2s
-  CPU          : 2.3%
-  Memory       : 1923.3/15069.3 MiB
+  基线采集耗时 : 15.9s
+  CPU          : 16.6%
+  Memory       : 1812.9/15069.3 MiB
 
 ============================================================================
   4/9  启动多层探针 + 执行待测命令
@@ -59,7 +59,10 @@ everything's installed!
   [探针5] process: 进程树轮询 (1s)
 
   --- 命令链分解分析 ---
-    单阶段命令
+    命令包含 3 个执行阶段:
+    [1] [OK] python3 -m venv /tmp/test-env &&
+    [2] [OK] /tmp/test-env/bin/python -c 'print(1+1)' &&
+    [3] [OK] rm -rf /tmp/test-env END
 
   --- 命令去混淆分析 ---
     PASS  未发现编码/混淆层
@@ -67,24 +70,30 @@ everything's installed!
   --- 命令静态分析 ---
     PASS  未匹配已知恶意模式
 
-  $ python3 -c "print('hello from python')"
+  $ python3 -m venv /tmp/test-env && /tmp/test-env/bin/python -c 'print(1+1)' && rm -rf /tmp/test-env
   ────────────────────────────────────────────────────────────
 
-  耗时     : 1.0s
-  退出码   : 0
-  stdout   : 1 行
+  耗时     : 1.1s
+  退出码   : 1
+  stdout   : 7 行
   stderr   : 0 行
 
   --- stdout (前 50 行) ---
-    | hello from python
+    | The virtual environment was not created successfully because ensurepip is not
+    | available.  On Debian/Ubuntu systems, you need to install the python3-venv
+    | package using the following command.
+    |     apt install python3.12-venv
+    | You may need to use sudo with that command.  After installing the python3-venv
+    | package, recreate your virtual environment.
+    | Failing command: /tmp/test-env/bin/python3
 
 ============================================================================
   5/9  采集执行后快照 (全维度)
 ============================================================================
-  文件数       : 221689
+  文件数       : 221690
   SUID/SGID    : 14
   inotify 系统 : 0 条
-  inotify /tmp : 182271 条
+  inotify /tmp : 180566 条
 
 ============================================================================
   6/9  网络行为深度分析
@@ -102,42 +111,43 @@ everything's installed!
   7/9  全维度安全对比分析 (24 维度)
 ============================================================================
 
-  --- [D1] 文件变更 (+0 / -0) ---
-    (无新增)
+  --- [D1] 文件变更 (+1 / -0) ---
+    新增 1 个:
+      + /tmp/test-env/pyvenv.cfg
 
   --- [D2] 实时文件事件 (inotifywait) ---
     系统目录: (无事件)
-    临时目录事件 (4563 条):
-      2026-03-20T02:39:53 CREATE /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
-      2026-03-20T02:39:53 MODIFY /tmp/sortDu3u9H
+    临时目录事件 (5722 条):
+      2026-03-20T02:39:36 CREATE,ISDIR /tmp/test-env
+      2026-03-20T02:39:36 CREATE,ISDIR /tmp/test-env/include
+      2026-03-20T02:39:36 CREATE,ISDIR /tmp/test-env/lib
+      2026-03-20T02:39:36 CREATE /tmp/test-env/lib64
+      2026-03-20T02:39:36 CREATE,ISDIR /tmp/test-env/bin
+      2026-03-20T02:39:36 CREATE /tmp/test-env/pyvenv.cfg
+      2026-03-20T02:39:36 MODIFY /tmp/test-env/pyvenv.cfg
+      2026-03-20T02:39:36 CREATE /tmp/test-env/bin/python3
+      2026-03-20T02:39:36 CREATE /tmp/test-env/bin/python
+      2026-03-20T02:39:36 CREATE /tmp/test-env/bin/python3.12
+      2026-03-20T02:39:43 CREATE /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
+      2026-03-20T02:39:43 MODIFY /tmp/sortiKYjX9
 
   --- [D3] 用户与权限 ---
     PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
@@ -149,7 +159,7 @@ everything's installed!
     PASS  无变化
 
   --- [D6] 进程树分析 ---
-    观察到 17 个独立进程:
+    观察到 15 个独立进程:
       > /opt/opensandbox/execd
       > COMMAND
       > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
@@ -158,47 +168,45 @@ everything's installed!
       > \_ bash -c getcap -r / 2>/dev/null | sort || true
       > \_ cat /proc/net/tcp /proc/net/tcp6
       > \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
-      > \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
       > \_ getcap -r /
       > \_ sort
       > tail -f /dev/null
-      > |   \_ [ls]
-      > |   \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
       > |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      > |   \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
       > |   \_ getcap -r /
       > |   \_ sort
 
     残留进程 (执行后):
       USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-      root           1  0.0  0.0   3156  1664 ?        Ss   02:39   0:00 tail -f /dev/null
-      root           7 18.2  0.1 1244224 22076 ?       Sl   02:39   0:06 /opt/opensandbox/execd
-      root         840  0.0  0.0   4752  3584 ?        S    02:39   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
-      root         841  0.0  0.0   4084  2432 ?        R    02:39   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root           1  0.0  0.0   3156  1792 ?        Ss   02:39   0:00 tail -f /dev/null
+      root           7 19.4  0.1 1244480 22020 ?       Sl   02:39   0:07 /opt/opensandbox/execd
+      root         840  0.0  0.0   4752  3712 ?        S    02:39   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root         842  0.0  0.0   4084  2560 ?        R    02:39   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
       root         843  0.0  0.0  24904  3072 ?        S    02:39   0:00  |   \_ sort
-      root         842  0.0  0.0   4752  3584 ?        S    02:39   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root         841  0.0  0.0   4752  3584 ?        S    02:39   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
       root         844  0.0  0.0   8280  4224 ?        R    02:39   0:00  |   \_ ps auxf
-      root         845  0.0  0.0   4368  2176 ?        R    02:39   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+      root         845  0.0  0.0   4752  3712 ?        S    02:39   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
 
   --- [D7] 残留网络连接 ---
         sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
-         0: 0100007F:8604 0100007F:AEE4 01 00000000:00000000 02:0000025E 00000000     0        0 2579222 2 0000000000000000 20 4 30 10 -1                  
-         1: 0100007F:E9DA 0100007F:AEE4 01 00000000:00000000 02:0000000F 00000000     0        0 2602733 2 0000000000000000 20 4 12 10 -1                  
-         2: 0100007F:868A 0100007F:AEE4 01 00000000:00000000 02:000003F2 00000000     0        0 2602553 2 0000000000000000 20 4 30 10 -1                  
-         3: 0100007F:B036 0100007F:AEE4 01 00000000:00000000 02:0000018E 00000000     0        0 2590612 2 0000000000000000 20 4 30 10 -1                  
-         4: 0100007F:AFD6 0100007F:AEE4 01 00000000:00000000 02:00000187 00000000     0        0 2575303 2 0000000000000000 20 4 30 10 -1                  
-         5: 0100007F:E978 0100007F:AEE4 01 00000000:00000000 02:0000000B 00000000     0        0 2594789 2 0000000000000000 20 4 30 10 -1                  
-         6: 0100007F:B0EA 0100007F:AEE4 01 00000000:00000000 02:00000A88 00000000     0        0 2618979 2 0000000000000000 20 4 30 10 -1                  
-         7: 0100007F:8608 0100007F:AEE4 01 00000000:00000000 02:000002BE 00000000     0        0 2593069 2 0000000000000000 20 4 30 10 -1                  
-         8: 0100007F:AFC6 0100007F:AEE4 01 00000000:00000000 02:00000172 00000000     0        0 2590542 2 0000000000000000 20 4 30 10 -1                  
-         9: 0100007F:E9B4 0100007F:AEE4 01 00000000:00000000 02:0000000D 00000000     0        0 2609357 2 0000000000000000 20 4 30 10 -1                  
-        10: 0100007F:B00C 0100007F:AEE4 01 00000000:00000000 02:0000018E 00000000     0        0 2576818 2 0000000000000000 20 4 30 10 -1                  
-        11: 0100007F:E984 0100007F:AEE4 01 00000000:00000000 02:0000000B 00000000     0        0 2594791 2 0000000000000000 20 4 30 10 -1                  
-        12: 0100007F:B03A 0100007F:AEE4 01 00000000:00000000 02:000004E7 00000000     0        0 2590759 2 0000000000000000 20 4 30 10 -1                  
-        13: 0100007F:E9B0 0100007F:AEE4 01 00000000:00000000 02:0000000D 00000000     0        0 2609356 2 0000000000000000 20 4 30 10 -1                  
+         0: 0100007F:CAFA 0100007F:AEE4 01 00000000:00000000 02:000007B5 00000000     0        0 2614575 2 0000000000000000 20 4 30 10 -1                  
+         1: 0100007F:945C 0100007F:AEE4 01 00000000:00000000 02:000001C9 00000000     0        0 2570105 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:8620 0100007F:AEE4 01 00000000:00000000 02:0000003D 00000000     0        0 2597879 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:CBAC 0100007F:AEE4 01 00000000:00000000 02:0000041A 00000000     0        0 2585237 2 0000000000000000 20 4 30 10 -1                  
+         4: 0100007F:94D2 0100007F:AEE4 01 00000000:00000000 02:000004D0 00000000     0        0 2577988 2 0000000000000000 20 4 30 10 -1                  
+         5: 0100007F:CAF4 0100007F:AEE4 01 00000000:00000000 02:00000751 00000000     0        0 2620033 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:9472 0100007F:AEE4 01 00000000:00000000 02:000001D0 00000000     0        0 2570123 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:94A6 0100007F:AEE4 01 00000000:00000000 02:000001DD 00000000     0        0 2570145 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:8654 0100007F:AEE4 01 00000000:00000000 02:0000003F 00000000     0        0 2600232 2 0000000000000000 20 4 30 10 -1                  
+         9: 0100007F:B088 0100007F:AEE4 01 00000000:00000000 02:00000B52 00000000     0        0 2611020 2 0000000000000000 20 4 30 10 -1                  
+        10: 0100007F:CB12 0100007F:AEE4 01 00000000:00000000 02:00000A0F 00000000     0        0 2613206 2 0000000000000000 20 4 0 10 -1                   
+        11: 0100007F:949C 0100007F:AEE4 01 00000000:00000000 02:000001DD 00000000     0        0 2579764 2 0000000000000000 20 4 30 10 -1                  
+        12: 0100007F:94C2 0100007F:AEE4 01 00000000:00000000 02:000001DD 00000000     0        0 2570149 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:CBB6 0100007F:AEE4 01 00000000:00000000 02:000004ED 00000000     0        0 2593065 2 0000000000000000 20 4 30 10 -1                  
 
   --- [D8] 资源消耗 ---
-    CPU    : 2.3% -> 3.4% (Δ +1.1%)
-    Memory : 1923.3 -> 2027.2 MiB (Δ +103.9 MiB)
+    CPU    : 16.6% -> 29.1% (Δ +12.6%)
+    Memory : 1812.9 -> 1939.5 MiB (Δ +126.6 MiB)
 
   --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
     PASS
@@ -216,13 +224,17 @@ everything's installed!
     PASS  无变化
 
   --- [D14] 关键文件内容分析 ---
-    PASS  未发现恶意内容模式
+    PASS  已检查 1 个新增文件, 未发现恶意内容
 
   --- [D15] 关键系统二进制完整性 ---
     PASS  /bin/bash, su, sudo, passwd, sshd 等均未被篡改
 
   --- [D16] 符号链接变更 ---
-    PASS  无新增符号链接
+    [INFO] 新增 4 个符号链接 (非敏感目标)
+      + lrwxrwxrwx 1 root root 7 Mar 20 02:39 /tmp/test-env/bin/python3.12 -> python3
+      + lrwxrwxrwx 1 root root 16 Mar 20 02:39 /tmp/test-env/bin/python3 -> /usr/bin/python3
+      + lrwxrwxrwx 1 root root 3 Mar 20 02:39 /tmp/test-env/lib64 -> lib
+      + lrwxrwxrwx 1 root root 7 Mar 20 02:39 /tmp/test-env/bin/python -> python3
 
   --- [D17] 文件能力 (Linux Capabilities) ---
     PASS  无新增文件能力
@@ -263,17 +275,17 @@ everything's installed!
   |  置信度: HIGH    维度覆盖:  0/24              |
   +──────────────────────────────────────────────────────────────────────────+
 
-  命令           : python3 -c "print('hello from python')"
+  命令           : python3 -m venv /tmp/test-env && /tmp/test-env/bin/python -c 'print(1+1)' && rm -rf /tmp/test-env
   合法命令模式   : 否
-  退出码         : 0
-  文件 +/-       : +0 / -0
-  inotify 事件   : 0 系统 + 4563 临时
+  退出码         : 1
+  文件 +/-       : +1 / -0
+  inotify 事件   : 0 系统 + 5722 临时
   外部连接       : 0 个
   SUID/SGID 变更 : +0
   二进制完整性   : PASS
-  新增符号链接   : 0
+  新增符号链接   : 4
   新增文件能力   : 0
-  执行耗时       : 1.0s
+  执行耗时       : 1.1s
   MITRE 技术     : 0 个
   ATT&CK 战术    : 无
   发现           : 0 critical, 0 warnings, 0 info
@@ -308,9 +320,9 @@ everything's installed!
   安全建议:
     -> ALLOW: 命令安全, 可放行
 
-  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974431.json
-  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974431.txt
-  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974431.sarif.json
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974423.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974423.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974423.sarif.json
 
   快速预判: PASS (静态分: 0, 模式匹配: 0)
 
@@ -318,7 +330,7 @@ everything's installed!
   人类可读摘要:
 ============================================================================
   ✅ 判定: LIKELY_SAFE (风险分: 0/100, 置信度: HIGH)
-  命令: python3 -c "print('hello from python')"
+  命令: python3 -m venv /tmp/test-env && /tmp/test-env/bin/python -c 'print(1+1)' && rm -rf /tmp/test-env
   
   全部 24 维度检查通过, 命令安全。
   
@@ -329,9 +341,8 @@ everything's installed!
 
 
 [0;36m[INFO][0m  [Step 7/7] 完成!
-[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974431.json
-[0;32m[ OK ][0m 报告 (文本): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974431.txt
-  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974431.json
+[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974423.sarif.json
+  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773974423.sarif.json
   快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
 
 [0;36m[INFO][0m  Cleaning up...

@@ -1,2 +1,2 @@
-{"id":"w13","category":"white","label":"safe","desc":"system info","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
-{"id":"w02","category":"white","label":"safe","desc":"python print","verdict":"UNKNOWN","risk_score":-1,"mitre_count":0,"confidence":"N/A","match":"WRONG"}
+{"id":"w16","category":"white","label":"safe","desc":"conda create env","verdict":"UNKNOWN","risk_score":-1,"mitre_count":0,"confidence":"N/A","match":"WRONG"}
+{"id":"w02","category":"white","label":"safe","desc":"python print","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
