@@ -1,0 +1,232 @@
+{
+  "version": "4.1",
+  "command": "sed -i 's/root:x:/root::/g' /etc/passwd",
+  "timestamp": "2026-03-20T03:59:58.589823+00:00",
+  "verdict": "SUSPICIOUS",
+  "risk_score": 35,
+  "confidence": "LOW",
+  "recommendations": [
+    "REVIEW: 建议人工审核此命令后再决定是否放行",
+    "置信度较低, 可能为误报, 请结合上下文判断"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 1,
+    "critical": 1,
+    "warn": 0,
+    "info": 0,
+    "dimensions_hit": 1
+  },
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "dimension": "文件变更",
+      "description": "敏感路径写入: ['/etc/passwd']",
+      "risk_score": 35,
+      "mitre_attack": [
+        {
+          "id": "T1222.002",
+          "name": "File/Dir Permissions Modification: Linux"
+        }
+      ],
+      "evidence": "['/etc/passwd']"
+    }
+  ],
+  "evidence": {
+    "stdout_lines": 0,
+    "stderr_lines": 0,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 1,
+    "files_deleted": 1,
+    "inotify_sys_events": 5,
+    "inotify_tmp_events": 5735,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1222.002"
+    ]
+  },
+  "dimensions": {
+    "files_added": [
+      "/etc/passwd"
+    ],
+    "files_deleted": [
+      "/etc/passwd"
+    ],
+    "inotify_sys_events": [
+      "2026-03-20T03:59:17 CREATE /etc/sedsTN1ZI",
+      "2026-03-20T03:59:17 ATTRIB /etc/sedsTN1ZI",
+      "2026-03-20T03:59:17 ATTRIB /etc/sedsTN1ZI",
+      "2026-03-20T03:59:17 MODIFY /etc/sedsTN1ZI",
+      "2026-03-20T03:59:17 MOVED_TO /etc/passwd"
+    ],
+    "inotify_tmp_events": [
+      "2026-03-20T03:59:23 CREATE /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23",
+      "2026-03-20T03:59:23 MODIFY /tmp/sortc47K23"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": []
+  },
+  "mitre_attack": {
+    "T1222.002": {
+      "name": "File/Dir Permissions Modification: Linux",
+      "findings": [
+        "敏感路径写入: ['/etc/passwd']"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Unknown": [
+      "T1222.002"
+    ]
+  },
+  "deobfuscation": {
+    "original": "sed -i 's/root:x:/root::/g' /etc/passwd",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773979135",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773979157",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773979158",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773979199",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [],
+  "stderr": [],
+  "text_summary": "⚠️ 判定: SUSPICIOUS (风险分: 35/100, 置信度: LOW)\n命令: sed -i 's/root:x:/root::/g' /etc/passwd\n\n发现 1 个问题 (1 严重, 0 警告):\n  [CRITICAL] 文件变更: 敏感路径写入: ['/etc/passwd'] [T1222.002]\n\n涉及 ATT&CK 战术: Unknown\n\n建议:\n  • REVIEW: 建议人工审核此命令后再决定是否放行\n  • 置信度较低, 可能为误报, 请结合上下文判断",
+  "fast_triage": {
+    "level": "REVIEW",
+    "static_score": 0,
+    "is_legitimate": false,
+    "blacklisted": true,
+    "patterns_matched": 0,
+    "matches": [],
+    "deobfuscation_layers": 0
+  }
+}

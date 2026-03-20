@@ -1,0 +1,11 @@
+⚠️ 判定: SUSPICIOUS (风险分: 35/100, 置信度: LOW)
+命令: sed -i 's/root:x:/root::/g' /etc/passwd
+
+发现 1 个问题 (1 严重, 0 警告):
+  [CRITICAL] 文件变更: 敏感路径写入: ['/etc/passwd'] [T1222.002]
+
+涉及 ATT&CK 战术: Unknown
+
+建议:
+  • REVIEW: 建议人工审核此命令后再决定是否放行
+  • 置信度较低, 可能为误报, 请结合上下文判断

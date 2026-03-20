@@ -1,0 +1,1 @@
+{"id":"b12","category":"black","label":"malicious","desc":"passwd modify root","verdict":"SUSPICIOUS","risk_score":35,"mitre_count":1,"confidence":"LOW","match":"CORRECT"}
