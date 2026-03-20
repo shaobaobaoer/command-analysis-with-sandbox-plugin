@@ -1,0 +1,11 @@
+🚨 判定: DANGEROUS (风险分: 65/100, 置信度: LOW)
+命令: cat /etc/shadow | base64 > /tmp/exfil.txt
+
+发现 2 个问题 (1 严重, 1 警告):
+  [CRITICAL] 静态分析: 命令匹配恶意模式: shadow file exfiltration via base64 [T1048]
+  [WARN] 静态分析: 命令匹配恶意模式: reading shadow file [T1048]
+
+涉及 ATT&CK 战术: Exfiltration
+
+建议:
+  • BLOCK: 强烈建议阻止此命令执行

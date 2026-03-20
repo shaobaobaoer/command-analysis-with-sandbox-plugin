@@ -1,0 +1,96 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1048",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: shadow file exfiltration via base64"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1048",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1048"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1048 (Exfiltration Over Alternative Protocol)"
+              }
+            },
+            {
+              "id": "T1048-1",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: reading shadow file"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1048",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1048"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1048 (Exfiltration Over Alternative Protocol)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "DANGEROUS",
+            "risk_score": 65,
+            "confidence": "LOW"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1048",
+          "level": "error",
+          "message": {
+            "text": "命令匹配恶意模式: shadow file exfiltration via base64"
+          },
+          "properties": {
+            "risk_score": 40,
+            "dimension": "静态分析",
+            "evidence": "cat /etc/shadow | base64 > /tmp/exfil.txt"
+          }
+        },
+        {
+          "ruleId": "T1048-1",
+          "level": "warning",
+          "message": {
+            "text": "命令匹配恶意模式: reading shadow file"
+          },
+          "properties": {
+            "risk_score": 25,
+            "dimension": "静态分析",
+            "evidence": "cat /etc/shadow | base64 > /tmp/exfil.txt"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "cat /etc/shadow | base64 > /tmp/exfil.txt",
+            "verdict": "DANGEROUS",
+            "risk_score": 65,
+            "confidence": "LOW",
+            "timestamp": "2026-03-20T03:55:28.368349+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}
