@@ -1,205 +1,270 @@
 {
   "version": "4.1",
   "command": "python3 -c \"print('hello from python')\"",
-  "timestamp": "2026-03-20T02:07:19.897026+00:00",
-  "verdict": "SUSPICIOUS",
-  "risk_score": 50,
-  "confidence": "MEDIUM",
+  "timestamp": "2026-03-20T02:19:05.090614+00:00",
+  "verdict": "DANGEROUS",
+  "risk_score": 100,
+  "confidence": "HIGH",
   "recommendations": [
-    "REVIEW: 建议人工审核此命令后再决定是否放行"
+    "BLOCK: 强烈建议阻止此命令执行",
+    "检查 crontab -l、/etc/cron.d/、systemd services 是否被篡改",
+    "检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更"
   ],
   "is_legitimate_pattern": false,
   "findings_summary": {
-    "total": 2,
-    "critical": 1,
-    "warn": 1,
+    "total": 5,
+    "critical": 3,
+    "warn": 2,
     "info": 0,
-    "dimensions_hit": 2
+    "dimensions_hit": 5
   },
   "findings": [
     {
       "severity": "CRITICAL",
-      "dimension": "计划任务差异",
-      "description": "cron.d 含恶意内容: cron.d persistence",
-      "risk_score": 30,
+      "dimension": "用户/权限",
+      "description": "用户/权限配置被修改",
+      "risk_score": 40,
+      "mitre_attack": [
+        {
+          "id": "T1136.001",
+          "name": "Create Account: Local Account"
+        },
+        {
+          "id": "T1098",
+          "name": "Account Manipulation"
+        }
+      ],
+      "evidence": "Before hash: cb1c1e78eda84e1b2b5efd818868b63f\nAfter hash: d41d8cd98f00b204e9800998ecf8427e"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "持久化",
+      "description": "持久化机制被修改 (cron/systemd/rc.local)",
+      "risk_score": 35,
       "mitre_attack": [
         {
           "id": "T1053.003",
           "name": "Scheduled Task/Job: Cron"
+        },
+        {
+          "id": "T1543.002",
+          "name": "Create/Modify System Process: Systemd Service"
+        },
+        {
+          "id": "T1037.004",
+          "name": "Boot/Logon Init Scripts: RC Scripts"
         }
-      ],
-      "evidence": "=== /etc/cron.d/e2scrub_all ===\n30 3 * * 0 root test -e /run/systemd/system || SERVICE_MODE=1 /usr/lib/x86_64-linux-gnu/e2fsprogs/e2scrub_all_cron\n10 3 * * * root test -e /run/systemd/system || SERVIC"
+      ]
     },
     {
       "severity": "WARN",
-      "dimension": "隐藏进程",
-      "description": "检测到 5 个 /proc 中存在但 ps 不可见的进程",
+      "dimension": "Shell环境",
+      "description": "Shell 配置文件被修改",
       "risk_score": 20,
       "mitre_attack": [
         {
-          "id": "T1564.001",
-          "name": "Hide Artifacts: Hidden Files and Directories"
+          "id": "T1546.004",
+          "name": "Event Triggered Execution: .bash_profile/.bashrc"
+        }
+      ]
+    },
+    {
+      "severity": "WARN",
+      "dimension": "挂载点",
+      "description": "挂载点配置变更",
+      "risk_score": 20,
+      "mitre_attack": [
+        {
+          "id": "T1611",
+          "name": "Escape to Host"
+        }
+      ]
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "二进制完整性",
+      "description": "关键系统二进制被篡改",
+      "risk_score": 45,
+      "mitre_attack": [
+        {
+          "id": "T1554",
+          "name": "Compromise Client Software Binary"
         }
       ],
-      "evidence": "['1668', '1672', '1673', '1674', '1675']"
+      "evidence": "Before:\n06c607d76755c1bc7e994981951ee015  /bin/sh\n08999f0eb8972a24cf22cb061ce92d64  /bin/su\n0a9d284ce212a08cbce7ae5ea63629c2  /usr/bin/newgrp\n303330f9f1b6617b3b533e4dcfe1faf0  /bin/bash\n810e21e04351963c67ef5f\nAfter:\n"
     }
   ],
   "evidence": {
-    "stdout_lines": 1,
-    "stderr_lines": 0,
-    "exec_duration_sec": 1.0,
+    "stdout_lines": 0,
+    "stderr_lines": 1,
+    "exec_duration_sec": 0.0,
     "external_connections": [],
     "c2_port_hits": [],
     "files_added": 0,
-    "files_deleted": 0,
+    "files_deleted": 221689,
     "inotify_sys_events": 0,
-    "inotify_tmp_events": 6084,
-    "exit_code": 0,
-    "critical_bins_changed": false,
+    "inotify_tmp_events": 0,
+    "exit_code": -1,
+    "critical_bins_changed": true,
     "new_symlinks": 0,
     "new_file_caps": 0,
     "permission_issues": [],
     "mitre_techniques": [
+      "T1136.001",
+      "T1098",
       "T1053.003",
-      "T1564.001"
+      "T1543.002",
+      "T1037.004",
+      "T1546.004",
+      "T1611",
+      "T1554"
     ]
   },
   "dimensions": {
     "files_added": [],
-    "files_deleted": [],
-    "inotify_sys_events": [],
-    "inotify_tmp_events": [
-      "2026-03-20T02:06:42 CREATE /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li",
-      "2026-03-20T02:06:42 MODIFY /tmp/sortDFM4li"
+    "files_deleted": [
+      "/.dockerenv",
+      "/etc/.java/.systemPrefs/.system.lock",
+      "/etc/.java/.systemPrefs/.systemRootModFile",
+      "/etc/.pwd.lock",
+      "/etc/PackageKit/PackageKit.conf",
+      "/etc/PackageKit/Vendor.conf",
+      "/etc/X11/Xreset",
+      "/etc/X11/Xreset.d/README",
+      "/etc/X11/Xresources/x11-common",
+      "/etc/X11/Xsession",
+      "/etc/X11/Xsession.d/20dbus_xdg-runtime",
+      "/etc/X11/Xsession.d/20x11-common_process-args",
+      "/etc/X11/Xsession.d/30x11-common_xresources",
+      "/etc/X11/Xsession.d/35x11-common_xhost-local",
+      "/etc/X11/Xsession.d/40x11-common_xsessionrc",
+      "/etc/X11/Xsession.d/50x11-common_determine-startup",
+      "/etc/X11/Xsession.d/60x11-common_xdg_path",
+      "/etc/X11/Xsession.d/90gpg-agent",
+      "/etc/X11/Xsession.d/90x11-common_ssh-agent",
+      "/etc/X11/Xsession.d/99x11-common_start",
+      "/etc/X11/Xsession.options",
+      "/etc/X11/app-defaults/Editres",
+      "/etc/X11/app-defaults/Editres-color",
+      "/etc/X11/app-defaults/Viewres",
+      "/etc/X11/app-defaults/Viewres-color",
+      "/etc/X11/app-defaults/XFontSel",
+      "/etc/X11/app-defaults/Xfd",
+      "/etc/X11/app-defaults/Xmessage",
+      "/etc/X11/app-defaults/Xmessage-color",
+      "/etc/X11/rgb.txt",
+      "/etc/adduser.conf",
+      "/etc/alternatives/README",
+      "/etc/apt/apt.conf.d/01-vendor-ubuntu",
+      "/etc/apt/apt.conf.d/01autoremove",
+      "/etc/apt/apt.conf.d/20packagekit",
+      "/etc/apt/apt.conf.d/70debconf",
+      "/etc/apt/apt.conf.d/docker-autoremove-suggests",
+      "/etc/apt/apt.conf.d/docker-clean",
+      "/etc/apt/apt.conf.d/docker-disable-periodic-update",
+      "/etc/apt/apt.conf.d/docker-gzip-indexes",
+      "/etc/apt/apt.conf.d/docker-no-languages",
+      "/etc/apt/sources.list",
+      "/etc/apt/sources.list.d/ubuntu.sources",
+      "/etc/apt/trusted.gpg.d/ubuntu-keyring-2012-cdimage.gpg",
+      "/etc/apt/trusted.gpg.d/ubuntu-keyring-2018-archive.gpg",
+      "/etc/bash.bashrc",
+      "/etc/bash_completion.d/git-prompt",
+      "/etc/bindresvport.blacklist",
+      "/etc/ca-certificates.conf",
+      "/etc/ca-certificates/update.d/jks-keystore"
     ],
+    "inotify_sys_events": [],
+    "inotify_tmp_events": [],
     "external_connections": [],
     "suid_new": [],
-    "suid_removed": [],
+    "suid_removed": [
+      "-rwsr-xr-- 1 root messagebus 34960 Aug  9  2024 /usr/lib/dbus-1.0/dbus-daemon-launch-helper",
+      "-rwsr-xr-x 1 root root 39296 Jun  5  2025 /usr/bin/umount",
+      "-rwsr-xr-x 1 root root 44760 May 30  2024 /usr/bin/chsh",
+      "-rwsr-xr-x 1 root root 72792 May 30  2024 /usr/bin/chfn",
+      "-rwsr-xr-x 1 root root 76248 May 30  2024 /usr/bin/gpasswd",
+      "-rwxr-sr-x 1 root shadow 26944 Sep 15  2025 /usr/sbin/pam_extrausers_chkpwd",
+      "-rwxr-sr-x 1 root shadow 31040 Sep 15  2025 /usr/sbin/unix_chkpwd",
+      "-rwsr-xr-x 1 root root 55680 Jun  5  2025 /usr/bin/su",
+      "-rwsr-xr-x 1 root root 64152 May 30  2024 /usr/bin/passwd",
+      "-rwxr-sr-x 1 root shadow 27152 May 30  2024 /usr/bin/expiry",
+      "-rwxr-sr-x 1 root shadow 72184 May 30  2024 /usr/bin/chage",
+      "-rwsr-xr-x 1 root root 51584 Jun  5  2025 /usr/bin/mount",
+      "-rwsr-xr-x 1 root root 18736 Dec  2  2024 /usr/lib/polkit-1/polkit-agent-helper-1",
+      "-rwsr-xr-x 1 root root 40664 May 30  2024 /usr/bin/newgrp"
+    ],
     "new_symlinks": [],
     "new_file_caps": [],
-    "critical_bins_tampered": false,
+    "critical_bins_tampered": true,
     "high_entropy_files": [],
-    "exit_code": 0,
+    "exit_code": -1,
     "attack_chains": []
   },
   "mitre_attack": {
+    "T1136.001": {
+      "name": "Create Account: Local Account",
+      "findings": [
+        "用户/权限配置被修改"
+      ]
+    },
+    "T1098": {
+      "name": "Account Manipulation",
+      "findings": [
+        "用户/权限配置被修改"
+      ]
+    },
     "T1053.003": {
       "name": "Scheduled Task/Job: Cron",
       "findings": [
-        "cron.d 含恶意内容: cron.d persistence"
+        "持久化机制被修改 (cron/systemd/rc.local)"
       ]
     },
-    "T1564.001": {
-      "name": "Hide Artifacts: Hidden Files and Directories",
+    "T1543.002": {
+      "name": "Create/Modify System Process: Systemd Service",
       "findings": [
-        "检测到 5 个 /proc 中存在但 ps 不可见的进程"
+        "持久化机制被修改 (cron/systemd/rc.local)"
+      ]
+    },
+    "T1037.004": {
+      "name": "Boot/Logon Init Scripts: RC Scripts",
+      "findings": [
+        "持久化机制被修改 (cron/systemd/rc.local)"
+      ]
+    },
+    "T1546.004": {
+      "name": "Event Triggered Execution: .bash_profile/.bashrc",
+      "findings": [
+        "Shell 配置文件被修改"
+      ]
+    },
+    "T1611": {
+      "name": "Escape to Host",
+      "findings": [
+        "挂载点配置变更"
+      ]
+    },
+    "T1554": {
+      "name": "Compromise Client Software Binary",
+      "findings": [
+        "关键系统二进制被篡改"
       ]
     }
   },
   "mitre_tactics": {
     "Persistence": [
-      "T1053.003"
+      "T1037.004",
+      "T1053.003",
+      "T1098",
+      "T1136.001",
+      "T1543.002",
+      "T1546.004"
     ],
-    "Defense Evasion": [
-      "T1564.001"
+    "Execution": [
+      "T1611"
+    ],
+    "Unknown": [
+      "T1554"
     ]
   },
   "deobfuscation": {
@@ -210,30 +275,30 @@
   "timeline": [
     {
       "phase": "baseline",
-      "time": "1773972374",
+      "time": "1773973125",
       "desc": "基线采集完成"
     },
     {
       "phase": "probes_start",
-      "time": "1773972396",
+      "time": "1773973142",
       "desc": "探针启动 + 命令执行开始"
     },
     {
       "phase": "exec_end",
-      "time": "1773972397",
-      "desc": "命令执行结束 (耗时 1.0s, 退出码 0)"
+      "time": "1773973142",
+      "desc": "命令执行结束 (耗时 0.0s, 退出码 -1)"
     },
     {
       "phase": "post_snapshot",
-      "time": "1773972440",
+      "time": "1773973145",
       "desc": "后置快照 + 分析完成"
     }
   ],
-  "stdout": [
-    "hello from python"
+  "stdout": [],
+  "stderr": [
+    "[ERROR] Unexpected SDK error occurred: "
   ],
-  "stderr": [],
-  "text_summary": "⚠️ 判定: SUSPICIOUS (风险分: 50/100, 置信度: MEDIUM)\n命令: python3 -c \"print('hello from python')\"\n\n发现 2 个问题 (1 严重, 1 警告):\n  [CRITICAL] 计划任务差异: cron.d 含恶意内容: cron.d persistence [T1053.003]\n  [WARN] 隐藏进程: 检测到 5 个 /proc 中存在但 ps 不可见的进程 [T1564.001]\n\n涉及 ATT&CK 战术: Defense Evasion, Persistence\n\n建议:\n  • REVIEW: 建议人工审核此命令后再决定是否放行",
+  "text_summary": "🚨 判定: DANGEROUS (风险分: 100/100, 置信度: HIGH)\n命令: python3 -c \"print('hello from python')\"\n\n发现 5 个问题 (3 严重, 2 警告):\n  [CRITICAL] 用户/权限: 用户/权限配置被修改 [T1136.001, T1098]\n  [CRITICAL] 持久化: 持久化机制被修改 (cron/systemd/rc.local) [T1053.003, T1543.002, T1037.004]\n  [CRITICAL] 二进制完整性: 关键系统二进制被篡改 [T1554]\n  [WARN] Shell环境: Shell 配置文件被修改 [T1546.004]\n  [WARN] 挂载点: 挂载点配置变更 [T1611]\n\n涉及 ATT&CK 战术: Execution, Persistence, Unknown\n\n建议:\n  • BLOCK: 强烈建议阻止此命令执行\n  • 检查 crontab -l、/etc/cron.d/、systemd services 是否被篡改\n  • 检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更",
   "fast_triage": {
     "level": "PASS",
     "static_score": 0,

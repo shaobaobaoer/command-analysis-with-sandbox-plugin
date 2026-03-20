@@ -22,9 +22,12 @@ everything's installed!
 [0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
 [0;32m[ OK ][0m opensandbox-server + SDK 已安装
 [0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
-[0;32m[ OK ][0m 配置写入: /tmp/tmp.qQpFVtg4G4/sandbox.toml
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.2kUMWy1LDT/sandbox.toml
 [0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
-[0;32m[ OK ][0m Server 就绪 (PID: 380876, port: 8080)
+[0;32m[ OK ][0m Server 就绪 (PID: 413229, port: 8080)
+[0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
+
+[0;32m[ OK ][0m Server 就绪 (PID: 413000, port: 8080)
 [0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
 
 
@@ -32,10 +35,25 @@ everything's installed!
   1/9  创建隔离沙箱
 ============================================================================
   镜像: opensandbox/code-interpreter:v1.0.2
-  Sandbox ID: e5426255-7277-4992-90e1-a21036f0aa60
+
+============================================================================
+  1/9  创建隔离沙箱
+============================================================================
+  镜像: opensandbox/code-interpreter:v1.0.2
+  Sandbox ID: f8ac65c6-aea5-4cae-87b8-19f86e970bf1
 
 ============================================================================
   2/9  安装监控工具 (快照前, 避免污染基线)
+============================================================================
+  Sandbox ID: ebb866cf-19e8-4348-a02f-fcacea74ff75
+
+============================================================================
+  2/9  安装监控工具 (快照前, 避免污染基线)
+============================================================================
+  监控工具已安装
+
+============================================================================
+  3/9  采集执行前基线 (24 维度)
 ============================================================================
   监控工具已安装
 
@@ -46,9 +64,20 @@ everything's installed!
   SUID/SGID    : 14
   符号链接     : 483
   文件能力     : 1
-  基线采集耗时 : 14.5s
-  CPU          : 0.1%
-  Memory       : 1691.7/15069.3 MiB
+  基线采集耗时 : 16.1s
+  CPU          : 24.4%
+  Memory       : 2266.2/15069.3 MiB
+
+============================================================================
+  4/9  启动多层探针 + 执行待测命令
+============================================================================
+  文件数       : 221689
+  SUID/SGID    : 14
+  符号链接     : 483
+  文件能力     : 1
+  基线采集耗时 : 15.6s
+  CPU          : 10.2%
+  Memory       : 2264.9/15069.3 MiB
 
 ============================================================================
   4/9  启动多层探针 + 执行待测命令
@@ -56,68 +85,78 @@ everything's installed!
   [探针1] inotify: /usr/local/bin /usr/bin /usr/sbin /etc /root /home
   [探针2] inotify: /tmp /var/tmp /dev/shm (独立探针)
   [探针3] network: /proc/net/tcp 轮询 (0.5s)
-Traceback (most recent call last):
-  File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
-    return self._loop.run_until_complete(task)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
-    return future.result()
-           ^^^^^^^^^^^^^^^
-  File "/tmp/tmp.qQpFVtg4G4/checker.py", line 1150, in main
-    await run_cmd(sandbox, "cp /etc/resolv.conf /tmp/.resolv_baseline 2>/dev/null || true", 5)
-  File "/tmp/tmp.qQpFVtg4G4/checker.py", line 767, in run_cmd
-    r = await asyncio.wait_for(sb.commands.run(cmd), timeout=timeout_sec)
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.12/asyncio/tasks.py", line 520, in wait_for
-    return await fut
-           ^^^^^^^^^
-  File "/tmp/tmp.qQpFVtg4G4/.venv/lib/python3.12/site-packages/opensandbox/adapters/command_adapter.py", line 193, in run
-    async for line in response.aiter_lines():
-  File "/tmp/tmp.qQpFVtg4G4/.venv/lib/python3.12/site-packages/httpx/_models.py", line 1031, in aiter_lines
-    async for text in self.aiter_text():
-  File "/tmp/tmp.qQpFVtg4G4/.venv/lib/python3.12/site-packages/httpx/_models.py", line 1018, in aiter_text
-    async for byte_content in self.aiter_bytes():
-  File "/tmp/tmp.qQpFVtg4G4/.venv/lib/python3.12/site-packages/httpx/_models.py", line 997, in aiter_bytes
-    async for raw_bytes in self.aiter_raw():
-  File "/tmp/tmp.qQpFVtg4G4/.venv/lib/python3.12/site-packages/httpx/_models.py", line 1055, in aiter_raw
-    async for raw_stream_bytes in self.stream:
-  File "/tmp/tmp.qQpFVtg4G4/.venv/lib/python3.12/site-packages/httpx/_client.py", line 176, in __aiter__
-    async for chunk in self._stream:
-  File "/tmp/tmp.qQpFVtg4G4/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 271, in __aiter__
-    async for part in self._httpcore_stream:
-  File "/tmp/tmp.qQpFVtg4G4/.venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 407, in __aiter__
-    raise exc from None
-  File "/tmp/tmp.qQpFVtg4G4/.venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 403, in __aiter__
-    async for part in self._stream:
-  File "/tmp/tmp.qQpFVtg4G4/.venv/lib/python3.12/site-packages/httpcore/_async/http11.py", line 342, in __aiter__
-    raise exc
-  File "/tmp/tmp.qQpFVtg4G4/.venv/lib/python3.12/site-packages/httpcore/_async/http11.py", line 334, in __aiter__
-    async for chunk in self._connection._receive_response_body(**kwargs):
-  File "/tmp/tmp.qQpFVtg4G4/.venv/lib/python3.12/site-packages/httpcore/_async/http11.py", line 203, in _receive_response_body
-    event = await self._receive_event(timeout=timeout)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.qQpFVtg4G4/.venv/lib/python3.12/site-packages/httpcore/_async/http11.py", line 217, in _receive_event
-    data = await self._network_stream.read(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.qQpFVtg4G4/.venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 35, in read
-    return await self._stream.receive(max_bytes=max_bytes)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/tmp.qQpFVtg4G4/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 1269, in receive
-    await self._protocol.read_event.wait()
-  File "/usr/lib/python3.12/asyncio/locks.py", line 212, in wait
-    await fut
-asyncio.exceptions.CancelledError
+  [探针5] process: 进程树轮询 (1s)
 
-During handling of the above exception, another exception occurred:
+  --- 命令链分解分析 ---
+    命令包含 2 个执行阶段:
+    [1] [OK] curl -LsSf https://astral.sh/uv/install.sh |
+    [2] [OK] sh END
 
-Traceback (most recent call last):
-  File "/tmp/tmp.qQpFVtg4G4/checker.py", line 2144, in <module>
-    asyncio.run(main())
-  File "/usr/lib/python3.12/asyncio/runners.py", line 194, in run
-    return runner.run(main)
-           ^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.12/asyncio/runners.py", line 123, in run
-    raise KeyboardInterrupt()
-KeyboardInterrupt
-[0;36m[INFO][0m  Cleaning up...
-[0;32m[ OK ][0m Cleanup done.
+  --- 命令去混淆分析 ---
+    PASS  未发现编码/混淆层
+
+  --- 命令静态分析 ---
+    !! [T1105] download and execute (curl|sh) (score: 25)
+    [INFO] 命令匹配合法安装器模式, 部分告警已降权
+
+  $ curl -LsSf https://astral.sh/uv/install.sh | sh
+  ────────────────────────────────────────────────────────────
+  [探针1] inotify: /usr/local/bin /usr/bin /usr/sbin /etc /root /home
+  [探针2] inotify: /tmp /var/tmp /dev/shm (独立探针)
+  [探针3] network: /proc/net/tcp 轮询 (0.5s)
+  [探针5] process: 进程树轮询 (1s)
+
+  --- 命令链分解分析 ---
+    命令包含 2 个执行阶段:
+    [1] [OK] curl -LsSf https://astral.sh/uv/install.sh |
+    [2] [OK] sh END
+
+  --- 命令去混淆分析 ---
+    PASS  未发现编码/混淆层
+
+  --- 命令静态分析 ---
+    !! [T1105] download and execute (curl|sh) (score: 25)
+    [INFO] 命令匹配合法安装器模式, 部分告警已降权
+
+  $ curl -LsSf https://astral.sh/uv/install.sh | sh
+  ────────────────────────────────────────────────────────────
+
+  耗时     : 3.1s
+  退出码   : 0
+  stdout   : 4 行
+  stderr   : 3 行
+
+  --- stdout (前 50 行) ---
+    | installing to /root/.local/bin
+    |   uv
+    |   uvx
+    | everything's installed!
+
+  --- stderr (前 30 行) ---
+    | downloading uv 0.10.12 x86_64-unknown-linux-gnu
+    | no checksums to verify
+    | WARN: The following commands are shadowed by other commands in your PATH: uv uvx
+
+============================================================================
+  5/9  采集执行后快照 (全维度)
+============================================================================
+
+  耗时     : 4.3s
+  退出码   : 0
+  stdout   : 4 行
+  stderr   : 3 行
+
+  --- stdout (前 50 行) ---
+    | installing to /root/.local/bin
+    |   uv
+    |   uvx
+    | everything's installed!
+
+  --- stderr (前 30 行) ---
+    | downloading uv 0.10.12 x86_64-unknown-linux-gnu
+    | no checksums to verify
+    | WARN: The following commands are shadowed by other commands in your PATH: uv uvx
+
+============================================================================
+  5/9  采集执行后快照 (全维度)
+============================================================================

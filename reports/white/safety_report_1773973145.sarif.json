@@ -1,0 +1,186 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1136.001",
+              "name": "用户/权限",
+              "shortDescription": {
+                "text": "用户/权限配置被修改"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1136/001",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1136.001",
+                  "mitre/T1098"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1136.001 (Create Account: Local Account), T1098 (Account Manipulation)"
+              }
+            },
+            {
+              "id": "T1053.003",
+              "name": "持久化",
+              "shortDescription": {
+                "text": "持久化机制被修改 (cron/systemd/rc.local)"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1053/003",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1053.003",
+                  "mitre/T1543.002",
+                  "mitre/T1037.004"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1053.003 (Scheduled Task/Job: Cron), T1543.002 (Create/Modify System Process: Systemd Service), T1037.004 (Boot/Logon Init Scripts: RC Scripts)"
+              }
+            },
+            {
+              "id": "T1546.004",
+              "name": "Shell环境",
+              "shortDescription": {
+                "text": "Shell 配置文件被修改"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1546/004",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1546.004"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1546.004 (Event Triggered Execution: .bash_profile/.bashrc)"
+              }
+            },
+            {
+              "id": "T1611",
+              "name": "挂载点",
+              "shortDescription": {
+                "text": "挂载点配置变更"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1611",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1611"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1611 (Escape to Host)"
+              }
+            },
+            {
+              "id": "T1554",
+              "name": "二进制完整性",
+              "shortDescription": {
+                "text": "关键系统二进制被篡改"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1554",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1554"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1554 (Compromise Client Software Binary)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "DANGEROUS",
+            "risk_score": 100,
+            "confidence": "HIGH"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1136.001",
+          "level": "error",
+          "message": {
+            "text": "用户/权限配置被修改"
+          },
+          "properties": {
+            "risk_score": 40,
+            "dimension": "用户/权限",
+            "evidence": "Before hash: cb1c1e78eda84e1b2b5efd818868b63f\nAfter hash: d41d8cd98f00b204e9800998ecf8427e"
+          }
+        },
+        {
+          "ruleId": "T1053.003",
+          "level": "error",
+          "message": {
+            "text": "持久化机制被修改 (cron/systemd/rc.local)"
+          },
+          "properties": {
+            "risk_score": 35,
+            "dimension": "持久化"
+          }
+        },
+        {
+          "ruleId": "T1546.004",
+          "level": "warning",
+          "message": {
+            "text": "Shell 配置文件被修改"
+          },
+          "properties": {
+            "risk_score": 20,
+            "dimension": "Shell环境"
+          }
+        },
+        {
+          "ruleId": "T1611",
+          "level": "warning",
+          "message": {
+            "text": "挂载点配置变更"
+          },
+          "properties": {
+            "risk_score": 20,
+            "dimension": "挂载点"
+          }
+        },
+        {
+          "ruleId": "T1554",
+          "level": "error",
+          "message": {
+            "text": "关键系统二进制被篡改"
+          },
+          "properties": {
+            "risk_score": 45,
+            "dimension": "二进制完整性",
+            "evidence": "Before:\n06c607d76755c1bc7e994981951ee015  /bin/sh\n08999f0eb8972a24cf22cb061ce92d64  /bin/su\n0a9d284ce212a08cbce7ae5ea63629c2  /usr/bin/newgrp\n303330f9f1b6617b3b533e4dcfe1faf0  /bin/bash\n810e21e04351963c67ef5f\nAfter:\n"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "python3 -c \"print('hello from python')\"",
+            "verdict": "DANGEROUS",
+            "risk_score": 100,
+            "confidence": "HIGH",
+            "timestamp": "2026-03-20T02:19:05.090614+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}

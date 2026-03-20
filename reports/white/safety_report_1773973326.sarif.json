@@ -1,0 +1,122 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "CMD-001",
+              "name": "资源",
+              "shortDescription": {
+                "text": "内存异常增长 (+289 MiB)"
+              },
+              "helpUri": "",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety"
+                ]
+              }
+            },
+            {
+              "id": "T1053.003",
+              "name": "计划任务差异",
+              "shortDescription": {
+                "text": "cron.d 含恶意内容: cron.d persistence"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1053/003",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1053.003"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1053.003 (Scheduled Task/Job: Cron)"
+              }
+            },
+            {
+              "id": "T1564.001",
+              "name": "隐藏进程",
+              "shortDescription": {
+                "text": "检测到 5 个 /proc 中存在但 ps 不可见的进程"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1564/001",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1564.001"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1564.001 (Hide Artifacts: Hidden Files and Directories)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "DANGEROUS",
+            "risk_score": 60,
+            "confidence": "MEDIUM"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "CMD-001",
+          "level": "warning",
+          "message": {
+            "text": "内存异常增长 (+289 MiB)"
+          },
+          "properties": {
+            "risk_score": 10,
+            "dimension": "资源",
+            "evidence": "Memory delta: 289 MiB"
+          }
+        },
+        {
+          "ruleId": "T1053.003",
+          "level": "error",
+          "message": {
+            "text": "cron.d 含恶意内容: cron.d persistence"
+          },
+          "properties": {
+            "risk_score": 30,
+            "dimension": "计划任务差异",
+            "evidence": "=== /etc/cron.d/e2scrub_all ===\n30 3 * * 0 root test -e /run/systemd/system || SERVICE_MODE=1 /usr/lib/x86_64-linux-gnu/e2fsprogs/e2scrub_all_cron\n10 3 * * * root test -e /run/systemd/system || SERVIC"
+          }
+        },
+        {
+          "ruleId": "T1564.001",
+          "level": "warning",
+          "message": {
+            "text": "检测到 5 个 /proc 中存在但 ps 不可见的进程"
+          },
+          "properties": {
+            "risk_score": 20,
+            "dimension": "隐藏进程",
+            "evidence": "['1676', '1678', '1679', '1680', '1681']"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "ls -la /",
+            "verdict": "DANGEROUS",
+            "risk_score": 60,
+            "confidence": "MEDIUM",
+            "timestamp": "2026-03-20T02:22:06.868789+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}
