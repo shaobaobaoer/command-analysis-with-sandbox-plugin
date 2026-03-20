@@ -1,0 +1,34 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [],
+          "properties": {
+            "verdict": "LIKELY_SAFE",
+            "risk_score": 0,
+            "confidence": "HIGH"
+          }
+        }
+      },
+      "results": [],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "echo 'hello world'",
+            "verdict": "LIKELY_SAFE",
+            "risk_score": 0,
+            "confidence": "HIGH",
+            "timestamp": "2026-03-20T03:34:40.199577+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}

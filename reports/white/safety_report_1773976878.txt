@@ -1,0 +1,10 @@
+🔶 判定: LOW_RISK (风险分: 20/100, 置信度: MEDIUM)
+命令: git --version
+
+发现 1 个问题 (0 严重, 1 警告):
+  [WARN] Shell环境: Shell 配置文件被修改 [T1546.004]
+
+涉及 ATT&CK 战术: Persistence
+
+建议:
+  • ALLOW: 风险较低, 可考虑放行但建议记录审计日志

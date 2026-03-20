@@ -1,0 +1,7 @@
+✅ 判定: LIKELY_SAFE (风险分: 0/100, 置信度: HIGH)
+命令: echo 'hello world'
+
+全部 24 维度检查通过, 命令安全。
+
+建议:
+  • ALLOW: 命令安全, 可放行

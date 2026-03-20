@@ -1,0 +1,65 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1546.004",
+              "name": "Shell环境",
+              "shortDescription": {
+                "text": "Shell 配置文件被修改"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1546/004",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1546.004"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1546.004 (Event Triggered Execution: .bash_profile/.bashrc)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "LOW_RISK",
+            "risk_score": 20,
+            "confidence": "MEDIUM"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1546.004",
+          "level": "warning",
+          "message": {
+            "text": "Shell 配置文件被修改"
+          },
+          "properties": {
+            "risk_score": 20,
+            "dimension": "Shell环境"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "git --version",
+            "verdict": "LOW_RISK",
+            "risk_score": 20,
+            "confidence": "MEDIUM",
+            "timestamp": "2026-03-20T03:21:18.087203+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}

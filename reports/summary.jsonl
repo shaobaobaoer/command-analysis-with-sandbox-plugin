@@ -1,4 +1,1 @@
-{"id":"b08","category":"black","label":"malicious","desc":"ssh key injection","verdict":"DANGEROUS","risk_score":100
--1,"mitre_count":0
-0,"confidence":"HIGH
-N/A","match":"CORRECT"}
+{"id":"w01","category":"white","label":"safe","desc":"echo hello","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
