@@ -1,2 +1,2 @@
-{"id":"w20","category":"white","label":"safe","desc":"env check","verdict":"SUSPICIOUS","risk_score":40,"mitre_count":2,"confidence":"LOW","match":"WRONG"}
-{"id":"w04","category":"white","label":"safe","desc":"list files","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
+{"id":"w21","category":"white","label":"safe","desc":"docker build","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
+{"id":"w05","category":"white","label":"safe","desc":"uv installer","verdict":"LOW_RISK","risk_score":12,"mitre_count":1,"confidence":"MEDIUM","match":"CORRECT"}

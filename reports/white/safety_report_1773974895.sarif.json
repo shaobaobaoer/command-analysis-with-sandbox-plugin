@@ -1,0 +1,66 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1105",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: download and execute (curl|sh)"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1105",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1105"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1105 (Ingress Tool Transfer)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "LOW_RISK",
+            "risk_score": 12,
+            "confidence": "MEDIUM"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1105",
+          "level": "warning",
+          "message": {
+            "text": "命令匹配恶意模式: download and execute (curl|sh)"
+          },
+          "properties": {
+            "risk_score": 12,
+            "dimension": "静态分析",
+            "evidence": "curl -LsSf https://astral.sh/uv/install.sh | sh"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "curl -LsSf https://astral.sh/uv/install.sh | sh",
+            "verdict": "LOW_RISK",
+            "risk_score": 12,
+            "confidence": "MEDIUM",
+            "timestamp": "2026-03-20T02:48:15.501478+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}
