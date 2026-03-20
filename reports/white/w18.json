@@ -1,0 +1,238 @@
+{
+  "version": "4.1",
+  "command": "date && uptime",
+  "timestamp": "2026-03-20T02:43:17.576318+00:00",
+  "verdict": "SUSPICIOUS",
+  "risk_score": 30,
+  "confidence": "MEDIUM",
+  "recommendations": [
+    "REVIEW: 建议人工审核此命令后再决定是否放行"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 2,
+    "critical": 0,
+    "warn": 2,
+    "info": 0,
+    "dimensions_hit": 2
+  },
+  "findings": [
+    {
+      "severity": "WARN",
+      "dimension": "资源",
+      "description": "内存异常增长 (+265 MiB)",
+      "risk_score": 10,
+      "evidence": "Memory delta: 265 MiB"
+    },
+    {
+      "severity": "WARN",
+      "dimension": "挂载点",
+      "description": "挂载点配置变更",
+      "risk_score": 20,
+      "mitre_attack": [
+        {
+          "id": "T1611",
+          "name": "Escape to Host"
+        }
+      ]
+    }
+  ],
+  "evidence": {
+    "command_chain": {
+      "stages": 2,
+      "connectors": [
+        "&&",
+        "END"
+      ],
+      "safe_then_evil": false
+    },
+    "stdout_lines": 2,
+    "stderr_lines": 0,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 0,
+    "files_deleted": 0,
+    "inotify_sys_events": 0,
+    "inotify_tmp_events": 5235,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1611"
+    ]
+  },
+  "dimensions": {
+    "files_added": [],
+    "files_deleted": [],
+    "inotify_sys_events": [],
+    "inotify_tmp_events": [
+      "2026-03-20T02:42:40 CREATE /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd",
+      "2026-03-20T02:42:40 MODIFY /tmp/sortUDTLEd"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": []
+  },
+  "mitre_attack": {
+    "T1611": {
+      "name": "Escape to Host",
+      "findings": [
+        "挂载点配置变更"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Execution": [
+      "T1611"
+    ]
+  },
+  "deobfuscation": {
+    "original": "date && uptime",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773974532",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773974555",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773974556",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773974598",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [
+    "Fri Mar 20 02:42:35 UTC 2026",
+    " 02:42:35 up 20:24,  0 user,  load average: 2.96, 2.40, 1.97"
+  ],
+  "stderr": [],
+  "text_summary": "⚠️ 判定: SUSPICIOUS (风险分: 30/100, 置信度: MEDIUM)\n命令: date && uptime\n\n发现 2 个问题 (0 严重, 2 警告):\n  [WARN] 资源: 内存异常增长 (+265 MiB)\n  [WARN] 挂载点: 挂载点配置变更 [T1611]\n\n涉及 ATT&CK 战术: Execution\n\n建议:\n  • REVIEW: 建议人工审核此命令后再决定是否放行",
+  "fast_triage": {
+    "level": "PASS",
+    "static_score": 0,
+    "is_legitimate": false,
+    "blacklisted": false,
+    "patterns_matched": 0,
+    "matches": [],
+    "deobfuscation_layers": 0
+  }
+}

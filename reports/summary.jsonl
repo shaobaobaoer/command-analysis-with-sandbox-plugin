@@ -1,2 +1,2 @@
-{"id":"w17","category":"white","label":"safe","desc":"grep in files","verdict":"LOW_RISK","risk_score":15,"mitre_count":1,"confidence":"MEDIUM","match":"CORRECT"}
-{"id":"w01","category":"white","label":"safe","desc":"echo hello","verdict":"LOW_RISK","risk_score":20,"mitre_count":1,"confidence":"MEDIUM","match":"CORRECT"}
+{"id":"w18","category":"white","label":"safe","desc":"date and uptime","verdict":"SUSPICIOUS","risk_score":30,"mitre_count":1,"confidence":"MEDIUM","match":"WRONG"}
+{"id":"w02","category":"white","label":"safe","desc":"python print","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}

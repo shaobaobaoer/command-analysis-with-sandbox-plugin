@@ -1,0 +1,11 @@
+⚠️ 判定: SUSPICIOUS (风险分: 30/100, 置信度: MEDIUM)
+命令: date && uptime
+
+发现 2 个问题 (0 严重, 2 警告):
+  [WARN] 资源: 内存异常增长 (+265 MiB)
+  [WARN] 挂载点: 挂载点配置变更 [T1611]
+
+涉及 ATT&CK 战术: Execution
+
+建议:
+  • REVIEW: 建议人工审核此命令后再决定是否放行

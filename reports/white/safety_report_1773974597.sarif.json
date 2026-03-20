@@ -1,0 +1,91 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "CMD-001",
+              "name": "资源",
+              "shortDescription": {
+                "text": "内存异常增长 (+265 MiB)"
+              },
+              "helpUri": "",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety"
+                ]
+              }
+            },
+            {
+              "id": "T1611",
+              "name": "挂载点",
+              "shortDescription": {
+                "text": "挂载点配置变更"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1611",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1611"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1611 (Escape to Host)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "SUSPICIOUS",
+            "risk_score": 30,
+            "confidence": "MEDIUM"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "CMD-001",
+          "level": "warning",
+          "message": {
+            "text": "内存异常增长 (+265 MiB)"
+          },
+          "properties": {
+            "risk_score": 10,
+            "dimension": "资源",
+            "evidence": "Memory delta: 265 MiB"
+          }
+        },
+        {
+          "ruleId": "T1611",
+          "level": "warning",
+          "message": {
+            "text": "挂载点配置变更"
+          },
+          "properties": {
+            "risk_score": 20,
+            "dimension": "挂载点"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "date && uptime",
+            "verdict": "SUSPICIOUS",
+            "risk_score": 30,
+            "confidence": "MEDIUM",
+            "timestamp": "2026-03-20T02:43:17.576318+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}
