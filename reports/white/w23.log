@@ -482,3 +482,65 @@ everything's installed!
 ============================================================================
   9/9  综合判定
 ============================================================================
+
+  +──────────────────────────────────────────────────────────────────────────+
+  |  [~~] 判定: LOW_RISK              风险评分:  22/100            |
+  |  [████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]                              |
+  |  置信度: MEDIUM  维度覆盖:  2/24              |
+  +──────────────────────────────────────────────────────────────────────────+
+
+  命令           : curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y 2>/dev/null || echo 'skip'
+  合法命令模式   : 是
+  退出码         : 0
+  文件 +/-       : +49607 / -2
+  inotify 事件   : 104856 系统 + 9331 临时
+  外部连接       : 2 个
+  SUID/SGID 变更 : +0
+  二进制完整性   : PASS
+  新增符号链接   : 13
+  新增文件能力   : 0
+  执行耗时       : 31.1s
+  MITRE 技术     : 2 个
+  ATT&CK 战术    : Command and Control, Persistence
+  发现           : 0 critical, 2 warnings, 0 info
+  置信度         : MEDIUM
+
+  详细发现 (按严重程度排序):
+    [ ! ] [静态分析] 命令匹配恶意模式: download and execute (curl|sh) [T1105] (score: 12)
+    [ ! ] [Shell环境] Shell 配置文件被修改 [T1546.004] (score: 10)
+
+  安全建议:
+    -> ALLOW: 风险较低, 可考虑放行但建议记录审计日志
+
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773975078.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773975078.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773975078.sarif.json
+
+  快速预判: REVIEW (静态分: 12, 模式匹配: 1)
+  [INFO] 快速预判与深度分析不一致 — 静态分析可能过于敏感
+
+============================================================================
+  人类可读摘要:
+============================================================================
+  🔶 判定: LOW_RISK (风险分: 22/100, 置信度: MEDIUM)
+  命令: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y 2>/dev/null || echo 'skip'
+  
+  发现 2 个问题 (0 严重, 2 警告):
+    [WARN] 静态分析: 命令匹配恶意模式: download and execute (curl|sh) [T1105]
+    [WARN] Shell环境: Shell 配置文件被修改 [T1546.004]
+  
+  涉及 ATT&CK 战术: Command and Control, Persistence
+  
+  建议:
+    • ALLOW: 风险较低, 可考虑放行但建议记录审计日志
+
+  沙箱已销毁。
+
+
+[0;36m[INFO][0m  [Step 7/7] 完成!
+[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773975078.sarif.json
+  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773975078.sarif.json
+  快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
+
+[0;36m[INFO][0m  Cleaning up...
+[0;32m[ OK ][0m Cleanup done.
