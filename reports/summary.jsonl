@@ -1,1 +1,1 @@
-{"id":"b14","category":"black","label":"malicious","desc":"download and exec","verdict":"SUSPICIOUS","risk_score":35,"mitre_count":1,"confidence":"LOW","match":"CORRECT"}
+{"id":"b15","category":"black","label":"malicious","desc":"profile backdoor","verdict":"DANGEROUS","risk_score":100,"mitre_count":3,"confidence":"HIGH","match":"CORRECT"}

