@@ -1,1 +1,1 @@
-{"id":"w03","category":"white","label":"safe","desc":"git version","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
+{"id":"w04","category":"white","label":"safe","desc":"list files","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
