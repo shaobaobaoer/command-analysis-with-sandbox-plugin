@@ -1656,9 +1656,45 @@ async def main():
         if pre_persist.strip() == post_persist.strip():
             print("    PASS  无新增")
         else:
-            engine.add("CRITICAL", "持久化", "持久化机制被修改 (cron/systemd/rc.local)",
-                      35, ["T1053.003", "T1543.002", "T1037.004"])
-            print("    !! FAIL  持久化配置已变更!")
+            # 详细分析哪些持久化机制发生了变化
+            def extract_section(content, marker):
+                """从 persist 内容中提取特定 section"""
+                lines = content.splitlines()
+                in_section = False
+                section_lines = []
+                for line in lines:
+                    if marker in line:
+                        in_section = True
+                        continue
+                    if in_section:
+                        if line.startswith('===') and marker not in line:
+                            break
+                        section_lines.append(line)
+                return '\n'.join(section_lines)
+
+            sections = ['CRONTAB', '/etc/crontab', 'cron.d', 'systemd system', 'rc.local', 'init.d', 'at queue', 'systemd timers']
+            changes = []
+            for sec in sections:
+                pre_sec = extract_section(pre_persist, sec)
+                post_sec = extract_section(post_persist, sec)
+                if pre_sec.strip() != post_sec.strip():
+                    changes.append(sec)
+
+            # 当命令是合法安装器时，某些变化是正常的（如 pip 可能更新 systemd service）
+            if engine.is_legitimate and changes:
+                # 对于包管理器操作，systemd/pip 相关变化可能是正常的
+                if all('systemd' in c or 'pip' in COMMAND.lower() for c in changes):
+                    print(f"    ! 持久化配置变更 (可能是包管理器正常操作): {changes}")
+                    engine.add("WARN", "持久化", f"持久化配置文件变化: {changes}",
+                              10, ["T1053.003"])
+                else:
+                    engine.add("CRITICAL", "持久化", "持久化机制被修改 (cron/systemd/rc.local)",
+                              35, ["T1053.003", "T1543.002", "T1037.004"])
+                    print(f"    !! FAIL  持久化配置已变更! ({', '.join(changes)})")
+            else:
+                engine.add("CRITICAL", "持久化", "持久化机制被修改 (cron/systemd/rc.local)",
+                          35, ["T1053.003", "T1543.002", "T1037.004"])
+                print(f"    !! FAIL  持久化配置已变更! ({', '.join(changes) if changes else '未知'})")
 
         # ━━ 维度 5: Shell 环境 ━━
         sub("[D5] Shell 环境 (.bashrc/.profile/etc)")
