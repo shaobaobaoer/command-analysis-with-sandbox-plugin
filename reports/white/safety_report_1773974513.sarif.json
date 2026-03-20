@@ -1,0 +1,65 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1048",
+              "name": "输出分析",
+              "shortDescription": {
+                "text": "passwd file contents in output"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1048",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1048"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1048 (Exfiltration Over Alternative Protocol)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "LOW_RISK",
+            "risk_score": 15,
+            "confidence": "MEDIUM"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1048",
+          "level": "warning",
+          "message": {
+            "text": "passwd file contents in output"
+          },
+          "properties": {
+            "risk_score": 15,
+            "dimension": "输出分析"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "grep -r 'root' /etc/passwd 2>/dev/null | head -5",
+            "verdict": "LOW_RISK",
+            "risk_score": 15,
+            "confidence": "MEDIUM",
+            "timestamp": "2026-03-20T02:41:53.031569+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}

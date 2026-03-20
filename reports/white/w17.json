@@ -1,0 +1,230 @@
+{
+  "version": "4.1",
+  "command": "grep -r 'root' /etc/passwd 2>/dev/null | head -5",
+  "timestamp": "2026-03-20T02:41:53.031569+00:00",
+  "verdict": "LOW_RISK",
+  "risk_score": 15,
+  "confidence": "MEDIUM",
+  "recommendations": [
+    "ALLOW: 风险较低, 可考虑放行但建议记录审计日志"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 1,
+    "critical": 0,
+    "warn": 1,
+    "info": 0,
+    "dimensions_hit": 1
+  },
+  "findings": [
+    {
+      "severity": "WARN",
+      "dimension": "输出分析",
+      "description": "passwd file contents in output",
+      "risk_score": 15,
+      "mitre_attack": [
+        {
+          "id": "T1048",
+          "name": "Exfiltration Over Alternative Protocol"
+        }
+      ]
+    }
+  ],
+  "evidence": {
+    "command_chain": {
+      "stages": 2,
+      "connectors": [
+        "|",
+        "END"
+      ],
+      "safe_then_evil": false
+    },
+    "stdout_lines": 1,
+    "stderr_lines": 0,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 0,
+    "files_deleted": 0,
+    "inotify_sys_events": 0,
+    "inotify_tmp_events": 5164,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1048"
+    ]
+  },
+  "dimensions": {
+    "files_added": [],
+    "files_deleted": [],
+    "inotify_sys_events": [],
+    "inotify_tmp_events": [
+      "2026-03-20T02:41:14 CREATE /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm",
+      "2026-03-20T02:41:14 MODIFY /tmp/sortoug2hm"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": []
+  },
+  "mitre_attack": {
+    "T1048": {
+      "name": "Exfiltration Over Alternative Protocol",
+      "findings": [
+        "passwd file contents in output"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Exfiltration": [
+      "T1048"
+    ]
+  },
+  "deobfuscation": {
+    "original": "grep -r 'root' /etc/passwd 2>/dev/null | head -5",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773974445",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773974468",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773974469",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773974513",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [
+    "root:x:0:0:root:/root:/bin/bash"
+  ],
+  "stderr": [],
+  "text_summary": "🔶 判定: LOW_RISK (风险分: 15/100, 置信度: MEDIUM)\n命令: grep -r 'root' /etc/passwd 2>/dev/null | head -5\n\n发现 1 个问题 (0 严重, 1 警告):\n  [WARN] 输出分析: passwd file contents in output [T1048]\n\n涉及 ATT&CK 战术: Exfiltration\n\n建议:\n  • ALLOW: 风险较低, 可考虑放行但建议记录审计日志",
+  "fast_triage": {
+    "level": "REVIEW",
+    "static_score": 0,
+    "is_legitimate": false,
+    "blacklisted": true,
+    "patterns_matched": 0,
+    "matches": [],
+    "deobfuscation_layers": 0
+  }
+}
