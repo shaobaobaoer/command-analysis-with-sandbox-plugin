@@ -1,0 +1,10 @@
+🔶 判定: LOW_RISK (风险分: 12/100, 置信度: MEDIUM)
+命令: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+发现 1 个问题 (0 严重, 1 警告):
+  [WARN] 静态分析: 命令匹配恶意模式: download and execute (curl|sh) [T1105]
+
+涉及 ATT&CK 战术: Command and Control
+
+建议:
+  • ALLOW: 风险较低, 可考虑放行但建议记录审计日志

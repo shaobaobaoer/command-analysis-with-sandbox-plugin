@@ -22,19 +22,19 @@ everything's installed!
 [0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
 [0;32m[ OK ][0m opensandbox-server + SDK 已安装
 [0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
-[0;32m[ OK ][0m 配置写入: /tmp/tmp.kdhyoS7SnG/sandbox.toml
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.MVS3d6LaNE/sandbox.toml
 [0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
-[0;32m[ OK ][0m Server 就绪 (PID: 606757, port: 8080)
+[0;32m[ OK ][0m Server 就绪 (PID: 643599, port: 8080)
 [0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
 
-/tmp/tmp.kdhyoS7SnG/checker.py:803: SyntaxWarning: invalid escape sequence '\$'
+/tmp/tmp.MVS3d6LaNE/checker.py:803: SyntaxWarning: invalid escape sequence '\$'
   "echo '=== cron.d ==='; for f in /etc/cron.d/*; do [ -f \"\$f\" ] && echo \"--- \$f ---\" && cat \"\$f\"; done 2>/dev/null || true; "
 
 ============================================================================
   1/9  创建隔离沙箱
 ============================================================================
   镜像: opensandbox/code-interpreter:v1.0.2
-  Sandbox ID: 1bdef06d-7a44-46c7-b7c9-cf2a80e07457
+  Sandbox ID: b98f1538-cdbc-44fa-8062-e9e63254f675
 
 ============================================================================
   2/9  安装监控工具 (快照前, 避免污染基线)
@@ -48,9 +48,9 @@ everything's installed!
   SUID/SGID    : 14
   符号链接     : 483
   文件能力     : 1
-  基线采集耗时 : 14.7s
-  CPU          : 2.5%
-  Memory       : 1787.9/15069.3 MiB
+  基线采集耗时 : 15.1s
+  CPU          : 2.9%
+  Memory       : 1828.7/15069.3 MiB
 
 ============================================================================
   4/9  启动多层探针 + 执行待测命令
@@ -97,7 +97,7 @@ everything's installed!
   文件数       : 221691
   SUID/SGID    : 14
   inotify 系统 : 12 条
-  inotify /tmp : 213333 条
+  inotify /tmp : 216405 条
 
 ============================================================================
   6/9  网络行为深度分析
@@ -105,7 +105,7 @@ everything's installed!
 
   --- 外部连接 (出站) ---
     -> 104.26.12.77:443 (HTTPS)
-    -> 185.199.109.133:443 (HTTPS)
+    -> 104.26.13.77:443 (HTTPS)
 
     [20 个内部连接已忽略]
 
@@ -126,49 +126,49 @@ everything's installed!
 
   --- [D2] 实时文件事件 (inotifywait) ---
     系统目录事件 (12 条):
-      2026-03-20T03:23:32 CREATE,ISDIR /root/.local/bin/tmp.PuxvxU9ul8
-      2026-03-20T03:23:32 CREATE,ISDIR /root/.local/bin/tmp.iza9Kv5q3s
-      2026-03-20T03:23:32 MOVED_TO /root/.local/bin/tmp.PuxvxU9ul8/uv
-      2026-03-20T03:23:32 ATTRIB /root/.local/bin/tmp.PuxvxU9ul8/uv
-      2026-03-20T03:23:32 MOVED_TO /root/.local/bin/tmp.PuxvxU9ul8/uvx
-      2026-03-20T03:23:32 ATTRIB /root/.local/bin/tmp.PuxvxU9ul8/uvx
-      2026-03-20T03:23:32 MOVED_TO /root/.local/bin/uv
-      2026-03-20T03:23:32 MOVED_TO /root/.local/bin/uvx
-      2026-03-20T03:23:32 DELETE,ISDIR /root/.local/bin/tmp.PuxvxU9ul8
-      2026-03-20T03:23:32 DELETE,ISDIR /root/.local/bin/tmp.iza9Kv5q3s
-      2026-03-20T03:23:32 MODIFY /root/.config/uv/uv-receipt.json
-      2026-03-20T03:23:32 MODIFY /root/.config/uv/uv-receipt.json
-    临时目录事件 (14282 条):
-      2026-03-20T03:23:30 CREATE,ISDIR /tmp/tmp.zXqmWxcvJo
-      2026-03-20T03:23:30 CREATE /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
-      2026-03-20T03:23:30 MODIFY /tmp/tmp.zXqmWxcvJo/input.tar.gz
+      2026-03-20T03:41:38 CREATE,ISDIR /root/.local/bin/tmp.rbVT5IRJyn
+      2026-03-20T03:41:38 CREATE,ISDIR /root/.local/bin/tmp.Cb68ZlRPwo
+      2026-03-20T03:41:38 MOVED_TO /root/.local/bin/tmp.rbVT5IRJyn/uv
+      2026-03-20T03:41:38 ATTRIB /root/.local/bin/tmp.rbVT5IRJyn/uv
+      2026-03-20T03:41:38 MOVED_TO /root/.local/bin/tmp.rbVT5IRJyn/uvx
+      2026-03-20T03:41:38 ATTRIB /root/.local/bin/tmp.rbVT5IRJyn/uvx
+      2026-03-20T03:41:38 MOVED_TO /root/.local/bin/uv
+      2026-03-20T03:41:38 MOVED_TO /root/.local/bin/uvx
+      2026-03-20T03:41:38 DELETE,ISDIR /root/.local/bin/tmp.rbVT5IRJyn
+      2026-03-20T03:41:38 DELETE,ISDIR /root/.local/bin/tmp.Cb68ZlRPwo
+      2026-03-20T03:41:38 MODIFY /root/.config/uv/uv-receipt.json
+      2026-03-20T03:41:38 MODIFY /root/.config/uv/uv-receipt.json
+    临时目录事件 (14016 条):
+      2026-03-20T03:41:37 CREATE,ISDIR /tmp/tmp.VBnLIMhGYn
+      2026-03-20T03:41:37 CREATE /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
+      2026-03-20T03:41:37 MODIFY /tmp/tmp.VBnLIMhGYn/input.tar.gz
 
   --- [D3] 用户与权限 ---
     PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
@@ -180,11 +180,10 @@ everything's installed!
     PASS  无变化
 
   --- [D6] 进程树分析 ---
-    观察到 26 个独立进程:
+    观察到 22 个独立进程:
       > /opt/opensandbox/execd
       > COMMAND
-      > \_ [bash] <defunct>
-      > \_ bash -c env 2>/dev/null | grep -E '(LD_PRELOAD|LD_LIBRARY_PATH|PATH|HOME|SHELL|USER|SUDO|HTTP_PROXY|HTTPS_PROXY)' | s
+      > \_ [sleep] <defunct>
       > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
       > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
       > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
@@ -195,44 +194,45 @@ everything's installed!
       > \_ curl -sSfL https://releases.astral.sh/github/uv/releases/download/0.10.12/uv-x86_64-unknown-linux-gnu.tar.gz -o /tmp/
       > \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
       > \_ getcap -r /
-      > \_ grep -E (LD_PRELOAD|LD_LIBRARY_PATH|PATH|HOME|SHELL|USER|SUDO|HTTP_PROXY|HTTPS_PROXY)
       > \_ sh
       > \_ sort
       > tail -f /dev/null
       > |   \_ bash -c { echo '=== CRONTAB ==='; crontab -l 2>/dev/null || true; echo '=== /etc/crontab ==='; cat /etc/crontab 2
       > |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      > |   \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
+      > |   \_ getcap -r /
 
     残留进程 (执行后):
       USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-      root           1  0.0  0.0   3156  1792 ?        Ss   03:22   0:00 tail -f /dev/null
-      root           7 17.1  0.1 1243968 22216 ?       Sl   03:22   0:06 /opt/opensandbox/execd
-      root         946  0.0  0.0   4752  3584 ?        S    03:23   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
-      root         948  0.0  0.0   4084  2432 ?        R    03:23   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
-      root         949  0.0  0.0  24904  3328 ?        S    03:23   0:00  |   \_ sort
-      root         947  0.0  0.0   4752  3584 ?        S    03:23   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
-      root         950  0.0  0.0   8280  4224 ?        R    03:23   0:00  |   \_ ps auxf
-      root         951  0.0  0.0   4752  3328 ?        R    03:23   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+      root           1  0.0  0.0   3156  1792 ?        Ss   03:41   0:00 tail -f /dev/null
+      root           7 16.9  0.1 1243968 21796 ?       Sl   03:41   0:06 /opt/opensandbox/execd
+      root         945  0.0  0.0   4752  3584 ?        S    03:41   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root         947  0.0  0.0   4084  2432 ?        R    03:41   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root         948  0.0  0.0  24904  3200 ?        S    03:41   0:00  |   \_ sort
+      root         946  0.0  0.0   4752  3456 ?        S    03:41   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root         949  0.0  0.0   8280  4224 ?        R    03:41   0:00  |   \_ ps auxf
+      root         950  0.0  0.0   4752  3456 ?        R    03:41   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
 
   --- [D7] 残留网络连接 ---
         sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
-         0: 0100007F:9C1A 0100007F:AEE4 01 00000000:00000000 02:00000049 00000000     0        0 3669893 2 0000000000000000 20 4 30 10 -1                  
-         1: 0100007F:90CC 0100007F:AEE4 01 00000000:00000000 02:0000030D 00000000     0        0 3682332 2 0000000000000000 20 4 30 10 -1                  
-         2: 020011AC:A1FE 53BE7DB9:0050 06 00000000:00000000 03:000000B5 00000000     0        0 0 3 0000000000000000                                      
-         3: 0100007F:A0DA 0100007F:AEE4 01 00000000:00000000 02:00000A88 00000000     0        0 3687783 2 0000000000000000 20 4 30 10 -1                  
-         4: 0100007F:B78C 0100007F:AEE4 01 00000000:00000000 02:00000100 00000000     0        0 3667596 2 0000000000000000 20 4 30 10 -1                  
-         5: 0100007F:B7D8 0100007F:AEE4 01 00000000:00000000 02:000004A9 00000000     0        0 3666352 2 0000000000000000 20 4 30 10 -1                  
-         6: 0100007F:9C66 0100007F:AEE4 01 00000000:00000000 02:0000004B 00000000     0        0 3669950 2 0000000000000000 20 4 0 10 -1                   
-         7: 0100007F:9C6C 0100007F:AEE4 01 00000000:00000000 02:0000004C 00000000     0        0 3676773 2 0000000000000000 20 4 30 10 -1                  
-         8: 0100007F:9C2A 0100007F:AEE4 01 00000000:00000000 02:0000004A 00000000     0        0 3676695 2 0000000000000000 20 4 30 10 -1                  
-         9: 0100007F:C2FA 0100007F:AEE4 01 00000000:00000000 02:00000804 00000000     0        0 3686344 2 0000000000000000 20 4 20 10 -1                  
-        10: 0100007F:9C14 0100007F:AEE4 01 00000000:00000000 02:000004FA 00000000     0        0 3671571 2 0000000000000000 20 4 30 10 -1                  
-        11: 0100007F:90D4 0100007F:AEE4 01 00000000:00000000 02:00000143 00000000     0        0 3664701 2 0000000000000000 20 4 30 10 -1                  
-        12: 0100007F:B7CA 0100007F:AEE4 01 00000000:00000000 02:000001A3 00000000     0        0 3669339 2 0000000000000000 20 4 30 10 -1                  
-        13: 0100007F:B7DE 0100007F:AEE4 01 00000000:00000000 02:000002C3 00000000     0        0 3669342 2 0000000000000000 20 4 30 10 -1                  
+         0: 0100007F:DBDC 0100007F:AEE4 01 00000000:00000000 02:00000294 00000000     0        0 3991765 2 0000000000000000 20 4 2 10 -1                   
+         1: 0100007F:DB8A 0100007F:AEE4 01 00000000:00000000 02:00000167 00000000     0        0 3990871 2 0000000000000000 20 5 30 10 -1                  
+         2: 0100007F:DB9E 0100007F:AEE4 01 00000000:00000000 02:0000015A 00000000     0        0 3990878 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:BAE2 0100007F:AEE4 01 00000000:00000000 02:00000A88 00000000     0        0 3997291 2 0000000000000000 20 4 30 10 -1                  
+         4: 0100007F:C790 0100007F:AEE4 01 00000000:00000000 02:0000079C 00000000     0        0 3995424 2 0000000000000000 20 4 30 10 -1                  
+         5: 0100007F:89EE 0100007F:AEE4 01 00000000:00000000 02:00000033 00000000     0        0 3996993 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:89E6 0100007F:AEE4 01 00000000:00000000 02:00000033 00000000     0        0 4005211 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:89F6 0100007F:AEE4 01 00000000:00000000 02:00000034 00000000     0        0 4005249 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:DBC0 0100007F:AEE4 01 00000000:00000000 02:00000167 00000000     0        0 3991744 2 0000000000000000 20 4 30 10 -1                  
+         9: 0100007F:9D6C 0100007F:AEE4 01 00000000:00000000 02:000004E5 00000000     0        0 4006927 2 0000000000000000 20 4 30 10 -1                  
+        10: 0100007F:9D32 0100007F:AEE4 01 00000000:00000000 02:000001C5 00000000     0        0 4005911 2 0000000000000000 20 4 30 10 -1                  
+        11: 0100007F:89D0 0100007F:AEE4 01 00000000:00000000 02:00000032 00000000     0        0 3996975 2 0000000000000000 20 4 30 10 -1                  
+        12: 020011AC:C382 4D0C1A68:01BB 06 00000000:00000000 03:00000A1A 00000000     0        0 0 3 0000000000000000                                      
+        13: 0100007F:9D44 0100007F:AEE4 01 00000000:00000000 02:00000291 00000000     0        0 3995107 2 0000000000000000 20 4 30 10 -1                  
 
   --- [D8] 资源消耗 ---
-    CPU    : 2.5% -> 2.4% (Δ -0.1%)
-    Memory : 1787.9 -> 1837.0 MiB (Δ +49.1 MiB)
+    CPU    : 2.9% -> 2.8% (Δ -0.1%)
+    Memory : 1828.7 -> 1839.8 MiB (Δ +11.0 MiB)
 
   --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
     PASS
@@ -302,7 +302,7 @@ everything's installed!
   合法命令模式   : 是
   退出码         : 0
   文件 +/-       : +3 / -1
-  inotify 事件   : 12 系统 + 14282 临时
+  inotify 事件   : 12 系统 + 14016 临时
   外部连接       : 2 个
   SUID/SGID 变更 : +0
   二进制完整性   : PASS
@@ -320,9 +320,9 @@ everything's installed!
   安全建议:
     -> ALLOW: 风险较低, 可考虑放行但建议记录审计日志
 
-  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773977053.json
-  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773977053.txt
-  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773977053.sarif.json
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773978140.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773978140.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773978140.sarif.json
 
   快速预判: REVIEW (静态分: 12, 模式匹配: 1)
   [INFO] 快速预判与深度分析不一致 — 静态分析可能过于敏感
