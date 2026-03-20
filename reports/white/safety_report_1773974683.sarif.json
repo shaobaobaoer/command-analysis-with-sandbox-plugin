@@ -21,11 +21,11 @@
         {
           "executionSuccessful": true,
           "properties": {
-            "command": "git --version",
+            "command": "ip addr show 2>/dev/null || ifconfig 2>/dev/null || echo 'no network tools'",
             "verdict": "LIKELY_SAFE",
             "risk_score": 0,
             "confidence": "HIGH",
-            "timestamp": "2026-03-20T02:45:12.063648+00:00"
+            "timestamp": "2026-03-20T02:44:43.617426+00:00"
           }
         }
       ]
