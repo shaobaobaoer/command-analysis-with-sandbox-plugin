@@ -153,7 +153,9 @@ for i in "${!JOBS[@]}"; do
     info "命令: ${command}"
     echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-    export COMMAND="$command"
+    # 使用base64编码传递命令，避免换行符问题
+    COMMAND_B64=$(echo -n "$command" | base64 -w0)
+    export COMMAND_B64
     export REPORT_DIR="$report_dir"
     export SANDBOX_IMAGE EXECD_IMAGE REGISTRY_MIRROR
 

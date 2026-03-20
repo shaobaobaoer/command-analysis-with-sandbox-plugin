@@ -199,7 +199,16 @@ from datetime import datetime, timedelta, timezone
 from opensandbox import Sandbox
 from opensandbox.config import ConnectionConfig
 
-COMMAND = os.environ["CHECK_COMMAND"]
+# 支持base64编码的命令传递（解决换行符问题）
+import base64 as b64mod
+_raw_cmd = os.environ["CHECK_COMMAND"]
+if os.environ.get("COMMAND_B64"):
+    try:
+        COMMAND = b64mod.b64decode(os.environ["COMMAND_B64"]).decode("utf-8")
+    except Exception:
+        COMMAND = _raw_cmd
+else:
+    COMMAND = _raw_cmd
 PORT = int(os.environ.get("SANDBOX_PORT", "8080"))
 IMAGE = os.environ.get("SANDBOX_IMAGE", "opensandbox/code-interpreter:v1.0.2")
 REPORT_DIR = os.environ.get("REPORT_DIR", "/tmp")
@@ -998,10 +1007,10 @@ async def snap_shell(sb):
     return o
 
 async def snap_suid(sb):
-    """SUID/SGID 文件快照"""
+    """SUID/SGID 文件快照 - 使用稳定格式避免时间戳差异"""
     o, _ = await run_cmd(sb,
         "find / -xdev \\( -perm -4000 -o -perm -2000 \\) -type f "
-        "-exec ls -la {} \\; 2>/dev/null | sort", 30)
+        "-printf '%m %u %g %p\\n' 2>/dev/null | sort", 30)
     return set(o.strip().splitlines()) if o.strip() else set()
 
 async def snap_mounts(sb):
@@ -2385,7 +2394,13 @@ if __name__ == "__main__":
         asyncio.run(main())
 PYTHON_SCRIPT
 
-export CHECK_COMMAND="$COMMAND"
+# 支持base64编码的命令传递
+if [ -n "${COMMAND_B64:-}" ]; then
+    export COMMAND_B64
+    export CHECK_COMMAND=""
+else
+    export CHECK_COMMAND="$COMMAND"
+fi
 export SANDBOX_IMAGE REPORT_DIR
 
 # 支持快速预判模式 (跳过沙箱, 纯静态分析)
