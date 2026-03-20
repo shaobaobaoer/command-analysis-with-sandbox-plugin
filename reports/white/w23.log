@@ -53,3 +53,432 @@ everything's installed!
 ============================================================================
   4/9  启动多层探针 + 执行待测命令
 ============================================================================
+  [探针1] inotify: /usr/local/bin /usr/bin /usr/sbin /etc /root /home
+  [探针2] inotify: /tmp /var/tmp /dev/shm (独立探针)
+  [探针3] network: /proc/net/tcp 轮询 (0.5s)
+  [探针5] process: 进程树轮询 (1s)
+
+  --- 命令链分解分析 ---
+    命令包含 3 个执行阶段:
+    [1] [OK] curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
+    [2] [OK] sh -s -- -y 2>/dev/null ||
+    [3] [OK] echo 'skip' END
+
+  --- 命令去混淆分析 ---
+    PASS  未发现编码/混淆层
+
+  --- 命令静态分析 ---
+    !! [T1105] download and execute (curl|sh) (score: 25)
+    [INFO] 命令匹配合法安装器模式, 部分告警已降权
+
+  $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y 2>/dev/null || echo 'skip'
+  ────────────────────────────────────────────────────────────
+
+  耗时     : 31.1s
+  退出码   : 0
+  stdout   : 14 行
+  stderr   : 0 行
+
+  --- stdout (前 50 行) ---
+    |   stable-x86_64-unknown-linux-gnu installed - rustc 1.94.0 (4a4ef493e 2026-03-02)
+    | Rust is installed now. Great!
+    | To get started you may need to restart your current shell.
+    | This would reload your PATH environment variable to include
+    | Cargo's bin directory ($HOME/.cargo/bin).
+    | To configure your current shell, you need to source
+    | the corresponding env file under $HOME/.cargo.
+    | This is usually done by running one of the following (note the leading DOT):
+    | . "$HOME/.cargo/env"            # For sh/bash/zsh/ash/dash/pdksh
+    | source "$HOME/.cargo/env.fish"  # For fish
+    | source "~/.cargo/env.nu"  # For nushell
+    | source "$HOME/.cargo/env.tcsh"  # For tcsh
+    | . "$HOME/.cargo/env.ps1"        # For pwsh
+    | source "$HOME/.cargo/env.xsh"   # For xonsh
+
+============================================================================
+  5/9  采集执行后快照 (全维度)
+============================================================================
+  文件数       : 271294
+  SUID/SGID    : 14
+  inotify 系统 : 104856 条
+  inotify /tmp : 259926 条
+
+============================================================================
+  6/9  网络行为深度分析
+============================================================================
+
+  --- 外部连接 (出站) ---
+    -> 13.33.183.65:443 (HTTPS)
+    -> 151.101.78.137:443 (HTTPS)
+
+    [32 个内部连接已忽略]
+
+  --- DNS 配置 ---
+    PASS  /etc/resolv.conf 未被修改
+
+============================================================================
+  7/9  全维度安全对比分析 (24 维度)
+============================================================================
+
+  --- [D1] 文件变更 (+49607 / -2) ---
+    新增 49607 个:
+      + /root/.bashrc
+      + /root/.cargo/bin/rustup
+      + /root/.cargo/env
+      + /root/.profile
+      + /root/.rustup/settings.toml
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo-clippy
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo-fmt
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rust-gdb
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rust-gdbgui
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rust-lldb
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustdoc
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustfmt
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/etc/bash_completion.d/cargo
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/etc/target-spec-json-schema.json
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/libLLVM-21-rust-1.94.0-stable.so
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/libLLVM.so.21.1-rust-1.94.0-stable
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/librustc_driver-24b10b5e3eb5af70.so
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/components
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/etc/gdb_load_rust_pretty_printers.py
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/etc/gdb_lookup.py
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/etc/gdb_providers.py
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/etc/lldb_commands
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/etc/lldb_lookup.py
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/etc/lldb_providers.py
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/etc/rust_types.py
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/manifest-cargo-x86_64-unknown-linux-gnu
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/manifest-clippy-preview-x86_64-unknown-linux-gnu
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/manifest-rust-docs-x86_64-unknown-linux-gnu
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/manifest-rust-std-x86_64-unknown-linux-gnu
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/manifest-rustc-x86_64-unknown-linux-gnu
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/manifest-rustfmt-preview-x86_64-unknown-linux-gnu
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/multirust-channel-manifest.toml
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/multirust-config.toml
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/rust-installer-version
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/gcc-ld/ld.lld
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/gcc-ld/ld64.lld
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/gcc-ld/lld-link
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/gcc-ld/wasm-ld
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/rust-lld
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/rust-objcopy
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/bin/wasm-component-ld
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libaddr2line-b71e0b8cc6121ae3.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libaddr2line-b71e0b8cc6121ae3.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libadler2-5db259ced01f20df.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libadler2-5db259ced01f20df.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/liballoc-62a1c58f46ae5b5d.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/liballoc-62a1c58f46ae5b5d.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcfg_if-bcf9f0b3b383a749.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcfg_if-bcf9f0b3b383a749.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-74eaf0768124c880.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcompiler_builtins-74eaf0768124c880.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore-12bcfe474901f35f.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libcore-12bcfe474901f35f.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libgetopts-fa0b2e0eec5f61b2.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libgetopts-fa0b2e0eec5f61b2.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libgimli-73b3201bc7b0c6bf.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libgimli-73b3201bc7b0c6bf.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libhashbrown-12fc529a8c82ceee.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libhashbrown-12fc529a8c82ceee.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/liblibc-72108940b7dbd244.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/liblibc-72108940b7dbd244.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libmemchr-18191ac39533322d.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libmemchr-18191ac39533322d.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libminiz_oxide-92023c1cb0992e10.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libminiz_oxide-92023c1cb0992e10.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libobject-7af6eef3f027f9cb.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libobject-7af6eef3f027f9cb.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libpanic_abort-519cb29b9cf83e8e.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libpanic_abort-519cb29b9cf83e8e.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libpanic_unwind-7e26ccec6e221100.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libpanic_unwind-7e26ccec6e221100.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libproc_macro-9b929e93ee5b9f5e.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libproc_macro-9b929e93ee5b9f5e.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libprofiler_builtins-a2e368e4afb78a25.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libprofiler_builtins-a2e368e4afb78a25.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc-stable_rt.asan.a
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc-stable_rt.dfsan.a
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc-stable_rt.lsan.a
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc-stable_rt.msan.a
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc-stable_rt.rtsan.a
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc-stable_rt.safestack.a
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc-stable_rt.tsan.a
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_demangle-2eaee9ec806b6b01.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_demangle-2eaee9ec806b6b01.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_literal_escaper-bad7bfb7052a0b6a.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_literal_escaper-bad7bfb7052a0b6a.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_alloc-1aa74596e1d30fe3.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_alloc-1aa74596e1d30fe3.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_core-9aa0f5bc6c0c7e68.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_core-9aa0f5bc6c0c7e68.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_std-afcdf6d0458df3dd.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/librustc_std_workspace_std-afcdf6d0458df3dd.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libstd-267b04dbd87607fb.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libstd-267b04dbd87607fb.rmeta
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libstd-267b04dbd87607fb.so
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libstd_detect-3c01aa3002a08f4f.rlib
+      + /root/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/x86_64-unknown-linux-gnu/lib/libstd_detect-3c01aa3002a08f4f.rmeta
+      ... 还有 49507 个
+    删除 2 个:
+      - /root/.bashrc
+      - /root/.profile
+
+  --- [D2] 实时文件事件 (inotifywait) ---
+    系统目录事件 (104856 条):
+      2026-03-20T02:49:49 CREATE,ISDIR /root/.rustup
+      2026-03-20T02:49:49 CREATE,ISDIR /root/.cargo
+      2026-03-20T02:49:49 MODIFY /root/.cargo/bin/rustup
+      2026-03-20T02:49:49 ATTRIB /root/.cargo/bin/rustup
+      2026-03-20T02:49:49 CREATE /root/.cargo/bin/rust-analyzer
+      2026-03-20T02:49:49 CREATE /root/.cargo/bin/rustfmt
+      2026-03-20T02:49:49 CREATE /root/.cargo/bin/cargo-fmt
+      2026-03-20T02:49:49 CREATE /root/.cargo/bin/rustc
+      2026-03-20T02:49:49 CREATE /root/.cargo/bin/rustdoc
+      2026-03-20T02:49:49 CREATE /root/.cargo/bin/cargo
+      2026-03-20T02:49:49 CREATE /root/.cargo/bin/rust-lldb
+      2026-03-20T02:49:49 CREATE /root/.cargo/bin/rust-gdb
+      2026-03-20T02:49:49 CREATE /root/.cargo/bin/rust-gdbgui
+      2026-03-20T02:49:49 CREATE /root/.cargo/bin/rls
+      2026-03-20T02:49:49 CREATE /root/.cargo/bin/cargo-clippy
+      2026-03-20T02:49:49 CREATE /root/.cargo/bin/clippy-driver
+      2026-03-20T02:49:49 CREATE /root/.cargo/bin/cargo-miri
+      2026-03-20T02:49:49 CREATE /root/.cargo/env
+      2026-03-20T02:49:49 MODIFY /root/.cargo/env
+      2026-03-20T02:49:49 MODIFY /root/.profile
+      2026-03-20T02:49:49 MODIFY /root/.bashrc
+      2026-03-20T02:49:49 MODIFY /root/.rustup/settings.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/settings.toml
+      2026-03-20T02:49:49 CREATE,ISDIR /root/.rustup/update-hashes
+      2026-03-20T02:49:49 CREATE,ISDIR /root/.rustup/tmp
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/yy_igps_cwyt8pgd_file
+      2026-03-20T02:49:49 DELETE /root/.rustup/tmp/yy_igps_cwyt8pgd_file
+      2026-03-20T02:49:49 CREATE /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      2026-03-20T02:49:49 MODIFY /root/.rustup/tmp/rha1sc2tk01b8853_file.toml
+      ... 还有 104796 条
+    临时目录事件 (9331 条):
+      2026-03-20T02:49:48 CREATE,ISDIR /tmp/tmp.I1CtpO3usD
+      2026-03-20T02:49:48 CREATE /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+      2026-03-20T02:49:48 MODIFY /tmp/tmp.I1CtpO3usD/rustup-init
+
+  --- [D3] 用户与权限 ---
+    PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
+
+  --- [D4] 持久化 (cron/systemd/rc.local/init.d/at) ---
+    PASS  无新增
+
+  --- [D5] Shell 环境 (.bashrc/.profile/etc) ---
+    !! FAIL  Shell 配置被修改
+      0a1,3
+      > # ~/.bashrc: executed by bash(1) for non-login shells.
+      > # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+      > # for examples
+      1a5,114
+      > # If not running interactively, don't do anything
+      > [ -z "$PS1" ] && return
+      > 
+      > # don't put duplicate lines in the history. See bash(1) for more options
+      > # ... or force ignoredups and ignorespace
+      > HISTCONTROL=ignoredups:ignorespace
+      > 
+      > # append to the history file, don't overwrite it
+      > shopt -s histappend
+      > 
+
+  --- [D6] 进程树分析 ---
+    观察到 24 个独立进程:
+      > /opt/opensandbox/execd
+      > COMMAND
+      > \_ /tmp/tmp.I1CtpO3usD/rustup-init -y
+      > \_ bash -c awk -F: '{print $1":"$3":"$7}' /etc/passwd 2>/dev/null | sort; echo '---SHADOW---'; wc -l /etc/shadow 2>/dev/
+      > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
+      > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
+      > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
+      > \_ bash -c getcap -r / 2>/dev/null | sort || true
+      > \_ bash -c { curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y 2>/dev/null || echo 'skip' ; }; ech
+      > \_ bash -c { echo '=== CRONTAB ==='; crontab -l 2>/dev/null || true; echo '=== /etc/crontab ==='; cat /etc/crontab 2>/de
+      > \_ cat /proc/net/tcp /proc/net/tcp6
+      > \_ curl --retry 3 -C - --proto =https --tlsv1.2 --ciphers TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_25
+      > \_ getcap -r /
+      > \_ sh -s -- -y
+      > \_ sort
+      > tail -f /dev/null
+      > |   \_ bash -c { echo '=== CRONTAB ==='; crontab -l 2>/dev/null || true; echo '=== /etc/crontab ==='; cat /etc/crontab 2
+      > |   \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
+      > |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      > |   \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
+
+    残留进程 (执行后):
+      USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+      root           1  0.0  0.0   3156  1792 ?        Ss   02:49   0:00 tail -f /dev/null
+      root           7 10.2  0.1 1244224 23228 ?       Sl   02:49   0:06 /opt/opensandbox/execd
+      root        1103  0.0  0.0   4752  3456 ?        S    02:50   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root        1104 33.3  0.0   4608  2944 ?        R    02:50   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root        1105  0.0  0.0  24904  3328 ?        S    02:50   0:00  |   \_ sort
+      root        1106  0.0  0.0   4752  3712 ?        S    02:50   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root        1110  0.0  0.0   8280  4352 ?        R    02:50   0:00  |   \_ ps auxf
+      root        1107  0.0  0.0   4752  3584 ?        S    02:50   0:00  \_ bash -c { echo '=== CRONTAB ==='; crontab -l 2>/dev/null || true; echo '=== /etc/crontab ==='; cat /etc/crontab 2>/dev/null || true; echo '=== cron.d ==='; ls /etc/cron.d/ 2>/dev/null | sort || true; echo '=== cron.daily ==='; ls /etc/cron.daily/ 2>/dev/null | sort || true; echo '=== systemd user ==='; ls ~/.config/systemd/user/*.service 2>/dev/null || true; echo '=== systemd system ==='; ls /etc/systemd/system/*.service 2>/dev/null || true; echo '=== rc.local ==='; cat /etc/rc.local 2>/dev/null || true; echo '=== init.d ==='; ls /etc/init.d/ 2>/dev/null | sort || true; echo '=== at queue ==='; atq 2>/dev/null || true; echo '=== systemd timers ==='; systemctl list-timers --no-pager 2>/dev/null || true; } | md5sum
+      root        1108  0.0  0.0   4752  1952 ?        S    02:50   0:00  |   \_ bash -c { echo '=== CRONTAB ==='; crontab -l 2>/dev/null || true; echo '=== /etc/crontab ==='; cat /etc/crontab 2>/dev/null || true; echo '=== cron.d ==='; ls /etc/cron.d/ 2>/dev/null | sort || true; echo '=== cron.daily ==='; ls /etc/cron.daily/ 2>/dev/null | sort || true; echo '=== systemd user ==='; ls ~/.config/systemd/user/*.service 2>/dev/null || true; echo '=== systemd system ==='; ls /etc/systemd/system/*.service 2>/dev/null || true; echo '=== rc.local ==='; cat /etc/rc.local 2>/dev/null || true; echo '=== init.d ==='; ls /etc/init.d/ 2>/dev/null | sort || true; echo '=== at queue ==='; atq 2>/dev/null || true; echo '=== systemd timers ==='; systemctl list-timers --no-pager 2>/dev/null || true; } | md5sum
+      root        1122  0.0  0.0   3604  1792 ?        R    02:50   0:00  |   |   \_ ls /etc/cron.d/
+      root        1123  0.0  0.0  24904  3200 ?        S    02:50   0:00  |   |   \_ sort
+      root        1109  0.0  0.0   8328  3200 ?        S    02:50   0:00  |   \_ md5sum
+      root        1111  0.0  0.0   4752  3712 ?        S    02:50   0:00  \_ bash -c awk -F: '{print $1":"$3":"$7}' /etc/passwd 2>/dev/null | sort; echo '---SHADOW---'; wc -l /etc/shadow 2>/dev/null || true; echo '---SUDOERS---'; cat /etc/sudoers 2>/dev/null | md5sum; ls /etc/sudoers.d/ 2>/dev/null | sort || true; echo '---SSH---'; find /root/.ssh /home -name 'authorized_keys' -exec md5sum {} \; 2>/dev/null || echo 'no-ssh'; echo '---PAM---'; ls /etc/pam.d/ 2>/dev/null | sort | md5sum
+      root        1124  0.0  0.0   2756  1408 ?        R    02:50   0:00  |   \_ wc -l /etc/shadow
+      root        1113  0.0  0.0   4752  3584 ?        S    02:50   0:00  \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
+      root        1120  0.0  0.0   4216  2304 ?        R    02:50   0:00  |   \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
+      root        1121  0.0  0.0  24904  3200 ?        S    02:50   0:00  |   \_ sort
+      root        1117  0.0  0.0   4752  3456 ?        R    02:50   0:00  \_ bash -c lsmod 2>/dev/null | sort || cat /proc/modules 2>/dev/null | sort || echo 'N/A'
+      root        1130  0.0  0.0   4752  1556 ?        R    02:50   0:00  |   \_ bash -c lsmod 2>/dev/null | sort || cat /proc/modules 2>/dev/null | sort || echo 'N/A'
+      root        1118  0.0  0.0   4752  3456 ?        R    02:50   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+      root        1132  0.0  0.0   2756  1408 ?        R    02:50   0:00  |   \_ cat /root/.bashrc /root/.bash_profile /root/.profile /root/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/01-locale-fix.sh
+      root        1133  0.0  0.0   4752  1424 ?        R    02:50   0:00  |   \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+      root        1127  0.0  0.0   4752  3712 ?        R    02:50   0:00  \_ bash -c cat /proc/1/status 2>/dev/null | grep -i cap || true
+      root        1129  0.0  0.0   4752  3456 ?        S    02:50   0:00  \_ bash -c env 2>/dev/null | grep -E '(LD_PRELOAD|LD_LIBRARY_PATH|PATH|HOME|SHELL|USER|SUDO|HTTP_PROXY|HTTPS_PROXY)' | sort || true
+      root        1131  0.0  0.0   4752  3584 ?        S    02:50   0:00  \_ bash -c md5sum /bin/bash /bin/sh /bin/su /usr/bin/sudo /usr/bin/passwd /usr/bin/crontab /usr/sbin/sshd /bin/login /usr/bin/ssh /usr/bin/newgrp 2>/dev/null | sort || true
+
+  --- [D7] 残留网络连接 ---
+        sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
+         0: 0100007F:AFBE 0100007F:AEE4 01 00000000:00000000 02:000009EF 00000000     0        0 2991606 2 0000000000000000 20 4 30 10 -1                  
+         1: 0100007F:AF04 0100007F:AEE4 01 00000000:00000000 02:000005BF 00000000     0        0 2995109 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:91FE 0100007F:AEE4 01 00000000:00000000 02:00000330 00000000     0        0 2974999 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:AFD8 0100007F:AEE4 01 00000000:00000000 02:00000A87 00000000     0        0 3001101 2 0000000000000000 20 4 30 10 -1                  
+         4: 0100007F:91F8 0100007F:AEE4 01 00000000:00000000 02:0000056A 00000000     0        0 2964423 2 0000000000000000 20 4 30 10 -1                  
+         5: 0100007F:D818 0100007F:AEE4 01 00000000:00000000 02:00000579 00000000     0        0 2950298 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:D850 0100007F:AEE4 01 00000000:00000000 02:000000D0 00000000     0        0 2951572 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:9DB8 0100007F:AEE4 01 00000000:00000000 02:00000003 00000000     0        0 2934195 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:922C 0100007F:AEE4 01 00000000:00000000 02:000000F3 00000000     0        0 2967364 2 0000000000000000 20 4 30 10 -1                  
+         9: 0100007F:9226 0100007F:AEE4 01 00000000:00000000 02:000004D0 00000000     0        0 2967356 2 0000000000000000 20 4 0 10 -1                   
+        10: 0100007F:C464 0100007F:AEE4 01 00000000:00000000 02:00000196 00000000     0        0 2957554 2 0000000000000000 20 4 30 10 -1                  
+        11: 0100007F:D806 0100007F:AEE4 01 00000000:00000000 02:00000512 00000000     0        0 2951496 2 0000000000000000 20 4 30 10 -1                  
+        12: 0100007F:D856 0100007F:AEE4 01 00000000:00000000 02:00000136 00000000     0        0 2957447 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:96F2 0100007F:AEE4 01 00000000:00000000 02:00000AEB 00000000     0        0 3003674 2 0000000000000000 20 4 30 10 -1                  
+
+  --- [D8] 资源消耗 ---
+    CPU    : 3.0% -> 22.5% (Δ +19.5%)
+    Memory : 2016.4 -> 1969.4 MiB (Δ -47.0 MiB)
+
+  --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
+    PASS
+
+  --- [D10] SUID/SGID 文件变更 ---
+    PASS  无新增 SUID/SGID 文件
+
+  --- [D11] 内核模块 ---
+    PASS  无变化
+
+  --- [D12] 挂载点 ---
+    PASS  无变化
+
+  --- [D13] 安全相关环境变量 ---
+    PASS  无变化
+
+  --- [D14] 关键文件内容分析 ---
+    PASS  已检查 6 个新增文件, 未发现恶意内容
+
+  --- [D15] 关键系统二进制完整性 ---
+    PASS  /bin/bash, su, sudo, passwd, sshd 等均未被篡改
+
+  --- [D16] 符号链接变更 ---
+    [INFO] 新增 13 个符号链接 (非敏感目标)
+      + lrwxrwxrwx 1 root root 6 Mar 20 02:49 /root/.cargo/bin/rustc -> rustup
+      + lrwxrwxrwx 1 root root 6 Mar 20 02:49 /root/.cargo/bin/rust-analyzer -> rustup
+      + lrwxrwxrwx 1 root root 6 Mar 20 02:49 /root/.cargo/bin/rls -> rustup
+      + lrwxrwxrwx 1 root root 6 Mar 20 02:49 /root/.cargo/bin/cargo -> rustup
+      + lrwxrwxrwx 1 root root 6 Mar 20 02:49 /root/.cargo/bin/cargo-clippy -> rustup
+
+  --- [D17] 文件能力 (Linux Capabilities) ---
+    PASS  无新增文件能力
+
+  --- [D18] 输出内容分析 ---
+    PASS  输出内容无敏感信息泄露
+
+  --- [D19] 新增文件熵分析 ---
+    PASS  无异常高熵文件
+
+  --- [D20] 计划任务详细差异 ---
+    PASS  crontab 无变化
+
+  --- [D21] 隐藏进程检测 ---
+    PASS  未发现隐藏进程
+
+  --- [D22] 信号处理 / trap 分析 ---
+    PASS  未发现恶意信号处理
+
+  --- [D23] 攻击链关联分析 ---
+    PASS  未检测到攻击链组合
+
+  --- [D24] 敏感文件权限变更 ---
+    PASS  敏感文件权限正常
+
+============================================================================
+  8/9  MITRE ATT&CK 技术映射
+============================================================================
+    [T1105] Ingress Tool Transfer
+      └─ 命令匹配恶意模式: download and execute (curl|sh)
+    [T1546.004] Event Triggered Execution: .bash_profile/.bashrc
+      └─ Shell 配置文件被修改
+
+============================================================================
+  9/9  综合判定
+============================================================================

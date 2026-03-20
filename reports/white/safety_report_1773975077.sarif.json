@@ -1,0 +1,62 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "CMD-001",
+              "name": "资源",
+              "shortDescription": {
+                "text": "内存异常增长 (+297 MiB)"
+              },
+              "helpUri": "",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety"
+                ]
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "LIKELY_SAFE",
+            "risk_score": 5,
+            "confidence": "MEDIUM"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "CMD-001",
+          "level": "warning",
+          "message": {
+            "text": "内存异常增长 (+297 MiB)"
+          },
+          "properties": {
+            "risk_score": 5,
+            "dimension": "资源",
+            "evidence": "Memory delta: 297 MiB"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "npm install -g lodash",
+            "verdict": "LIKELY_SAFE",
+            "risk_score": 5,
+            "confidence": "MEDIUM",
+            "timestamp": "2026-03-20T02:51:17.876482+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}

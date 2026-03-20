@@ -1,0 +1,11 @@
+🔶 判定: LOW_RISK (风险分: 22/100, 置信度: MEDIUM)
+命令: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y 2>/dev/null || echo 'skip'
+
+发现 2 个问题 (0 严重, 2 警告):
+  [WARN] 静态分析: 命令匹配恶意模式: download and execute (curl|sh) [T1105]
+  [WARN] Shell环境: Shell 配置文件被修改 [T1546.004]
+
+涉及 ATT&CK 战术: Command and Control, Persistence
+
+建议:
+  • ALLOW: 风险较低, 可考虑放行但建议记录审计日志
