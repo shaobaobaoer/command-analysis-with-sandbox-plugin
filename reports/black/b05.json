@@ -1,0 +1,66 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1016",
+              "name": "DNS",
+              "shortDescription": {
+                "text": "/etc/resolv.conf 被修改 (DNS 劫持)"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1016",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1016"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1016 (System Network Configuration Discovery)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "SUSPICIOUS",
+            "risk_score": 30,
+            "confidence": "LOW"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1016",
+          "level": "error",
+          "message": {
+            "text": "/etc/resolv.conf 被修改 (DNS 劫持)"
+          },
+          "properties": {
+            "risk_score": 30,
+            "dimension": "DNS",
+            "evidence": "nameserver 6.6.6.6"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "echo 'nameserver 6.6.6.6' > /etc/resolv.conf",
+            "verdict": "SUSPICIOUS",
+            "risk_score": 30,
+            "confidence": "LOW",
+            "timestamp": "2026-03-20T03:06:58.360648+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}

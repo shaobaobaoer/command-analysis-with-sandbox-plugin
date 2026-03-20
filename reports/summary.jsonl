@@ -1,1 +1,4 @@
-{"id":"b04","category":"black","label":"malicious","desc":"sudoers escalation","verdict":"DANGEROUS","risk_score":90,"mitre_count":3,"confidence":"HIGH","match":"CORRECT"}
+{"id":"b05","category":"black","label":"malicious","desc":"dns hijack","verdict":"SUSPICIOUS","risk_score":30
+-1,"mitre_count":0
+0,"confidence":"LOW
+N/A","match":"CORRECT"}
