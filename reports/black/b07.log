@@ -281,3 +281,420 @@ everything's installed!
 
 [0;36m[INFO][0m  Cleaning up...
 [0;32m[ OK ][0m Cleanup done.
+  文件数       : 221689
+  SUID/SGID    : 14
+  符号链接     : 483
+  文件能力     : 1
+  基线采集耗时 : 14.9s
+  CPU          : 2.0%
+  Memory       : 1671.1/15069.3 MiB
+
+============================================================================
+  4/9  启动多层探针 + 执行待测命令
+============================================================================
+  [探针1] inotify: /usr/local/bin /usr/bin /usr/sbin /etc /root /home
+  [探针2] inotify: /tmp /var/tmp /dev/shm (独立探针)
+  [探针3] network: /proc/net/tcp 轮询 (0.5s)
+  [探针5] process: 进程树轮询 (1s)
+
+  --- 命令链分解分析 ---
+    命令包含 2 个执行阶段:
+    [1] [!!] cat /etc/shadow |
+        匹配: reading shadow file
+    [2] [OK] base64 > /tmp/exfil.txt END
+
+  --- 命令去混淆分析 ---
+    PASS  未发现编码/混淆层
+
+  --- 命令静态分析 ---
+    !! [T1048] shadow file exfiltration via base64 (score: 40)
+    !! [T1048] reading shadow file (score: 25)
+
+  $ cat /etc/shadow | base64 > /tmp/exfil.txt
+  ────────────────────────────────────────────────────────────
+
+  耗时     : 1.0s
+  退出码   : 0
+  stdout   : 0 行
+  stderr   : 0 行
+
+============================================================================
+  5/9  采集执行后快照 (全维度)
+============================================================================
+  文件数       : 221690
+  SUID/SGID    : 14
+  inotify 系统 : 0 条
+  inotify /tmp : 206297 条
+
+============================================================================
+  6/9  网络行为深度分析
+============================================================================
+
+  --- 外部连接 (出站) ---
+    (无外部连接)
+
+    [20 个内部连接已忽略]
+
+  --- DNS 配置 ---
+    PASS  /etc/resolv.conf 未被修改
+
+============================================================================
+  7/9  全维度安全对比分析 (24 维度)
+============================================================================
+
+  --- [D1] 文件变更 (+1 / -0) ---
+    新增 1 个:
+      + /tmp/exfil.txt
+
+  --- [D2] 实时文件事件 (inotifywait) ---
+    系统目录: (无事件)
+    临时目录事件 (5787 条):
+      2026-03-20T03:10:19 CREATE /tmp/exfil.txt
+      2026-03-20T03:10:19 MODIFY /tmp/exfil.txt
+      2026-03-20T03:10:25 CREATE /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+      2026-03-20T03:10:25 MODIFY /tmp/sortASxXFK
+
+  --- [D3] 用户与权限 ---
+    PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
+
+  --- [D4] 持久化 (cron/systemd/rc.local/init.d/at) ---
+    PASS  无新增
+
+  --- [D5] Shell 环境 (.bashrc/.profile/etc) ---
+    PASS  无变化
+
+  --- [D6] 进程树分析 ---
+    观察到 18 个独立进程:
+      > /opt/opensandbox/execd
+      > COMMAND
+      > \_ [sleep]
+      > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
+      > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
+      > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
+      > \_ bash -c getcap -r / 2>/dev/null | sort || true
+      > \_ cat /proc/net/tcp /proc/net/tcp6
+      > \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
+      > \_ getcap -r /
+      > \_ sort
+      > tail -f /dev/null
+      > |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      > |   \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
+      > |   \_ getcap -r /
+      > |   \_ sort
+      > |   |   \_ ls -la /etc/alternatives/c89
+      > |   |   \_ ls -la /etc/ssl/certs/9bf03295.0
+
+    残留进程 (执行后):
+      USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+      root           1  0.0  0.0   3156  1664 ?        Ss   03:09   0:00 tail -f /dev/null
+      root           7 18.4  0.1 1244480 21868 ?       Sl   03:09   0:06 /opt/opensandbox/execd
+      root         842  0.0  0.0   4752  3456 ?        S    03:10   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root         843  0.0  0.0   4084  2432 ?        R    03:10   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root         845  0.0  0.0  24904  3200 ?        S    03:10   0:00  |   \_ sort
+      root         844  0.0  0.0   4752  3584 ?        S    03:10   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root         846  0.0  0.0   8280  4224 ?        R    03:10   0:00  |   \_ ps auxf
+      root         847  0.0  0.0   4752  3584 ?        R    03:10   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+
+  --- [D7] 残留网络连接 ---
+        sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
+         0: 0100007F:8086 0100007F:AEE4 01 00000000:00000000 02:0000026A 00000000     0        0 3458694 2 0000000000000000 20 4 30 10 -1                  
+         1: 0100007F:E6AE 0100007F:AEE4 01 00000000:00000000 02:000003E2 00000000     0        0 3460087 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:BAB6 0100007F:AEE4 01 00000000:00000000 02:00000060 00000000     0        0 3466900 2 0000000000000000 20 4 30 10 -1                  
+         3: 030011AC:8C04 515BBD5B:0050 06 00000000:00000000 03:00000011 00000000     0        0 0 3 0000000000000000                                      
+         4: 0100007F:E6B4 0100007F:AEE4 01 00000000:00000000 02:00000442 00000000     0        0 3475523 2 0000000000000000 20 4 30 10 -1                  
+         5: 0100007F:BA62 0100007F:AEE4 01 00000000:00000000 02:0000005E 00000000     0        0 3467386 2 0000000000000000 20 4 30 10 -1                  
+         6: 0100007F:B34E 0100007F:AEE4 01 00000000:00000000 02:000003E8 00000000     0        0 3453640 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:8042 0100007F:AEE4 01 00000000:00000000 02:000001E8 00000000     0        0 3459810 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:BA76 0100007F:AEE4 01 00000000:00000000 02:0000005F 00000000     0        0 3467388 2 0000000000000000 20 4 30 10 -1                  
+         9: 0100007F:CF60 0100007F:AEE4 01 00000000:00000000 02:00000A88 00000000     0        0 3478495 2 0000000000000000 20 4 30 10 -1                  
+        10: 0100007F:CF6C 0100007F:AEE4 01 00000000:00000000 02:00000B52 00000000     0        0 3481075 2 0000000000000000 20 4 30 10 -1                  
+        11: 0100007F:80A0 0100007F:AEE4 01 00000000:00000000 02:0000026A 00000000     0        0 3457400 2 0000000000000000 20 4 30 10 -1                  
+        12: 0100007F:BA54 0100007F:AEE4 01 00000000:00000000 02:0000005E 00000000     0        0 3465933 2 0000000000000000 20 4 30 10 -1                  
+        13: 0100007F:8090 0100007F:AEE4 01 00000000:00000000 02:0000026A 00000000     0        0 3452819 2 0000000000000000 20 4 30 10 -1                  
+
+  --- [D8] 资源消耗 ---
+    CPU    : 2.0% -> 2.4% (Δ +0.4%)
+    Memory : 1671.1 -> 1729.8 MiB (Δ +58.7 MiB)
+
+  --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
+    PASS
+
+  --- [D10] SUID/SGID 文件变更 ---
+    PASS  无新增 SUID/SGID 文件
+
+  --- [D11] 内核模块 ---
+    PASS  无变化
+
+  --- [D12] 挂载点 ---
+    PASS  无变化
+
+  --- [D13] 安全相关环境变量 ---
+    PASS  无变化
+
+  --- [D14] 关键文件内容分析 ---
+    PASS  已检查 1 个新增文件, 未发现恶意内容
+
+  --- [D15] 关键系统二进制完整性 ---
+    PASS  /bin/bash, su, sudo, passwd, sshd 等均未被篡改
+
+  --- [D16] 符号链接变更 ---
+    PASS  无新增符号链接
+
+  --- [D17] 文件能力 (Linux Capabilities) ---
+    PASS  无新增文件能力
+
+  --- [D18] 输出内容分析 ---
+    PASS  输出内容无敏感信息泄露
+
+  --- [D19] 新增文件熵分析 ---
+    PASS  无异常高熵文件
+
+  --- [D20] 计划任务详细差异 ---
+    PASS  crontab 无变化
+
+  --- [D21] 隐藏进程检测 ---
+    PASS  未发现隐藏进程
+
+  --- [D22] 信号处理 / trap 分析 ---
+    PASS  未发现恶意信号处理
+
+  --- [D23] 攻击链关联分析 ---
+    PASS  未检测到攻击链组合
+
+  --- [D24] 敏感文件权限变更 ---
+    PASS  敏感文件权限正常
+
+============================================================================
+  8/9  MITRE ATT&CK 技术映射
+============================================================================
+    [T1048] Exfiltration Over Alternative Protocol
+      └─ 命令匹配恶意模式: shadow file exfiltration via base64
+      └─ 命令匹配恶意模式: reading shadow file
+
+============================================================================
+  9/9  综合判定
+============================================================================
+Failed to terminate sandbox: b191c8bb-4b23-4e4e-9cd5-86d749a9cf33
+Traceback (most recent call last):
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: All connection attempts failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/opensandbox/adapters/sandboxes_adapter.py", line 358, in kill_sandbox
+    response_obj = await delete_sandboxes_sandbox_id.asyncio_detailed(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/opensandbox/api/lifecycle/api/sandboxes/delete_sandboxes_sandbox_id.py", line 171, in asyncio_detailed
+    response = await client.get_async_httpx_client().request(**kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: All connection attempts failed
+
+  +──────────────────────────────────────────────────────────────────────────+
+  |  [!!] 判定: DANGEROUS             风险评分:  65/100            |
+  |  [██████████████████████████░░░░░░░░░░░░░░]                              |
+  |  置信度: LOW     维度覆盖:  1/24              |
+  +──────────────────────────────────────────────────────────────────────────+
+
+  命令           : cat /etc/shadow | base64 > /tmp/exfil.txt
+  合法命令模式   : 否
+  退出码         : 0
+  文件 +/-       : +1 / -0
+  inotify 事件   : 0 系统 + 5787 临时
+  外部连接       : 0 个
+  SUID/SGID 变更 : +0
+  二进制完整性   : PASS
+  新增符号链接   : 0
+  新增文件能力   : 0
+  执行耗时       : 1.0s
+  MITRE 技术     : 1 个
+  ATT&CK 战术    : Exfiltration
+  发现           : 1 critical, 1 warnings, 0 info
+  置信度         : LOW
+
+  详细发现 (按严重程度排序):
+    [!!!] [静态分析] 命令匹配恶意模式: shadow file exfiltration via base64 [T1048] (score: 40)
+    [ ! ] [静态分析] 命令匹配恶意模式: reading shadow file [T1048] (score: 25)
+
+  安全建议:
+    -> BLOCK: 强烈建议阻止此命令执行
+
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773976265.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773976265.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/black/safety_report_1773976265.sarif.json
+
+  快速预判: BLOCK (静态分: 65, 模式匹配: 2)
+
+============================================================================
+  人类可读摘要:
+============================================================================
+  🚨 判定: DANGEROUS (风险分: 65/100, 置信度: LOW)
+  命令: cat /etc/shadow | base64 > /tmp/exfil.txt
+  
+  发现 2 个问题 (1 严重, 1 警告):
+    [CRITICAL] 静态分析: 命令匹配恶意模式: shadow file exfiltration via base64 [T1048]
+    [WARN] 静态分析: 命令匹配恶意模式: reading shadow file [T1048]
+  
+  涉及 ATT&CK 战术: Exfiltration
+  
+  建议:
+    • BLOCK: 强烈建议阻止此命令执行
+
+Traceback (most recent call last):
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 394, in handle_async_request
+    resp = await self._pool.handle_async_request(req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 256, in handle_async_request
+    raise exc from None
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_async/connection_pool.py", line 236, in handle_async_request
+    response = await connection.handle_async_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 101, in handle_async_request
+    raise exc
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 78, in handle_async_request
+    stream = await self._connect(request)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_async/connection.py", line 124, in _connect
+    stream = await self._network_backend.connect_tcp(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_backends/auto.py", line 31, in connect_tcp
+    return await self._backend.connect_tcp(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_backends/anyio.py", line 113, in connect_tcp
+    with map_exceptions(exc_map):
+  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectError: All connection attempts failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/opensandbox/adapters/sandboxes_adapter.py", line 358, in kill_sandbox
+    response_obj = await delete_sandboxes_sandbox_id.asyncio_detailed(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/opensandbox/api/lifecycle/api/sandboxes/delete_sandboxes_sandbox_id.py", line 171, in asyncio_detailed
+    response = await client.get_async_httpx_client().request(**kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1540, in request
+    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1629, in send
+    response = await self._send_handling_auth(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1657, in _send_handling_auth
+    response = await self._send_handling_redirects(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1694, in _send_handling_redirects
+    response = await self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_client.py", line 1730, in _send_single_request
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 393, in handle_async_request
+    with map_httpcore_exceptions():
+  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectError: All connection attempts failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/tmp/tmp.3hhLfefvQ3/checker.py", line 2157, in <module>
+    asyncio.run(main())
+  File "/usr/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/tmp/tmp.3hhLfefvQ3/checker.py", line 2148, in main
+    await sandbox.kill()
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/opensandbox/sandbox.py", line 251, in kill
+    await self._sandbox_service.kill_sandbox(self.id)
+  File "/tmp/tmp.3hhLfefvQ3/.venv/lib/python3.12/site-packages/opensandbox/adapters/sandboxes_adapter.py", line 369, in kill_sandbox
+    raise ExceptionConverter.to_sandbox_exception(e) from e
+opensandbox.exceptions.sandbox.SandboxInternalException: Network connectivity error: All connection attempts failed
+[0;36m[INFO][0m  Cleaning up...
+[0;32m[ OK ][0m Cleanup done.
