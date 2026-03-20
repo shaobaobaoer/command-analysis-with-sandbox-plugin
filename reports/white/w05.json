@@ -1,0 +1,269 @@
+{
+  "version": "4.1",
+  "command": "curl -LsSf https://astral.sh/uv/install.sh | sh",
+  "timestamp": "2026-03-20T02:23:37.015076+00:00",
+  "verdict": "LOW_RISK",
+  "risk_score": 12,
+  "confidence": "MEDIUM",
+  "recommendations": [
+    "ALLOW: 风险较低, 可考虑放行但建议记录审计日志"
+  ],
+  "is_legitimate_pattern": true,
+  "findings_summary": {
+    "total": 1,
+    "critical": 0,
+    "warn": 1,
+    "info": 0,
+    "dimensions_hit": 1
+  },
+  "findings": [
+    {
+      "severity": "WARN",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: download and execute (curl|sh)",
+      "risk_score": 12,
+      "mitre_attack": [
+        {
+          "id": "T1105",
+          "name": "Ingress Tool Transfer"
+        }
+      ],
+      "evidence": "curl -LsSf https://astral.sh/uv/install.sh | sh"
+    }
+  ],
+  "evidence": {
+    "command_chain": {
+      "stages": 2,
+      "connectors": [
+        "|",
+        "END"
+      ],
+      "safe_then_evil": false
+    },
+    "stdout_lines": 4,
+    "stderr_lines": 3,
+    "exec_duration_sec": 4.3,
+    "external_connections": [
+      "104.26.13.77:443",
+      "172.67.68.3:443"
+    ],
+    "c2_port_hits": [],
+    "files_added": 3,
+    "files_deleted": 1,
+    "inotify_sys_events": 12,
+    "inotify_tmp_events": 14168,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1105"
+    ]
+  },
+  "dimensions": {
+    "files_added": [
+      "/root/.config/uv/uv-receipt.json",
+      "/root/.local/bin/uv",
+      "/root/.local/bin/uvx"
+    ],
+    "files_deleted": [
+      "/root/.config/uv/uv-receipt.json"
+    ],
+    "inotify_sys_events": [
+      "2026-03-20T02:22:51 CREATE,ISDIR /root/.local/bin/tmp.oT8x3LUqCn",
+      "2026-03-20T02:22:51 CREATE,ISDIR /root/.local/bin/tmp.pgoIwbrARb",
+      "2026-03-20T02:22:51 MOVED_TO /root/.local/bin/tmp.oT8x3LUqCn/uv",
+      "2026-03-20T02:22:51 ATTRIB /root/.local/bin/tmp.oT8x3LUqCn/uv",
+      "2026-03-20T02:22:51 MOVED_TO /root/.local/bin/tmp.oT8x3LUqCn/uvx",
+      "2026-03-20T02:22:51 ATTRIB /root/.local/bin/tmp.oT8x3LUqCn/uvx",
+      "2026-03-20T02:22:51 MOVED_TO /root/.local/bin/uv",
+      "2026-03-20T02:22:51 MOVED_TO /root/.local/bin/uvx",
+      "2026-03-20T02:22:51 DELETE,ISDIR /root/.local/bin/tmp.oT8x3LUqCn",
+      "2026-03-20T02:22:51 DELETE,ISDIR /root/.local/bin/tmp.pgoIwbrARb",
+      "2026-03-20T02:22:51 MODIFY /root/.config/uv/uv-receipt.json",
+      "2026-03-20T02:22:51 MODIFY /root/.config/uv/uv-receipt.json"
+    ],
+    "inotify_tmp_events": [
+      "2026-03-20T02:22:48 CREATE,ISDIR /tmp/tmp.UbUKmR0ev7",
+      "2026-03-20T02:22:48 CREATE /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:48 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz",
+      "2026-03-20T02:22:49 MODIFY /tmp/tmp.UbUKmR0ev7/input.tar.gz"
+    ],
+    "external_connections": [
+      "104.26.13.77:443",
+      "172.67.68.3:443"
+    ],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": []
+  },
+  "mitre_attack": {
+    "T1105": {
+      "name": "Ingress Tool Transfer",
+      "findings": [
+        "命令匹配恶意模式: download and execute (curl|sh)"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Command and Control": [
+      "T1105"
+    ]
+  },
+  "deobfuscation": {
+    "original": "curl -LsSf https://astral.sh/uv/install.sh | sh",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773973346",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773973368",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773973373",
+      "desc": "命令执行结束 (耗时 4.3s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773973417",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [
+    "installing to /root/.local/bin",
+    "  uv",
+    "  uvx",
+    "everything's installed!"
+  ],
+  "stderr": [
+    "downloading uv 0.10.12 x86_64-unknown-linux-gnu",
+    "no checksums to verify",
+    "WARN: The following commands are shadowed by other commands in your PATH: uv uvx"
+  ],
+  "text_summary": "🔶 判定: LOW_RISK (风险分: 12/100, 置信度: MEDIUM)\n命令: curl -LsSf https://astral.sh/uv/install.sh | sh\n\n发现 1 个问题 (0 严重, 1 警告):\n  [WARN] 静态分析: 命令匹配恶意模式: download and execute (curl|sh) [T1105]\n\n涉及 ATT&CK 战术: Command and Control\n\n建议:\n  • ALLOW: 风险较低, 可考虑放行但建议记录审计日志",
+  "fast_triage": {
+    "level": "REVIEW",
+    "static_score": 12,
+    "is_legitimate": true,
+    "blacklisted": false,
+    "patterns_matched": 1,
+    "matches": [
+      {
+        "pattern": "download and execute (curl|sh)",
+        "mitre": "T1105",
+        "score": 25
+      }
+    ],
+    "deobfuscation_layers": 0
+  }
+}
