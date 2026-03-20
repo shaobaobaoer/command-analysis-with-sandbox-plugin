@@ -87,7 +87,8 @@ add_samples() {
         desc=$(echo "$line" | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['desc'])")
         label=$(echo "$line" | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['label'])")
         command=$(echo "$line" | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['command'])")
-        JOBS+=("${category}|${id}|${label}|${desc}|${command}")
+        # Use ASCII unit separator (0x1F) instead of | to avoid issues with commands containing |
+        JOBS+=("${category}"$'\x1f'"${id}"$'\x1f'"${label}"$'\x1f'"${desc}"$'\x1f'"${command}")
     done < "$file"
 }
 
@@ -108,7 +109,7 @@ case "$FILTER" in
         add_samples "${SAMPLES_DIR}/${category}.jsonl" "$category"
         FILTERED=()
         for job in "${JOBS[@]}"; do
-            job_id=$(echo "$job" | cut -d'|' -f2)
+            job_id=$(echo "$job" | cut -d$'\x1f' -f2)
             [ "$job_id" = "$target_id" ] && FILTERED+=("$job")
         done
         JOBS=("${FILTERED[@]}")
@@ -131,7 +132,7 @@ SUMMARY_FILE="${REPORTS_DIR}/summary.jsonl"
 > "$SUMMARY_FILE"
 
 for i in "${!JOBS[@]}"; do
-    IFS='|' read -r category id label desc command <<< "${JOBS[$i]}"
+    IFS=$'\x1f' read -r category id label desc command <<< "${JOBS[$i]}"
     idx=$((i + 1))
     report_dir="${REPORTS_DIR}/${category}"
     mkdir -p "$report_dir"
