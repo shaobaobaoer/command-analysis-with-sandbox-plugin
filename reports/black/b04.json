@@ -1,0 +1,278 @@
+{
+  "version": "4.1",
+  "command": "echo 'ALL ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers",
+  "timestamp": "2026-03-20T03:05:26.588916+00:00",
+  "verdict": "DANGEROUS",
+  "risk_score": 90,
+  "confidence": "HIGH",
+  "recommendations": [
+    "BLOCK: 强烈建议阻止此命令执行",
+    "检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 3,
+    "critical": 2,
+    "warn": 1,
+    "info": 0,
+    "dimensions_hit": 3
+  },
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "dimension": "文件变更",
+      "description": "敏感路径写入: ['/etc/sudoers']",
+      "risk_score": 35,
+      "mitre_attack": [
+        {
+          "id": "T1222.002",
+          "name": "File/Dir Permissions Modification: Linux"
+        }
+      ],
+      "evidence": "['/etc/sudoers']"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "用户/权限",
+      "description": "用户/权限配置被修改",
+      "risk_score": 40,
+      "mitre_attack": [
+        {
+          "id": "T1136.001",
+          "name": "Create Account: Local Account"
+        },
+        {
+          "id": "T1098",
+          "name": "Account Manipulation"
+        }
+      ],
+      "evidence": "Before hash: cb1c1e78eda84e1b2b5efd818868b63f\nAfter hash: 4fa8d509c0b706d7db2335b9793279dd"
+    },
+    {
+      "severity": "WARN",
+      "dimension": "文件权限",
+      "description": "发现 1 个权限异常",
+      "risk_score": 15,
+      "mitre_attack": [
+        {
+          "id": "T1222.002",
+          "name": "File/Dir Permissions Modification: Linux"
+        }
+      ],
+      "evidence": "/etc/sudoers 权限异常: 644 (应为 440)"
+    }
+  ],
+  "evidence": {
+    "stdout_lines": 0,
+    "stderr_lines": 0,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 1,
+    "files_deleted": 0,
+    "inotify_sys_events": 2,
+    "inotify_tmp_events": 5707,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "permission_issues": [
+      "/etc/sudoers 权限异常: 644 (应为 440)"
+    ],
+    "mitre_techniques": [
+      "T1222.002",
+      "T1136.001",
+      "T1098"
+    ]
+  },
+  "dimensions": {
+    "files_added": [
+      "/etc/sudoers"
+    ],
+    "files_deleted": [],
+    "inotify_sys_events": [
+      "2026-03-20T03:04:42 CREATE /etc/sudoers",
+      "2026-03-20T03:04:42 MODIFY /etc/sudoers"
+    ],
+    "inotify_tmp_events": [
+      "2026-03-20T03:04:48 CREATE /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg",
+      "2026-03-20T03:04:48 MODIFY /tmp/sortOVtHFg"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": []
+  },
+  "mitre_attack": {
+    "T1222.002": {
+      "name": "File/Dir Permissions Modification: Linux",
+      "findings": [
+        "敏感路径写入: ['/etc/sudoers']",
+        "发现 1 个权限异常"
+      ]
+    },
+    "T1136.001": {
+      "name": "Create Account: Local Account",
+      "findings": [
+        "用户/权限配置被修改"
+      ]
+    },
+    "T1098": {
+      "name": "Account Manipulation",
+      "findings": [
+        "用户/权限配置被修改"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Unknown": [
+      "T1222.002"
+    ],
+    "Persistence": [
+      "T1098",
+      "T1136.001"
+    ]
+  },
+  "deobfuscation": {
+    "original": "echo 'ALL ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773975860",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773975882",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773975883",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773975927",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [],
+  "stderr": [],
+  "text_summary": "🚨 判定: DANGEROUS (风险分: 90/100, 置信度: HIGH)\n命令: echo 'ALL ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers\n\n发现 3 个问题 (2 严重, 1 警告):\n  [CRITICAL] 文件变更: 敏感路径写入: ['/etc/sudoers'] [T1222.002]\n  [CRITICAL] 用户/权限: 用户/权限配置被修改 [T1136.001, T1098]\n  [WARN] 文件权限: 发现 1 个权限异常 [T1222.002]\n\n涉及 ATT&CK 战术: Persistence, Unknown\n\n建议:\n  • BLOCK: 强烈建议阻止此命令执行\n  • 检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更",
+  "fast_triage": {
+    "level": "REVIEW",
+    "static_score": 0,
+    "is_legitimate": false,
+    "blacklisted": true,
+    "patterns_matched": 0,
+    "matches": [],
+    "deobfuscation_layers": 0
+  }
+}

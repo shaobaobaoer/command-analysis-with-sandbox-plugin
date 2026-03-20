@@ -1,0 +1,127 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1222.002",
+              "name": "文件变更",
+              "shortDescription": {
+                "text": "敏感路径写入: ['/etc/sudoers']"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1222/002",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1222.002"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1222.002 (File/Dir Permissions Modification: Linux)"
+              }
+            },
+            {
+              "id": "T1136.001",
+              "name": "用户/权限",
+              "shortDescription": {
+                "text": "用户/权限配置被修改"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1136/001",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1136.001",
+                  "mitre/T1098"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1136.001 (Create Account: Local Account), T1098 (Account Manipulation)"
+              }
+            },
+            {
+              "id": "T1222.002-2",
+              "name": "文件权限",
+              "shortDescription": {
+                "text": "发现 1 个权限异常"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1222/002",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1222.002"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1222.002 (File/Dir Permissions Modification: Linux)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "DANGEROUS",
+            "risk_score": 90,
+            "confidence": "HIGH"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1222.002",
+          "level": "error",
+          "message": {
+            "text": "敏感路径写入: ['/etc/sudoers']"
+          },
+          "properties": {
+            "risk_score": 35,
+            "dimension": "文件变更",
+            "evidence": "['/etc/sudoers']"
+          }
+        },
+        {
+          "ruleId": "T1136.001",
+          "level": "error",
+          "message": {
+            "text": "用户/权限配置被修改"
+          },
+          "properties": {
+            "risk_score": 40,
+            "dimension": "用户/权限",
+            "evidence": "Before hash: cb1c1e78eda84e1b2b5efd818868b63f\nAfter hash: 4fa8d509c0b706d7db2335b9793279dd"
+          }
+        },
+        {
+          "ruleId": "T1222.002-2",
+          "level": "warning",
+          "message": {
+            "text": "发现 1 个权限异常"
+          },
+          "properties": {
+            "risk_score": 15,
+            "dimension": "文件权限",
+            "evidence": "/etc/sudoers 权限异常: 644 (应为 440)"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "echo 'ALL ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers",
+            "verdict": "DANGEROUS",
+            "risk_score": 90,
+            "confidence": "HIGH",
+            "timestamp": "2026-03-20T03:05:26.588916+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}

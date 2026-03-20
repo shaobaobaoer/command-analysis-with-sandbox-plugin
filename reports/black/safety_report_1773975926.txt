@@ -1,0 +1,13 @@
+🚨 判定: DANGEROUS (风险分: 90/100, 置信度: HIGH)
+命令: echo 'ALL ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+发现 3 个问题 (2 严重, 1 警告):
+  [CRITICAL] 文件变更: 敏感路径写入: ['/etc/sudoers'] [T1222.002]
+  [CRITICAL] 用户/权限: 用户/权限配置被修改 [T1136.001, T1098]
+  [WARN] 文件权限: 发现 1 个权限异常 [T1222.002]
+
+涉及 ATT&CK 战术: Persistence, Unknown
+
+建议:
+  • BLOCK: 强烈建议阻止此命令执行
+  • 检查 /etc/passwd、/etc/shadow、/etc/sudoers 是否有未授权变更
