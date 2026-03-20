@@ -1,0 +1,14 @@
+🚨 判定: DANGEROUS (风险分: 85/100, 置信度: HIGH)
+命令: mkdir -p /etc/systemd/system && cat > /etc/systemd/system/backdoor.service << 'EOF'
+
+发现 3 个问题 (3 严重, 0 警告):
+  [CRITICAL] 文件变更: 敏感路径写入: ['/etc/systemd/system/backdoor.service'] [T1222.002]
+  [CRITICAL] 持久化: 持久化机制被修改 (cron/systemd/rc.local) [T1053.003, T1543.002, T1037.004]
+  [CRITICAL] 攻击链: 检测到恶意软件部署链: 文件落地 + 持久化 [T1105, T1053.003]
+
+涉及 ATT&CK 战术: Command and Control, Persistence, Unknown
+
+建议:
+  • BLOCK: 强烈建议阻止此命令执行
+  • 检查 crontab -l、/etc/cron.d/、systemd services 是否被篡改
+  • 多维度攻击已确认, 建议全面安全审计

