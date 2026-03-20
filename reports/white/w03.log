@@ -22,12 +22,9 @@ everything's installed!
 [0;36m[INFO][0m  [Step 3/7] 安装 Python 依赖...
 [0;32m[ OK ][0m opensandbox-server + SDK 已安装
 [0;36m[INFO][0m  [Step 4/7] 生成服务端配置...
-[0;32m[ OK ][0m 配置写入: /tmp/tmp.dJWrmfCh5F/sandbox.toml
+[0;32m[ OK ][0m 配置写入: /tmp/tmp.aPqUUkcdfL/sandbox.toml
 [0;36m[INFO][0m  [Step 5/7] 启动 OpenSandbox Server...
-[0;32m[ OK ][0m Server 就绪 (PID: 399584, port: 8080)
-[0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
-
-[0;32m[ OK ][0m Server 就绪 (PID: 399905, port: 8080)
+[0;32m[ OK ][0m Server 就绪 (PID: 428270, port: 8080)
 [0;36m[INFO][0m  [Step 6/7] 创建沙箱并执行深度行为分析...
 
 
@@ -35,25 +32,10 @@ everything's installed!
   1/9  创建隔离沙箱
 ============================================================================
   镜像: opensandbox/code-interpreter:v1.0.2
-
-============================================================================
-  1/9  创建隔离沙箱
-============================================================================
-  镜像: opensandbox/code-interpreter:v1.0.2
-  Sandbox ID: 4a211b66-aa05-4f7b-a4ae-a99b83e77f2a
+  Sandbox ID: 2c4825c7-a642-41a8-a919-93149c6bfe94
 
 ============================================================================
   2/9  安装监控工具 (快照前, 避免污染基线)
-============================================================================
-  Sandbox ID: ea9b2dc3-67f8-4ea3-96fb-8c72348ad946
-
-============================================================================
-  2/9  安装监控工具 (快照前, 避免污染基线)
-============================================================================
-  监控工具已安装
-
-============================================================================
-  3/9  采集执行前基线 (24 维度)
 ============================================================================
   监控工具已安装
 
@@ -64,40 +46,13 @@ everything's installed!
   SUID/SGID    : 14
   符号链接     : 483
   文件能力     : 1
-  基线采集耗时 : 17.2s
-  CPU          : 8.4%
-  Memory       : 2167.7/15069.3 MiB
+  基线采集耗时 : 15.6s
+  CPU          : 12.8%
+  Memory       : 2042.8/15069.3 MiB
 
 ============================================================================
   4/9  启动多层探针 + 执行待测命令
 ============================================================================
-  文件数       : 221689
-  SUID/SGID    : 14
-  符号链接     : 483
-  文件能力     : 1
-  基线采集耗时 : 16.8s
-  CPU          : 7.9%
-  Memory       : 2166.6/15069.3 MiB
-
-============================================================================
-  4/9  启动多层探针 + 执行待测命令
-============================================================================
-  [探针1] inotify: /usr/local/bin /usr/bin /usr/sbin /etc /root /home
-  [探针2] inotify: /tmp /var/tmp /dev/shm (独立探针)
-  [探针3] network: /proc/net/tcp 轮询 (0.5s)
-  [探针5] process: 进程树轮询 (1s)
-
-  --- 命令链分解分析 ---
-    单阶段命令
-
-  --- 命令去混淆分析 ---
-    PASS  未发现编码/混淆层
-
-  --- 命令静态分析 ---
-    PASS  未匹配已知恶意模式
-
-  $ git --version
-  ────────────────────────────────────────────────────────────
   [探针1] inotify: /usr/local/bin /usr/bin /usr/sbin /etc /root /home
   [探针2] inotify: /tmp /var/tmp /dev/shm (独立探针)
   [探针3] network: /proc/net/tcp 轮询 (0.5s)
@@ -126,30 +81,10 @@ everything's installed!
 ============================================================================
   5/9  采集执行后快照 (全维度)
 ============================================================================
-
-  耗时     : 1.0s
-  退出码   : 0
-  stdout   : 1 行
-  stderr   : 0 行
-
-  --- stdout (前 50 行) ---
-    | git version 2.43.0
-
-============================================================================
-  5/9  采集执行后快照 (全维度)
-============================================================================
   文件数       : 221689
   SUID/SGID    : 14
   inotify 系统 : 0 条
-  inotify /tmp : 108369 条
-
-============================================================================
-  6/9  网络行为深度分析
-============================================================================
-  文件数       : 221689
-  SUID/SGID    : 14
-  inotify 系统 : 0 条
-  inotify /tmp : 112763 条
+  inotify /tmp : 204780 条
 
 ============================================================================
   6/9  网络行为深度分析
@@ -166,60 +101,43 @@ everything's installed!
 ============================================================================
   7/9  全维度安全对比分析 (24 维度)
 ============================================================================
-
-  --- 外部连接 (出站) ---
-    (无外部连接)
-
-    [20 个内部连接已忽略]
-
-  --- DNS 配置 ---
-    PASS  /etc/resolv.conf 未被修改
-
-============================================================================
-  7/9  全维度安全对比分析 (24 维度)
-============================================================================
-
-  --- [D1] 文件变更 (+0 / -0) ---
-    (无新增)
-
-  --- [D2] 实时文件事件 (inotifywait) ---
 
   --- [D1] 文件变更 (+0 / -0) ---
     (无新增)
 
   --- [D2] 实时文件事件 (inotifywait) ---
     系统目录: (无事件)
-    临时目录事件 (3358 条):
-      2026-03-20T02:19:57 CREATE /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
-      2026-03-20T02:19:57 MODIFY /tmp/sortq8l8dJ
+    临时目录事件 (5650 条):
+      2026-03-20T02:25:39 CREATE /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
+      2026-03-20T02:25:39 MODIFY /tmp/sortbVPHeR
 
   --- [D3] 用户与权限 ---
     PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
@@ -231,10 +149,9 @@ everything's installed!
     PASS  无变化
 
   --- [D6] 进程树分析 ---
-    观察到 19 个独立进程:
+    观察到 17 个独立进程:
       > /opt/opensandbox/execd
       > COMMAND
-      > \_ [sleep]
       > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
       > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
       > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
@@ -248,155 +165,41 @@ everything's installed!
       > |   \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
       > |   \_ getcap -r /
       > |   \_ sort
-      > |   |   \_ [ls]
-      > |   |   \_ [ls] <defunct>
-      > |   |   \_ ls -la /etc/ssl/certs/Certum_EC-384_CA.pem
+      > |   |   \_ ls -la /etc/ssl/certs/0f6fa695.0
+      > |   |   \_ ls -la /etc/ssl/certs/706f604c.0
 
     残留进程 (执行后):
       USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-      root           1  0.0  0.0   3156  1792 ?        Ss   02:19   0:00 tail -f /dev/null
-      root           7 16.2  0.1 1244224 22852 ?       Sl   02:19   0:07 /opt/opensandbox/execd
-      root         839  0.0  0.0   4752  3584 ?        S    02:19   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
-      root         841  0.0  0.0   4084  2432 ?        R    02:19   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
-      root         842  0.0  0.0  24904  3328 ?        S    02:19   0:00  |   \_ sort
-      root         840  0.0  0.0   4752  3584 ?        S    02:19   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
-      root         843  0.0  0.0   8280  4224 ?        R    02:19   0:00  |   \_ ps auxf
-      root         844  0.0  0.0   4752  3584 ?        R    02:19   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
+      root           1  0.0  0.0   3156  1792 ?        Ss   02:24   0:00 tail -f /dev/null
+      root           7 18.0  0.1 1243968 22204 ?       Sl   02:24   0:06 /opt/opensandbox/execd
+      root         840  0.0  0.0   4752  3456 ?        S    02:25   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
+      root         842  0.0  0.0   4084  2432 ?        R    02:25   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
+      root         843  0.0  0.0  24904  3072 ?        S    02:25   0:00  |   \_ sort
+      root         841  0.0  0.0   4752  3584 ?        S    02:25   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
+      root         845  0.0  0.0   8280  4224 ?        R    02:25   0:00      \_ ps auxf
 
   --- [D7] 残留网络连接 ---
         sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
-         0: 0100007F:CEAC 0100007F:AEE4 01 00000000:00000000 02:000008D6 00000000     0        0 1821360 2 0000000000000000 20 4 28 10 -1                  
-         1: 0100007F:B9F0 0100007F:AEE4 01 00000000:00000000 02:00000A0E 00000000     0        0 1820538 2 0000000000000000 20 4 30 10 -1                  
-         2: 0100007F:CE6E 0100007F:AEE4 01 00000000:00000000 02:0000080D 00000000     0        0 1828739 2 0000000000000000 20 4 30 10 -1                  
-         3: 0100007F:8DD6 0100007F:AEE4 01 00000000:00000000 02:000001B5 00000000     0        0 1775456 2 0000000000000000 20 4 30 10 -1                  
-         4: 0100007F:8DBC 0100007F:AEE4 01 00000000:00000000 02:00000213 00000000     0        0 1775853 2 0000000000000000 20 4 30 10 -1                  
-         5: 0100007F:D2B6 0100007F:AEE4 01 00000000:00000000 02:00000092 00000000     0        0 1787748 2 0000000000000000 20 4 30 10 -1                  
-         6: 0100007F:D27C 0100007F:AEE4 01 00000000:00000000 02:00000090 00000000     0        0 1809716 2 0000000000000000 20 4 30 10 -1                  
-         7: 0100007F:D2BA 0100007F:AEE4 01 00000000:00000000 02:00000092 00000000     0        0 1809751 2 0000000000000000 20 4 30 10 -1                  
-         8: 0100007F:8DFA 0100007F:AEE4 01 00000000:00000000 02:000001B5 00000000     0        0 1775877 2 0000000000000000 20 4 30 10 -1                  
-         9: 0100007F:B5CE 0100007F:AEE4 01 00000000:00000000 02:000002E0 00000000     0        0 1806469 2 0000000000000000 20 4 30 10 -1                  
-        10: 0100007F:8E02 0100007F:AEE4 01 00000000:00000000 02:000001B5 00000000     0        0 1774217 2 0000000000000000 20 4 30 10 -1                  
-        11: 0100007F:BA1A 0100007F:AEE4 01 00000000:00000000 02:00000AED 00000000     0        0 1832260 2 0000000000000000 20 4 30 10 -1                  
-        12: 0100007F:BA2C 0100007F:AEE4 01 00000000:00000000 02:00000B52 00000000     0        0 1830811 2 0000000000000000 20 4 30 10 -1                  
-        13: 0100007F:D948 0100007F:AEE4 01 00000000:00000000 02:00000179 00000000     0        0 1769268 2 0000000000000000 20 4 30 10 -1                  
+         0: 0100007F:E68A 0100007F:AEE4 01 00000000:00000000 02:0000000C 00000000     0        0 2064944 2 0000000000000000 20 4 30 10 -1                  
+         1: 0100007F:E682 0100007F:AEE4 01 00000000:00000000 02:0000000B 00000000     0        0 2059242 2 0000000000000000 20 4 30 10 -1                  
+         2: 0100007F:E6CC 0100007F:AEE4 01 00000000:00000000 02:0000000F 00000000     0        0 2076802 2 0000000000000000 20 4 30 10 -1                  
+         3: 0100007F:AF64 0100007F:AEE4 01 00000000:00000000 02:00000AEC 00000000     0        0 2097324 2 0000000000000000 20 4 30 10 -1                  
+         4: 0100007F:E6B0 0100007F:AEE4 01 00000000:00000000 02:0000000D 00000000     0        0 2076788 2 0000000000000000 20 4 30 10 -1                  
+         5: 0100007F:AF68 0100007F:AEE4 01 00000000:00000000 02:00000B51 00000000     0        0 2089635 2 0000000000000000 20 4 0 10 -1                   
+         6: 0100007F:BEE4 0100007F:AEE4 01 00000000:00000000 02:00000479 00000000     0        0 2050099 2 0000000000000000 20 4 30 10 -1                  
+         7: 0100007F:AAB8 0100007F:AEE4 01 00000000:00000000 02:0000025D 00000000     0        0 2064094 2 0000000000000000 20 4 30 10 -1                  
+         8: 0100007F:E66E 0100007F:AEE4 01 00000000:00000000 02:000003F0 00000000     0        0 2066025 2 0000000000000000 20 4 30 10 -1                  
+         9: 0100007F:E662 0100007F:AEE4 01 00000000:00000000 02:0000032A 00000000     0        0 2068634 2 0000000000000000 20 4 30 10 -1                  
+        10: 0100007F:E676 0100007F:AEE4 01 00000000:00000000 02:000004BD 00000000     0        0 2068233 2 0000000000000000 20 4 30 10 -1                  
+        11: 0100007F:E6A0 0100007F:AEE4 01 00000000:00000000 02:0000000C 00000000     0        0 2076785 2 0000000000000000 20 4 30 10 -1                  
+        12: 0100007F:BF1C 0100007F:AEE4 01 00000000:00000000 02:00000513 00000000     0        0 2049100 2 0000000000000000 20 4 28 10 -1                  
+        13: 0100007F:E698 0100007F:AEE4 01 00000000:00000000 02:0000000C 00000000     0        0 2064945 2 0000000000000000 20 4 30 10 -1                  
 
   --- [D8] 资源消耗 ---
-    CPU    : 8.4% -> 10.3% (Δ +1.9%)
-    Memory : 2167.7 -> 2304.0 MiB (Δ +136.3 MiB)
+    CPU    : 12.8% -> 16.4% (Δ +3.5%)
+    Memory : 2042.8 -> 2082.5 MiB (Δ +39.6 MiB)
 
   --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
-    系统目录: (无事件)
-    临时目录事件 (4036 条):
-      2026-03-20T02:19:57 CREATE /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-      2026-03-20T02:19:57 MODIFY /tmp/sort9TzHH6
-
-  --- [D3] 用户与权限 ---
-    PASS  /etc/passwd, shadow, sudoers, SSH, PAM 无变化
-
-  --- [D4] 持久化 (cron/systemd/rc.local/init.d/at) ---
-    PASS  无新增
-
-  --- [D5] Shell 环境 (.bashrc/.profile/etc) ---
-    PASS  无变化
-
-  --- [D6] 进程树分析 ---
-    观察到 19 个独立进程:
-      > /opt/opensandbox/execd
-      > COMMAND
-      > \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf
-      > \_ bash -c find / -xdev \( -perm -4000 -o -perm -2000 \) -type f -exec ls -la {} \; 2>/dev/null | sort
-      > \_ bash -c find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} \; 2>/dev/null | sort || true
-      > \_ bash -c getcap -r / 2>/dev/null | sort || true
-      > \_ cat /proc/net/tcp /proc/net/tcp6
-      > \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
-      > \_ find /etc /root /home /tmp /usr/local/bin -maxdepth 3 -type l -exec ls -la {} ;
-      > \_ getcap -r /
-      > \_ sort
-      > tail -f /dev/null
-      > |   \_ [ls] <defunct>
-      > |   \_ find / -xdev ( -perm -4000 -o -perm -2000 ) -type f -exec ls -la {} ;
-      > |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
-      > |   \_ getcap -r /
-      > |   \_ ls -la /etc/alternatives/jconsole.1.gz
-      > |   \_ ls -la /etc/ssl/certs/Security_Communication_RootCA3.pem
-      > |   \_ sort
-
-    残留进程 (执行后):
-      USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-      root           1  0.0  0.0   3156  1792 ?        Ss   02:19   0:00 tail -f /dev/null
-      root           7 16.3  0.1 1244224 22364 ?       Sl   02:19   0:07 /opt/opensandbox/execd
-      root         840  0.0  0.0   4752  3456 ?        S    02:19   0:00  \_ bash -c find / -xdev -not -path '/proc/*' -not -path '/sys/*' -not -path '/dev/*' -not -path '/run/*' -type f -printf '%s %T@ %p\n' 2>/dev/null | sort
-      root         842  0.0  0.0   4084  2432 ?        R    02:19   0:00  |   \_ find / -xdev -not -path /proc/* -not -path /sys/* -not -path /dev/* -not -path /run/* -type f -printf %s %T@ %p n
-      root         843  0.0  0.0  24904  3200 ?        S    02:19   0:00  |   \_ sort
-      root         841  0.0  0.0   4752  3584 ?        S    02:19   0:00  \_ bash -c ps auxf 2>/dev/null || ps aux
-      root         844  0.0  0.0   8280  4224 ?        R    02:19   0:00  |   \_ ps auxf
-      root         845  0.0  0.0   4752  3584 ?        S    02:19   0:00  \_ bash -c cat ~/.bashrc ~/.bash_profile ~/.profile ~/.bash_logout /etc/profile /etc/bash.bashrc /etc/environment /etc/profile.d/*.sh 2>/dev/null | md5sum
-
-  --- [D7] 残留网络连接 ---
-        sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode                                                     
-         0: 030011AC:ECC2 175CBD5B:0050 06 00000000:00000000 03:00000101 00000000     0        0 0 3 0000000000000000                                      
-         1: 0100007F:D334 0100007F:AEE4 01 00000000:00000000 02:000000A5 00000000     0        0 1810794 2 0000000000000000 20 4 30 10 -1                  
-         2: 0100007F:D340 0100007F:AEE4 01 00000000:00000000 02:000000A5 00000000     0        0 1810795 2 0000000000000000 20 4 30 10 -1                  
-         3: 0100007F:B628 0100007F:AEE4 01 00000000:00000000 02:00000425 00000000     0        0 1808409 2 0000000000000000 20 4 30 10 -1                  
-         4: 0100007F:D32A 0100007F:AEE4 01 00000000:00000000 02:000000A2 00000000     0        0 1807513 2 0000000000000000 20 4 28 10 -1                  
-         5: 0100007F:BA36 0100007F:AEE4 01 00000000:00000000 02:00000B52 00000000     0        0 1832301 2 0000000000000000 20 4 30 10 -1                  
-         6: 0100007F:D332 0100007F:AEE4 01 00000000:00000000 02:000000A2 00000000     0        0 1809863 2 0000000000000000 20 4 30 10 -1                  
-         7: 0100007F:BA14 0100007F:AEE4 01 00000000:00000000 02:00000A88 00000000     0        0 1828770 2 0000000000000000 20 4 30 10 -1                  
-         8: 0100007F:CE62 0100007F:AEE4 01 00000000:00000000 02:000007FB 00000000     0        0 1832099 2 0000000000000000 20 4 30 10 -1                  
-         9: 0100007F:D232 0100007F:AEE4 01 00000000:00000000 02:00000485 00000000     0        0 1808414 2 0000000000000000 20 4 30 10 -1                  
-        10: 0100007F:8EB2 0100007F:AEE4 01 00000000:00000000 02:000001ED 00000000     0        0 1779140 2 0000000000000000 20 4 30 10 -1                  
-        11: 0100007F:8ED4 0100007F:AEE4 01 00000000:00000000 02:00000554 00000000     0        0 1776072 2 0000000000000000 20 4 30 10 -1                  
-        12: 0100007F:B5E8 0100007F:AEE4 01 00000000:00000000 02:00000358 00000000     0        0 1783697 2 0000000000000000 20 4 30 10 -1                  
-        13: 0100007F:8EE6 0100007F:AEE4 01 00000000:00000000 02:000001E7 00000000     0        0 1781247 2 0000000000000000 20 4 30 10 -1                  
-
-  --- [D8] 资源消耗 ---
-    CPU    : 7.9% -> 12.2% (Δ +4.3%)
-    Memory : 2166.6 -> 2300.1 MiB (Δ +133.5 MiB)
-
-  --- [D9] 可疑二进制 (/tmp /var/tmp /dev/shm) ---
-    PASS
-
-  --- [D10] SUID/SGID 文件变更 ---
-    PASS  无新增 SUID/SGID 文件
-
-  --- [D11] 内核模块 ---
-    PASS  无变化
-
-  --- [D12] 挂载点 ---
-    PASS  无变化
-
-  --- [D13] 安全相关环境变量 ---
-    PASS  无变化
-
-  --- [D14] 关键文件内容分析 ---
     PASS
 
   --- [D10] SUID/SGID 文件变更 ---
@@ -430,42 +233,10 @@ everything's installed!
     PASS  无异常高熵文件
 
   --- [D20] 计划任务详细差异 ---
-    PASS  未发现恶意内容模式
-
-  --- [D15] 关键系统二进制完整性 ---
-    PASS  /bin/bash, su, sudo, passwd, sshd 等均未被篡改
-
-  --- [D16] 符号链接变更 ---
-    PASS  无新增符号链接
-
-  --- [D17] 文件能力 (Linux Capabilities) ---
-    PASS  无新增文件能力
-
-  --- [D18] 输出内容分析 ---
-    PASS  输出内容无敏感信息泄露
-
-  --- [D19] 新增文件熵分析 ---
-    PASS  无异常高熵文件
-
-  --- [D20] 计划任务详细差异 ---
     PASS  crontab 无变化
-    !! cron.d 恶意内容: cron.d persistence
 
   --- [D21] 隐藏进程检测 ---
-    PASS  crontab 无变化
-    !! cron.d 恶意内容: cron.d persistence
-
-  --- [D21] 隐藏进程检测 ---
-    !! 5 个潜在隐藏进程
-
-  --- [D22] 信号处理 / trap 分析 ---
-    PASS  未发现恶意信号处理
-
-  --- [D23] 攻击链关联分析 ---
-    PASS  未检测到攻击链组合
-
-  --- [D24] 敏感文件权限变更 ---
-    !! 5 个潜在隐藏进程
+    PASS  未发现隐藏进程
 
   --- [D22] 信号处理 / trap 分析 ---
     PASS  未发现恶意信号处理
@@ -479,148 +250,88 @@ everything's installed!
 ============================================================================
   8/9  MITRE ATT&CK 技术映射
 ============================================================================
-    [T1053.003] Scheduled Task/Job: Cron
-      └─ cron.d 含恶意内容: cron.d persistence
-    [T1564.001] Hide Artifacts: Hidden Files and Directories
-      └─ 检测到 5 个 /proc 中存在但 ps 不可见的进程
-
-============================================================================
-  9/9  综合判定
-============================================================================
-    PASS  敏感文件权限正常
-
-============================================================================
-  8/9  MITRE ATT&CK 技术映射
-============================================================================
-    [T1053.003] Scheduled Task/Job: Cron
-      └─ cron.d 含恶意内容: cron.d persistence
-    [T1564.001] Hide Artifacts: Hidden Files and Directories
-      └─ 检测到 5 个 /proc 中存在但 ps 不可见的进程
+    未映射到任何 ATT&CK 技术
 
 ============================================================================
   9/9  综合判定
 ============================================================================
 
   +──────────────────────────────────────────────────────────────────────────+
-  |  [??] 判定: SUSPICIOUS            风险评分:  50/100            |
-  |  [████████████████████░░░░░░░░░░░░░░░░░░░░]                              |
-  |  置信度: MEDIUM  维度覆盖:  2/24              |
+  |  [OK] 判定: LIKELY_SAFE           风险评分:   0/100            |
+  |  [░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░]                              |
+  |  置信度: HIGH    维度覆盖:  0/24              |
   +──────────────────────────────────────────────────────────────────────────+
 
   命令           : git --version
   合法命令模式   : 否
   退出码         : 0
   文件 +/-       : +0 / -0
-  inotify 事件   : 0 系统 + 3358 临时
+  inotify 事件   : 0 系统 + 5650 临时
   外部连接       : 0 个
   SUID/SGID 变更 : +0
   二进制完整性   : PASS
   新增符号链接   : 0
   新增文件能力   : 0
   执行耗时       : 1.0s
-  MITRE 技术     : 2 个
-  ATT&CK 战术    : Defense Evasion, Persistence
-  发现           : 1 critical, 1 warnings, 0 info
-  置信度         : MEDIUM
+  MITRE 技术     : 0 个
+  ATT&CK 战术    : 无
+  发现           : 0 critical, 0 warnings, 0 info
+  置信度         : HIGH
 
-  详细发现 (按严重程度排序):
-    [!!!] [计划任务差异] cron.d 含恶意内容: cron.d persistence [T1053.003] (score: 30)
-    [ ! ] [隐藏进程] 检测到 5 个 /proc 中存在但 ps 不可见的进程 [T1564.001] (score: 20)
+  全部 24 维度检查通过:
+    [PASS] 无敏感路径写入
+    [PASS] 用户/权限未被修改
+    [PASS] 无持久化后门 (cron/systemd/rc.local)
+    [PASS] Shell 环境未被篡改
+    [PASS] DNS 配置未被修改
+    [PASS] 无可疑残留进程
+    [PASS] 临时目录无可执行文件
+    [PASS] 无新增 SUID/SGID 文件
+    [PASS] 内核模块未变化
+    [PASS] 挂载点未变化
+    [PASS] 无 LD_PRELOAD 注入
+    [PASS] 未发现恶意内容模式
+    [PASS] 关键二进制完整性通过
+    [PASS] 无危险符号链接
+    [PASS] 无新增文件能力
+    [PASS] 输出无敏感信息泄露
+    [PASS] 无异常高熵文件
+    [PASS] 计划任务无变化
+    [PASS] 未发现隐藏进程
+    [PASS] 无恶意信号处理
+    [PASS] 未检测到攻击链
+    [PASS] 敏感文件权限正常
+    [PASS] 外部连接 0 个
+    [PASS] MITRE ATT&CK 映射 0 个技术
 
   安全建议:
-    -> REVIEW: 建议人工审核此命令后再决定是否放行
+    -> ALLOW: 命令安全, 可放行
 
-  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973234.json
-  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973234.txt
-  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973234.sarif.json
+  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973577.json
+  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973577.txt
+  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973577.sarif.json
 
   快速预判: PASS (静态分: 0, 模式匹配: 0)
-  [WARN] 快速预判未能识别 — 此攻击需要沙箱动态分析才能发现
 
 ============================================================================
   人类可读摘要:
 ============================================================================
-  ⚠️ 判定: SUSPICIOUS (风险分: 50/100, 置信度: MEDIUM)
+  ✅ 判定: LIKELY_SAFE (风险分: 0/100, 置信度: HIGH)
   命令: git --version
   
-  发现 2 个问题 (1 严重, 1 警告):
-    [CRITICAL] 计划任务差异: cron.d 含恶意内容: cron.d persistence [T1053.003]
-    [WARN] 隐藏进程: 检测到 5 个 /proc 中存在但 ps 不可见的进程 [T1564.001]
-  
-  涉及 ATT&CK 战术: Defense Evasion, Persistence
+  全部 24 维度检查通过, 命令安全。
   
   建议:
-    • REVIEW: 建议人工审核此命令后再决定是否放行
+    • ALLOW: 命令安全, 可放行
 
   沙箱已销毁。
 
 
 [0;36m[INFO][0m  [Step 7/7] 完成!
-[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973234.sarif.json
-  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973234.sarif.json
+[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973577.json
+[0;32m[ OK ][0m 报告 (文本): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973577.txt
+  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973577.json
   快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
 
 [0;36m[INFO][0m  Cleaning up...
-
-  +──────────────────────────────────────────────────────────────────────────+
-  |  [??] 判定: SUSPICIOUS            风险评分:  50/100            |
-  |  [████████████████████░░░░░░░░░░░░░░░░░░░░]                              |
-  |  置信度: MEDIUM  维度覆盖:  2/24              |
-  +──────────────────────────────────────────────────────────────────────────+
-
-  命令           : git --version
-  合法命令模式   : 否
-  退出码         : 0
-  文件 +/-       : +0 / -0
-  inotify 事件   : 0 系统 + 4036 临时
-  外部连接       : 0 个
-  SUID/SGID 变更 : +0
-  二进制完整性   : PASS
-  新增符号链接   : 0
-  新增文件能力   : 0
-  执行耗时       : 1.0s
-  MITRE 技术     : 2 个
-  ATT&CK 战术    : Defense Evasion, Persistence
-  发现           : 1 critical, 1 warnings, 0 info
-  置信度         : MEDIUM
-
-  详细发现 (按严重程度排序):
-    [!!!] [计划任务差异] cron.d 含恶意内容: cron.d persistence [T1053.003] (score: 30)
-    [ ! ] [隐藏进程] 检测到 5 个 /proc 中存在但 ps 不可见的进程 [T1564.001] (score: 20)
-
-  安全建议:
-    -> REVIEW: 建议人工审核此命令后再决定是否放行
-
-  报告 (JSON) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973234.json
-  报告 (文本) : /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973234.txt
-  报告 (SARIF): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973234.sarif.json
-
-  快速预判: PASS (静态分: 0, 模式匹配: 0)
-  [WARN] 快速预判未能识别 — 此攻击需要沙箱动态分析才能发现
-
-============================================================================
-  人类可读摘要:
-============================================================================
-  ⚠️ 判定: SUSPICIOUS (风险分: 50/100, 置信度: MEDIUM)
-  命令: git --version
-  
-  发现 2 个问题 (1 严重, 1 警告):
-    [CRITICAL] 计划任务差异: cron.d 含恶意内容: cron.d persistence [T1053.003]
-    [WARN] 隐藏进程: 检测到 5 个 /proc 中存在但 ps 不可见的进程 [T1564.001]
-  
-  涉及 ATT&CK 战术: Defense Evasion, Persistence
-  
-  建议:
-    • REVIEW: 建议人工审核此命令后再决定是否放行
-
-  沙箱已销毁。
-
-
-[0;36m[INFO][0m  [Step 7/7] 完成!
-[0;32m[ OK ][0m 报告 (JSON): /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973234.sarif.json
-  查看: python3 -m json.tool /home/ecs-user/skill-analysis/command-analysis-with-sandbox-plugin/reports/white/safety_report_1773973234.sarif.json
-  快速预判: FAST_TRIAGE=1 COMMAND='...' ./checker.sh
-
-[0;36m[INFO][0m  Cleaning up...
-[0;32m[ OK ][0m Cleanup done.
 [0;32m[ OK ][0m Cleanup done.

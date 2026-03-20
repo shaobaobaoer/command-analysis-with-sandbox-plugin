@@ -1,3 +1,3 @@
-{"id":"w05","category":"white","label":"safe","desc":"uv installer","verdict":"LOW_RISK","risk_score":12,"mitre_count":1,"confidence":"MEDIUM","match":"CORRECT"}
-{"id":"w05","category":"white","label":"safe","desc":"uv installer","verdict":"LOW_RISK","risk_score":12,"mitre_count":1,"confidence":"MEDIUM","match":"CORRECT"}
-{"id":"w02","category":"white","label":"safe","desc":"python print","verdict":"UNKNOWN","risk_score":-1,"mitre_count":0,"confidence":"N/A","match":"WRONG"}
+{"id":"w06","category":"white","label":"safe","desc":"pip install requests","verdict":"UNKNOWN","risk_score":-1,"mitre_count":0,"confidence":"N/A","match":"WRONG"}
+{"id":"w06","category":"white","label":"safe","desc":"pip install requests","verdict":"LIKELY_SAFE","risk_score":5,"mitre_count":0,"confidence":"MEDIUM","match":"CORRECT"}
+{"id":"w03","category":"white","label":"safe","desc":"git version","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
