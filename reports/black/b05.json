@@ -1,66 +1,226 @@
 {
-  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
-  "version": "2.1.0",
-  "runs": [
+  "version": "4.1",
+  "command": "echo 'nameserver 6.6.6.6' > /etc/resolv.conf",
+  "timestamp": "2026-03-20T03:52:25.551497+00:00",
+  "verdict": "SUSPICIOUS",
+  "risk_score": 30,
+  "confidence": "LOW",
+  "recommendations": [
+    "REVIEW: 建议人工审核此命令后再决定是否放行",
+    "置信度较低, 可能为误报, 请结合上下文判断"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 1,
+    "critical": 1,
+    "warn": 0,
+    "info": 0,
+    "dimensions_hit": 1
+  },
+  "findings": [
     {
-      "tool": {
-        "driver": {
-          "name": "Command Safety Analyzer",
-          "version": "4.1",
-          "informationUri": "https://github.com/command-safety-analyzer",
-          "rules": [
-            {
-              "id": "T1016",
-              "name": "DNS",
-              "shortDescription": {
-                "text": "/etc/resolv.conf 被修改 (DNS 劫持)"
-              },
-              "helpUri": "https://attack.mitre.org/techniques/T1016",
-              "properties": {
-                "tags": [
-                  "security",
-                  "command-safety",
-                  "mitre/T1016"
-                ]
-              },
-              "help": {
-                "text": "MITRE ATT&CK: T1016 (System Network Configuration Discovery)"
-              }
-            }
-          ],
-          "properties": {
-            "verdict": "SUSPICIOUS",
-            "risk_score": 30,
-            "confidence": "LOW"
-          }
-        }
-      },
-      "results": [
+      "severity": "CRITICAL",
+      "dimension": "DNS",
+      "description": "/etc/resolv.conf 被修改 (DNS 劫持)",
+      "risk_score": 30,
+      "mitre_attack": [
         {
-          "ruleId": "T1016",
-          "level": "error",
-          "message": {
-            "text": "/etc/resolv.conf 被修改 (DNS 劫持)"
-          },
-          "properties": {
-            "risk_score": 30,
-            "dimension": "DNS",
-            "evidence": "nameserver 6.6.6.6"
-          }
+          "id": "T1016",
+          "name": "System Network Configuration Discovery"
         }
       ],
-      "invocations": [
-        {
-          "executionSuccessful": true,
-          "properties": {
-            "command": "echo 'nameserver 6.6.6.6' > /etc/resolv.conf",
-            "verdict": "SUSPICIOUS",
-            "risk_score": 30,
-            "confidence": "LOW",
-            "timestamp": "2026-03-20T03:06:58.360648+00:00"
-          }
-        }
+      "evidence": "nameserver 6.6.6.6"
+    }
+  ],
+  "evidence": {
+    "stdout_lines": 0,
+    "stderr_lines": 0,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 1,
+    "files_deleted": 1,
+    "inotify_sys_events": 0,
+    "inotify_tmp_events": 6349,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1016"
+    ]
+  },
+  "dimensions": {
+    "files_added": [
+      "/etc/resolv.conf"
+    ],
+    "files_deleted": [
+      "/etc/resolv.conf"
+    ],
+    "inotify_sys_events": [],
+    "inotify_tmp_events": [
+      "2026-03-20T03:51:49 CREATE /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I",
+      "2026-03-20T03:51:49 MODIFY /tmp/sortEPlk3I"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": []
+  },
+  "mitre_attack": {
+    "T1016": {
+      "name": "System Network Configuration Discovery",
+      "findings": [
+        "/etc/resolv.conf 被修改 (DNS 劫持)"
       ]
     }
-  ]
+  },
+  "mitre_tactics": {
+    "Discovery": [
+      "T1016"
+    ]
+  },
+  "deobfuscation": {
+    "original": "echo 'nameserver 6.6.6.6' > /etc/resolv.conf",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773978681",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773978703",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773978704",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773978746",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [],
+  "stderr": [],
+  "text_summary": "⚠️ 判定: SUSPICIOUS (风险分: 30/100, 置信度: LOW)\n命令: echo 'nameserver 6.6.6.6' > /etc/resolv.conf\n\n发现 1 个问题 (1 严重, 0 警告):\n  [CRITICAL] DNS: /etc/resolv.conf 被修改 (DNS 劫持) [T1016]\n\n涉及 ATT&CK 战术: Discovery\n\n建议:\n  • REVIEW: 建议人工审核此命令后再决定是否放行\n  • 置信度较低, 可能为误报, 请结合上下文判断",
+  "fast_triage": {
+    "level": "REVIEW",
+    "static_score": 0,
+    "is_legitimate": false,
+    "blacklisted": true,
+    "patterns_matched": 0,
+    "matches": [],
+    "deobfuscation_layers": 0
+  }
 }
