@@ -158,6 +158,41 @@ async def run_analysis(
             for l in stderr_lines[:20]:
                 print(f"    | {l}")
 
+        # ── 3.5 退出码分析 ───────────────────────────────────────────────
+        # 命令执行失败可能是恶意意图的信号（如工具不存在、网络被阻断等）
+        if exit_code == 127:
+            # 检查 stderr 中具体缺少的命令
+            missing_tools = []
+            for line in stderr_lines:
+                if "command not found" in line.lower() or "not found" in line.lower():
+                    # 提取命令名
+                    parts = line.split(":")
+                    if len(parts) >= 4:
+                        missing_tools.append(parts[3].strip())
+            if missing_tools:
+                engine.add("WARN", "执行失败",
+                    f"命令引用不存在的工具: {missing_tools[:5]}",
+                    15, ["T1027"], f"Exit code 127, missing: {missing_tools}")
+            else:
+                engine.add("WARN", "执行失败",
+                    "命令执行失败 (exit 127: 命令未找到)",
+                    10, ["T1027"], "Command attempted to use non-existent tools")
+        elif exit_code > 0 and exit_code != 127:
+            # 其他非零退出码（网络错误、权限拒绝等）
+            stderr_text = "\n".join(stderr_lines).lower()
+            if "connection refused" in stderr_text or "network" in stderr_text:
+                engine.add("WARN", "执行失败",
+                    f"命令尝试网络连接但失败 (exit {exit_code})",
+                    15, ["T1071"], f"stderr: {stderr_text[:200]}")
+            elif "permission denied" in stderr_text:
+                engine.add("WARN", "执行失败",
+                    f"命令尝试越权操作但被拒绝 (exit {exit_code})",
+                    20, ["T1222"], f"stderr: {stderr_text[:200]}")
+            elif exit_code != 1:  # exit 1 是通用错误，不特别报告
+                engine.add("INFO", "执行失败",
+                    f"命令以非零退出码结束 (exit {exit_code})",
+                    5, [], f"stderr: {stderr_text[:200]}")
+
         # ── 4. 采集执行后快照 ─────────────────────────────────────────────
         _section("4/6  采集执行后快照 + 探针数据 (并发)")
         await asyncio.sleep(2)  # 等待短命进程退出
@@ -388,12 +423,13 @@ async def run_analysis(
                 "cat ~/.bashrc ~/.bash_profile ~/.profile /etc/profile "
                 "/etc/bash.bashrc /etc/environment 2>/dev/null || true")
             new_file_contents["shell_after"] = shell_content
-        # 读取新增的脚本/配置文件
-        for path in new_paths[:20]:
-            if any(path.endswith(ext) for ext in [
-                ".sh", ".py", ".pl", ".rb", ".php",
-                ".service", ".conf", ".cfg", ".txt",
-            ]):
+        # 读取新增的脚本/配置文件 + 临时目录中的可疑文件
+        script_exts = [".sh", ".py", ".pl", ".rb", ".php", ".service", ".conf", ".cfg", ".txt"]
+        for path in new_paths[:30]:
+            # 脚本/配置文件 或 临时目录中的文件（恶意载荷常见位置）
+            is_script = any(path.endswith(ext) for ext in script_exts)
+            is_tmp = any(path.startswith(d) for d in ["/tmp/", "/var/tmp/", "/dev/shm/"])
+            if is_script or is_tmp:
                 fc, _ = await run_cmd(sandbox, f"head -50 '{path}' 2>/dev/null || true", 5)
                 if fc.strip():
                     new_file_contents[path] = fc

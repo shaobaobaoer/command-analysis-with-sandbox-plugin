@@ -29,10 +29,13 @@ C2_PORTS = {4444, 5555, 6666, 7777, 8888, 9999, 1234, 31337,
             12345, 4443, 8443, 1337, 6667, 6697}
 
 # 敏感路径前缀（写入这些路径视为可疑）
+# 注意: /etc/ld.so.cache 是 ldconfig 正常更新的文件，不在此列表中
+# /etc/ld.so.preload 才是恶意的 LD_PRELOAD 劫持目标
 SENSITIVE_PATHS = [
     "/etc/passwd", "/etc/shadow", "/etc/sudoers",
     "/root/.ssh", "/etc/ssh/",
-    "/etc/ld.so", "/etc/pam.d/", "/etc/security/",
+    "/etc/ld.so.preload",  # LD_PRELOAD 劫持（不包括 .cache，那是 ldconfig 正常更新的）
+    "/etc/pam.d/", "/etc/security/",
     "/etc/systemd/system/", "/etc/init.d/",
     "/etc/cron", "/etc/profile",
     "/usr/sbin/", "/usr/bin/sudo", "/bin/su",

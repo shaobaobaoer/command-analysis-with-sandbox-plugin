@@ -90,12 +90,10 @@ add_samples() {
     [ -f "$file" ] || return 0
     while IFS= read -r line; do
         [ -z "$line" ] && continue
-        local id desc label command
-        id=$(echo "$line"      | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['id'])")
-        desc=$(echo "$line"    | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['desc'])")
-        label=$(echo "$line"   | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['label'])")
-        command=$(echo "$line" | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['command'])")
-        JOBS+=("${category}"$'\x1e'"${id}"$'\x1e'"${label}"$'\x1e'"${desc}"$'\x1e'"${command}")
+        # 将整行 JSON + category 一起 base64 编码存入，避免多行命令/特殊字符破坏数组
+        local encoded
+        encoded=$(printf '%s\x1e%s' "$category" "$line" | base64 -w0)
+        JOBS+=("$encoded")
     done < "$file"
 }
 
@@ -112,10 +110,13 @@ case "$FILTER" in
         add_samples "${SAMPLES_DIR}/${category}.jsonl" "$category"
         FILTERED=()
         for job in "${JOBS[@]}"; do
-            IFS=$'\x1e' read -r -d '' _ job_id _ _ _ <<< "$job"$'\x1e'
+            job_id=$(echo "$job" | base64 -d | python3 -c "
+import sys; raw=sys.stdin.read(); sep=raw.index('\x1e'); line=raw[sep+1:]
+import json; print(json.loads(line)['id'])
+" 2>/dev/null)
             [ "$job_id" = "$target_id" ] && FILTERED+=("$job")
         done
-        JOBS=("${FILTERED[@]}")
+        JOBS=("${FILTERED[@]:-}")
         ;;
     *) fail "未知参数: $FILTER (用法: all, white, black, white:w01)"; exit 1 ;;
 esac
@@ -130,23 +131,51 @@ SUMMARY_FILE="${REPORTS_DIR}/summary.jsonl"
 > "$SUMMARY_FILE"
 
 for i in "${!JOBS[@]}"; do
-    IFS=$'\x1e' read -r -d '' category id label desc command _ <<< "${JOBS[$i]}"$'\x1e'
+    # 解码 base64 → "category\x1eJSON行"
+    decoded=$(echo "${JOBS[$i]}" | base64 -d)
+    sep_pos=$(python3 -c "s=open('/dev/stdin','rb').read(); print(s.index(b'\\x1e'))" <<< "$decoded" 2>/dev/null || echo "")
+    category=$(python3 -c "
+import sys
+raw = sys.stdin.buffer.read()
+sep = raw.index(b'\\x1e')
+print(raw[:sep].decode())
+" <<< "$decoded")
+    line=$(python3 -c "
+import sys
+raw = sys.stdin.buffer.read()
+sep = raw.index(b'\\x1e')
+print(raw[sep+1:].decode())
+" <<< "$decoded")
+    id=$(echo "$line"      | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['id'])")
+    label=$(echo "$line"   | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['label'])")
+    desc=$(echo "$line"    | python3 -c "import sys,json; print(json.loads(sys.stdin.read())['desc'])")
+    command=$(echo "$line" | python3 -c "import sys,json; d=json.loads(sys.stdin.read()); import base64; print(base64.b64encode(d['command'].encode()).decode())")
+    # command 此时是 base64 编码，直接作为 COMMAND_B64 传入
+    COMMAND_B64="$command"
     idx=$((i + 1))
     report_dir="${REPORTS_DIR}/${category}"
     mkdir -p "$report_dir"
     report_file="${report_dir}/${id}.json"
     log_file="${report_dir}/${id}.log"
 
+    # 解码命令用于显示
+    cmd_display=$(echo "$COMMAND_B64" | base64 -d 2>/dev/null | head -c 120 || echo "(decode error)")
+
     echo ""
     echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     info "[${idx}/${TOTAL}] ${category}/${id}: ${desc}"
-    info "命令: ${command}"
+    info "命令: ${cmd_display}"
     echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
-    # base64 编码传命令，避免多行问题
-    COMMAND_B64=$(echo -n "$command" | base64 -w0)
+    # COMMAND_B64 已在上面赋值，直接导出
     REPORT_DIR="$report_dir"
     export COMMAND_B64 REPORT_DIR SANDBOX_IMAGE EXECD_IMAGE REGISTRY_MIRROR
+
+    # 记录启动时间戳（用于后续精确定位本次生成的报告）
+    run_start_ts=$(date +%s)
+    # 创建一个时间戳哨兵文件，用于 find -newer 定位新报告
+    sentinel_file="${report_dir}/.run_sentinel_${id}"
+    touch "$sentinel_file"
 
     checker_exit=1
     for attempt in $(seq 1 "$MAX_RETRY"); do
@@ -159,8 +188,17 @@ for i in "${!JOBS[@]}"; do
         fi
     done
 
-    # 找最新报告并重命名
-    latest=$(ls -t "${report_dir}"/safety_report_*.json 2>/dev/null | grep -v sarif | head -1 || true)
+    # 找本次运行生成的报告（比哨兵文件新，且不是 sarif 格式）
+    latest=$(find "${report_dir}" -maxdepth 1 -newer "$sentinel_file" \
+        -name 'safety_report_*.json' ! -name '*.sarif.json' \
+        -printf '%T@ %p\n' 2>/dev/null | sort -n | tail -1 | cut -d' ' -f2- || true)
+    rm -f "$sentinel_file"
+    # 如果 find 不支持 -printf，降级为时间过滤
+    if [ -z "$latest" ]; then
+        latest=$(find "${report_dir}" -maxdepth 1 -newer /proc/1 \
+            -name 'safety_report_*.json' ! -name '*.sarif.json' 2>/dev/null | \
+            xargs ls -t 2>/dev/null | head -1 || true)
+    fi
     if [ -n "$latest" ] && [ -f "$latest" ]; then
         mv "$latest" "$report_file"
         verdict=$(python3 -c "
@@ -193,7 +231,7 @@ except: print(0)
 " 2>/dev/null || echo "0")
     else
         verdict="ERROR"; risk_score="-1"; confidence="N/A"; mitre_count="0"
-        echo "{\"command\":\"${command}\",\"verdict\":\"ERROR\",\"risk_score\":-1,\"error\":\"checker failed exit=${checker_exit}\"}" > "$report_file"
+        echo "{\"id\":\"${id}\",\"verdict\":\"ERROR\",\"risk_score\":-1,\"error\":\"checker failed exit=${checker_exit}\"}" > "$report_file"
     fi
 
     # 判定是否符合预期

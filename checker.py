@@ -36,7 +36,31 @@ def _load_command() -> str:
     return cmd
 
 
+def _patch_opensandbox_sdk() -> None:
+    """修复 opensandbox SDK 在 metadata=null 时的 TypeError。
+
+    服务端有时返回 "metadata": null，SDK 的 CreateSandboxResponseMetadata.from_dict()
+    调用 dict(None) 导致 TypeError。直接补丁该方法使其将 None 视为空 dict。
+    """
+    try:
+        from opensandbox.api.lifecycle.models.create_sandbox_response_metadata import (
+            CreateSandboxResponseMetadata,
+        )
+        _orig = CreateSandboxResponseMetadata.from_dict.__func__  # type: ignore[attr-defined]
+
+        @classmethod  # type: ignore[misc]
+        def _safe_from_dict(cls, src_dict):
+            if src_dict is None:
+                src_dict = {}
+            return _orig(cls, src_dict)
+
+        CreateSandboxResponseMetadata.from_dict = _safe_from_dict  # type: ignore[method-assign]
+    except Exception:
+        pass  # SDK 版本不同时静默跳过
+
+
 def main() -> None:
+    _patch_opensandbox_sdk()
     command = _load_command()
     port = int(os.environ.get("SANDBOX_PORT", "8080"))
     image = os.environ.get("SANDBOX_IMAGE", "opensandbox/code-interpreter:v1.0.2")

@@ -92,6 +92,11 @@ ARTIFACT_PATTERNS: list[tuple[str, str, str, int]] = [
     # 凭据外泄
     (r"/etc/shadow",                   "shadow file reference",                 "T1048",     30),
     (r"base64.*\|\s*curl",             "base64 exfil via curl",                 "T1048",     35),
+    # Base64 编码的 shadow 文件内容检测
+    # "root:" base64 = "cm9vdDo"; "$6$" base64 = "JDYk"; "$5$" base64 = "JDUk"
+    (r"cm9vdDo",                       "base64 encoded shadow (root:)",         "T1048",     35),
+    (r"JDYk[A-Za-z0-9+/]",             "base64 encoded $6$ hash (SHA-512)",     "T1048",     35),
+    (r"JDUk[A-Za-z0-9+/]",             "base64 encoded $5$ hash (SHA-256)",     "T1048",     35),
     # 持久化机制
     (r"authorized_keys",               "SSH authorized_keys manipulation",      "T1098",     30),
     (r"/etc/ld\.so\.preload",          "LD_PRELOAD hijack file",               "T1574.006", 40),
