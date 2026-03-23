@@ -1,0 +1,490 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Architecture Overview &mdash; Command Safety Analyzer 5.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=ce74c6a2"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api/index.html" />
+    <link rel="prev" title="Quick Start Guide" href="quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Command Safety Analyzer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Architecture Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#core-design-philosophy">Core Design Philosophy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#key-principles">Key Principles</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#system-architecture">System Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#component-breakdown">Component Breakdown</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#triage-engine-triage-sh">1. Triage Engine (<code class="docutils literal notranslate"><span class="pre">triage.sh</span></code>)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sandbox-analysis-engine-checker-py">2. Sandbox Analysis Engine (<code class="docutils literal notranslate"><span class="pre">checker.py</span></code>)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#execution-flow">Execution Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#analysis-dimensions">3. Analysis Dimensions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#file-system-dimensions-1-5">File System Dimensions (1-5)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#process-execution-dimensions-6-10">Process &amp; Execution Dimensions (6-10)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#content-analysis-dimensions-11-15">Content Analysis Dimensions (11-15)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#behavioral-dimensions-16-24">Behavioral Dimensions (16-24)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#scoring-engine">4. Scoring Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pattern-detection-system">5. Pattern Detection System</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#data-flow-architecture">Data Flow Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#input-processing">Input Processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#report-generation">Report Generation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-architecture">Performance Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#concurrency-model">Concurrency Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resource-isolation">Resource Isolation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#security-model">Security Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#threat-model">Threat Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mitigation-strategies">Mitigation Strategies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#scalability-considerations">Scalability Considerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#horizontal-scaling">Horizontal Scaling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vertical-scaling">Vertical Scaling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-balancing">Load Balancing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#future-architecture-improvements">Future Architecture Improvements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#planned-enhancements">Planned Enhancements</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/index.html">Module Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance Optimization Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Command Safety Analyzer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Architecture Overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/architecture.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="architecture-overview">
+<h1>Architecture Overview<a class="headerlink" href="#architecture-overview" title="Link to this heading"></a></h1>
+<section id="core-design-philosophy">
+<h2>Core Design Philosophy<a class="headerlink" href="#core-design-philosophy" title="Link to this heading"></a></h2>
+<p>The Command Safety Analyzer is built on the principle of <strong>pure behavioral analysis</strong> through sandbox execution comparison. Unlike traditional static analysis tools, it makes all security decisions based solely on observing actual system changes during command execution.</p>
+<section id="key-principles">
+<h3>Key Principles<a class="headerlink" href="#key-principles" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Dynamic Only</strong>: No static pattern matching of command strings</p></li>
+<li><p><strong>Before/After Comparison</strong>: All detections compare system state snapshots</p></li>
+<li><p><strong>Isolated Execution</strong>: Commands run in secure Docker sandboxes</p></li>
+<li><p><strong>Multi-Dimensional</strong>: 24 distinct analysis dimensions</p></li>
+<li><p><strong>Attack-Oriented</strong>: MITRE ATT&amp;CK framework integration</p></li>
+</ol>
+</section>
+</section>
+<section id="system-architecture">
+<h2>System Architecture<a class="headerlink" href="#system-architecture" title="Link to this heading"></a></h2>
+<div class="highlight-mermaid notranslate"><div class="highlight"><pre><span></span>graph TD
+    A[User Command] --&gt; B[Triage Engine]
+    B --&gt; C{Risk Level}
+    C --&gt;|LOW| D[Allow]
+    C --&gt;|MEDIUM| E[Sandbox Analysis]
+    C --&gt;|HIGH| F[Block]
+    E --&gt; G[OpenSandbox Container]
+    G --&gt; H[24-Dimension Analysis]
+    H --&gt; I[Scoring Engine]
+    I --&gt; J[Final Verdict]
+</pre></div>
+</div>
+</section>
+<section id="component-breakdown">
+<h2>Component Breakdown<a class="headerlink" href="#component-breakdown" title="Link to this heading"></a></h2>
+<section id="triage-engine-triage-sh">
+<h3>1. Triage Engine (<code class="docutils literal notranslate"><span class="pre">triage.sh</span></code>)<a class="headerlink" href="#triage-engine-triage-sh" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Rapid preliminary screening
+<strong>Performance</strong>: &lt; 50ms response time
+<strong>Method</strong>: Static pattern matching against known malicious signatures</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Flow:</span>
+<span class="c1"># 1. Parse command string</span>
+<span class="c1"># 2. Apply regex patterns</span>
+<span class="c1"># 3. Calculate risk score</span>
+<span class="c1"># 4. Return verdict (PASS/REVIEW/BLOCK)</span>
+</pre></div>
+</div>
+</section>
+<section id="sandbox-analysis-engine-checker-py">
+<h3>2. Sandbox Analysis Engine (<code class="docutils literal notranslate"><span class="pre">checker.py</span></code>)<a class="headerlink" href="#sandbox-analysis-engine-checker-py" title="Link to this heading"></a></h3>
+<p><strong>Purpose</strong>: Deep behavioral analysis
+<strong>Performance</strong>: 15-30 seconds per command
+<strong>Method</strong>: Execute in isolated environment and compare before/after states</p>
+<section id="execution-flow">
+<h4>Execution Flow<a class="headerlink" href="#execution-flow" title="Link to this heading"></a></h4>
+<ol class="arabic simple">
+<li><p><strong>Environment Setup</strong></p>
+<ul class="simple">
+<li><p>Start OpenSandbox server</p></li>
+<li><p>Create isolated container</p></li>
+<li><p>Establish monitoring probes</p></li>
+</ul>
+</li>
+<li><p><strong>Baseline Collection</strong></p>
+<ul class="simple">
+<li><p>File system snapshot</p></li>
+<li><p>Process tree capture</p></li>
+<li><p>Network state recording</p></li>
+<li><p>System configuration backup</p></li>
+</ul>
+</li>
+<li><p><strong>Command Execution</strong></p>
+<ul class="simple">
+<li><p>Run command in sandbox</p></li>
+<li><p>Real-time monitoring via probes</p></li>
+<li><p>Capture all system interactions</p></li>
+</ul>
+</li>
+<li><p><strong>Post-Analysis</strong></p>
+<ul class="simple">
+<li><p>Collect final state snapshot</p></li>
+<li><p>Compare with baseline</p></li>
+<li><p>Apply detection algorithms</p></li>
+<li><p>Generate risk assessment</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="analysis-dimensions">
+<h3>3. Analysis Dimensions<a class="headerlink" href="#analysis-dimensions" title="Link to this heading"></a></h3>
+<p>The system analyzes 24 distinct security-relevant aspects:</p>
+<section id="file-system-dimensions-1-5">
+<h4>File System Dimensions (1-5)<a class="headerlink" href="#file-system-dimensions-1-5" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>D1</strong>: File creation/deletion/modification tracking</p></li>
+<li><p><strong>D2</strong>: Real-time file event monitoring (inotify)</p></li>
+<li><p><strong>D3</strong>: Sensitive file access patterns</p></li>
+<li><p><strong>D4</strong>: Persistence mechanism detection</p></li>
+<li><p><strong>D5</strong>: Shell environment modifications</p></li>
+</ul>
+</section>
+<section id="process-execution-dimensions-6-10">
+<h4>Process &amp; Execution Dimensions (6-10)<a class="headerlink" href="#process-execution-dimensions-6-10" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>D6</strong>: Network connection behavior</p></li>
+<li><p><strong>D7</strong>: DNS configuration changes</p></li>
+<li><p><strong>D8</strong>: Suspicious binary deployment</p></li>
+<li><p><strong>D9</strong>: Resource consumption anomalies</p></li>
+<li><p><strong>D10</strong>: Process tree analysis</p></li>
+</ul>
+</section>
+<section id="content-analysis-dimensions-11-15">
+<h4>Content Analysis Dimensions (11-15)<a class="headerlink" href="#content-analysis-dimensions-11-15" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>D11</strong>: Kernel module changes</p></li>
+<li><p><strong>D12</strong>: SUID/SGID file creation</p></li>
+<li><p><strong>D13</strong>: Environment variable manipulation</p></li>
+<li><p><strong>D14</strong>: Binary integrity verification</p></li>
+<li><p><strong>D15</strong>: Symbolic link creation</p></li>
+</ul>
+</section>
+<section id="behavioral-dimensions-16-24">
+<h4>Behavioral Dimensions (16-24)<a class="headerlink" href="#behavioral-dimensions-16-24" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>D16</strong>: File content scanning</p></li>
+<li><p><strong>D17</strong>: Command output analysis</p></li>
+<li><p><strong>D18</strong>: Entropy-based anomaly detection</p></li>
+<li><p><strong>D19</strong>: Cron job modifications</p></li>
+<li><p><strong>D20</strong>: Hidden process detection</p></li>
+<li><p><strong>D21</strong>: Signal handler manipulation</p></li>
+<li><p><strong>D22</strong>: Capability changes</p></li>
+<li><p><strong>D23</strong>: Attack chain correlation</p></li>
+<li><p><strong>D24</strong>: File permission changes</p></li>
+</ul>
+</section>
+</section>
+<section id="scoring-engine">
+<h3>4. Scoring Engine<a class="headerlink" href="#scoring-engine" title="Link to this heading"></a></h3>
+<p>Converts behavioral observations into quantitative risk assessments:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ScoringEngine</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">calculate_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">findings</span><span class="p">):</span>
+        <span class="c1"># Weighted sum of all findings</span>
+        <span class="n">base_score</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">finding</span><span class="o">.</span><span class="n">weight</span> <span class="o">*</span> <span class="n">finding</span><span class="o">.</span><span class="n">severity_factor</span> 
+                        <span class="k">for</span> <span class="n">finding</span> <span class="ow">in</span> <span class="n">findings</span><span class="p">)</span>
+        
+        <span class="c1"># Apply confidence modifiers</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_legitimate_pattern</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+            <span class="n">base_score</span> <span class="o">/=</span> <span class="n">LEGITIMATE_DIVISOR</span>
+            
+        <span class="c1"># Attack chain bonuses</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">detect_attack_chain</span><span class="p">(</span><span class="n">findings</span><span class="p">):</span>
+            <span class="n">base_score</span> <span class="o">*=</span> <span class="n">ATTACK_CHAIN_MULTIPLIER</span>
+            
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">base_score</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="pattern-detection-system">
+<h3>5. Pattern Detection System<a class="headerlink" href="#pattern-detection-system" title="Link to this heading"></a></h3>
+<p>Uses regular expressions and behavioral heuristics:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Artifact pattern matching (content analysis)</span>
+<span class="n">ARTIFACT_PATTERNS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># Reverse shell detection</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/dev/tcp/\S+/\d+&quot;</span><span class="p">,</span> <span class="s2">&quot;reverse shell via /dev/tcp&quot;</span><span class="p">,</span> <span class="s2">&quot;T1059.004&quot;</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;bash\s+-i\s+&gt;&amp;&quot;</span><span class="p">,</span> <span class="s2">&quot;interactive bash reverse shell&quot;</span><span class="p">,</span> <span class="s2">&quot;T1059.004&quot;</span><span class="p">,</span> <span class="mi">45</span><span class="p">),</span>
+    
+    <span class="c1"># Credential exfiltration</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/etc/shadow&quot;</span><span class="p">,</span> <span class="s2">&quot;shadow file reference&quot;</span><span class="p">,</span> <span class="s2">&quot;T1048&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;base64.*\|\s*curl&quot;</span><span class="p">,</span> <span class="s2">&quot;base64 exfil via curl&quot;</span><span class="p">,</span> <span class="s2">&quot;T1048&quot;</span><span class="p">,</span> <span class="mi">35</span><span class="p">),</span>
+    
+    <span class="c1"># Persistence mechanisms</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;authorized_keys&quot;</span><span class="p">,</span> <span class="s2">&quot;SSH authorized_keys manipulation&quot;</span><span class="p">,</span> <span class="s2">&quot;T1098&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="data-flow-architecture">
+<h2>Data Flow Architecture<a class="headerlink" href="#data-flow-architecture" title="Link to this heading"></a></h2>
+<section id="input-processing">
+<h3>Input Processing<a class="headerlink" href="#input-processing" title="Link to this heading"></a></h3>
+<div class="highlight-mermaid notranslate"><div class="highlight"><pre><span></span>graph LR
+    A[Raw Command] --&gt; B[Base64 Encoding]
+    B --&gt; C[Environment Variables]
+    C --&gt; D[Sandbox Execution]
+    D --&gt; E[State Snapshots]
+    E --&gt; F[Dimension Analysis]
+    F --&gt; G[Risk Scoring]
+    G --&gt; H[Verdict Generation]
+</pre></div>
+</div>
+</section>
+<section id="report-generation">
+<h3>Report Generation<a class="headerlink" href="#report-generation" title="Link to this heading"></a></h3>
+<p>Each analysis produces multiple report formats:</p>
+<ol class="arabic simple">
+<li><p><strong>JSON Report</strong>: Complete structured data</p></li>
+<li><p><strong>Text Summary</strong>: Human-readable format</p></li>
+<li><p><strong>SARIF Report</strong>: CI/CD integration format</p></li>
+</ol>
+</section>
+</section>
+<section id="performance-architecture">
+<h2>Performance Architecture<a class="headerlink" href="#performance-architecture" title="Link to this heading"></a></h2>
+<section id="concurrency-model">
+<h3>Concurrency Model<a class="headerlink" href="#concurrency-model" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run_batch_analysis</span><span class="p">(</span><span class="n">commands</span><span class="p">):</span>
+    <span class="c1"># Concurrent execution with semaphore limiting</span>
+    <span class="n">semaphore</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Semaphore</span><span class="p">(</span><span class="n">MAX_CONCURRENT</span><span class="p">)</span>
+    
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">analyze_single</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">semaphore</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">run_analysis</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+    
+    <span class="c1"># Gather all results concurrently</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="p">[</span>
+        <span class="n">analyze_single</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span> <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">commands</span>
+    <span class="p">])</span>
+    <span class="k">return</span> <span class="n">results</span>
+</pre></div>
+</div>
+</section>
+<section id="resource-isolation">
+<h3>Resource Isolation<a class="headerlink" href="#resource-isolation" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Docker Containers</strong>: Per-command isolation</p></li>
+<li><p><strong>Memory Limits</strong>: Configurable per container</p></li>
+<li><p><strong>CPU Shares</strong>: Fair resource distribution</p></li>
+<li><p><strong>Network Isolation</strong>: Prevent lateral movement</p></li>
+</ul>
+</section>
+</section>
+<section id="security-model">
+<h2>Security Model<a class="headerlink" href="#security-model" title="Link to this heading"></a></h2>
+<section id="threat-model">
+<h3>Threat Model<a class="headerlink" href="#threat-model" title="Link to this heading"></a></h3>
+<p>The analyzer assumes:</p>
+<ul class="simple">
+<li><p>Commands may be malicious</p></li>
+<li><p>Attackers may use evasion techniques</p></li>
+<li><p>Sandboxes can be escaped (defense in depth)</p></li>
+<li><p>Network traffic may be malicious</p></li>
+</ul>
+</section>
+<section id="mitigation-strategies">
+<h3>Mitigation Strategies<a class="headerlink" href="#mitigation-strategies" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Layered Defense</strong></p>
+<ul class="simple">
+<li><p>Fast triage for obvious threats</p></li>
+<li><p>Deep analysis for complex attacks</p></li>
+<li><p>Multiple detection dimensions</p></li>
+</ul>
+</li>
+<li><p><strong>Isolation Boundaries</strong></p>
+<ul class="simple">
+<li><p>Docker container separation</p></li>
+<li><p>Network namespace isolation</p></li>
+<li><p>File system isolation</p></li>
+</ul>
+</li>
+<li><p><strong>Monitoring Coverage</strong></p>
+<ul class="simple">
+<li><p>Real-time system call tracing</p></li>
+<li><p>Network traffic inspection</p></li>
+<li><p>File system change monitoring</p></li>
+</ul>
+</li>
+</ol>
+</section>
+</section>
+<section id="scalability-considerations">
+<h2>Scalability Considerations<a class="headerlink" href="#scalability-considerations" title="Link to this heading"></a></h2>
+<section id="horizontal-scaling">
+<h3>Horizontal Scaling<a class="headerlink" href="#horizontal-scaling" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Distribute load across multiple instances</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">INSTANCE_ID</span><span class="o">=</span><span class="k">$(</span>hostname<span class="k">)</span>
+./run_all.sh<span class="w"> </span>--instance<span class="w"> </span><span class="nv">$INSTANCE_ID</span><span class="w"> </span>--total-instances<span class="w"> </span><span class="m">4</span>
+</pre></div>
+</div>
+</section>
+<section id="vertical-scaling">
+<h3>Vertical Scaling<a class="headerlink" href="#vertical-scaling" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Memory</strong>: Increase RAM for more concurrent analyses</p></li>
+<li><p><strong>CPU</strong>: Add cores for faster individual analysis</p></li>
+<li><p><strong>Storage</strong>: SSD storage for faster I/O operations</p></li>
+</ul>
+</section>
+<section id="load-balancing">
+<h3>Load Balancing<a class="headerlink" href="#load-balancing" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Round-robin job distribution</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">distribute_jobs</span><span class="p">(</span><span class="n">jobs</span><span class="p">,</span> <span class="n">num_workers</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">jobs</span><span class="p">[</span><span class="n">i</span><span class="p">::</span><span class="n">num_workers</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_workers</span><span class="p">)]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="future-architecture-improvements">
+<h2>Future Architecture Improvements<a class="headerlink" href="#future-architecture-improvements" title="Link to this heading"></a></h2>
+<section id="planned-enhancements">
+<h3>Planned Enhancements<a class="headerlink" href="#planned-enhancements" title="Link to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Machine Learning Integration</strong></p>
+<ul class="simple">
+<li><p>Anomaly detection models</p></li>
+<li><p>Behavioral clustering</p></li>
+<li><p>Adaptive threshold tuning</p></li>
+</ul>
+</li>
+<li><p><strong>Cloud-Native Deployment</strong></p>
+<ul class="simple">
+<li><p>Kubernetes operator</p></li>
+<li><p>Serverless analysis functions</p></li>
+<li><p>Distributed storage backend</p></li>
+</ul>
+</li>
+<li><p><strong>Advanced Evasion Detection</strong></p>
+<ul class="simple">
+<li><p>Timing-based analysis</p></li>
+<li><p>Environmental awareness</p></li>
+<li><p>Multi-stage attack correlation</p></li>
+</ul>
+</li>
+</ol>
+<p>This architecture provides a robust foundation for detecting sophisticated attacks while maintaining performance and scalability.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quick Start Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api/index.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Security Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

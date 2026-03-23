@@ -1,0 +1,314 @@
+# API Reference
+
+```{toctree}
+:maxdepth: 2
+```
+
+## Overview
+
+The Command Safety Analyzer provides a comprehensive Python API for programmatic command analysis. All core functionality is accessible through the `analyzer` package.
+
+## Quick Start
+
+```python
+import asyncio
+from analyzer.engine import run_analysis
+from analyzer.scoring import ScoringConfig
+
+async def analyze_command(command: str):
+    """Simple command analysis example"""
+    config = ScoringConfig.from_file("scoring.conf")
+    result = await run_analysis(
+        command=command,
+        port=8080,
+        image="opensandbox/code-interpreter:v1.0.2",
+        report_dir="./reports",
+        config=config
+    )
+    return result
+
+# Usage
+result = asyncio.run(analyze_command("ls -la"))
+print(f"Verdict: {result['verdict']} (Score: {result['risk_score']})")
+```
+
+## Core Components
+
+### Main Analysis Engine
+
+The primary interface for command analysis:
+
+```python
+async def run_analysis(
+    command: str,
+    port: int = 8080,
+    image: str = "opensandbox/code-interpreter:v1.0.2",
+    report_dir: str = ".",
+    config: ScoringConfig = None
+) -> dict:
+    """
+    Run complete behavioral analysis on a command.
+    
+    Args:
+        command: The command to analyze
+        port: OpenSandbox server port
+        image: Docker image to use for sandbox
+        report_dir: Directory for report output
+        config: Scoring configuration
+        
+    Returns:
+        Dictionary containing analysis results
+    """
+    pass
+```
+
+### Configuration Management
+
+Manage analysis parameters and thresholds:
+
+```python
+from analyzer.scoring import ScoringConfig
+
+# Load from file
+config = ScoringConfig.from_file("scoring.conf")
+
+# Programmatic configuration
+config = ScoringConfig(
+    dangerous_threshold=60,
+    suspicious_threshold=25,
+    block_threshold=50,
+    entropy_threshold=6.5,
+    hidden_proc_tolerance=10
+)
+```
+
+## Error Handling
+
+The API uses standard Python exception handling:
+
+```python
+from analyzer.exceptions import (
+    SandboxError,
+    AnalysisError,
+    ConfigurationError
+)
+
+try:
+    result = await run_analysis(command)
+except SandboxError as e:
+    print(f"Sandbox failed: {e}")
+except AnalysisError as e:
+    print(f"Analysis failed: {e}")
+except Exception as e:
+    print(f"Unexpected error: {e}")
+```
+
+## Asynchronous Usage
+
+All analysis functions are asynchronous:
+
+```python
+import asyncio
+from analyzer.engine import run_analysis
+
+async def batch_analyze(commands):
+    """Analyze multiple commands concurrently"""
+    tasks = [
+        run_analysis(cmd) for cmd in commands
+    ]
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    
+    for cmd, result in zip(commands, results):
+        if isinstance(result, Exception):
+            print(f"Failed to analyze '{cmd}': {result}")
+        else:
+            print(f"'{cmd}': {result['verdict']}")
+
+# Run batch analysis
+commands = ["ls", "whoami", "ps aux"]
+asyncio.run(batch_analyze(commands))
+```
+
+## Integration Examples
+
+### Web Service Integration
+
+```python
+from flask import Flask, request, jsonify
+from analyzer.engine import run_analysis
+import asyncio
+
+app = Flask(__name__)
+
+@app.route('/analyze', methods=['POST'])
+async def analyze_endpoint():
+    command = request.json.get('command')
+    if not command:
+        return jsonify({'error': 'Missing command'}), 400
+    
+    try:
+        result = await run_analysis(command)
+        return jsonify({
+            'verdict': result['verdict'],
+            'score': result['risk_score'],
+            'confidence': result['confidence']
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+```
+
+### CI/CD Pipeline Integration
+
+```python
+import subprocess
+import json
+from analyzer.triage import fast_triage
+
+def ci_security_check(command):
+    """Security check for CI/CD pipeline"""
+    # Fast triage first
+    result = fast_triage(command)
+    
+    if result.level == 'BLOCK':
+        raise SecurityError(f"Blocked command: {command}")
+    elif result.level == 'REVIEW':
+        # Run full analysis
+        full_result = asyncio.run(run_analysis(command))
+        if full_result['risk_score'] > 70:
+            raise SecurityError(f"High risk command: {command}")
+    
+    return True
+```
+
+### Log Analysis Integration
+
+```python
+import re
+from analyzer.engine import run_analysis
+
+def analyze_shell_logs(log_file):
+    """Analyze shell command logs for security issues"""
+    
+    command_pattern = r'COMMAND=(.+?)\s'
+    
+    with open(log_file, 'r') as f:
+        for line in f:
+            match = re.search(command_pattern, line)
+            if match:
+                command = match.group(1)
+                result = asyncio.run(run_analysis(command))
+                
+                if result['risk_score'] > 50:
+                    print(f"Suspicious command detected: {command}")
+                    print(f"Risk: {result['risk_score']}, Verdict: {result['verdict']}")
+```
+
+## Performance Considerations
+
+### Resource Management
+
+```python
+from analyzer.sandbox import SandboxManager
+
+# Limit concurrent analyses
+manager = SandboxManager(max_concurrent=4)
+
+async def controlled_analysis(commands):
+    """Control resource usage during analysis"""
+    semaphore = asyncio.Semaphore(4)  # Max 4 concurrent
+    
+    async def analyze_with_limit(command):
+        async with semaphore:
+            return await run_analysis(command)
+    
+    tasks = [analyze_with_limit(cmd) for cmd in commands]
+    return await asyncio.gather(*tasks)
+```
+
+### Caching Results
+
+```python
+from functools import lru_cache
+import hashlib
+
+@lru_cache(maxsize=1000)
+def cached_analysis(command_hash):
+    """Cache analysis results for identical commands"""
+    pass
+
+def analyze_with_caching(command):
+    command_hash = hashlib.sha256(command.encode()).hexdigest()
+    if command_hash in cache:
+        return cache[command_hash]
+    
+    result = asyncio.run(run_analysis(command))
+    cache[command_hash] = result
+    return result
+```
+
+## Testing
+
+### Unit Testing
+
+```python
+import pytest
+from analyzer.engine import run_analysis
+
+@pytest.mark.asyncio
+async def test_safe_command():
+    result = await run_analysis("echo hello")
+    assert result['verdict'] == 'LIKELY_SAFE'
+    assert result['risk_score'] < 10
+
+@pytest.mark.asyncio  
+async def test_malicious_command():
+    result = await run_analysis("echo 'malicious' >> ~/.bashrc")
+    assert result['verdict'] in ['SUSPICIOUS', 'DANGEROUS']
+    assert result['risk_score'] > 25
+```
+
+### Integration Testing
+
+```python
+def test_full_pipeline():
+    """Test complete analysis pipeline"""
+    import subprocess
+    
+    # Test CLI interface
+    result = subprocess.run(
+        ['./checker.sh'],
+        env={'COMMAND': 'ls -la'},
+        capture_output=True,
+        text=True
+    )
+    
+    assert result.returncode == 0
+    assert 'LIKELY_SAFE' in result.stdout
+```
+
+## Migration Guide
+
+### From v4.x to v5.0
+
+```python
+# Old v4.x approach
+from analyzer.v4 import analyze_command
+result = analyze_command("ls")
+
+# New v5.0 approach  
+from analyzer.engine import run_analysis
+result = asyncio.run(run_analysis("ls"))
+```
+
+Key changes:
+- All functions are now async/await
+- Configuration is passed explicitly
+- Better error handling with specific exceptions
+- Improved type hints and documentation
+
+## Support
+
+For API questions and support:
+- Check the {doc}`../modules/index` for detailed module documentation
+- Review {doc}`../architecture` for design principles
+- See {doc}`../performance` for optimization guidance

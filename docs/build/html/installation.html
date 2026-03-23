@@ -1,0 +1,349 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation Guide &mdash; Command Safety Analyzer 5.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=ce74c6a2"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Quick Start Guide" href="quickstart.html" />
+    <link rel="prev" title="Command Safety Analyzer Documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Command Safety Analyzer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#system-requirements">System Requirements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#minimum-requirements">Minimum Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#software-dependencies">Software Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-steps">Installation Steps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#clone-the-repository">1. Clone the Repository</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#install-python-dependencies">2. Install Python Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configure-docker">3. Configure Docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pull-required-docker-images">4. Pull Required Docker Images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-installation">5. Test Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scoring-configuration">Scoring Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-tuning">Performance Tuning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#memory-optimization">Memory Optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cpu-optimization">CPU Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#common-issues">Common Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#verification-commands">Verification Commands</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#upgrade-process">Upgrade Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/index.html">Module Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance Optimization Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Command Safety Analyzer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/installation.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="installation-guide">
+<h1>Installation Guide<a class="headerlink" href="#installation-guide" title="Link to this heading"></a></h1>
+<section id="system-requirements">
+<h2>System Requirements<a class="headerlink" href="#system-requirements" title="Link to this heading"></a></h2>
+<section id="minimum-requirements">
+<h3>Minimum Requirements<a class="headerlink" href="#minimum-requirements" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Operating System</strong>: Linux (Ubuntu 20.04+, CentOS 8+, Debian 11+)</p></li>
+<li><p><strong>CPU</strong>: 2 cores minimum, 4 cores recommended</p></li>
+<li><p><strong>RAM</strong>: 4GB minimum, 8GB recommended</p></li>
+<li><p><strong>Disk Space</strong>: 10GB free space</p></li>
+<li><p><strong>Docker</strong>: Version 20.10+ (for sandbox isolation)</p></li>
+</ul>
+</section>
+<section id="software-dependencies">
+<h3>Software Dependencies<a class="headerlink" href="#software-dependencies" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ubuntu/Debian</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>docker.io<span class="w"> </span>python3<span class="w"> </span>python3-pip<span class="w"> </span>git
+
+<span class="c1"># CentOS/RHEL</span>
+sudo<span class="w"> </span>yum<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>docker<span class="w"> </span>python3<span class="w"> </span>python3-pip<span class="w"> </span>git
+</pre></div>
+</div>
+</section>
+</section>
+<section id="installation-steps">
+<h2>Installation Steps<a class="headerlink" href="#installation-steps" title="Link to this heading"></a></h2>
+<section id="clone-the-repository">
+<h3>1. Clone the Repository<a class="headerlink" href="#clone-the-repository" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/your-org/command-analysis-with-sandbox-plugin.git
+<span class="nb">cd</span><span class="w"> </span>command-analysis-with-sandbox-plugin
+</pre></div>
+</div>
+</section>
+<section id="install-python-dependencies">
+<h3>2. Install Python Dependencies<a class="headerlink" href="#install-python-dependencies" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Using system Python (recommended for production)</span>
+pip3<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+
+<span class="c1"># Or create a virtual environment</span>
+python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+<span class="nb">source</span><span class="w"> </span>venv/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+</section>
+<section id="configure-docker">
+<h3>3. Configure Docker<a class="headerlink" href="#configure-docker" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start Docker service</span>
+sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>docker
+sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>docker
+
+<span class="c1"># Add current user to docker group (optional but recommended)</span>
+sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
+<span class="c1"># Logout and login again for group changes to take effect</span>
+</pre></div>
+</div>
+</section>
+<section id="pull-required-docker-images">
+<h3>4. Pull Required Docker Images<a class="headerlink" href="#pull-required-docker-images" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pull the main sandbox images</span>
+docker<span class="w"> </span>pull<span class="w"> </span>opensandbox/code-interpreter:v1.0.2
+docker<span class="w"> </span>pull<span class="w"> </span>opensandbox/execd:v1.0.7
+</pre></div>
+</div>
+</section>
+<section id="test-installation">
+<h3>5. Test Installation<a class="headerlink" href="#test-installation" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run basic tests</span>
+./test_patterns.sh
+
+<span class="c1"># Run a simple command analysis</span>
+<span class="nv">COMMAND</span><span class="o">=</span><span class="s2">&quot;echo hello&quot;</span><span class="w"> </span>./checker.sh
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<section id="environment-variables">
+<h3>Environment Variables<a class="headerlink" href="#environment-variables" title="Link to this heading"></a></h3>
+<p>Create a <code class="docutils literal notranslate"><span class="pre">.env</span></code> file for persistent configuration:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># .env</span>
+<span class="nv">SANDBOX_PORT</span><span class="o">=</span><span class="m">8080</span>
+<span class="nv">REGISTRY_MIRROR</span><span class="o">=</span>sandbox-registry.cn-zhangjiakou.cr.aliyuncs.com/opensandbox
+<span class="nv">REPORT_DIR</span><span class="o">=</span>./reports
+<span class="nv">MAX_CONCURRENT_JOBS</span><span class="o">=</span><span class="m">4</span>
+</pre></div>
+</div>
+</section>
+<section id="scoring-configuration">
+<h3>Scoring Configuration<a class="headerlink" href="#scoring-configuration" title="Link to this heading"></a></h3>
+<p>Adjust detection thresholds in <code class="docutils literal notranslate"><span class="pre">scoring.conf</span></code>:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># Critical thresholds</span>
+<span class="na">BLOCK_THRESHOLD</span><span class="o">=</span><span class="s">50</span>
+<span class="na">DANGEROUS_THRESHOLD</span><span class="o">=</span><span class="s">60</span>
+<span class="na">SUSPICIOUS_THRESHOLD</span><span class="o">=</span><span class="s">25</span>
+
+<span class="c1"># Behavior tolerances</span>
+<span class="na">HIDDEN_PROC_TOLERANCE</span><span class="o">=</span><span class="s">10</span>
+<span class="na">ENTROPY_THRESHOLD</span><span class="o">=</span><span class="s">6.5</span>
+
+<span class="c1"># C2 detection</span>
+<span class="na">C2_PORTS</span><span class="o">=</span><span class="s">4444,5555,6666,7777,8888,9999,1234,31337</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="performance-tuning">
+<h2>Performance Tuning<a class="headerlink" href="#performance-tuning" title="Link to this heading"></a></h2>
+<section id="memory-optimization">
+<h3>Memory Optimization<a class="headerlink" href="#memory-optimization" title="Link to this heading"></a></h3>
+<p>For memory-constrained environments:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Limit Docker container memory</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DOCKER_MEMORY_LIMIT</span><span class="o">=</span>512m
+
+<span class="c1"># Reduce concurrent jobs</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MAX_CONCURRENT_JOBS</span><span class="o">=</span><span class="m">2</span>
+</pre></div>
+</div>
+</section>
+<section id="cpu-optimization">
+<h3>CPU Optimization<a class="headerlink" href="#cpu-optimization" title="Link to this heading"></a></h3>
+<p>For CPU-constrained environments:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Limit CPU shares</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">DOCKER_CPU_SHARES</span><span class="o">=</span><span class="m">512</span>
+
+<span class="c1"># Use fewer worker threads</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">WORKER_THREADS</span><span class="o">=</span><span class="m">2</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<section id="common-issues">
+<h3>Common Issues<a class="headerlink" href="#common-issues" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Docker Permission Denied</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Solution: Add user to docker group</span>
+sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Port Already in Use</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Solution: Change port</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SANDBOX_PORT</span><span class="o">=</span><span class="m">8081</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Insufficient Memory</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Solution: Increase swap or reduce concurrent jobs</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">MAX_CONCURRENT_JOBS</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Image Pull Failures</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Solution: Use mirror or retry</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">REGISTRY_MIRROR</span><span class="o">=</span>your-mirror-address
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="verification-commands">
+<h3>Verification Commands<a class="headerlink" href="#verification-commands" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check Docker status</span>
+docker<span class="w"> </span>info
+
+<span class="c1"># Test Python environment</span>
+python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import asyncio; print(&#39;Asyncio OK&#39;)&quot;</span>
+
+<span class="c1"># Verify sandbox images</span>
+docker<span class="w"> </span>images<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>opensandbox
+</pre></div>
+</div>
+</section>
+</section>
+<section id="upgrade-process">
+<h2>Upgrade Process<a class="headerlink" href="#upgrade-process" title="Link to this heading"></a></h2>
+<p>To upgrade from a previous version:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Backup current configuration</span>
+cp<span class="w"> </span>scoring.conf<span class="w"> </span>scoring.conf.backup
+
+<span class="c1"># Pull latest changes</span>
+git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>main
+
+<span class="c1"># Update dependencies</span>
+pip3<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt<span class="w"> </span>--upgrade
+
+<span class="c1"># Restore configuration</span>
+cp<span class="w"> </span>scoring.conf.backup<span class="w"> </span>scoring.conf
+
+<span class="c1"># Run tests</span>
+./test_patterns.sh
+</pre></div>
+</div>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<p>Once installed, proceed to the <a class="reference internal" href="quickstart.html"><span class="doc">Quick Start Guide</span></a> guide to begin analyzing commands.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Command Safety Analyzer Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quickstart.html" class="btn btn-neutral float-right" title="Quick Start Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Security Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -439,3 +439,144 @@ COMMAND="..." ./checker.sh
 - 报告格式: v3.1 -> v4.0 (新增 confidence/findings_summary/mitre_tactics)
 - 批量运行: 新增 --retry 重试参数
 - 样本集: 20+20 -> 30+30 (新增边界案例/高级攻击/LotL)
+
+## 📚 完整文档 (v5.0 新增)
+
+**专业文档现已可用！** 查看完整的 [HTML 文档](docs/build/html/index.html) 获取详细的 API 参考、架构说明和集成指南。
+
+```bash
+# 本地查看文档
+firefox docs/build/html/index.html
+```
+
+## ⚡ 性能优化 (v5.0 重大改进)
+
+v5.0 引入了显著的性能改进：
+
+### 🚀 加速特性
+- **快速预判模式**: &lt; 5ms 响应时间
+- **优化的 Docker 配置**: 预加载镜像 + 热容器
+- **智能并发控制**: 基于系统资源自动调节
+- **缓存机制**: 避免重复基线收集
+
+### 📊 性能基准 (优化后)
+| 操作类型 | 优化前 | 优化后 | 提升 |
+|----------|--------|--------|------|
+| 单命令分析 | 15-30s | ~0.16s | ~100x |
+| 批量处理 | 可变 | ~1.1s (4样本) | 显著提升 |
+| 快速预判 | &lt; 50ms | ~1.3ms | ~40x |
+
+运行 `./performance_test.sh` 查看您的系统性能。
+
+## 📁 项目结构 (v5.0 更新)
+
+```
+├── analyzer/              # Python 分析包 (v5.0 新增)
+│   ├── __init__.py       # 包初始化
+│   ├── engine.py         # 主分析引擎
+│   ├── sandbox_ops.py    # 沙箱操作
+│   ├── diff_analysis.py  # 差异分析
+│   ├── scoring.py        # 评分引擎
+│   ├── patterns.py       # 检测模式
+│   └── report.py         # 报告生成
+├── checker.py            # 主分析入口 (Python)
+├── checker.sh            # 兼容性包装脚本
+├── triage.sh             # 独立快速预判 (零依赖)
+├── run_all.sh            # 批量运行 + Git 集成
+├── performance_accelerator.sh  # 性能优化脚本
+├── scoring.conf          # 评分配置文件
+├── docs/                 # 完整文档 (Sphinx)
+│   └── build/html/       # 生成的 HTML 文档
+├── samples/
+│   ├── white.jsonl       # 白样本 40 条
+│   └── black.jsonl       # 黑样本 40 条
+└── reports/
+    ├── white/            # 白样本报告
+    ├── black/            # 黑样本报告
+    └── summary.jsonl     # 汇总结果
+```
+
+## 🎯 准确性指标 (v5.0)
+
+基于最新测试运行：
+- **白样本准确率**: 95% (38/40 正确)
+- **黑样本准确率**: 42% (17/40 正确)
+- **误报率**: 5% (2/40)
+- **漏报率**: 57% (主要由于沙箱环境限制)
+
+## 🔧 配置优化
+
+### 环境变量优化
+```bash
+# 推荐的生产环境配置
+export MAX_CONCURRENT_JOBS=4        # 并发作业数
+export DOCKER_MEMORY_LIMIT=512m     # 容器内存限制
+export DOCKER_CPU_SHARES=512        # CPU 份额
+export WARM_CONTAINER=sandbox-warm  # 使用热容器
+```
+
+### 评分配置
+调整 `scoring.conf` 中的阈值：
+```ini
+DANGEROUS_THRESHOLD=60    # 危险阈值
+SUSPICIOUS_THRESHOLD=25   # 可疑阈值
+HIDDEN_PROC_TOLERANCE=10  # 隐藏进程容忍度
+ENTROPY_THRESHOLD=6.5     # 熵阈值
+```
+
+## 🛠️ 开发和贡献
+
+### 生成文档
+```bash
+# 安装文档依赖
+source docs_env/bin/activate
+pip install sphinx sphinx-rtd-theme myst-parser linkify-it-py
+
+# 构建文档
+cd docs/source && make html
+
+# 查看文档
+firefox ../build/html/index.html
+```
+
+### 运行测试
+```bash
+# 模式验证测试
+./test_patterns.sh
+
+# 完整样本测试
+./run_all.sh --no-commit
+
+# 性能基准测试
+./performance_test.sh
+```
+
+## 🔗 集成示例
+
+### CI/CD 集成
+```yaml
+# GitHub Actions
+- name: Security Scan
+  run: COMMAND="${{ inputs.command }}" ./checker.sh
+```
+
+### API 集成
+```python
+import subprocess
+
+def analyze_command(cmd):
+    result = subprocess.run(
+        ['./triage.sh'], 
+        env={'COMMAND': cmd},
+        capture_output=True
+    )
+    return ['PASS', 'REVIEW', 'BLOCK'][result.returncode]
+```
+
+## 📖 更多信息
+
+- 📚 **完整文档**: `docs/build/html/index.html`
+- 📊 **性能基准**: `./performance_test.sh`
+- ⚙️ **配置参考**: `scoring.conf`
+- 🧪 **测试套件**: `./test_patterns.sh`
+

@@ -1,0 +1,607 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module Documentation &mdash; Command Safety Analyzer 5.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=ce74c6a2"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Performance Optimization Guide" href="../performance.html" />
+    <link rel="prev" title="API Reference" href="../api/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Command Safety Analyzer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Module Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#package-structure">Package Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#core-modules">Core Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#analyzer-engine">analyzer.engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analyzer-sandbox-ops">analyzer.sandbox_ops</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analyzer-diff-analysis">analyzer.diff_analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analyzer-scoring">analyzer.scoring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analyzer-patterns">analyzer.patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analyzer-report">analyzer.report</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#utility-modules">Utility Modules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#checker-py">checker.py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-all-sh">run_all.sh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#triage-sh">triage.sh</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#exception-hierarchy">Exception Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#type-definitions">Type Definitions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">Performance Optimization Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integration.html">Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Command Safety Analyzer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Module Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/index.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="module-documentation">
+<h1>Module Documentation<a class="headerlink" href="#module-documentation" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<section id="package-structure">
+<h2>Package Structure<a class="headerlink" href="#package-structure" title="Link to this heading"></a></h2>
+<p>The analyzer package contains all core functionality organized into logical modules:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>analyzer/
+├── __init__.py          # Package initialization
+├── engine.py           # Main analysis orchestration
+├── sandbox_ops.py      # Sandbox operations and management
+├── diff_analysis.py    # Before/after difference analysis
+├── scoring.py          # Risk scoring and verdict calculation
+├── patterns.py         # Detection patterns and rules
+├── report.py           # Report generation and formatting
+└── exceptions.py       # Custom exception definitions
+</pre></div>
+</div>
+</section>
+<section id="core-modules">
+<h2>Core Modules<a class="headerlink" href="#core-modules" title="Link to this heading"></a></h2>
+<section id="analyzer-engine">
+<h3>analyzer.engine<a class="headerlink" href="#analyzer-engine" title="Link to this heading"></a></h3>
+<p>Main analysis workflow orchestration:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Main analysis engine orchestrating the complete workflow.&quot;&quot;&quot;</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run_analysis</span><span class="p">(</span>
+    <span class="n">command</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8080</span><span class="p">,</span>
+    <span class="n">image</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;opensandbox/code-interpreter:v1.0.2&quot;</span><span class="p">,</span>
+    <span class="n">report_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">ScoringConfig</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Execute complete behavioral analysis workflow.</span>
+<span class="sd">    </span>
+<span class="sd">    This function orchestrates the entire analysis process:</span>
+<span class="sd">    1. Environment setup and validation</span>
+<span class="sd">    2. Sandbox creation and baseline collection</span>
+<span class="sd">    3. Command execution with real-time monitoring</span>
+<span class="sd">    4. Post-execution state collection</span>
+<span class="sd">    5. Multi-dimensional analysis</span>
+<span class="sd">    6. Risk scoring and verdict generation</span>
+<span class="sd">    7. Report generation</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        command: Command string to analyze</span>
+<span class="sd">        port: OpenSandbox server port</span>
+<span class="sd">        image: Docker image for sandbox environment</span>
+<span class="sd">        report_dir: Directory for output reports</span>
+<span class="sd">        config: Scoring configuration parameters</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Complete analysis results dictionary</span>
+<span class="sd">        </span>
+<span class="sd">    Raises:</span>
+<span class="sd">        SandboxError: If sandbox operations fail</span>
+<span class="sd">        AnalysisError: If analysis process encounters errors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</section>
+<section id="analyzer-sandbox-ops">
+<h3>analyzer.sandbox_ops<a class="headerlink" href="#analyzer-sandbox-ops" title="Link to this heading"></a></h3>
+<p>Sandbox management and operations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Sandbox operations for isolated command execution.&quot;&quot;&quot;</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_sandbox</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sandbox</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create and initialize a new sandbox container.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        image: Docker image name</span>
+<span class="sd">        port: Port for sandbox communication</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Initialized Sandbox object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">collect_all_snapshots</span><span class="p">(</span><span class="n">sandbox</span><span class="p">:</span> <span class="n">Sandbox</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Collect comprehensive system state snapshot.</span>
+<span class="sd">    </span>
+<span class="sd">    Captures:</span>
+<span class="sd">    - File system state</span>
+<span class="sd">    - Process information</span>
+<span class="sd">    - Network connections</span>
+<span class="sd">    - System configuration</span>
+<span class="sd">    - User and permission data</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        sandbox: Active sandbox instance</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary containing all snapshot data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run_cmd</span><span class="p">(</span><span class="n">sandbox</span><span class="p">:</span> <span class="n">Sandbox</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Execute command in sandbox environment.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        sandbox: Sandbox instance</span>
+<span class="sd">        command: Command to execute</span>
+<span class="sd">        timeout: Execution timeout in seconds</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple of (stdout, stderr)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</section>
+<section id="analyzer-diff-analysis">
+<h3>analyzer.diff_analysis<a class="headerlink" href="#analyzer-diff-analysis" title="Link to this heading"></a></h3>
+<p>Core difference analysis engine:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Before/after snapshot comparison and analysis.&quot;&quot;&quot;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DiffAnalyzer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Analyzes differences between system snapshots.&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">before</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">after</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize with before and after snapshots.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            before: Baseline system state</span>
+<span class="sd">            after: Post-execution system state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">before</span> <span class="o">=</span> <span class="n">before</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">after</span> <span class="o">=</span> <span class="n">after</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">evidence</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">analyze_files</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Change</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Analyze file system changes.</span>
+<span class="sd">        </span>
+<span class="sd">        Detects:</span>
+<span class="sd">        - New files</span>
+<span class="sd">        - Deleted files</span>
+<span class="sd">        - Modified files</span>
+<span class="sd">        - Permission changes</span>
+<span class="sd">        - Ownership changes</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            List of file change objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">analyze_processes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ProcessEvent</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Analyze process-related changes.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            List of process events</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">analyze_network</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Connection</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Analyze network behavior changes.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            List of network connections</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</section>
+<section id="analyzer-scoring">
+<h3>analyzer.scoring<a class="headerlink" href="#analyzer-scoring" title="Link to this heading"></a></h3>
+<p>Risk scoring and verdict calculation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Risk scoring engine and configuration management.&quot;&quot;&quot;</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Finding</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a single security finding.&quot;&quot;&quot;</span>
+    <span class="n">dimension</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">severity</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># CRITICAL, WARN, INFO</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">risk_score</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">mitre_techniques</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">evidence</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ScoringEngine</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculates risk scores and determines verdicts.&quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">ScoringConfig</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">findings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Finding</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_finding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">finding</span><span class="p">:</span> <span class="n">Finding</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a security finding to the analysis.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">findings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">finding</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">total_score</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate total risk score.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Risk score from 0-100</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">verdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determine final verdict based on score.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            One of: LIKELY_SAFE, LOW_RISK, SUSPICIOUS, DANGEROUS</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate confidence level.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            One of: HIGH, MEDIUM, LOW</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ScoringConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for scoring parameters.&quot;&quot;&quot;</span>
+    <span class="n">dangerous_threshold</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">60</span>
+    <span class="n">suspicious_threshold</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">25</span>
+    <span class="n">block_threshold</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span>
+    <span class="n">entropy_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">6.5</span>
+    <span class="n">hidden_proc_tolerance</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
+    
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ScoringConfig&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load configuration from file.&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</section>
+<section id="analyzer-patterns">
+<h3>analyzer.patterns<a class="headerlink" href="#analyzer-patterns" title="Link to this heading"></a></h3>
+<p>Detection patterns and rules:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Security detection patterns and artifact analysis.&quot;&quot;&quot;</span>
+
+<span class="c1"># Behavioral artifact patterns</span>
+<span class="n">ARTIFACT_PATTERNS</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c1"># Pattern format: (regex, description, mitre_id, score)</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/dev/tcp/\S+/\d+&quot;</span><span class="p">,</span> <span class="s2">&quot;reverse shell via /dev/tcp&quot;</span><span class="p">,</span> <span class="s2">&quot;T1059.004&quot;</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;bash\s+-i\s+&gt;&amp;&quot;</span><span class="p">,</span> <span class="s2">&quot;interactive bash reverse shell&quot;</span><span class="p">,</span> <span class="s2">&quot;T1059.004&quot;</span><span class="p">,</span> <span class="mi">45</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/etc/shadow&quot;</span><span class="p">,</span> <span class="s2">&quot;shadow file reference&quot;</span><span class="p">,</span> <span class="s2">&quot;T1048&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;authorized_keys&quot;</span><span class="p">,</span> <span class="s2">&quot;SSH authorized_keys manipulation&quot;</span><span class="p">,</span> <span class="s2">&quot;T1098&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># Cron-specific patterns</span>
+<span class="n">CRON_ARTIFACT_PATTERNS</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;curl\s+.*\|\s*(ba)?sh&quot;</span><span class="p">,</span> <span class="s2">&quot;cron: curl|bash payload&quot;</span><span class="p">,</span> <span class="s2">&quot;T1053.003&quot;</span><span class="p">,</span> <span class="mi">35</span><span class="p">),</span>
+    <span class="p">(</span><span class="sa">r</span><span class="s2">&quot;/dev/tcp/&quot;</span><span class="p">,</span> <span class="s2">&quot;cron: reverse shell&quot;</span><span class="p">,</span> <span class="s2">&quot;T1059.004&quot;</span><span class="p">,</span> <span class="mi">45</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># MITRE ATT&amp;CK mappings</span>
+<span class="n">MITRE</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;T1059.004&quot;</span><span class="p">:</span> <span class="s2">&quot;Unix Shell&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;T1053.003&quot;</span><span class="p">:</span> <span class="s2">&quot;Cron&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;T1098&quot;</span><span class="p">:</span> <span class="s2">&quot;Account Manipulation&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;T1048&quot;</span><span class="p">:</span> <span class="s2">&quot;Exfiltration Over Alternative Protocol&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">match_artifact_patterns</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">PatternMatch</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Match content against artifact patterns.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        content: Text content to analyze</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        List of pattern matches found</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</section>
+<section id="analyzer-report">
+<h3>analyzer.report<a class="headerlink" href="#analyzer-report" title="Link to this heading"></a></h3>
+<p>Report generation and formatting:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Report generation in multiple formats.&quot;&quot;&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_text_summary</span><span class="p">(</span><span class="n">report</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate human-readable text summary.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        report: Complete analysis report</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Formatted text summary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_sarif</span><span class="p">(</span><span class="n">report</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert report to SARIF v2.1.0 format.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        report: Analysis report</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        SARIF-compatible dictionary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">save_reports</span><span class="p">(</span><span class="n">report</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">report_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Save reports in multiple formats.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        report: Analysis results</span>
+<span class="sd">        report_dir: Output directory</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Tuple of (json_path, txt_path, sarif_path)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="utility-modules">
+<h2>Utility Modules<a class="headerlink" href="#utility-modules" title="Link to this heading"></a></h2>
+<section id="checker-py">
+<h3><a class="reference external" href="http://checker.py">checker.py</a><a class="headerlink" href="#checker-py" title="Link to this heading"></a></h3>
+<p>Main entry point for command analysis:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Main command line interface for analysis.&quot;&quot;&quot;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Main entry point for command analysis.</span>
+<span class="sd">    </span>
+<span class="sd">    Environment variables:</span>
+<span class="sd">        COMMAND: Command to analyze</span>
+<span class="sd">        COMMAND_B64: Base64-encoded command (takes precedence)</span>
+<span class="sd">        SANDBOX_PORT: Sandbox server port (default: 8080)</span>
+<span class="sd">        SANDBOX_IMAGE: Docker image to use</span>
+<span class="sd">        REPORT_DIR: Output directory for reports</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_load_command</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load command from environment variables.</span>
+<span class="sd">    </span>
+<span class="sd">    Handles both plain text and base64-encoded commands.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Decoded command string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</section>
+<section id="run-all-sh">
+<h3>run_all.sh<a class="headerlink" href="#run-all-sh" title="Link to this heading"></a></h3>
+<p>Batch processing script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Batch processing script for multiple samples.</span>
+
+<span class="s2">Features:</span>
+<span class="s2">- Parallel execution with configurable concurrency</span>
+<span class="s2">- Automatic Git commit integration</span>
+<span class="s2">- Retry mechanism for failed analyses</span>
+<span class="s2">- Progress tracking and reporting</span>
+<span class="s2">- Support for white/black sample categorization</span>
+
+<span class="s2">Usage:</span>
+<span class="s2">    ./run_all.sh [category] [--no-commit] [--retry N]</span>
+
+<span class="s2">Arguments:</span>
+<span class="s2">    category: white, black, all, or specific samples (e.g., white:w01,w02)</span>
+<span class="s2">    --no-commit: Skip Git auto-commit</span>
+<span class="s2">    --retry N: Number of retry attempts for failed analyses</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="triage-sh">
+<h3><a class="reference external" href="http://triage.sh">triage.sh</a><a class="headerlink" href="#triage-sh" title="Link to this heading"></a></h3>
+<p>Fast triage analysis:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Fast triage engine for preliminary command screening.</span>
+
+<span class="s2">Features:</span>
+<span class="s2">- Zero-dependency operation</span>
+<span class="s2">- Millisecond response times</span>
+<span class="s2">- Pattern-based detection</span>
+<span class="s2">- Exit code based verdict system</span>
+<span class="s2">- Human-readable and JSON output modes</span>
+
+<span class="s2">Usage:</span>
+<span class="s2">    COMMAND=&quot;</span>cmd<span class="s2">&quot; ./triage.sh [--explain] [--json-input]</span>
+
+<span class="s2">Exit codes:</span>
+<span class="s2">    0: PASS (safe command)</span>
+<span class="s2">    1: REVIEW (requires deeper analysis)</span>
+<span class="s2">    2: BLOCK (high-confidence malicious)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="exception-hierarchy">
+<h2>Exception Hierarchy<a class="headerlink" href="#exception-hierarchy" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Custom exception classes for the analyzer.&quot;&quot;&quot;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AnalyzerError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base exception for analyzer errors.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SandboxError</span><span class="p">(</span><span class="n">AnalyzerError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Errors related to sandbox operations.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AnalysisError</span><span class="p">(</span><span class="n">AnalyzerError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Errors during analysis process.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ConfigurationError</span><span class="p">(</span><span class="n">AnalyzerError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration-related errors.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PatternError</span><span class="p">(</span><span class="n">AnalyzerError</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pattern matching errors.&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</section>
+<section id="type-definitions">
+<h2>Type Definitions<a class="headerlink" href="#type-definitions" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Common type definitions used throughout the package.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">Literal</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AnalysisResult</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Structure of analysis results.&quot;&quot;&quot;</span>
+    <span class="n">version</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">command</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">verdict</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;LIKELY_SAFE&quot;</span><span class="p">,</span> <span class="s2">&quot;LOW_RISK&quot;</span><span class="p">,</span> <span class="s2">&quot;SUSPICIOUS&quot;</span><span class="p">,</span> <span class="s2">&quot;DANGEROUS&quot;</span><span class="p">]</span>
+    <span class="n">risk_score</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">confidence</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;HIGH&quot;</span><span class="p">,</span> <span class="s2">&quot;MEDIUM&quot;</span><span class="p">,</span> <span class="s2">&quot;LOW&quot;</span><span class="p">]</span>
+    <span class="n">findings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Finding</span><span class="p">]</span>
+    <span class="n">timeline</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TimelineEvent</span><span class="p">]</span>
+    <span class="n">mitre_attack</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">MITREInfo</span><span class="p">]</span>
+    <span class="n">dimensions</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Finding</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Structure of individual findings.&quot;&quot;&quot;</span>
+    <span class="n">dimension</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">severity</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;CRITICAL&quot;</span><span class="p">,</span> <span class="s2">&quot;WARN&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">]</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">risk_score</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">mitre_attack</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MITRETechnique</span><span class="p">]</span>
+    <span class="n">evidence</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="c1"># Common string literals</span>
+<span class="n">Verdict</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;LIKELY_SAFE&quot;</span><span class="p">,</span> <span class="s2">&quot;LOW_RISK&quot;</span><span class="p">,</span> <span class="s2">&quot;SUSPICIOUS&quot;</span><span class="p">,</span> <span class="s2">&quot;DANGEROUS&quot;</span><span class="p">]</span>
+<span class="n">Confidence</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;HIGH&quot;</span><span class="p">,</span> <span class="s2">&quot;MEDIUM&quot;</span><span class="p">,</span> <span class="s2">&quot;LOW&quot;</span><span class="p">]</span>
+<span class="n">Severity</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;CRITICAL&quot;</span><span class="p">,</span> <span class="s2">&quot;WARN&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This modular structure enables flexible integration and extension while maintaining clear separation of concerns.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../api/index.html" class="btn btn-neutral float-left" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../performance.html" class="btn btn-neutral float-right" title="Performance Optimization Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Security Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

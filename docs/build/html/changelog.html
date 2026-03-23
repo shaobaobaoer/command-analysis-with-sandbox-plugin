@@ -1,0 +1,618 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Changelog &mdash; Command Safety Analyzer 5.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=ce74c6a2"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Integration Guide" href="integration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Command Safety Analyzer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/index.html">Module Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance Optimization Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Integration Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">[5.0.0] - 2026-03-23</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#major-changes">Major Changes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#core-architecture">Core Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performance-improvements">Performance Improvements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#accuracy-enhancements">Accuracy Enhancements</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#breaking-changes">Breaking Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-results">Test Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#new-features">New Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bug-fixes">Bug Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">[4.8] - 2026-03-15</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#added">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#changed">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">[4.7] - 2026-03-10</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">[4.6] - 2026-03-05</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Added</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">[4.5] - 2026-02-28</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id9">Added</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">[4.4] - 2026-02-20</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id11">Added</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id12">[4.3] - 2026-02-15</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id13">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id15">[4.2] - 2026-02-10</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id16">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id18">[4.1] - 2026-02-05</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id19">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id20">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id21">[4.0] - 2026-01-20</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id22">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id23">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id24">[3.2] - 2025-12-15</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id25">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fixed">Fixed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id26">[3.1] - 2025-11-30</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id27">Added</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id28">Changed</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id29">[3.0] - 2025-11-01</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#major-release">Major Release</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id30">[2.1] - 2025-09-15</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#beta-release">Beta Release</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id31">[2.0] - 2025-08-01</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#alpha-release">Alpha Release</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id32">[1.0] - 2025-06-01</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#initial-development">Initial Development</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#upgrade-notes">Upgrade Notes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#from-4-x-to-5-0-0">From 4.x to 5.0.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-3-x-to-4-0">From 3.x to 4.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-impact">Performance Impact</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deprecation-notices">Deprecation Notices</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#roadmap">Roadmap</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#planned-for-5-1-0">Planned for 5.1.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#planned-for-5-2-0">Planned for 5.2.0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#long-term-vision">Long-term Vision</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Command Safety Analyzer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Changelog</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/changelog.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
+<section id="id1">
+<h2>[5.0.0] - 2026-03-23<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<section id="major-changes">
+<h3>Major Changes<a class="headerlink" href="#major-changes" title="Link to this heading"></a></h3>
+<section id="core-architecture">
+<h4>Core Architecture<a class="headerlink" href="#core-architecture" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Complete Python Package Refactor</strong>: Migrated from embedded shell+Python to pure Python package structure</p></li>
+<li><p><strong>Removed Static Analysis</strong>: Eliminated all static command analysis as per requirement</p></li>
+<li><p><strong>Enhanced Dynamic Analysis</strong>: Strengthened pure behavioral analysis through sandbox execution</p></li>
+</ul>
+</section>
+<section id="performance-improvements">
+<h4>Performance Improvements<a class="headerlink" href="#performance-improvements" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Fixed SDK Bug</strong>: Resolved <code class="docutils literal notranslate"><span class="pre">TypeError:</span> <span class="pre">'NoneType'</span> <span class="pre">object</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">iterable</span></code> in OpenSandbox SDK</p></li>
+<li><p><strong>Improved Report Matching</strong>: Fixed race condition in <code class="docutils literal notranslate"><span class="pre">run_all.sh</span></code> report file selection</p></li>
+<li><p><strong>Optimized Concurrency</strong>: Enhanced parallel processing capabilities</p></li>
+</ul>
+</section>
+<section id="accuracy-enhancements">
+<h4>Accuracy Enhancements<a class="headerlink" href="#accuracy-enhancements" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p><strong>Reduced False Positives</strong>: Fixed <code class="docutils literal notranslate"><span class="pre">/etc/ld.so.cache</span></code> false positive (normal ldconfig behavior)</p></li>
+<li><p><strong>Better Exit Code Analysis</strong>: Added detection for failed command execution patterns</p></li>
+<li><p><strong>Enhanced File Scanning</strong>: Expanded D16 to detect temporary directory files regardless of extension</p></li>
+<li><p><strong>Added Shadow Detection</strong>: New patterns for base64-encoded shadow file content</p></li>
+</ul>
+</section>
+</section>
+<section id="breaking-changes">
+<h3>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>API Changes</strong>: All functions now use async/await pattern</p></li>
+<li><p><strong>Configuration</strong>: Moved thresholds to <code class="docutils literal notranslate"><span class="pre">scoring.conf</span></code> file</p></li>
+<li><p><strong>Reporting</strong>: Updated JSON schema with new fields</p></li>
+</ul>
+</section>
+<section id="test-results">
+<h3>Test Results<a class="headerlink" href="#test-results" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>White Sample Accuracy</strong>: 95% (38/40 correct)</p></li>
+<li><p><strong>Black Sample Accuracy</strong>: 42% (17/40 correct)</p></li>
+<li><p><strong>False Positive Rate</strong>: 5% (2/40)</p></li>
+<li><p><strong>False Negative Rate</strong>: 57% (mostly sandbox environment limitations)</p></li>
+</ul>
+</section>
+<section id="new-features">
+<h3>New Features<a class="headerlink" href="#new-features" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Enhanced Pattern Detection</strong>: 70+ malicious behavior patterns</p></li>
+<li><p><strong>SARIF Integration</strong>: Native support for CI/CD security pipelines</p></li>
+<li><p><strong>Improved Documentation</strong>: Comprehensive Sphinx-based documentation</p></li>
+<li><p><strong>Better Error Handling</strong>: More specific exception types and messages</p></li>
+</ul>
+</section>
+<section id="bug-fixes">
+<h3>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Fixed sandbox creation failures due to SDK metadata parsing</p></li>
+<li><p>Resolved report file matching issues in batch processing</p></li>
+<li><p>Corrected sensitive path detection logic</p></li>
+<li><p>Fixed hidden process tolerance configuration</p></li>
+</ul>
+</section>
+</section>
+<section id="id2">
+<h2>[4.8] - 2026-03-15<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<section id="added">
+<h3>Added<a class="headerlink" href="#added" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">triage.sh</span> <span class="pre">--batch</span></code> mode for processing multiple commands from stdin</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">triage.sh</span> <span class="pre">--batch-jsonl</span></code> mode for processing sample files</p></li>
+<li><p>Configuration file support in <code class="docutils literal notranslate"><span class="pre">checker.sh</span></code> for dynamic threshold adjustment</p></li>
+<li><p>Batch summary output with statistics (total/block/review/pass counts)</p></li>
+</ul>
+</section>
+<section id="changed">
+<h3>Changed<a class="headerlink" href="#changed" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Parameterized all hard-coded thresholds: verdict thresholds, legitimacy divisors, entropy thresholds, hidden process tolerance</p></li>
+<li><p>Enhanced test coverage to 116/116 (100% pass rate)</p></li>
+</ul>
+</section>
+</section>
+<section id="id3">
+<h2>[4.7] - 2026-03-10<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<section id="id4">
+<h3>Added<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">triage.sh</span> <span class="pre">--explain</span></code> mode with human-readable explanations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scoring.conf</span></code> configuration file for adjustable thresholds</p></li>
+<li><p>Automatic configuration loading in <code class="docutils literal notranslate"><span class="pre">triage.sh</span></code></p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>Changed<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>All scoring parameters now configurable without code changes</p></li>
+<li><p>Maintained 100% test pass rate after configuration changes</p></li>
+</ul>
+</section>
+</section>
+<section id="id6">
+<h2>[4.6] - 2026-03-05<a class="headerlink" href="#id6" title="Link to this heading"></a></h2>
+<section id="id7">
+<h3>Added<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">benchmark.sh</span></code> performance testing tool with throughput/latency measurements</p></li>
+<li><p>S-A-B-C performance grading system</p></li>
+<li><p>Complete integration documentation for API gateways and webhooks</p></li>
+<li><p>Syntax validation for all scripts and sample files</p></li>
+</ul>
+</section>
+</section>
+<section id="id8">
+<h2>[4.5] - 2026-02-28<a class="headerlink" href="#id8" title="Link to this heading"></a></h2>
+<section id="id9">
+<h3>Added<a class="headerlink" href="#id9" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>SARIF v2.1.0 output format for GitHub Code Scanning/GitLab SAST integration</p></li>
+<li><p>GitHub Actions workflow for automated testing and SARIF upload</p></li>
+<li><p>Enhanced network behavior detection with C2 port fingerprinting</p></li>
+<li><p>Multi-target scanning detection capabilities</p></li>
+</ul>
+</section>
+</section>
+<section id="id10">
+<h2>[4.4] - 2026-02-20<a class="headerlink" href="#id10" title="Link to this heading"></a></h2>
+<section id="id11">
+<h3>Added<a class="headerlink" href="#id11" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">test_patterns.sh</span></code> validation suite with 116 comprehensive tests</p></li>
+<li><p>Coverage for 11 test categories: reverse shell, obfuscation, download-exec, persistence, privilege escalation, credential exfiltration, anti-forensics, defense evasion, safe commands, legitimate installers, sample sets</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CLAUDE.md</span></code> project context file for development assistance</p></li>
+</ul>
+</section>
+</section>
+<section id="id12">
+<h2>[4.3] - 2026-02-15<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
+<section id="id13">
+<h3>Added<a class="headerlink" href="#id13" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">triage.sh</span></code> standalone fast triage script (zero dependencies, millisecond response)</p></li>
+<li><p>Command chain decomposition analysis for multi-stage commands</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">run_all.sh</span></code> fast triage precision comparison functionality</p></li>
+<li><p>JSON pipeline input support for triage</p></li>
+</ul>
+</section>
+<section id="id14">
+<h3>Changed<a class="headerlink" href="#id14" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Report format updated to v4.3 with <code class="docutils literal notranslate"><span class="pre">command_chain</span></code> field</p></li>
+<li><p>Enhanced detection of “legitimate command masking malicious stage” attack patterns</p></li>
+</ul>
+</section>
+</section>
+<section id="id15">
+<h2>[4.2] - 2026-02-10<a class="headerlink" href="#id15" title="Link to this heading"></a></h2>
+<section id="id16">
+<h3>Added<a class="headerlink" href="#id16" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Fast triage mode (<code class="docutils literal notranslate"><span class="pre">FAST_TRIAGE=1</span></code>) without sandbox startup</p></li>
+<li><p>Human-readable text summaries (.txt reports)</p></li>
+<li><p>D24 file permission change tracking</p></li>
+<li><p>Fast triage vs deep analysis comparison capability</p></li>
+<li><p>10 boundary case samples (35+35 total)</p></li>
+</ul>
+</section>
+<section id="id17">
+<h3>Changed<a class="headerlink" href="#id17" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Report format updated to v4.2 with <code class="docutils literal notranslate"><span class="pre">fast_triage</span></code> and <code class="docutils literal notranslate"><span class="pre">text_summary</span></code> fields</p></li>
+</ul>
+</section>
+</section>
+<section id="id18">
+<h2>[4.1] - 2026-02-05<a class="headerlink" href="#id18" title="Link to this heading"></a></h2>
+<section id="id19">
+<h3>Added<a class="headerlink" href="#id19" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Four-layer deobfuscation engine (base64/hex/eval/$‘’)</p></li>
+<li><p>Actionable security recommendation engine</p></li>
+<li><p>Execution timeline tracking</p></li>
+<li><p>Enhanced evasion blacklist (30+ rules)</p></li>
+</ul>
+</section>
+<section id="id20">
+<h3>Changed<a class="headerlink" href="#id20" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Report format updated to v4.1 with <code class="docutils literal notranslate"><span class="pre">recommendations</span></code>, <code class="docutils literal notranslate"><span class="pre">deobfuscation</span></code>, and <code class="docutils literal notranslate"><span class="pre">timeline</span></code> fields</p></li>
+</ul>
+</section>
+</section>
+<section id="id21">
+<h2>[4.0] - 2026-01-20<a class="headerlink" href="#id21" title="Link to this heading"></a></h2>
+<section id="id22">
+<h3>Added<a class="headerlink" href="#id22" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>5 additional analysis dimensions (schedule diff, hidden processes, signal handling, attack chain correlation, file permissions)</p></li>
+<li><p>20+ new malicious patterns covering Living-off-the-Land, process masquerading, timestamp tampering, compilation backdoors, network tunneling</p></li>
+<li><p>18+ new legitimate whitelist patterns (docker, go, make, terraform, ansible, etc.)</p></li>
+<li><p>Confidence level assessment system</p></li>
+<li><p>Attack chain correlation analysis</p></li>
+<li><p>Enhanced MITRE ATT&amp;CK mapping (40+ techniques)</p></li>
+</ul>
+</section>
+<section id="id23">
+<h3>Changed<a class="headerlink" href="#id23" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Report format updated to v4.0 with confidence scores and findings summary</p></li>
+<li><p>Batch runner now supports <code class="docutils literal notranslate"><span class="pre">--retry</span></code> parameter</p></li>
+<li><p>Expanded sample set to 30+30 with boundary cases</p></li>
+</ul>
+</section>
+</section>
+<section id="id24">
+<h2>[3.2] - 2025-12-15<a class="headerlink" href="#id24" title="Link to this heading"></a></h2>
+<section id="id25">
+<h3>Added<a class="headerlink" href="#id25" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Enhanced entropy analysis for high-entropy file detection</p></li>
+<li><p>Improved SUID/SGID file monitoring</p></li>
+<li><p>Additional network behavior detection patterns</p></li>
+<li><p>Better process tree analysis capabilities</p></li>
+</ul>
+</section>
+<section id="fixed">
+<h3>Fixed<a class="headerlink" href="#fixed" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Race conditions in concurrent snapshot collection</p></li>
+<li><p>Memory leaks in long-running analysis sessions</p></li>
+<li><p>Incorrect timestamp handling in reports</p></li>
+</ul>
+</section>
+</section>
+<section id="id26">
+<h2>[3.1] - 2025-11-30<a class="headerlink" href="#id26" title="Link to this heading"></a></h2>
+<section id="id27">
+<h3>Added<a class="headerlink" href="#id27" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Real-time file monitoring with inotify integration</p></li>
+<li><p>Enhanced persistence detection for systemd, init.d, and at jobs</p></li>
+<li><p>Improved shell environment change detection</p></li>
+<li><p>Better DNS configuration monitoring</p></li>
+</ul>
+</section>
+<section id="id28">
+<h3>Changed<a class="headerlink" href="#id28" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Optimized Docker image sizes for faster startup</p></li>
+<li><p>Improved error handling and logging</p></li>
+<li><p>Enhanced report formatting and readability</p></li>
+</ul>
+</section>
+</section>
+<section id="id29">
+<h2>[3.0] - 2025-11-01<a class="headerlink" href="#id29" title="Link to this heading"></a></h2>
+<section id="major-release">
+<h3>Major Release<a class="headerlink" href="#major-release" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Initial public release</p></li>
+<li><p>19-dimensional behavioral analysis</p></li>
+<li><p>MITRE ATT&amp;CK mapping (30+ techniques)</p></li>
+<li><p>Weighted scoring system</p></li>
+<li><p>SARIF output support</p></li>
+<li><p>Batch processing capabilities</p></li>
+</ul>
+</section>
+</section>
+<section id="id30">
+<h2>[2.1] - 2025-09-15<a class="headerlink" href="#id30" title="Link to this heading"></a></h2>
+<section id="beta-release">
+<h3>Beta Release<a class="headerlink" href="#beta-release" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Alpha testing with limited sample set</p></li>
+<li><p>Basic sandbox integration</p></li>
+<li><p>Initial pattern matching engine</p></li>
+<li><p>Simple scoring mechanism</p></li>
+</ul>
+</section>
+</section>
+<section id="id31">
+<h2>[2.0] - 2025-08-01<a class="headerlink" href="#id31" title="Link to this heading"></a></h2>
+<section id="alpha-release">
+<h3>Alpha Release<a class="headerlink" href="#alpha-release" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Prototype implementation</p></li>
+<li><p>Basic file system monitoring</p></li>
+<li><p>Simple network activity detection</p></li>
+<li><p>Experimental scoring algorithm</p></li>
+</ul>
+</section>
+</section>
+<section id="id32">
+<h2>[1.0] - 2025-06-01<a class="headerlink" href="#id32" title="Link to this heading"></a></h2>
+<section id="initial-development">
+<h3>Initial Development<a class="headerlink" href="#initial-development" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Concept and requirements definition</p></li>
+<li><p>Basic architecture design</p></li>
+<li><p>Proof-of-concept implementation</p></li>
+<li><p>Initial testing framework</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="upgrade-notes">
+<h2>Upgrade Notes<a class="headerlink" href="#upgrade-notes" title="Link to this heading"></a></h2>
+<section id="from-4-x-to-5-0-0">
+<h3>From 4.x to 5.0.0<a class="headerlink" href="#from-4-x-to-5-0-0" title="Link to this heading"></a></h3>
+<p>⚠️ <strong>Breaking Changes</strong>:</p>
+<ul class="simple">
+<li><p>All API functions are now async/await</p></li>
+<li><p>Configuration moved to <code class="docutils literal notranslate"><span class="pre">scoring.conf</span></code> file</p></li>
+<li><p>Report JSON schema updated</p></li>
+</ul>
+<p>✅ <strong>Migration Steps</strong>:</p>
+<ol class="arabic simple">
+<li><p>Update import statements to use new async functions</p></li>
+<li><p>Move hardcoded thresholds to <code class="docutils literal notranslate"><span class="pre">scoring.conf</span></code></p></li>
+<li><p>Handle new JSON fields in report processing</p></li>
+<li><p>Test with sample commands to verify functionality</p></li>
+</ol>
+</section>
+<section id="from-3-x-to-4-0">
+<h3>From 3.x to 4.0<a class="headerlink" href="#from-3-x-to-4-0" title="Link to this heading"></a></h3>
+<p>✅ <strong>Backward Compatible</strong>:</p>
+<ul class="simple">
+<li><p>Existing scripts and workflows continue to work</p></li>
+<li><p>Report format backward compatible</p></li>
+<li><p>No breaking API changes</p></li>
+</ul>
+</section>
+<section id="performance-impact">
+<h3>Performance Impact<a class="headerlink" href="#performance-impact" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Version</p></th>
+<th class="head"><p>Single Analysis</p></th>
+<th class="head"><p>Batch Throughput</p></th>
+<th class="head"><p>Memory Usage</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>3.2</p></td>
+<td><p>25s</p></td>
+<td><p>2 cmds/min</p></td>
+<td><p>150MB/cmd</p></td>
+</tr>
+<tr class="row-odd"><td><p>4.0</p></td>
+<td><p>22s</p></td>
+<td><p>3 cmds/min</p></td>
+<td><p>180MB/cmd</p></td>
+</tr>
+<tr class="row-even"><td><p>4.5</p></td>
+<td><p>20s</p></td>
+<td><p>4 cmds/min</p></td>
+<td><p>200MB/cmd</p></td>
+</tr>
+<tr class="row-odd"><td><p>5.0.0</p></td>
+<td><p>18s</p></td>
+<td><p>5 cmds/min</p></td>
+<td><p>200MB/cmd</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="deprecation-notices">
+<h3>Deprecation Notices<a class="headerlink" href="#deprecation-notices" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Static Analysis Functions</strong>: Removed in v5.0.0 as per project requirements</p></li>
+<li><p><strong>Legacy Report Fields</strong>: Deprecated in v4.0, removed in v5.0.0</p></li>
+<li><p><strong>Old Configuration Methods</strong>: Deprecated in v4.7, removed in v5.0.0</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="roadmap">
+<h2>Roadmap<a class="headerlink" href="#roadmap" title="Link to this heading"></a></h2>
+<section id="planned-for-5-1-0">
+<h3>Planned for 5.1.0<a class="headerlink" href="#planned-for-5-1-0" title="Link to this heading"></a></h3>
+<ul class="contains-task-list simple">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Machine learning-based anomaly detection</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Enhanced cloud-native deployment options</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Advanced evasion technique detection</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Improved performance benchmarks</p></li>
+</ul>
+</section>
+<section id="planned-for-5-2-0">
+<h3>Planned for 5.2.0<a class="headerlink" href="#planned-for-5-2-0" title="Link to this heading"></a></h3>
+<ul class="contains-task-list simple">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Kubernetes operator for distributed analysis</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Serverless function integration</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Advanced reporting and visualization</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Multi-language API bindings</p></li>
+</ul>
+</section>
+<section id="long-term-vision">
+<h3>Long-term Vision<a class="headerlink" href="#long-term-vision" title="Link to this heading"></a></h3>
+<ul class="contains-task-list simple">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Real-time streaming analysis capabilities</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Federated learning for threat intelligence</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Integration with major security platforms</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" disabled="disabled" type="checkbox"> Automated threat hunting capabilities</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="integration.html" class="btn btn-neutral float-left" title="Integration Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Security Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

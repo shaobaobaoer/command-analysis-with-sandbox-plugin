@@ -1,0 +1,463 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; Command Safety Analyzer 5.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=ce74c6a2"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Module Documentation" href="../modules/index.html" />
+    <link rel="prev" title="Architecture Overview" href="../architecture.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Command Safety Analyzer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture.html">Architecture Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#core-components">Core Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#main-analysis-engine">Main Analysis Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-management">Configuration Management</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#asynchronous-usage">Asynchronous Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#integration-examples">Integration Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#web-service-integration">Web Service Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ci-cd-pipeline-integration">CI/CD Pipeline Integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#log-analysis-integration">Log Analysis Integration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-considerations">Performance Considerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#resource-management">Resource Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#caching-results">Caching Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#testing">Testing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unit-testing">Unit Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#integration-testing">Integration Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#migration-guide">Migration Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#from-v4-x-to-v5-0">From v4.x to v5.0</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#support">Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/index.html">Module Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../performance.html">Performance Optimization Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integration.html">Integration Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Command Safety Analyzer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/index.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The Command Safety Analyzer provides a comprehensive Python API for programmatic command analysis. All core functionality is accessible through the <code class="docutils literal notranslate"><span class="pre">analyzer</span></code> package.</p>
+</section>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">analyzer.engine</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_analysis</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">analyzer.scoring</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScoringConfig</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">analyze_command</span><span class="p">(</span><span class="n">command</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple command analysis example&quot;&quot;&quot;</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">ScoringConfig</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s2">&quot;scoring.conf&quot;</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">run_analysis</span><span class="p">(</span>
+        <span class="n">command</span><span class="o">=</span><span class="n">command</span><span class="p">,</span>
+        <span class="n">port</span><span class="o">=</span><span class="mi">8080</span><span class="p">,</span>
+        <span class="n">image</span><span class="o">=</span><span class="s2">&quot;opensandbox/code-interpreter:v1.0.2&quot;</span><span class="p">,</span>
+        <span class="n">report_dir</span><span class="o">=</span><span class="s2">&quot;./reports&quot;</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">=</span><span class="n">config</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="c1"># Usage</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">analyze_command</span><span class="p">(</span><span class="s2">&quot;ls -la&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Verdict: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;verdict&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (Score: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;risk_score&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="core-components">
+<h2>Core Components<a class="headerlink" href="#core-components" title="Link to this heading"></a></h2>
+<section id="main-analysis-engine">
+<h3>Main Analysis Engine<a class="headerlink" href="#main-analysis-engine" title="Link to this heading"></a></h3>
+<p>The primary interface for command analysis:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run_analysis</span><span class="p">(</span>
+    <span class="n">command</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8080</span><span class="p">,</span>
+    <span class="n">image</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;opensandbox/code-interpreter:v1.0.2&quot;</span><span class="p">,</span>
+    <span class="n">report_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">ScoringConfig</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run complete behavioral analysis on a command.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        command: The command to analyze</span>
+<span class="sd">        port: OpenSandbox server port</span>
+<span class="sd">        image: Docker image to use for sandbox</span>
+<span class="sd">        report_dir: Directory for report output</span>
+<span class="sd">        config: Scoring configuration</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary containing analysis results</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</section>
+<section id="configuration-management">
+<h3>Configuration Management<a class="headerlink" href="#configuration-management" title="Link to this heading"></a></h3>
+<p>Manage analysis parameters and thresholds:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">analyzer.scoring</span><span class="w"> </span><span class="kn">import</span> <span class="n">ScoringConfig</span>
+
+<span class="c1"># Load from file</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">ScoringConfig</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s2">&quot;scoring.conf&quot;</span><span class="p">)</span>
+
+<span class="c1"># Programmatic configuration</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">ScoringConfig</span><span class="p">(</span>
+    <span class="n">dangerous_threshold</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+    <span class="n">suspicious_threshold</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
+    <span class="n">block_threshold</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+    <span class="n">entropy_threshold</span><span class="o">=</span><span class="mf">6.5</span><span class="p">,</span>
+    <span class="n">hidden_proc_tolerance</span><span class="o">=</span><span class="mi">10</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Link to this heading"></a></h2>
+<p>The API uses standard Python exception handling:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">analyzer.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">SandboxError</span><span class="p">,</span>
+    <span class="n">AnalysisError</span><span class="p">,</span>
+    <span class="n">ConfigurationError</span>
+<span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">run_analysis</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">SandboxError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sandbox failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">AnalysisError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Analysis failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="asynchronous-usage">
+<h2>Asynchronous Usage<a class="headerlink" href="#asynchronous-usage" title="Link to this heading"></a></h2>
+<p>All analysis functions are asynchronous:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">analyzer.engine</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_analysis</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">batch_analyze</span><span class="p">(</span><span class="n">commands</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Analyze multiple commands concurrently&quot;&quot;&quot;</span>
+    <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">run_analysis</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span> <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">commands</span>
+    <span class="p">]</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">,</span> <span class="n">return_exceptions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">commands</span><span class="p">,</span> <span class="n">results</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to analyze &#39;</span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;verdict&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Run batch analysis</span>
+<span class="n">commands</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ls&quot;</span><span class="p">,</span> <span class="s2">&quot;whoami&quot;</span><span class="p">,</span> <span class="s2">&quot;ps aux&quot;</span><span class="p">]</span>
+<span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">batch_analyze</span><span class="p">(</span><span class="n">commands</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="integration-examples">
+<h2>Integration Examples<a class="headerlink" href="#integration-examples" title="Link to this heading"></a></h2>
+<section id="web-service-integration">
+<h3>Web Service Integration<a class="headerlink" href="#web-service-integration" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">analyzer.engine</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_analysis</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/analyze&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">analyze_endpoint</span><span class="p">():</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;command&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">command</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;Missing command&#39;</span><span class="p">}),</span> <span class="mi">400</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">run_analysis</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span>
+            <span class="s1">&#39;verdict&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;verdict&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;risk_score&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;confidence&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;confidence&#39;</span><span class="p">]</span>
+        <span class="p">})</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}),</span> <span class="mi">500</span>
+</pre></div>
+</div>
+</section>
+<section id="ci-cd-pipeline-integration">
+<h3>CI/CD Pipeline Integration<a class="headerlink" href="#ci-cd-pipeline-integration" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">analyzer.triage</span><span class="w"> </span><span class="kn">import</span> <span class="n">fast_triage</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ci_security_check</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Security check for CI/CD pipeline&quot;&quot;&quot;</span>
+    <span class="c1"># Fast triage first</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">fast_triage</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="s1">&#39;BLOCK&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">SecurityError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Blocked command: </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">result</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="s1">&#39;REVIEW&#39;</span><span class="p">:</span>
+        <span class="c1"># Run full analysis</span>
+        <span class="n">full_result</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">run_analysis</span><span class="p">(</span><span class="n">command</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">full_result</span><span class="p">[</span><span class="s1">&#39;risk_score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">70</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SecurityError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;High risk command: </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</section>
+<section id="log-analysis-integration">
+<h3>Log Analysis Integration<a class="headerlink" href="#log-analysis-integration" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">analyzer.engine</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_analysis</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">analyze_shell_logs</span><span class="p">(</span><span class="n">log_file</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Analyze shell command logs for security issues&quot;&quot;&quot;</span>
+    
+    <span class="n">command_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;COMMAND=(.+?)\s&#39;</span>
+    
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">log_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">command_pattern</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                <span class="n">command</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">run_analysis</span><span class="p">(</span><span class="n">command</span><span class="p">))</span>
+                
+                <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;risk_score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Suspicious command detected: </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Risk: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;risk_score&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">, Verdict: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;verdict&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="performance-considerations">
+<h2>Performance Considerations<a class="headerlink" href="#performance-considerations" title="Link to this heading"></a></h2>
+<section id="resource-management">
+<h3>Resource Management<a class="headerlink" href="#resource-management" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">analyzer.sandbox</span><span class="w"> </span><span class="kn">import</span> <span class="n">SandboxManager</span>
+
+<span class="c1"># Limit concurrent analyses</span>
+<span class="n">manager</span> <span class="o">=</span> <span class="n">SandboxManager</span><span class="p">(</span><span class="n">max_concurrent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">controlled_analysis</span><span class="p">(</span><span class="n">commands</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Control resource usage during analysis&quot;&quot;&quot;</span>
+    <span class="n">semaphore</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Semaphore</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>  <span class="c1"># Max 4 concurrent</span>
+    
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">analyze_with_limit</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">semaphore</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="n">run_analysis</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+    
+    <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">analyze_with_limit</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span> <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">commands</span><span class="p">]</span>
+    <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="caching-results">
+<h3>Caching Results<a class="headerlink" href="#caching-results" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">lru_cache</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cached_analysis</span><span class="p">(</span><span class="n">command_hash</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cache analysis results for identical commands&quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">analyze_with_caching</span><span class="p">(</span><span class="n">command</span><span class="p">):</span>
+    <span class="n">command_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">command_hash</span> <span class="ow">in</span> <span class="n">cache</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">cache</span><span class="p">[</span><span class="n">command_hash</span><span class="p">]</span>
+    
+    <span class="n">result</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">run_analysis</span><span class="p">(</span><span class="n">command</span><span class="p">))</span>
+    <span class="n">cache</span><span class="p">[</span><span class="n">command_hash</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading"></a></h2>
+<section id="unit-testing">
+<h3>Unit Testing<a class="headerlink" href="#unit-testing" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">analyzer.engine</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_analysis</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">asyncio</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_safe_command</span><span class="p">():</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">run_analysis</span><span class="p">(</span><span class="s2">&quot;echo hello&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;verdict&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;LIKELY_SAFE&#39;</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;risk_score&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">10</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">asyncio</span>  
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">test_malicious_command</span><span class="p">():</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">run_analysis</span><span class="p">(</span><span class="s2">&quot;echo &#39;malicious&#39; &gt;&gt; ~/.bashrc&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;verdict&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;SUSPICIOUS&#39;</span><span class="p">,</span> <span class="s1">&#39;DANGEROUS&#39;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;risk_score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">25</span>
+</pre></div>
+</div>
+</section>
+<section id="integration-testing">
+<h3>Integration Testing<a class="headerlink" href="#integration-testing" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">test_full_pipeline</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test complete analysis pipeline&quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+    
+    <span class="c1"># Test CLI interface</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+        <span class="p">[</span><span class="s1">&#39;./checker.sh&#39;</span><span class="p">],</span>
+        <span class="n">env</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;COMMAND&#39;</span><span class="p">:</span> <span class="s1">&#39;ls -la&#39;</span><span class="p">},</span>
+        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">text</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    
+    <span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="s1">&#39;LIKELY_SAFE&#39;</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="migration-guide">
+<h2>Migration Guide<a class="headerlink" href="#migration-guide" title="Link to this heading"></a></h2>
+<section id="from-v4-x-to-v5-0">
+<h3>From v4.x to v5.0<a class="headerlink" href="#from-v4-x-to-v5-0" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Old v4.x approach</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">analyzer.v4</span><span class="w"> </span><span class="kn">import</span> <span class="n">analyze_command</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">analyze_command</span><span class="p">(</span><span class="s2">&quot;ls&quot;</span><span class="p">)</span>
+
+<span class="c1"># New v5.0 approach  </span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">analyzer.engine</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_analysis</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">run_analysis</span><span class="p">(</span><span class="s2">&quot;ls&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Key changes:</p>
+<ul class="simple">
+<li><p>All functions are now async/await</p></li>
+<li><p>Configuration is passed explicitly</p></li>
+<li><p>Better error handling with specific exceptions</p></li>
+<li><p>Improved type hints and documentation</p></li>
+</ul>
+</section>
+</section>
+<section id="support">
+<h2>Support<a class="headerlink" href="#support" title="Link to this heading"></a></h2>
+<p>For API questions and support:</p>
+<ul class="simple">
+<li><p>Check the <a class="reference internal" href="../modules/index.html"><span class="doc">Module Documentation</span></a> for detailed module documentation</p></li>
+<li><p>Review <a class="reference internal" href="../architecture.html"><span class="doc">Architecture Overview</span></a> for design principles</p></li>
+<li><p>See <a class="reference internal" href="../performance.html"><span class="doc">Performance Optimization Guide</span></a> for optimization guidance</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../architecture.html" class="btn btn-neutral float-left" title="Architecture Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../modules/index.html" class="btn btn-neutral float-right" title="Module Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Security Team.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
